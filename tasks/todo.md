@@ -15,12 +15,18 @@ runtime bootstrap fetching `/data/station.json`. `scripts/shot.mjs` replaces
 `npx playwright screenshot`, which cannot run on macOS 12.
 
 ## Phase 2 — Player + sync
-- [ ] `src/components/Player.astro` — YouTube IFrame API, `enablejsapi`, hidden chrome
-- [ ] `src/lib/schedule.ts` — binary search over sorted offsets
-- [ ] `src/lib/station.ts` — config load, rotation, advance on ENDED
-- [ ] `NowPlaying.astro` — art, title, artist, album stamp, progress
-- [ ] programs: boiler-room-london (19 entries, verified offsets), rooftop-live, alex-palace-bangalter
-- [ ] rotation advances, loops, handles interlude + id entries
+- [x] `src/components/Player.astro` — YouTube IFrame API, `enablejsapi`, hidden chrome
+- [x] `src/lib/schedule.ts` — binary search over sorted offsets
+- [x] `src/lib/station.ts` — config load, rotation, advance on ENDED
+- [x] `NowPlaying.astro` — art, title, artist, album stamp, progress
+- [x] programs: boiler-room-london (19 entries, verified offsets), rooftop-live, alex-palace-bangalter
+- [x] rotation advances, loops, handles interlude + id entries
+
+Shipped: `<radio-player>` drives one official YouTube embed, emits `radio:track` /
+`radio:time` / `radio:state`; `<now-playing>` renders hotlinked art, title, artist, album
+stamp, programme line and entry-relative progress. `src/lib/schedule.ts` binary-searches the
+entries; `src/lib/art.ts` hotlinks Cover Art Archive / iTunes (never stored). Three program
+JSONs with verified offsets; rotation loops on ENDED.
 
 ## Phase 3 — Memory layer
 - [ ] `MemoryCard.astro` — phone-photo treatment, serif caption, mono date stamp

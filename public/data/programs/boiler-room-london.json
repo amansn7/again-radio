@@ -1,0 +1,30 @@
+{
+  "id": "boiler-room-london",
+  "title": "Boiler Room: London",
+  "venue": "Boiler Room, London",
+  "date": "2022-07-29",
+  "youtubeId": "c0-hvjV2A5Y",
+  "duration": 4305,
+  "source": "set79 / MixesDB timestamps",
+  "entries": [
+    { "offset": 0, "duration": 142, "type": "track", "title": "Nathan (still breathing)", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 142, "duration": 240, "type": "track", "title": "Kammy (like i do)", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 382, "duration": 196, "type": "track", "title": "Danielle (smile on my face)", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 578, "duration": 231, "type": "track", "title": "Tanya", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 809, "duration": 288, "type": "track", "title": "Delilah (pull me out of this)", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 1097, "duration": 263, "type": "track", "title": "BBY", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 1360, "duration": 128, "type": "track", "title": "Stay With Me", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 1488, "duration": 104, "type": "track", "title": "Haribo", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 1592, "duration": 303, "type": "track", "title": "Feelings", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 1895, "duration": 208, "type": "track", "title": "Strong", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 2103, "duration": 240, "type": "track", "title": "Turn On The Lights again..", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 2343, "duration": 198, "type": "track", "title": "Jungle", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 2541, "duration": 282, "type": "track", "title": "Lights Out", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 2823, "duration": 203, "type": "track", "title": "Kahan", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 3026, "duration": 340, "type": "track", "title": "Baby again..", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 3366, "duration": 297, "type": "track", "title": "Rumble", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 3663, "duration": 300, "type": "track", "title": "Marnie", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 3963, "duration": 60, "type": "track", "title": "Angie (I've been lost)", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "offset": 4023, "duration": 282, "type": "track", "title": "Clara (the night is dark)", "artist": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" }
+  ]
+}

@@ -2,6 +2,8 @@
 import "../../styles/theme.css";
 import HourStrip from "../components/HourStrip.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import Player from "../components/Player.astro";
+import NowPlaying from "../components/NowPlaying.astro";
 ---
 
 <!doctype html>
@@ -33,30 +35,19 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 
         <section
           aria-label="Stage"
-          class="flex-1 min-w-0 flex flex-col items-center justify-center
+          class="flex-1 min-w-0 flex flex-col justify-center
                  border-b lg:border-b-0 lg:border-r border-[var(--line)]
-                 px-8 py-16 gap-4"
+                 px-5 py-8 lg:px-10 lg:py-10"
         >
-          <p class="stamp">AGAIN RADIO · ON AIR</p>
-          <p
-            class="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--fg)] text-center"
-            style="font-family: var(--font-display);"
-          >
-            24 hours of a life in progress
-          </p>
-          <p class="stamp mt-2">player coming in phase 2</p>
+          <Player />
         </section>
 
         <aside
           aria-label="Now playing"
-          class="w-full lg:w-[360px] shrink-0 flex flex-col gap-4 px-5 py-6
-                 border-b lg:border-b-0 border-[var(--line)]"
+          class="w-full lg:w-[360px] shrink-0 flex flex-col
+                 border-b lg:border-b-0 border-[var(--line)] px-5 py-6"
         >
-          <p class="stamp">NOW PLAYING</p>
-          <hr class="rule" />
-          <p class="text-sm text-[var(--fg-dim)]">
-            Tune in — the memory layer loads in phase 2.
-          </p>
+          <NowPlaying />
         </aside>
 
       </div>

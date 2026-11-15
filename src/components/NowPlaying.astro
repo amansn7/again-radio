@@ -1,0 +1,256 @@
+---
+const { ...attrs } = Astro.props;
+---
+<now-playing {...attrs}></now-playing>
+
+<style is:global>
+  now-playing { display: flex; flex-direction: column; width: 100%; }
+
+  .np-artwork-box {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-2);
+    flex-shrink: 0;
+  }
+  .np-artwork-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .np-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+    color: var(--fg-dim); letter-spacing: -0.02em;
+  }
+  .np-placeholder.is-stamp {
+    font-family: var(--font-mono); font-size: 0.625rem; font-weight: 400;
+    letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.6;
+  }
+  .np-ident {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--fg-dim);
+  }
+
+  .np-track-area { display: grid; margin-top: 0.75rem; }
+  .np-track-area > * { grid-area: 1 / 1; }
+
+  .np-empty-state {
+    display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;
+    transition: opacity 200ms ease;
+  }
+  .np-empty-state.is-gone { opacity: 0; }
+
+  .np-fields { transition: opacity 200ms ease; opacity: 0; }
+  .np-fields.is-live { opacity: 1; }
+
+  .np-title-wrap { min-height: 4rem; display: flex; align-items: flex-start; }
+  .np-title {
+    font-family: var(--font-display); font-size: 1.375rem; font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.2; color: var(--fg); word-break: break-word;
+  }
+  .np-artist-wrap { min-height: 1.5rem; margin-top: 0.25rem; }
+  .np-artist { font-family: var(--font-body); font-size: 0.9375rem; color: var(--fg-dim); }
+  .np-album-wrap { min-height: 1.25rem; margin-top: 0.375rem; }
+  .np-album {
+    font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--fg-dim);
+  }
+  .np-programme {
+    margin-top: 0.5rem; display: flex; align-items: center; gap: 0.375rem;
+    font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--fg-dim); min-height: 1.25rem;
+  }
+  .np-state-dot { flex-shrink: 0; color: var(--accent); }
+  .np-progress-wrap { margin-top: 0.75rem; min-height: 2rem; }
+  .np-progress-track { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; }
+  .np-progress-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--accent); width: 0%; }
+  .np-progress-times {
+    display: flex; justify-content: space-between; margin-top: 0.3rem;
+    font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--fg-dim);
+  }
+
+  .np-memory-slot {
+    margin-top: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius);
+    min-height: 4rem; display: flex; align-items: center; justify-content: center;
+  }
+  .np-memory-label {
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--fg-dim); opacity: 0.5;
+  }
+</style>
+
+<script>
+  import type { ProgramEntry } from "../lib/station.ts";
+  import { coverArtUrl, resolveArtUrl } from "../lib/art.ts";
+
+  interface TrackInfo {
+    programId: string;
+    programTitle: string;
+    venue?: string;
+    date?: string;
+    entry: ProgramEntry;
+    index: number;
+    elapsed: number;
+    progress: number;
+  }
+
+  function formatTime(secs: number): string {
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  }
+
+  function initials(title: string | undefined): string {
+    const words = (title ?? "").split(/[\s,]+/).filter((w) => /[a-z0-9]/i.test(w));
+    if (!words.length) return "?";
+    return words.slice(0, 3).map((w) => w[0]).join("").toUpperCase();
+  }
+
+  const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+  class NowPlayingElement extends HTMLElement {
+    private artworkBox!: HTMLElement;
+    private fieldsEl!: HTMLElement;
+    private emptyEl!: HTMLElement;
+    private titleEl!: HTMLElement;
+    private artistEl!: HTMLElement;
+    private albumEl!: HTMLElement;
+    private albumWrap!: HTMLElement;
+    private programmeEl!: HTMLElement;
+    private stateDot!: HTMLElement;
+    private progressFill!: HTMLElement;
+    private timeElapsed!: HTMLElement;
+    private timeRemaining!: HTMLElement;
+
+    private currentEntry: ProgramEntry | null = null;
+    private lastPct = -1;
+    private lastSec = -1;
+    private lastArtKey: string | null = null;
+    private playing = false;
+
+    connectedCallback() {
+      this.innerHTML = `
+        <div class="np-artwork-box"><div class="np-placeholder is-stamp">NOW PLAYING</div></div>
+        <div class="np-track-area">
+          <div class="np-empty-state"><hr class="rule" /><span class="stamp">NOW PLAYING</span></div>
+          <div class="np-fields">
+            <div class="np-title-wrap"><div class="np-title"></div></div>
+            <div class="np-artist-wrap"><div class="np-artist"></div></div>
+            <div class="np-album-wrap"><div class="np-album"></div></div>
+            <div class="np-programme"><span class="np-state-dot">&#9679;</span><span class="np-programme-text"></span></div>
+            <div class="np-progress-wrap">
+              <div class="np-progress-track"><div class="np-progress-fill"></div></div>
+              <div class="np-progress-times"><span class="np-elapsed">0:00</span><span class="np-remaining">0:00</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="np-memory-slot"><span class="np-memory-label">memory</span></div>
+      `;
+
+      this.artworkBox = this.querySelector(".np-artwork-box") as HTMLElement;
+      this.fieldsEl = this.querySelector(".np-fields") as HTMLElement;
+      this.emptyEl = this.querySelector(".np-empty-state") as HTMLElement;
+      this.titleEl = this.querySelector(".np-title") as HTMLElement;
+      this.artistEl = this.querySelector(".np-artist") as HTMLElement;
+      this.albumEl = this.querySelector(".np-album") as HTMLElement;
+      this.albumWrap = this.querySelector(".np-album-wrap") as HTMLElement;
+      this.programmeEl = this.querySelector(".np-programme-text") as HTMLElement;
+      this.stateDot = this.querySelector(".np-state-dot") as HTMLElement;
+      this.progressFill = this.querySelector(".np-progress-fill") as HTMLElement;
+      this.timeElapsed = this.querySelector(".np-elapsed") as HTMLElement;
+      this.timeRemaining = this.querySelector(".np-remaining") as HTMLElement;
+
+      document.addEventListener("radio:track", (e) => {
+        this.onTrack((e as CustomEvent<TrackInfo>).detail);
+      });
+      document.addEventListener("radio:time", (e) => {
+        this.onTime((e as CustomEvent<{ current: number; duration: number }>).detail);
+      });
+      document.addEventListener("radio:state", (e) => {
+        this.playing = (e as CustomEvent<{ playing: boolean }>).detail.playing;
+        this.stateDot.textContent = this.playing ? "●" : "○";
+      });
+    }
+
+    private async onTrack(info: TrackInfo) {
+      const { entry, venue, date } = info;
+
+      this.fieldsEl.classList.remove("is-live");
+      await sleep(200);
+
+      this.currentEntry = entry;
+      this.titleEl.textContent = entry.title ?? "";
+      this.artistEl.textContent = entry.artist ?? "";
+
+      if (entry.album) {
+        this.albumEl.textContent = entry.album;
+        this.albumWrap.style.visibility = "visible";
+      } else {
+        this.albumEl.textContent = "";
+        this.albumWrap.style.visibility = "hidden";
+      }
+
+      const parts = [venue, date].filter(Boolean);
+      this.programmeEl.textContent = parts.join(" · ");
+      this.stateDot.textContent = this.playing ? "●" : "○";
+
+      this.lastPct = -1;
+      this.emptyEl.classList.add("is-gone");
+      this.fieldsEl.classList.add("is-live");
+
+      const artKey = `${entry.type}|${entry.title ?? ""}|${entry.album ?? ""}`;
+      if (artKey !== this.lastArtKey) {
+        this.lastArtKey = artKey;
+        void this.updateArtwork(entry);
+      }
+    }
+
+    private async updateArtwork(entry: ProgramEntry) {
+      if (entry.type === "id") {
+        this.artworkBox.innerHTML = `<div class="np-placeholder">${initials(entry.title)}</div>`;
+        return;
+      }
+      if (entry.type === "interlude") {
+        this.artworkBox.innerHTML = `<div class="np-ident">AGAIN RADIO</div>`;
+        return;
+      }
+
+      const resolved = await resolveArtUrl(entry);
+      const src = resolved ?? coverArtUrl();
+      const img = document.createElement("img");
+      img.alt = entry.title ?? "Track artwork";
+      const loaded = await new Promise<boolean>((res) => {
+        img.onload = () => res(true);
+        img.onerror = () => res(false);
+        img.src = src;
+      });
+      if (!loaded) {
+        this.artworkBox.innerHTML = `<div class="np-placeholder">${initials(entry.title)}</div>`;
+        return;
+      }
+      this.artworkBox.innerHTML = "";
+      this.artworkBox.appendChild(img);
+    }
+
+    private onTime({ current }: { current: number; duration: number }) {
+      const entry = this.currentEntry;
+      if (!entry) return;
+      const elapsed = Math.max(0, Math.min(current - entry.offset, entry.duration));
+      const pct = entry.duration > 0 ? Math.round((elapsed / entry.duration) * 100) : 0;
+      if (pct !== this.lastPct) {
+        this.lastPct = pct;
+        this.progressFill.style.width = `${pct}%`;
+      }
+      const sec = Math.floor(elapsed);
+      if (sec === this.lastSec) return;
+      this.lastSec = sec;
+      this.timeElapsed.textContent = formatTime(elapsed);
+      this.timeRemaining.textContent = formatTime(entry.duration - elapsed);
+    }
+  }
+
+  if (!customElements.get("now-playing")) customElements.define("now-playing", NowPlayingElement);
+</script>

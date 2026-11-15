@@ -19,6 +19,7 @@ function validateProgram(p, file) {
   const entries = p.entries ?? [];
   if (!entries.length) fail(`${file}: no entries`);
   let prevEnd = -1;
+  let noAlbum = 0;
   entries.forEach((e, i) => {
     const at = `${file} entry ${i} (${e.title ?? "?"})`;
     if (!Number.isInteger(e.offset) || e.offset < 0) fail(`${at}: bad offset`);
@@ -29,9 +30,10 @@ function validateProgram(p, file) {
       fail(`${at}: runs past program duration`);
     }
     if (e.type !== "id" && !String(e.title ?? "").trim()) fail(`${at}: empty title`);
-    if (!e.album && !e.memory && e.type === "track") warn.push(`${at}: no album and no memory`);
+    if (!e.album && e.type === "track") noAlbum++;
     prevEnd = e.offset + e.duration;
   });
+  if (noAlbum) warn.push(`${file}: ${noAlbum} track(s) with no album (song-art fallback)`);
 }
 
 function validateStation(s) {
@@ -49,6 +51,7 @@ function main() {
     console.log("· no public/data yet — nothing to verify (phase 1)");
     return;
   }
+  const seen = new Set();
   const stationPath = join(DATA, "station.json");
   if (existsSync(stationPath)) {
     const s = JSON.parse(readFileSync(stationPath, "utf8"));
@@ -56,6 +59,7 @@ function main() {
     for (const r of s.rotation ?? []) {
       const f = join(DATA, r.program);
       if (!existsSync(f)) { fail(`rotation points at missing ${r.program}`); continue; }
+      seen.add(r.program);
       validateProgram(JSON.parse(readFileSync(f, "utf8")), r.program);
     }
   } else {
@@ -64,6 +68,7 @@ function main() {
   const pdir = join(DATA, "programs");
   if (existsSync(pdir)) {
     for (const f of readdirSync(pdir).filter((n) => n.endsWith(".json"))) {
+      if (seen.has(`programs/${f}`)) continue;
       validateProgram(JSON.parse(readFileSync(join(pdir, f), "utf8")), `programs/${f}`);
     }
   }
