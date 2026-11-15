@@ -1,0 +1,96 @@
+---
+const { ...attrs } = Astro.props;
+---
+<hour-strip {...attrs}></hour-strip>
+
+<style is:global>
+  hour-strip { display: block; width: 100%; }
+  .hs-root { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+  .hs-blocks { display: flex; }
+  .hs-block { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 0.5em; padding: 5px 8px; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-dim); background: var(--bg-2); border-right: 1px solid var(--line); white-space: nowrap; overflow: hidden; }
+  .hs-block:last-child { border-right: 0; }
+  .hs-block.is-current { color: var(--fg); }
+  .hs-block.is-current .hs-block-clock { color: var(--accent); }
+  .hs-block-clock { font-size: 0.5625rem; letter-spacing: 0.08em; color: var(--fg-dim); margin-left: auto; }
+  .hs-ticks { display: flex; list-style: none; margin: 0; padding: 0; }
+  .hs-tick { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; padding: 5px 0 7px; border-right: 1px solid var(--line); }
+  .hs-tick:last-child { border-right: 0; }
+  .hs-tick-num { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.02em; color: var(--fg-dim); line-height: 1; }
+  .hs-tick-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--line); margin-top: 5px; flex-shrink: 0; }
+  .hs-tick[aria-current="true"] .hs-tick-num { color: var(--accent); font-weight: 700; }
+  .hs-tick[aria-current="true"] .hs-tick-dot { background: var(--accent); width: 7px; height: 7px; margin-top: 4px; }
+  .hs-empty { padding: 8px 12px; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+</style>
+
+<script>
+  import { blockForHour } from "../lib/theme.ts";
+  import type { HourBlock } from "../lib/station.ts";
+
+  function pad(n: number): string { return String(n).padStart(2, "0"); }
+  function clock(): string { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+
+  function parseBlocks(raw: string | null): HourBlock[] {
+    if (!raw) return [];
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter((b): b is HourBlock =>
+        typeof b === "object" && b !== null &&
+        typeof (b as Record<string, unknown>).from === "number" &&
+        typeof (b as Record<string, unknown>).to === "number" &&
+        typeof (b as Record<string, unknown>).label === "string"
+      );
+    } catch { return []; }
+  }
+
+  class HourStrip extends HTMLElement {
+    static observedAttributes = ["data-blocks", "data-hour"];
+    private _timer: ReturnType<typeof setInterval> | null = null;
+
+    connectedCallback(): void {
+      this._render();
+      this._timer = setInterval(() => this._tick(), 30_000);
+    }
+    disconnectedCallback(): void { if (this._timer !== null) { clearInterval(this._timer); this._timer = null; } }
+    attributeChangedCallback(): void { this._render(); }
+    private _tick(): void {
+      const el = this.querySelector(".hs-block-clock");
+      if (el) el.textContent = clock();
+    }
+
+    private _render(): void {
+      const blocks = parseBlocks(this.getAttribute("data-blocks"));
+      const rawHour = this.getAttribute("data-hour");
+      const hour = rawHour !== null && /^\d+$/.test(rawHour) ? parseInt(rawHour, 10) % 24 : new Date().getHours();
+
+      if (!blocks.length) { this.innerHTML = `<div class="hs-empty">—</div>`; return; }
+
+      const current = blockForHour(blocks, hour);
+      const slices: { label: string; count: number }[] = [];
+      for (let h = 0; h < 24; h++) {
+        const label = blockForHour(blocks, h).label;
+        const last = slices[slices.length - 1];
+        if (last && last.label === label) last.count++;
+        else slices.push({ label, count: 1 });
+      }
+
+      const blocksHtml = slices.map((s) => {
+        const isCurrent = s.label === current.label;
+        return `<div class="hs-block${isCurrent ? " is-current" : ""}" style="flex:${s.count}">${s.label}` +
+          (isCurrent ? `<span class="hs-block-clock">${clock()}</span>` : "") + `</div>`;
+      }).join("");
+
+      const ticksHtml = Array.from({ length: 24 }, (_, h) => {
+        const isCurrent = h === hour;
+        const label = `${pad(h)}:00 — ${blockForHour(blocks, h).label}`;
+        return `<li class="hs-tick" role="listitem" aria-label="${label}"${isCurrent ? ' aria-current="true"' : ""}>` +
+          `<span class="hs-tick-num">${pad(h)}</span><span class="hs-tick-dot"></span></li>`;
+      }).join("");
+
+      this.innerHTML = `<div class="hs-root"><div class="hs-blocks">${blocksHtml}</div>` +
+        `<ol class="hs-ticks" role="list" aria-label="24-hour schedule">${ticksHtml}</ol></div>`;
+    }
+  }
+
+  if (!customElements.get("hour-strip")) customElements.define("hour-strip", HourStrip);
+</script>

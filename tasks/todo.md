@@ -3,11 +3,16 @@
 Contract: `docs/SPEC.md`. Conventions: `AGENTS.md`.
 
 ## Phase 1 — Shell
-- [ ] astro scaffold + tailwind v4 + `npm run build` green
-- [ ] `styles/theme.css`: diary / sleek / auto themes as CSS custom properties
-- [ ] `src/pages/index.astro` layout skeleton (stage, now-playing rail, hour strip)
-- [ ] `scripts/verify.mjs` + `public/data/station.json`
-- [ ] theme toggle component (auto | diary | sleek), persisted
+- [x] astro scaffold + tailwind v4 + `npm run build` green
+- [x] `styles/theme.css`: diary / sleek / auto themes as CSS custom properties
+- [x] `src/pages/index.astro` layout skeleton (stage, now-playing rail, hour strip)
+- [x] `scripts/verify.mjs` + `public/data/station.json`
+- [x] theme toggle component (auto | diary | sleek), persisted
+
+Shipped: three themes on `data-theme`, `<hour-strip>` (24h rail, current hour + live clock,
+fits 390px), `<theme-toggle>` (radiogroup, roving focus, persisted in localStorage),
+runtime bootstrap fetching `/data/station.json`. `scripts/shot.mjs` replaces
+`npx playwright screenshot`, which cannot run on macOS 12.
 
 ## Phase 2 — Player + sync
 - [ ] `src/components/Player.astro` — YouTube IFrame API, `enablejsapi`, hidden chrome

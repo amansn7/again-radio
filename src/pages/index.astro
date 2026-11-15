@@ -1,0 +1,100 @@
+---
+import "../../styles/theme.css";
+import HourStrip from "../components/HourStrip.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+---
+
+<!doctype html>
+<html lang="en" data-theme="diary">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A 24-hour fan radio station for Fred again..'s catalogue. Fan project, not affiliated." />
+    <title>AGAIN RADIO</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📻</text></svg>" />
+  </head>
+  <body class="min-h-screen flex flex-col text-[var(--fg)] bg-[var(--bg)]">
+
+    <header class="flex items-center gap-4 px-5 py-3 border-b border-[var(--line)]">
+      <div class="flex items-baseline gap-3 min-w-0">
+        <span
+          class="text-xl font-black tracking-tight text-[var(--fg)] shrink-0"
+          style="font-family: var(--font-display);"
+        >AGAIN RADIO</span>
+        <span class="stamp hidden sm:block truncate">24 hours of a life in progress</span>
+      </div>
+      <div class="ml-auto shrink-0">
+        <ThemeToggle data-blocks="[]" />
+      </div>
+    </header>
+
+    <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div class="flex flex-col lg:flex-row flex-1 min-w-0">
+
+        <section
+          aria-label="Stage"
+          class="flex-1 min-w-0 flex flex-col items-center justify-center
+                 border-b lg:border-b-0 lg:border-r border-[var(--line)]
+                 px-8 py-16 gap-4"
+        >
+          <p class="stamp">AGAIN RADIO · ON AIR</p>
+          <p
+            class="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--fg)] text-center"
+            style="font-family: var(--font-display);"
+          >
+            24 hours of a life in progress
+          </p>
+          <p class="stamp mt-2">player coming in phase 2</p>
+        </section>
+
+        <aside
+          aria-label="Now playing"
+          class="w-full lg:w-[360px] shrink-0 flex flex-col gap-4 px-5 py-6
+                 border-b lg:border-b-0 border-[var(--line)]"
+        >
+          <p class="stamp">NOW PLAYING</p>
+          <hr class="rule" />
+          <p class="text-sm text-[var(--fg-dim)]">
+            Tune in — the memory layer loads in phase 2.
+          </p>
+        </aside>
+
+      </div>
+
+      <HourStrip data-blocks="[]" />
+    </main>
+
+    <footer class="px-5 py-3 border-t border-[var(--line)]">
+      <p class="stamp">
+        Fan project. Not affiliated with Fred again.. All music &copy; its owners.
+      </p>
+    </footer>
+
+    <script>
+      import { loadStation } from "../lib/station.ts";
+
+      function applyHour(): void {
+        const hour = new Date().getHours();
+        document.querySelectorAll<HTMLElement>("[data-hour]").forEach((el) => {
+          el.dataset.hour = String(hour);
+        });
+      }
+
+      async function bootstrap(): Promise<void> {
+        try {
+          const station = await loadStation();
+          const blocks = JSON.stringify(station.hourBlocks);
+          document.querySelectorAll<HTMLElement>("[data-blocks]").forEach((el) => {
+            el.dataset.blocks = blocks;
+          });
+        } catch {
+          // leave components in their empty states
+        }
+        applyHour();
+      }
+
+      bootstrap();
+      setInterval(applyHour, 60_000);
+    </script>
+  </body>
+</html>

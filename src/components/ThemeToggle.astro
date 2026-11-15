@@ -1,0 +1,120 @@
+---
+const { ...attrs } = Astro.props;
+---
+<theme-toggle {...attrs}></theme-toggle>
+
+<style is:global>
+  theme-toggle { display: inline-flex; align-items: center; }
+  .tt-group { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .tt-btn { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-dim); background: var(--bg-2); border: 0; border-right: 1px solid var(--line); padding: 4px 8px; cursor: pointer; line-height: 1; transition: background 150ms, color 150ms; }
+  .tt-btn:last-child { border-right: 0; }
+  .tt-btn[aria-checked="true"] { background: var(--accent); color: var(--bg); }
+  .tt-btn:hover:not([aria-checked="true"]) { color: var(--fg); background: var(--bg); }
+  @media (prefers-reduced-motion: reduce) { .tt-btn { transition: none; } }
+</style>
+
+<script>
+  import { readStoredChoice, writeStoredChoice, seededAutoTheme } from "../lib/theme.ts";
+  import type { ThemeChoice } from "../lib/theme.ts";
+  import type { HourBlock } from "../lib/station.ts";
+
+  const OPTIONS: ThemeChoice[] = ["auto", "diary", "sleek"];
+
+  function pad(n: number): string { return String(n).padStart(2, "0"); }
+  function todayKey(): string { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
+  function store(): Storage | undefined { return typeof localStorage !== "undefined" ? localStorage : undefined; }
+
+  function parseBlocks(raw: string | null): HourBlock[] {
+    if (!raw) return [];
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter((b): b is HourBlock =>
+        typeof b === "object" && b !== null &&
+        typeof (b as Record<string, unknown>).from === "number" &&
+        typeof (b as Record<string, unknown>).to === "number" &&
+        typeof (b as Record<string, unknown>).label === "string" &&
+        ((b as Record<string, unknown>).theme === "diary" || (b as Record<string, unknown>).theme === "sleek")
+      );
+    } catch { return []; }
+  }
+
+  class ThemeToggle extends HTMLElement {
+    static observedAttributes = ["data-blocks", "data-hour"];
+    private _choice: ThemeChoice = "auto";
+
+    connectedCallback(): void {
+      this._choice = readStoredChoice(store());
+      this._render();
+      this._applyTheme();
+      requestAnimationFrame(() => document.documentElement.classList.add("theme-live"));
+    }
+
+    attributeChangedCallback(): void {
+      if (this._choice === "auto") this._applyTheme();
+      this._updateButtons();
+    }
+
+    private _blocks(): HourBlock[] { return parseBlocks(this.getAttribute("data-blocks")); }
+    private _hour(): number {
+      const raw = this.getAttribute("data-hour");
+      return raw !== null && /^\d+$/.test(raw) ? parseInt(raw, 10) % 24 : new Date().getHours();
+    }
+
+    private _applyTheme(): void {
+      let resolved: "diary" | "sleek";
+      if (this._choice === "auto") {
+        const blocks = this._blocks();
+        resolved = blocks.length ? seededAutoTheme(blocks, this._hour(), todayKey()) : "diary";
+      } else {
+        resolved = this._choice;
+      }
+      document.documentElement.dataset.theme = resolved;
+    }
+
+    private _select(choice: ThemeChoice): void {
+      this._choice = choice;
+      writeStoredChoice(store(), choice);
+      this._applyTheme();
+      this._updateButtons();
+    }
+
+    private _updateButtons(): void {
+      this.querySelectorAll<HTMLButtonElement>(".tt-btn").forEach(btn => {
+        const checked = btn.dataset.choice === this._choice;
+        btn.setAttribute("aria-checked", String(checked));
+        btn.tabIndex = checked ? 0 : -1;
+      });
+    }
+
+    private _render(): void {
+      this.innerHTML = `<div class="tt-group" role="radiogroup" aria-label="Colour theme">${
+        OPTIONS.map(opt => `<button class="tt-btn" role="radio" aria-checked="${opt === this._choice}" data-choice="${opt}" tabindex="${opt === this._choice ? 0 : -1}">${opt}</button>`).join("")
+      }</div>`;
+
+      const group = this.querySelector(".tt-group")!;
+      group.addEventListener("click", e => {
+        const btn = (e.target as Element).closest<HTMLButtonElement>(".tt-btn");
+        if (!btn) return;
+        const choice = btn.dataset.choice as ThemeChoice;
+        if (OPTIONS.includes(choice)) this._select(choice);
+      });
+
+      group.addEventListener("keydown", e => {
+        const ke = e as KeyboardEvent;
+        const btns = Array.from(this.querySelectorAll<HTMLButtonElement>(".tt-btn"));
+        const idx = btns.findIndex(b => b === document.activeElement);
+        if (idx === -1) return;
+        if (ke.key === "ArrowRight" || ke.key === "ArrowDown") { ke.preventDefault(); btns[(idx + 1) % btns.length].focus(); }
+        else if (ke.key === "ArrowLeft" || ke.key === "ArrowUp") { ke.preventDefault(); btns[(idx - 1 + btns.length) % btns.length].focus(); }
+        else if (ke.key === "Enter" || ke.key === " ") {
+          ke.preventDefault();
+          const choice = btns[idx].dataset.choice as ThemeChoice;
+          if (OPTIONS.includes(choice)) this._select(choice);
+        }
+      });
+    }
+  }
+
+  if (!customElements.get("theme-toggle")) customElements.define("theme-toggle", ThemeToggle);
+</script>
