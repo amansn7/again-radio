@@ -53,12 +53,18 @@ Read first, in this order: `docs/SPEC.md` (the contract), `AGENTS.md` (conventio
 2. **Split** it into work units with disjoint files. Write each unit's brief to
    `.orchestrator/briefs/<unit>.md` — goal, exact files it owns, acceptance test,
    and the constraints from AGENTS.md. One owner per file, always.
-3. **Delegate** each unit:
-   - Visual design, canvas, motion, typography, or a review pass →
-     `agy --print "Read .orchestrator/briefs/<unit>.md and execute it. Do not touch files outside your ownership list." --model claude-sonnet-4-6 --mode accept-edits`
-   - Plumbing, data files, boilerplate, mechanical refactors →
-     `opencode run -m opencode/minimax-m3.1-flash-free "Read .orchestrator/briefs/<unit>.md and execute it."`
-   - Two independent units at once → run both in the background with `&` and `wait`.
+3. **Delegate** each unit with `scripts/detach.py`. Never use a bare `&` — the shell
+   tool kills its process group on timeout, and the delegate dies with it.
+   - Visual design, canvas, motion, typography, or a review pass:
+     ```
+     python3 scripts/detach.py .orchestrator/logs/<unit>.log sh -c 'agy --print "Read .orchestrator/briefs/<unit>.md and execute it. Do not touch files outside your ownership list." --model claude-sonnet-4-6 --mode accept-edits --dangerously-skip-permissions; echo "EXIT:$?"'
+     ```
+   - Plumbing, data files, boilerplate, mechanical refactors:
+     ```
+     python3 scripts/detach.py .orchestrator/logs/<unit>.log sh -c 'opencode run -m opencode/minimax-m3.1-flash-free "Read .orchestrator/briefs/<unit>.md and execute it."; echo "EXIT:$?"'
+     ```
+   - Launch all independent units, then poll: `ps -p <pid> >/dev/null && echo running || echo done`
+     and read the logs every ~30s. Pass `timeout: 600000` on long synchronous shell calls.
    - Never delegate verification. You do that yourself.
 4. **Verify** — all three gates, no exceptions:
    - `npm run build` exits 0

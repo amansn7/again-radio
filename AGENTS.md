@@ -47,6 +47,29 @@ npx playwright screenshot --viewport-size=390,844 http://localhost:4321 .verify/
 
 Then read the PNGs with the Read tool and judge them honestly. Fix what looks wrong.
 
+## Delegation mechanics
+
+The shell tool kills its whole process group when a call times out, so a bare `cmd &`
+dies with it. Never background with `&`. Detach instead — it starts a new session:
+
+```bash
+python3 scripts/detach.py .orchestrator/logs/<unit>.log sh -c \
+  'agy --print "Read .orchestrator/briefs/<unit>.md and execute it. Do not touch files outside your ownership list." \
+   --model claude-sonnet-4-6 --mode accept-edits --dangerously-skip-permissions; echo "EXIT:$?"'
+```
+
+It prints a pid. Poll it without blocking:
+
+```bash
+ps -p <pid> > /dev/null && echo running || echo done
+```
+
+For long synchronous commands pass a generous `timeout` to the shell tool
+(600000 ms): `npm install`, `npm run build`, `npx playwright screenshot`.
+
+If a delegate's log ends in `error: interrupted`, it was killed by a timeout —
+relaunch it with `scripts/detach.py`.
+
 ## Commit style
 
 `phase N: <what shipped>` — one commit per verified phase, local only.

@@ -75,7 +75,13 @@ function main() {
   console.log("✓ data verified");
 }
 
-function selftest() {
+function assert(cond, msg) {
+  if (cond) return;
+  console.error(`selftest: ${msg}`);
+  process.exit(1);
+}
+
+async function selftest() {
   const good = { id: "x", title: "t", youtubeId: "GiXKukOtmeE", duration: 100, entries: [
     { offset: 0, duration: 40, type: "track", title: "a", album: "b" },
     { offset: 40, duration: 30, type: "interlude", title: "id" },
@@ -94,8 +100,34 @@ function selftest() {
   validateStation({ hourBlocks: [{ from: 0, to: 24 }] });
   if (errors.length) { console.error("selftest: full-day blocks rejected"); process.exit(1); }
   errors.length = 0;
+
+  const { blockForHour, seededAutoTheme, themeForHour } = await import("../src/lib/theme.ts");
+  const blocks = [
+    { from: 4, to: 10, theme: "diary", label: "dawn" },
+    { from: 10, to: 16, theme: "sleek", label: "day" },
+    { from: 16, to: 22, theme: "diary", label: "dusk" },
+    { from: 22, to: 4, theme: "sleek", label: "night" },
+  ];
+  for (const h of [22, 23, 0, 1, 2, 3]) {
+    assert(blockForHour(blocks, h).label === "night", `night block should cover hour ${h}`);
+  }
+  assert(blockForHour(blocks, 4).label === "dawn", "night block must not cover hour 4");
+  assert(blockForHour([], 3).label === "day", "empty blocks should fall back to a default block");
+  assert(themeForHour(blocks, 5) === "diary", "themeForHour(5) should be diary");
+  assert(themeForHour(blocks, 12) === "sleek", "themeForHour(12) should be sleek");
+
+  const dateKey = "2026-11-15";
+  let flips = 0;
+  for (let h = 0; h < 24; h++) {
+    const auto = seededAutoTheme(blocks, h, dateKey);
+    assert(auto === seededAutoTheme(blocks, h, dateKey), `seededAutoTheme not deterministic at ${h}`);
+    assert(auto === "diary" || auto === "sleek", `seededAutoTheme returned "${auto}"`);
+    if (auto !== themeForHour(blocks, h)) flips++;
+  }
+  assert(flips >= 2 && flips <= 12, `seededAutoTheme flipped ${flips}/24 hours, expected roughly a third`);
+
   console.log("✓ selftest");
 }
 
-if (process.argv.includes("--selftest")) selftest();
+if (process.argv.includes("--selftest")) await selftest();
 else main();
