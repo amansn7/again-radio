@@ -35,7 +35,7 @@ JSONs with verified offsets; rotation loops on ENDED.
 - [x] crossfade on track change, zero layout shift
 
 Shipped: `src/lib/memories.ts` composes each line from three inputs — the name in the title,
-the album's date range as a mono stamp, and 37 original curated lines (plus four
+the album's date range as a mono stamp, and 36 original curated lines (plus four
 deterministic, honest fallbacks for the rest; no interview or press prose, no invented
 anecdotes). `<memory-card>` renders it as a caption card: mono micro-label, the name in
 the display face, the line in the serif, the stamp bottom-right. Interlude entries render
