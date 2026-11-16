@@ -33,6 +33,7 @@ export async function resolveArtUrl(entry: ProgramEntry): Promise<string | null>
   const terms: { term: string; entity: "album" | "song" }[] = [];
   if (entry.title) terms.push({ term: `${artist} ${entry.title}`, entity: "song" });
   if (entry.album) terms.push({ term: `${artist} ${entry.album}`, entity: "album" });
+  terms.push({ term: artist, entity: "album" });
 
   for (const { term, entity } of terms) {
     const art = await searchArt(term, entity);

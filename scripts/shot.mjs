@@ -37,7 +37,7 @@ if (theme) {
   }, theme);
 }
 await page.goto(url, { waitUntil: "networkidle" });
-await page.waitForTimeout(900);
+await page.waitForTimeout(4000);
 await page.screenshot({ path: out });
 await browser.close();
 console.log(out);

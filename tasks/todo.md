@@ -35,10 +35,16 @@ JSONs with verified offsets; rotation loops on ENDED.
 - [ ] crossfade on track change, zero layout shift
 
 ## Phase 4 — Canvas + themes
-- [ ] `src/canvas/field.ts` — gradient mesh sampled from cover art, drifting
-- [ ] beat clock at entry bpm (no PCM access from YouTube — this is the honest substitute)
-- [ ] auto theme shuffle per hour block, seeded by date+hour, crossfade
-- [ ] prefers-reduced-motion respected, pause when tab hidden
+- [x] `src/canvas/field.ts` — gradient mesh sampled from cover art, drifting
+- [x] beat clock at entry bpm (no PCM access from YouTube — this is the honest substitute)
+- [x] auto theme shuffle per hour block, seeded by date+hour, crossfade
+- [x] prefers-reduced-motion respected, pause when tab hidden
+
+Shipped: `startField(canvas)` paints a drifting 5-blob gradient mesh from the track's
+hotlinked artwork, mixed 45% toward the theme ground; a beat pulse locked to playback time
+at the entry's published BPM (18 entries carry a corroborated tempo); one rAF loop that
+stops on a hidden tab and paints a single static frame under `prefers-reduced-motion`.
+The auto theme already shuffles by date+hour and crossfades.
 
 ## Phase 5 — USB002 + archive
 - [ ] `programs/usb002-every-show.json` from the 21 show chapters

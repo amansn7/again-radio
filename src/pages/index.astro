@@ -4,6 +4,7 @@ import HourStrip from "../components/HourStrip.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import Player from "../components/Player.astro";
 import NowPlaying from "../components/NowPlaying.astro";
+import MemoryCard from "../components/MemoryCard.astro";
 ---
 
 <!doctype html>
@@ -35,19 +36,23 @@ import NowPlaying from "../components/NowPlaying.astro";
 
         <section
           aria-label="Stage"
-          class="flex-1 min-w-0 flex flex-col justify-center
+          class="relative flex-1 min-w-0 flex flex-col justify-center
                  border-b lg:border-b-0 lg:border-r border-[var(--line)]
                  px-5 py-8 lg:px-10 lg:py-10"
         >
-          <Player />
+          <canvas id="field" class="absolute inset-0 h-full w-full" aria-hidden="true"></canvas>
+          <div class="relative z-10">
+            <Player />
+          </div>
         </section>
 
         <aside
           aria-label="Now playing"
-          class="w-full lg:w-[360px] shrink-0 flex flex-col
+          class="w-full lg:w-[360px] shrink-0 flex flex-col gap-5
                  border-b lg:border-b-0 border-[var(--line)] px-5 py-6"
         >
           <NowPlaying />
+          <MemoryCard />
         </aside>
 
       </div>
@@ -63,6 +68,7 @@ import NowPlaying from "../components/NowPlaying.astro";
 
     <script>
       import { loadStation } from "../lib/station.ts";
+      import { startField } from "../canvas/field.ts";
 
       function applyHour(): void {
         const hour = new Date().getHours();
@@ -86,6 +92,9 @@ import NowPlaying from "../components/NowPlaying.astro";
 
       bootstrap();
       setInterval(applyHour, 60_000);
+
+      const field = document.querySelector<HTMLCanvasElement>("#field");
+      if (field) startField(field);
     </script>
   </body>
 </html>

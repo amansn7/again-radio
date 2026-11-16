@@ -7,16 +7,96 @@
   "duration": 6128,
   "source": "dancefloor.fm timestamps",
   "entries": [
-    { "offset": 184, "duration": 471, "type": "track", "title": "wya", "artist": "Fred again..", "album": "ten days" },
-    { "offset": 655, "duration": 95, "type": "track", "title": ".one", "artist": "Fred again..", "album": "ten days" },
-    { "offset": 750, "duration": 304, "type": "track", "title": "adore u", "artist": "Fred again.., Obongjayar", "album": "ten days" },
-    { "offset": 1054, "duration": 388, "type": "track", "title": "Roze (forgive)", "artist": "Fred again.., I Am Roze", "album": "ten days" },
-    { "offset": 1442, "duration": 699, "type": "track", "title": "No Love", "artist": "Summer Walker, SZA", "album": "Over It" },
-    { "offset": 2141, "duration": 189, "type": "track", "title": "little mystery", "artist": "Fred again.., John Martyn", "album": "ten days" },
-    { "offset": 2330, "duration": 590, "type": "track", "title": "Hannah (the sun)", "artist": "Fred again..", "album": "ten days" },
-    { "offset": 2920, "duration": 1793, "type": "track", "title": "fear less", "artist": "Fred again.., Sampha", "album": "ten days" },
-    { "offset": 4713, "duration": 842, "type": "track", "title": "Weak Become Heroes", "artist": "The Streets", "album": "The Streets" },
-    { "offset": 5555, "duration": 339, "type": "track", "title": "Twilight", "artist": "Durham Diva" },
-    { "offset": 5894, "duration": 234, "type": "track", "title": "places to be", "artist": "Fred again.., Anderson .Paak, CHIKA", "album": "ten days" }
+    {
+      "offset": 184,
+      "duration": 471,
+      "type": "track",
+      "title": "wya",
+      "artist": "Fred again..",
+      "album": "ten days"
+    },
+    {
+      "offset": 655,
+      "duration": 95,
+      "type": "track",
+      "title": ".one",
+      "artist": "Fred again..",
+      "album": "ten days",
+      "bpm": 118
+    },
+    {
+      "offset": 750,
+      "duration": 304,
+      "type": "track",
+      "title": "adore u",
+      "artist": "Fred again.., Obongjayar",
+      "album": "ten days"
+    },
+    {
+      "offset": 1054,
+      "duration": 388,
+      "type": "track",
+      "title": "Roze (forgive)",
+      "artist": "Fred again.., I Am Roze",
+      "album": "ten days",
+      "bpm": 130
+    },
+    {
+      "offset": 1442,
+      "duration": 699,
+      "type": "track",
+      "title": "No Love",
+      "artist": "Summer Walker, SZA",
+      "album": "Over It"
+    },
+    {
+      "offset": 2141,
+      "duration": 189,
+      "type": "track",
+      "title": "little mystery",
+      "artist": "Fred again.., John Martyn",
+      "album": "ten days",
+      "bpm": 120
+    },
+    {
+      "offset": 2330,
+      "duration": 590,
+      "type": "track",
+      "title": "Hannah (the sun)",
+      "artist": "Fred again..",
+      "album": "ten days"
+    },
+    {
+      "offset": 2920,
+      "duration": 1793,
+      "type": "track",
+      "title": "fear less",
+      "artist": "Fred again.., Sampha",
+      "album": "ten days",
+      "bpm": 112
+    },
+    {
+      "offset": 4713,
+      "duration": 842,
+      "type": "track",
+      "title": "Weak Become Heroes",
+      "artist": "The Streets",
+      "album": "The Streets"
+    },
+    {
+      "offset": 5555,
+      "duration": 339,
+      "type": "track",
+      "title": "Twilight",
+      "artist": "Durham Diva"
+    },
+    {
+      "offset": 5894,
+      "duration": 234,
+      "type": "track",
+      "title": "places to be",
+      "artist": "Fred again.., Anderson .Paak, CHIKA",
+      "album": "ten days"
+    }
   ]
 }

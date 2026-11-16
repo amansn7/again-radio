@@ -45,7 +45,7 @@ const { ...attrs } = Astro.props;
   .np-fields { transition: opacity 200ms ease; opacity: 0; }
   .np-fields.is-live { opacity: 1; }
 
-  .np-title-wrap { min-height: 4rem; display: flex; align-items: flex-start; }
+  .np-title-wrap { min-height: 3.4rem; display: flex; align-items: flex-start; }
   .np-title {
     font-family: var(--font-display); font-size: 1.375rem; font-weight: 700;
     letter-spacing: -0.02em; line-height: 1.2; color: var(--fg); word-break: break-word;
@@ -72,14 +72,6 @@ const { ...attrs } = Astro.props;
     text-transform: uppercase; color: var(--fg-dim);
   }
 
-  .np-memory-slot {
-    margin-top: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius);
-    min-height: 4rem; display: flex; align-items: center; justify-content: center;
-  }
-  .np-memory-label {
-    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--fg-dim); opacity: 0.5;
-  }
 </style>
 
 <script>
@@ -101,6 +93,18 @@ const { ...attrs } = Astro.props;
     const m = Math.floor(secs / 60);
     const s = Math.floor(secs % 60);
     return `${m}:${s.toString().padStart(2, "0")}`;
+  }
+
+  function albumName(album: string | undefined): string {
+    return (album ?? "").replace(/\s*\([^)]*\)\s*/, " ").trim();
+  }
+
+  function formatDay(iso: string | undefined): string {
+    if (!iso) return "";
+    const d = new Date(`${iso}T00:00:00`);
+    if (Number.isNaN(d.getTime())) return iso;
+    const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
   }
 
   function initials(title: string | undefined): string {
@@ -147,7 +151,7 @@ const { ...attrs } = Astro.props;
             </div>
           </div>
         </div>
-        <div class="np-memory-slot"><span class="np-memory-label">memory</span></div>
+      </div>
       `;
 
       this.artworkBox = this.querySelector(".np-artwork-box") as HTMLElement;
@@ -186,14 +190,14 @@ const { ...attrs } = Astro.props;
       this.artistEl.textContent = entry.artist ?? "";
 
       if (entry.album) {
-        this.albumEl.textContent = entry.album;
+        this.albumEl.textContent = albumName(entry.album);
         this.albumWrap.style.visibility = "visible";
       } else {
         this.albumEl.textContent = "";
         this.albumWrap.style.visibility = "hidden";
       }
 
-      const parts = [venue, date].filter(Boolean);
+      const parts = [venue, formatDay(date)].filter(Boolean);
       this.programmeEl.textContent = parts.join(" · ");
       this.stateDot.textContent = this.playing ? "●" : "○";
 
