@@ -1,6 +1,7 @@
 # Project instructions — AGAIN RADIO
 
-Read `docs/SPEC.md` before touching anything. It is the contract.
+Read `STATUS.md` first for current state, open work and traps. Read `docs/SPEC.md` before
+touching anything. It is the contract.
 
 ## How to work here
 
