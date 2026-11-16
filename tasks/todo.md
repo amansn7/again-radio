@@ -29,10 +29,18 @@ entries; `src/lib/art.ts` hotlinks Cover Art Archive / iTunes (never stored). Th
 JSONs with verified offsets; rotation loops on ENDED.
 
 ## Phase 3 — Memory layer
-- [ ] `MemoryCard.astro` — phone-photo treatment, serif caption, mono date stamp
-- [ ] `src/lib/memories.ts` — curated lines for ~25 tracks + generated fallback
-- [ ] interlude idents (station voice between tracks)
-- [ ] crossfade on track change, zero layout shift
+- [x] `MemoryCard.astro` — phone-photo treatment, serif caption, mono date stamp
+- [x] `src/lib/memories.ts` — curated lines for ~25 tracks + generated fallback
+- [x] interlude idents (station voice between tracks)
+- [x] crossfade on track change, zero layout shift
+
+Shipped: `src/lib/memories.ts` composes each line from three inputs — the name in the title,
+the album's date range as a mono stamp, and 37 original curated lines (plus four
+deterministic, honest fallbacks for the rest; no interview or press prose, no invented
+anecdotes). `<memory-card>` renders it as a caption card: mono micro-label, the name in
+the display face, the line in the serif, the stamp bottom-right. Interlude entries render
+the `AGAIN RADIO` ident instead; `id` entries render as unreleased. The caption
+crossfades over 200 ms and every box is height-reserved so a track change moves nothing.
 
 ## Phase 4 — Canvas + themes
 - [x] `src/canvas/field.ts` — gradient mesh sampled from cover art, drifting
