@@ -65,6 +65,12 @@ from the source. `<archive-rail>` renders the 2019→2026 catalogue, a horizonta
 show rail that cues the player at the right chapter via `radio:cue`, and a live India
 tour countdown. `public/data/albums.json` holds the release timeline and the tour dates.
 
+## Design pass
+- [x] self-hosted Instrument Sans / Instrument Serif (`public/fonts`, preloaded)
+- [x] field: deepen artwork palette toward night, additive glow, 2.4s palette crossfade
+- [x] stage atmosphere: radial vignette into `--bg`, grain overlay
+- [x] transport switches to on-media colours; no theme contrast failures
+
 ## Deferred — needs a human
 - [ ] own 24/7 YouTube live channel (cleared audio, VPS, ffmpeg, systemd)
 - [ ] Cloudflare Pages deploy
