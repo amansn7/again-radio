@@ -1,0 +1,163 @@
+---
+---
+<archive></archive>
+
+<style is:global>
+  archive { display: block; width: 100%; border-top: 1px solid var(--line); }
+  .ar-root { display: flex; flex-direction: column; }
+
+  .ar-rail {
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    display: flex; gap: 0; min-height: 320px; outline: none;
+  }
+  .ar-rail:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  @media (prefers-reduced-motion: reduce) { .ar-rail { scroll-behavior: auto; } }
+
+  .ar-year {
+    flex: 0 0 160px; min-width: 160px; scroll-snap-align: start;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; padding: 0;
+  }
+  .ar-year:last-child { border-right: 0; }
+
+  .ar-year-label {
+    font-family: var(--font-mono); font-size: 0.625rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-dim);
+    padding: 6px 10px 5px; border-bottom: 1px solid var(--line); background: var(--bg-2);
+  }
+  .ar-releases { display: flex; flex-direction: column; gap: 0; padding: 8px 10px; flex: 1; }
+
+  .ar-release { margin-bottom: 10px; }
+  .ar-release-title {
+    font-family: var(--font-display); font-size: 0.8125rem; font-weight: 600;
+    color: var(--fg); line-height: 1.25; display: block;
+  }
+  .ar-release-sub {
+    font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--fg-dim); display: block; margin-top: 2px;
+  }
+
+  .ar-usb-label {
+    font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+    padding: 6px 10px 4px; border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line); background: var(--bg-2); margin-top: auto;
+  }
+  .ar-shows { display: flex; flex-direction: column; gap: 0; }
+
+  .ar-show-btn {
+    background: none; border: none; border-bottom: 1px solid var(--line);
+    cursor: pointer; text-align: left; padding: 7px 10px;
+    display: flex; flex-direction: column; gap: 2px; width: 100%; color: inherit;
+  }
+  .ar-show-btn:hover { background: var(--bg-2); }
+  .ar-show-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  .ar-show-city {
+    font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+    color: var(--fg); text-transform: uppercase; line-height: 1.1;
+  }
+  .ar-show-guest { font-family: var(--font-body); font-size: 0.6rem; color: var(--fg-dim); line-height: 1.3; }
+  .ar-show-ts { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.08em; color: var(--fg-dim); margin-top: 1px; }
+
+  .ar-countdown {
+    border-top: 1px solid var(--line); padding: 10px 16px;
+    display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap;
+    min-height: 44px; background: var(--bg-2);
+  }
+  .ar-on-tour {
+    font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); flex-shrink: 0;
+  }
+  .ar-cities { display: flex; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+  .ar-city-item {
+    font-family: var(--font-mono); font-size: 0.6875rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-dim);
+  }
+  .ar-city-item.is-next { color: var(--fg); }
+  .ar-timer {
+    font-family: var(--font-mono); font-size: 0.6875rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-dim); margin-left: auto;
+  }
+  .ar-timer-val { color: var(--fg); }
+</style>
+
+<script>
+  import {
+    parseAlbumsData, parseProgramData,
+    buildRailHtml, buildCountdownHtml,
+    msUntil, fmtCountdown,
+  } from "./archive-rail.ts";
+  import type { TourDate } from "./archive-rail.ts";
+
+  class ArchiveElement extends HTMLElement {
+    private _timerInterval: ReturnType<typeof setInterval> | null = null;
+    private _tourDates: TourDate[] = [];
+
+    async connectedCallback(): Promise<void> {
+      this.innerHTML =
+        `<div class="ar-root">` +
+        `<div class="ar-rail" tabindex="0" aria-label="Catalogue, 2019 to 2026" role="region"></div>` +
+        `<div class="ar-countdown"></div>` +
+        `</div>`;
+
+      const rail = this.querySelector<HTMLElement>(".ar-rail")!;
+      rail.addEventListener("keydown", (e: KeyboardEvent) => this._onKey(e));
+
+      const [albumsRes, programRes] = await Promise.allSettled([
+        fetch("/data/albums.json").then(r => r.json() as Promise<unknown>),
+        fetch("/data/programs/usb002-every-show.json").then(r => r.json() as Promise<unknown>),
+      ]);
+
+      const albumsData = albumsRes.status === "fulfilled" ? parseAlbumsData(albumsRes.value) : { albums: [], tour: [] };
+      const programData = programRes.status === "fulfilled" ? parseProgramData(programRes.value) : { entries: [] };
+
+      this._tourDates = albumsData.tour;
+      rail.innerHTML = buildRailHtml(albumsData.albums, programData.entries);
+
+      rail.querySelectorAll<HTMLButtonElement>(".ar-show-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const offset = parseInt(btn.dataset.offset ?? "0", 10);
+          document.dispatchEvent(new CustomEvent("radio:cue", {
+            detail: { program: "programs/usb002-every-show.json", offset }
+          }));
+        });
+      });
+
+      const countdown = this.querySelector<HTMLElement>(".ar-countdown")!;
+      countdown.innerHTML = buildCountdownHtml(albumsData.tour);
+      this._startTimer(countdown);
+    }
+
+    disconnectedCallback(): void {
+      if (this._timerInterval !== null) { clearInterval(this._timerInterval); this._timerInterval = null; }
+    }
+
+    private _startTimer(countdown: HTMLElement): void {
+      this._timerInterval = setInterval(() => {
+        const timer = countdown.querySelector<HTMLElement>(".ar-timer");
+        if (!timer) return;
+        const nextDate = this._tourDates.find(t => msUntil(t.date) > 0);
+        if (!nextDate) {
+          timer.textContent = "TOUR COMPLETE";
+          if (this._timerInterval !== null) { clearInterval(this._timerInterval); this._timerInterval = null; }
+          return;
+        }
+        const val = timer.querySelector(".ar-timer-val");
+        if (val) val.textContent = fmtCountdown(msUntil(nextDate.date));
+      }, 60_000);
+    }
+
+    private _onKey(e: KeyboardEvent): void {
+      const rail = this.querySelector<HTMLElement>(".ar-rail")!;
+      const col = this.querySelector<HTMLElement>(".ar-year");
+      if (!col) return;
+      const colW = col.offsetWidth;
+      if (e.key === "ArrowRight") { e.preventDefault(); rail.scrollBy({ left: colW }); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); rail.scrollBy({ left: -colW }); }
+    }
+  }
+
+  if (!customElements.get("archive")) customElements.define("archive", ArchiveElement);
+</script>
