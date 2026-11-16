@@ -19,6 +19,8 @@ type Colour = [number, number, number];
 const BLOB_COUNT = 5;
 const OFFSCREEN_SCALE = 1 / 6;
 const MAX_DPR = 2;
+const NIGHT: Colour = [10, 9, 12];
+const FADE_MS = 2400;
 
 function readThemePalette(): Colour[] {
   const s = getComputedStyle(document.documentElement);
@@ -26,9 +28,8 @@ function readThemePalette(): Colour[] {
   return vars.map((v) => cssVarToRgb(s.getPropertyValue(v).trim()));
 }
 
-function readThemeBg(): Colour {
-  const s = getComputedStyle(document.documentElement);
-  return cssVarToRgb(s.getPropertyValue("--bg").trim());
+function depth(c: Colour, amount = 0.5): Colour {
+  return mix(c, NIGHT, amount);
 }
 
 function mix(a: Colour, b: Colour, t: number): Colour {
@@ -37,12 +38,6 @@ function mix(a: Colour, b: Colour, t: number): Colour {
     Math.round(a[1] * (1 - t) + b[1] * t),
     Math.round(a[2] * (1 - t) + b[2] * t),
   ];
-}
-
-/** Pull the artwork colours toward the theme's ground so the field belongs to the theme. */
-function ground(colors: Colour[]): Colour[] {
-  const bg = readThemeBg();
-  return colors.map((c) => mix(c, bg, 0.45));
 }
 
 function cssVarToRgb(val: string): Colour {
@@ -119,8 +114,10 @@ function ensureFive(raw: Colour[], fallback: Colour[]): Colour[] {
 }
 
 export function startField(canvas: HTMLCanvasElement): () => void {
-  let palette: Colour[] = ground(ensureFive([], readThemePalette()));
-  let sortedPalette: Colour[] = sortByLuminance(palette);
+  let palette: Colour[] = ensureFive([], readThemePalette());
+  let prevPalette: Colour[] | null = null;
+  let nextPalette: Colour[] | null = null;
+  let fadeStart = 0;
   let currentEntry: ProgramEntry | null = null;
   let currentTime = 0;
   let rafId = 0;
@@ -129,10 +126,33 @@ export function startField(canvas: HTMLCanvasElement): () => void {
   let running = true;
   const ctx2 = canvas.getContext("2d");
 
-  const setPalette = (next: Colour[]): void => {
-    palette = next;
-    sortedPalette = sortByLuminance(palette);
+  const setPalette = (next: Colour[], now = performance.now()): void => {
+    if (reducedMotion) {
+      palette = next;
+      prevPalette = null;
+      nextPalette = null;
+      return;
+    }
+    if (prevPalette && nextPalette) {
+      palette = visiblePalette(now);
+    }
+    prevPalette = palette;
+    nextPalette = next;
+    fadeStart = now;
   };
+
+  function visiblePalette(now: number): Colour[] {
+    if (!prevPalette || !nextPalette) return palette;
+    const k = Math.max(0, Math.min(1, (now - fadeStart) / FADE_MS));
+    if (k >= 1) {
+      palette = nextPalette;
+      prevPalette = null;
+      nextPalette = null;
+      return palette;
+    }
+    const e = k * k * (3 - 2 * k);
+    return nextPalette.map((c, i) => mix(prevPalette![i], c, e));
+  }
 
   const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let reducedMotion = motionQuery.matches;
@@ -158,7 +178,7 @@ export function startField(canvas: HTMLCanvasElement): () => void {
   buildOffscreen();
 
   function refreshTheme() {
-    if (!currentEntry) setPalette(ground(ensureFive([], readThemePalette())));
+    if (!currentEntry) setPalette(ensureFive([], readThemePalette()));
   }
 
   const themeObserver = new MutationObserver(refreshTheme);
@@ -167,13 +187,13 @@ export function startField(canvas: HTMLCanvasElement): () => void {
   function drawFrame(t: number) {
     if (!offscreen || !offCtx || !ctx2) return;
     const ow = offscreen.width, oh = offscreen.height;
-    const sorted = sortedPalette;
-    const base = sorted[0];
+    const sorted = sortByLuminance(visiblePalette(t));
+    const base = depth(sorted[0], 0.55);
 
     offCtx.fillStyle = `rgb(${base[0]},${base[1]},${base[2]})`;
     offCtx.fillRect(0, 0, ow, oh);
 
-    const breath = 0.55 + 0.45 * Math.sin((t / 7000) * Math.PI * 2);
+    const breath = 0.5 + 0.5 * Math.sin((t / 11000) * Math.PI * 2);
 
     let beatPulse = 0;
     if (currentEntry?.bpm) {
@@ -183,25 +203,29 @@ export function startField(canvas: HTMLCanvasElement): () => void {
       beatPulse = Math.exp(-6 * beatPhase);
     }
 
-    const alpha = Math.min(1, breath + beatPulse * 0.35);
+    const glow = 0.07 + 0.06 * breath + beatPulse * 0.05;
 
-    const periods = [11300, 17700, 23100, 13900, 19500];
+    const periods = [21300, 28700, 25100, 31900, 23500];
     const phases = [0, 0.6, 1.2, 1.8, 2.5];
+
+    offCtx.globalCompositeOperation = "lighter";
 
     for (let i = 0; i < BLOB_COUNT; i++) {
       const c = sorted[i] ?? sorted[0];
       const per = periods[i];
       const ph = phases[i];
-      const cx = ow * (0.2 + 0.6 * (0.5 + 0.5 * Math.sin(t / per + ph)));
-      const cy = oh * (0.2 + 0.6 * (0.5 + 0.5 * Math.cos(t / (per * 0.73) + ph)));
-      const r = Math.min(ow, oh) * (0.45 + 0.1 * Math.sin(t / 9000 + i));
+      const cx = ow * (0.12 + 0.76 * (0.5 + 0.5 * Math.sin(t / per + ph)));
+      const cy = oh * (0.15 + 0.7 * (0.5 + 0.5 * Math.cos(t / (per * 0.8) + ph)));
+      const r = Math.min(ow, oh) * (0.6 + 0.15 * Math.sin(t / 13000 + i));
 
       const grad = offCtx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      grad.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${(alpha * 0.55).toFixed(3)})`);
+      grad.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${glow.toFixed(3)})`);
       grad.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
       offCtx.fillStyle = grad;
       offCtx.fillRect(0, 0, ow, oh);
     }
+
+    offCtx.globalCompositeOperation = "source-over";
 
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
     ctx2.imageSmoothingEnabled = true;
@@ -252,7 +276,7 @@ export function startField(canvas: HTMLCanvasElement): () => void {
     currentEntry = ev.detail.entry;
     refreshTheme();
     paletteFromEntry(currentEntry).then((p) => {
-      setPalette(ground(ensureFive(p ?? [], readThemePalette())));
+      setPalette(ensureFive(p ?? [], readThemePalette()));
       if (reducedMotion) drawStatic();
     });
   }) as EventListener);

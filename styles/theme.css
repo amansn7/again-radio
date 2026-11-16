@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("/fonts/instrument-sans-var.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/instrument-serif.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/instrument-serif-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root,
 html[data-theme="diary"] {
   --bg: #f5f0e8;
@@ -11,9 +35,9 @@ html[data-theme="diary"] {
   --accent-2: #d4824a;
   --card: #ede7d9;
   --card-fg: #1a1410;
-  --font-display: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
-  --font-body: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: "Instrument Sans", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Instrument Sans", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --radius: 3px;
 }
@@ -28,9 +52,9 @@ html[data-theme="sleek"] {
   --accent-2: #3b8bfc;
   --card: #16161f;
   --card-fg: #e8e8f0;
-  --font-display: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
-  --font-body: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: "Instrument Sans", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Instrument Sans", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --radius: 2px;
 }
@@ -94,6 +118,32 @@ body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fg-dim);
+}
+
+.stage-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.stage-atmosphere::before,
+.stage-atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.stage-atmosphere::before {
+  background:
+    linear-gradient(to bottom, transparent 94%, var(--bg) 100%),
+    radial-gradient(135% 110% at 50% 42%, transparent 34%, var(--bg) 96%);
+}
+
+.stage-atmosphere::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.3;
+  mix-blend-mode: overlay;
 }
 
 .rule {
