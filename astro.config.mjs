@@ -3,6 +3,6 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   vite: { plugins: [tailwindcss()] },
-  server: { port: 4321 },
+  server: { port: 4321, allowedHosts: [".trycloudflare.com"] },
   preview: { port: 4321 },
 });

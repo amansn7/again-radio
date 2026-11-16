@@ -24,72 +24,149 @@
   font-display: swap;
 }
 
-:root,
-html[data-theme="diary"] {
-  --bg: #f5f0e8;
-  --bg-2: #ede7d9;
-  --fg: #1a1410;
-  --fg-dim: #6b5d4f;
-  --line: #c8b89a;
-  --accent: #b5451b;
-  --accent-2: #d4824a;
-  --card: #ede7d9;
-  --card-fg: #1a1410;
-  --font-display: "Instrument Sans", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+/* Art colours are written at runtime by the fabric; registering them lets the whole page crossfade. */
+@property --art-1 { syntax: "<color>"; inherits: true; initial-value: #34405c; }
+@property --art-2 { syntax: "<color>"; inherits: true; initial-value: #5d4a63; }
+@property --art-3 { syntax: "<color>"; inherits: true; initial-value: #283041; }
+@property --art-accent { syntax: "<color>"; inherits: true; initial-value: #c9a86a; }
+
+:root {
   --font-body: "Instrument Sans", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
   --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-  --radius: 3px;
+  --font-display: var(--font-name);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 180ms;
+  --dur-2: 420ms;
+  --dur-3: 1200ms;
+
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --maxw: 1440px;
 }
 
-html[data-theme="sleek"] {
-  --bg: #0d0d12;
-  --bg-2: #16161f;
-  --fg: #e8e8f0;
-  --fg-dim: #7070a0;
-  --line: #2a2a3a;
-  --accent: #7c5cfc;
-  --accent-2: #3b8bfc;
-  --card: #16161f;
-  --card-fg: #e8e8f0;
-  --font-display: "Instrument Sans", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Instrument Sans", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-  --radius: 2px;
+/* Diary: the fragment. A photograph's back, a notebook page, ink. */
+:root,
+:root[data-theme="diary"] {
+  --bg: color-mix(in oklab, var(--art-1) 9%, #f2eee6);
+  --bg-2: color-mix(in oklab, var(--art-1) 15%, #e8e2d6);
+  --fg: color-mix(in oklab, var(--art-1) 16%, #1c1815);
+  --fg-dim: color-mix(in oklab, var(--fg) 66%, var(--bg));
+  --fg-faint: color-mix(in oklab, var(--fg) 32%, var(--bg));
+  --line: color-mix(in oklab, var(--fg) 14%, transparent);
+  --accent: color-mix(in oklab, var(--art-accent) 58%, #2b1b10);
+  --accent-2: color-mix(in oklab, var(--art-2) 60%, #2b1b10);
+  --on-accent: #f7f3ec;
+  --card: color-mix(in oklab, var(--bg) 60%, #fffdf8);
+  --card-fg: var(--fg);
+  --stamp: #e0521e;
+
+  --font-name: var(--font-serif);
+  --name-weight: 400;
+  --name-tracking: -0.012em;
+
+  --radius: 4px;
+  --frame-pad: 12px;
+  --frame-pad-bottom: 46px;
+  --frame-radius: 2px;
+  --frame-shadow:
+    0 1px 2px color-mix(in oklab, var(--fg) 12%, transparent),
+    0 24px 48px -22px color-mix(in oklab, var(--art-1) 55%, transparent);
+  --grain-opacity: 0.32;
+  --grain-blend: multiply;
+}
+
+/* Rave: the room. The art deepened to near black, light on a crowd. */
+:root[data-theme="sleek"] {
+  --bg: color-mix(in oklab, var(--art-1) 13%, #0e0d0c);
+  --bg-2: color-mix(in oklab, var(--art-1) 20%, #171513);
+  --fg: #f1ece4;
+  --fg-dim: color-mix(in oklab, var(--fg) 62%, var(--bg));
+  --fg-faint: color-mix(in oklab, var(--fg) 30%, var(--bg));
+  --line: color-mix(in oklab, var(--fg) 12%, transparent);
+  --accent: color-mix(in oklab, var(--art-accent) 76%, #ffffff);
+  --accent-2: color-mix(in oklab, var(--art-2) 70%, #ffffff);
+  --on-accent: #121110;
+  --card: color-mix(in oklab, var(--fg) 6%, transparent);
+  --card-fg: var(--fg);
+  --stamp: var(--fg-dim);
+
+  --font-name: var(--font-body);
+  --name-weight: 600;
+  --name-tracking: -0.035em;
+
+  --radius: 10px;
+  --frame-pad: 0px;
+  --frame-pad-bottom: 0px;
+  --frame-radius: 16px;
+  --frame-shadow:
+    0 0 0 1px color-mix(in oklab, var(--fg) 9%, transparent),
+    0 40px 120px -24px color-mix(in oklab, var(--art-accent) 42%, transparent);
+  --grain-opacity: 0.16;
+  --grain-blend: overlay;
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--fg);
+  transition:
+    --art-1 2.4s var(--ease-in-out),
+    --art-2 2.4s var(--ease-in-out),
+    --art-3 2.4s var(--ease-in-out),
+    --art-accent 2.4s var(--ease-in-out);
 }
 
 html.theme-live {
-  transition: background-color 500ms ease, color 500ms ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html.theme-live {
-    transition: none;
-  }
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+  transition:
+    --art-1 2.4s var(--ease-in-out),
+    --art-2 2.4s var(--ease-in-out),
+    --art-3 2.4s var(--ease-in-out),
+    --art-accent 2.4s var(--ease-in-out),
+    background-color 600ms var(--ease-in-out),
+    color 600ms var(--ease-in-out);
 }
 
 body {
-  background-color: var(--bg);
+  background: transparent;
   color: var(--fg);
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Grain lives on a fixed layer so scrolling never repaints it. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+}
+
+:root[data-theme="sleek"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 35%, transparent 45%, color-mix(in oklab, var(--bg) 85%, #000) 100%);
 }
 
 ::selection {
   background-color: var(--accent);
-  color: var(--bg);
+  color: var(--on-accent);
 }
 
 :focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
   border-radius: var(--radius);
 }
 
@@ -98,56 +175,221 @@ body {
   scrollbar-color: var(--line) transparent;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--line);
-  border-radius: 3px;
-}
-
-.stamp {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-dim);
-}
-
-.stage-atmosphere {
-  position: absolute;
+#field {
+  position: fixed;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
   pointer-events: none;
 }
 
-.stage-atmosphere::before,
-.stage-atmosphere::after {
+.layer {
+  position: relative;
+  z-index: 2;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Below the fold sits on solid paper / solid dark so the fabric only lives behind the hero. */
+.sheet {
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
+}
+
+.sheet::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -120px 0 auto 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  pointer-events: none;
 }
 
-.stage-atmosphere::before {
-  background:
-    linear-gradient(to bottom, transparent 94%, var(--bg) 100%),
-    radial-gradient(135% 110% at 50% 42%, transparent 34%, var(--bg) 96%);
+.num {
+  font-variant-numeric: tabular-nums;
 }
 
-.stage-atmosphere::after {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-  opacity: 0.3;
-  mix-blend-mode: overlay;
+.meta {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--fg-dim);
 }
 
-.rule {
-  border: 0;
-  border-top: 1px solid var(--line);
-  margin: 0;
+.section-title {
+  font-family: var(--font-name);
+  font-weight: var(--name-weight);
+  letter-spacing: var(--name-tracking);
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  line-height: 1.05;
+  color: var(--fg);
+}
+
+/* Camera date stamp: the one place mono is used. */
+.stamp {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  color: var(--stamp);
+  font-variant-numeric: tabular-nums;
+}
+
+:root[data-theme="diary"] .stamp {
+  text-shadow: 0 0 6px color-mix(in oklab, var(--stamp) 45%, transparent);
+}
+
+.btn,
+.btn-primary,
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font: 500 0.9375rem/1 var(--font-body);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    transform var(--dur-1) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out);
+}
+
+.btn {
+  height: 2.5rem;
+  padding: 0 1.1rem;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--line);
+}
+
+.btn:hover {
+  border-color: color-mix(in oklab, var(--fg) 35%, transparent);
+}
+
+.btn-primary {
+  height: 2.75rem;
+  padding: 0 1.4rem;
+  color: var(--on-accent);
+  background: var(--accent);
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+  background: color-mix(in oklab, var(--accent) 88%, var(--fg));
+}
+
+.icon-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--fg);
+  background: color-mix(in oklab, var(--fg) 6%, transparent);
+  border: 1px solid var(--line);
+}
+
+.icon-btn:hover {
+  background: color-mix(in oklab, var(--fg) 12%, transparent);
+}
+
+.btn:active,
+.btn-primary:active,
+.icon-btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled,
+.btn-primary:disabled,
+.icon-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+}
+
+.icon-btn svg,
+.btn svg,
+.btn-primary svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.live-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: breathe 2.4s var(--ease-in-out) infinite;
+}
+
+.skeleton {
+  border-radius: var(--radius);
+  background: linear-gradient(
+    100deg,
+    color-mix(in oklab, var(--fg) 6%, transparent) 30%,
+    color-mix(in oklab, var(--fg) 12%, transparent) 50%,
+    color-mix(in oklab, var(--fg) 6%, transparent) 70%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.8s linear infinite;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.45; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: 0 0; }
+}
+
+/* Diary: the name develops like a print in the tray. */
+@keyframes develop {
+  from { opacity: 0; filter: blur(6px) sepia(0.8); }
+  to { opacity: 1; filter: blur(0) sepia(0); }
+}
+
+/* Rave: letters arrive like light hitting a wall. */
+@keyframes arrive {
+  from { opacity: 0; transform: translateY(0.35em); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Memory words: ink drying (diary) or a caption lighting up (rave). */
+@keyframes word-in {
+  from { opacity: 0; filter: blur(3px); }
+  to { opacity: 1; filter: blur(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  html.theme-live {
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

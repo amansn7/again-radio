@@ -154,7 +154,7 @@ function parseProgram(v: unknown, where: string): Program {
   return program;
 }
 
-async function fetchJson(url: string): Promise<unknown> {
+export async function fetchJson(url: string): Promise<unknown> {
   let res: Response;
   try {
     res = await fetch(url);

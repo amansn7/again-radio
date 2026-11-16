@@ -5,6 +5,10 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 import Player from "../components/Player.astro";
 import NowPlaying from "../components/NowPlaying.astro";
 import MemoryCard from "../components/MemoryCard.astro";
+import Tracklist from "../components/Tracklist.astro";
+import LiveStatus from "../components/LiveStatus.astro";
+import Search from "../components/Search.astro";
+import RunningOrder from "../components/RunningOrder.astro";
 import Archive from "../components/Archive.astro";
 ---
 
@@ -13,72 +17,110 @@ import Archive from "../components/Archive.astro";
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A 24-hour fan radio station for Fred again..'s catalogue. Fan project, not affiliated." />
-    <title>AGAIN RADIO</title>
+    <meta name="description" content="A 24-hour fan radio for Fred again..'s catalogue, where every track carries the memory it came from. Fan project, not affiliated." />
+    <meta name="theme-color" content="#1c1815" />
+    <title>Again Radio</title>
     <link rel="preload" href="/fonts/instrument-sans-var.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📻</text></svg>" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231c1815'/><path d='M6 19c3-6 5-6 7 0s4 6 6 0 4-6 7 0' fill='none' stroke='%23f2eee6' stroke-width='2.2' stroke-linecap='round'/></svg>" />
   </head>
-  <body class="min-h-screen flex flex-col text-[var(--fg)] bg-[var(--bg)]">
+  <body class="min-h-[100dvh] flex flex-col">
+    <canvas id="field" aria-hidden="true"></canvas>
 
-    <header class="flex items-center gap-4 px-5 py-3 border-b border-[var(--line)]">
-      <div class="flex items-baseline gap-3 min-w-0">
-        <span
-          class="text-xl font-black tracking-tight text-[var(--fg)] shrink-0"
-          style="font-family: var(--font-display);"
-        >AGAIN RADIO</span>
-        <span class="stamp hidden sm:block truncate">24 hours of a life in progress</span>
-      </div>
-      <div class="ml-auto shrink-0">
+    <header class="layer wrap topbar">
+      <a class="wordmark" href="/" aria-label="Again Radio, home">again radio</a>
+      <LiveStatus />
+      <div class="topbar-end">
+        <Search />
         <ThemeToggle data-blocks="[]" />
       </div>
     </header>
 
-    <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
-      <div class="flex flex-col lg:flex-row flex-1 min-w-0">
-
-        <section
-          aria-label="Stage"
-          class="relative flex-1 min-w-0 flex flex-col justify-center
-                 border-b lg:border-b-0 lg:border-r border-[var(--line)]
-                 px-5 py-8 lg:px-10 lg:py-10"
-        >
-          <canvas id="field" class="absolute inset-0 h-full w-full" aria-hidden="true"></canvas>
-          <div class="stage-atmosphere" aria-hidden="true"></div>
-          <div class="relative z-10">
-            <Player />
-          </div>
-        </section>
-
-        <aside
-          aria-label="Now playing"
-          class="w-full lg:w-[360px] shrink-0 flex flex-col gap-5
-                 border-b lg:border-b-0 border-[var(--line)] px-5 py-6"
-        >
+    <main class="flex-1 flex flex-col">
+      <section class="layer wrap hero" aria-label="On air">
+        <div class="hero-name">
           <NowPlaying />
           <MemoryCard />
-        </aside>
+        </div>
+        <div class="hero-media">
+          <Player />
+        </div>
+        <div class="hero-track">
+          <Tracklist />
+          <HourStrip data-blocks="[]" />
+        </div>
+      </section>
 
+      <div class="sheet">
+        <RunningOrder />
+        <Archive />
       </div>
-
-      <HourStrip data-blocks="[]" />
-      <Archive />
     </main>
 
-    <footer class="px-5 py-3 border-t border-[var(--line)]">
-      <p class="stamp">
+    <footer class="sheet">
+      <p class="wrap meta footer-line">
         Fan project. Not affiliated with Fred again.. All music &copy; its owners.
       </p>
     </footer>
+
+    <style>
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        min-height: 4rem;
+        padding-block: 0.75rem;
+      }
+      .wordmark {
+        font-family: var(--font-name);
+        font-weight: var(--name-weight);
+        letter-spacing: var(--name-tracking);
+        font-size: 1.375rem;
+        line-height: 1;
+        color: var(--fg);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .topbar-end {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "media" "name" "track";
+        gap: 2rem;
+        padding-block: 1rem 1.5rem;
+      }
+      .hero-name { grid-area: name; min-width: 0; display: flex; flex-direction: column; gap: 1.25rem; }
+      .hero-media { grid-area: media; min-width: 0; }
+      .hero-track { grid-area: track; min-width: 0; display: flex; flex-direction: column; gap: 1rem; }
+      @media (min-width: 1024px) {
+        .hero {
+          grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+          grid-template-areas: "name media" "track track";
+          column-gap: clamp(2.5rem, 5vw, 5rem);
+          row-gap: 2.5rem;
+          min-height: calc(100dvh - 4rem);
+          align-content: end;
+          padding-block: 2rem 1.75rem;
+        }
+        .hero-name { justify-content: flex-end; }
+        .hero-media { align-self: end; }
+      }
+      .footer-line { padding-block: 2.5rem; }
+    </style>
 
     <script>
       import { loadStation } from "../lib/station.ts";
       import { startField } from "../canvas/field.ts";
 
       function applyHour(): void {
-        const hour = new Date().getHours();
+        const hour = String(new Date().getHours());
         document.querySelectorAll<HTMLElement>("[data-hour]").forEach((el) => {
-          el.dataset.hour = String(hour);
+          el.dataset.hour = hour;
         });
       }
 
@@ -90,7 +132,7 @@ import Archive from "../components/Archive.astro";
             el.dataset.blocks = blocks;
           });
         } catch {
-          // leave components in their empty states
+          // components keep their own empty states
         }
         applyHour();
       }
