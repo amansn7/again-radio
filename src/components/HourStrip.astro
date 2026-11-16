@@ -46,6 +46,7 @@ const { ...attrs } = Astro.props;
   class HourStrip extends HTMLElement {
     static observedAttributes = ["data-blocks", "data-hour"];
     private _timer: ReturnType<typeof setInterval> | null = null;
+    private _hour = -1;
 
     connectedCallback(): void {
       this._render();
@@ -54,6 +55,7 @@ const { ...attrs } = Astro.props;
     disconnectedCallback(): void { if (this._timer !== null) { clearInterval(this._timer); this._timer = null; } }
     attributeChangedCallback(): void { this._render(); }
     private _tick(): void {
+      if (new Date().getHours() !== this._hour) { this._render(); return; }
       const el = this.querySelector(".hs-block-clock");
       if (el) el.textContent = clock();
     }
@@ -65,17 +67,17 @@ const { ...attrs } = Astro.props;
 
       if (!blocks.length) { this.innerHTML = `<div class="hs-empty">—</div>`; return; }
 
-      const current = blockForHour(blocks, hour);
-      const slices: { label: string; count: number }[] = [];
+      const slices: { label: string; from: number; count: number }[] = [];
       for (let h = 0; h < 24; h++) {
         const label = blockForHour(blocks, h).label;
         const last = slices[slices.length - 1];
-        if (last && last.label === label) last.count++;
-        else slices.push({ label, count: 1 });
+        if (last && last.label === label && last.from + last.count === h) last.count++;
+        else slices.push({ label, from: h, count: 1 });
       }
 
+      this._hour = hour;
       const blocksHtml = slices.map((s) => {
-        const isCurrent = s.label === current.label;
+        const isCurrent = hour >= s.from && hour < s.from + s.count;
         return `<div class="hs-block${isCurrent ? " is-current" : ""}" style="flex:${s.count}">${s.label}` +
           (isCurrent ? `<span class="hs-block-clock">${clock()}</span>` : "") + `</div>`;
       }).join("");
