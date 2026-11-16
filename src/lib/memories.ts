@@ -131,10 +131,10 @@ const CURATED: Record<string, string> = {
 };
 
 const FALLBACKS: string[] = [
-  "{venue}{sep}A name, an era, and a title. Nothing else about it was kept.",
-  "{venue}{sep}The name stayed. Everything else came from the date range.",
-  "{venue}{sep}Built from a title and a stretch of time. The rest is production.",
-  "{venue}{sep}No record of the room or the hour — only the title survived.",
+  "Played to the room at {where}. No story is written down for this one yet.",
+  "Heard live at {where}, by everyone in the room at once.",
+  "From the set at {where}. What it holds is whatever you bring to it.",
+  "One more voice carried into the room at {where}.",
 ];
 
 function hashTitle(title: string): number {
@@ -149,23 +149,15 @@ function formatDate(iso: string): string {
   const d = new Date(iso + "T00:00:00Z");
   const mon = MONTHS[d.getUTCMonth()];
   const year = d.getUTCFullYear();
-  return `${mon} ${year}`;
+  return `${mon.charAt(0)}${mon.slice(1).toLowerCase()} ${year}`;
 }
 
 function buildFallback(title: string, ctx: MemoryContext | undefined): string {
-  let venue = "";
-  let sep = "";
-  if (ctx?.venue && ctx?.date) {
-    venue = `${ctx.venue}, ${formatDate(ctx.date)}`;
-    sep = ". ";
-  } else if (ctx?.venue) {
-    venue = ctx.venue;
-    sep = ". ";
-  }
+  const where = ctx?.venue
+    ? ctx.date ? `${ctx.venue}, ${formatDate(ctx.date)}` : ctx.venue
+    : ctx?.programTitle ?? "this set";
   const idx = hashTitle(title) % FALLBACKS.length;
-  return FALLBACKS[idx]
-    .replace("{venue}", venue)
-    .replace("{sep}", venue ? sep : "");
+  return FALLBACKS[idx].replace("{where}", where);
 }
 
 export function memoryFor(entry: ProgramEntry, ctx?: MemoryContext): MemoryLine {

@@ -184,6 +184,59 @@ body::after {
   pointer-events: none;
 }
 
+/* Light pools from the artwork: a light leak on paper (Diary), haze under stage lights (Rave). */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ambient::before,
+.ambient::after {
+  content: "";
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.ambient::before {
+  left: -18vmax;
+  top: -24vmax;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--art-accent) 70%, transparent), transparent);
+  animation: drift-a 46s var(--ease-in-out) infinite alternate;
+}
+
+.ambient::after {
+  right: -22vmax;
+  bottom: -30vmax;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--art-2) 80%, transparent), transparent);
+  animation: drift-b 61s var(--ease-in-out) infinite alternate;
+}
+
+:root[data-theme="diary"] .ambient {
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+}
+
+:root[data-theme="sleek"] .ambient {
+  opacity: 0.32;
+  mix-blend-mode: screen;
+}
+
+@keyframes drift-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(22vw, 14vh, 0) scale(1.18); }
+}
+
+@keyframes drift-b {
+  from { transform: translate3d(0, 0, 0) scale(1.1); }
+  to { transform: translate3d(-26vw, -18vh, 0) scale(0.92); }
+}
+
 .layer {
   position: relative;
   z-index: 2;
@@ -329,6 +382,10 @@ body::after {
   border-radius: 50%;
   background: var(--accent);
   animation: breathe 2.4s var(--ease-in-out) infinite;
+}
+
+.btn-primary .live-dot {
+  background: var(--on-accent);
 }
 
 .skeleton {

@@ -71,6 +71,18 @@ tour countdown. `public/data/albums.json` holds the release timeline and the tou
 - [x] stage atmosphere: radial vignette into `--bg`, grain overlay
 - [x] transport switches to on-media colours; no theme contrast failures
 
+## Design v2 — "one voice, then a room" (contract: `docs/DESIGN.md`)
+- [x] design language, art-derived tokens (`@property` crossfade), event + catalogue contracts, hero layout
+- [x] remote access: cloudflared quick tunnel + `server.allowedHosts` for `.trycloudflare.com`
+- [ ] d2-fabric — breathing thread field, ink (Diary) / light (Rave), publishes `--art-*`
+- [ ] d2-engine — live wall-clock sync, Tune in, Back to live, cues incl. single videos, keyboard
+- [ ] d2-hero — the name (fitted, develops / arrives), memory (ink / voice note), tracklist bar
+- [ ] d2-data — verified catalogue of every official upload (`public/data/catalogue.json`)
+- [ ] d2-search — index over songs, set moments, shows, releases, tour; dialog UI
+- [ ] d2-below — running order, archive with covers, every show, India countdown
+- [ ] d2-chrome — live status, Diary/Rave/Auto switch, quiet 24h ribbon
+- [ ] integrate, screenshots both themes 1440 + 390, fix, commit
+
 ## Deferred — needs a human
 - [ ] own 24/7 YouTube live channel (cleared audio, VPS, ffmpeg, systemd)
 - [ ] Cloudflare Pages deploy

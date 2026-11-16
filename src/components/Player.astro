@@ -1,18 +1,38 @@
 ---
 ---
-<radio-player>
-  <div class="rp-stage">
-    <div class="rp-tuning" aria-live="polite">ON AIR · TUNING</div>
-    <div class="rp-error" hidden>Unable to load player. Check your connection.</div>
-    <div class="rp-frame-wrap" hidden>
+<radio-player data-playing="false" data-muted="true" data-live="true" data-tuned-in="false">
+  <div class="rp-frame">
+    <div class="rp-screen">
       <div id="rp-yt"></div>
+      <div class="rp-tuning skeleton"><span class="meta">Tuning in</span></div>
+      <div class="rp-error" hidden>
+        <p>The video didn't load. YouTube may be blocked on this network. Reload to try again.</p>
+      </div>
+      <span class="stamp rp-stamp" aria-hidden="true"></span>
     </div>
   </div>
-  <div class="rp-transport" aria-label="Playback controls">
-    <button class="rp-btn" id="rp-play" aria-label="Play" disabled>PLAY</button>
-    <button class="rp-btn" id="rp-sound" aria-label="Turn sound on" aria-pressed="false" disabled>SOUND OFF</button>
-    <span class="rp-label" id="rp-prog-label" aria-live="polite"></span>
+
+  <div class="rp-bar">
+    <div class="rp-controls">
+      <button class="btn-primary rp-tune" id="rp-tune" type="button">
+        <span class="live-dot" aria-hidden="true"></span>Tune in
+      </button>
+      <span class="meta rp-hint">Sound starts when you tune in</span>
+
+      <button class="icon-btn rp-after" id="rp-play" type="button" aria-label="Pause">
+        <svg class="rp-ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+        <svg class="rp-ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
+      </button>
+      <button class="icon-btn rp-after" id="rp-sound" type="button" aria-label="Unmute">
+        <svg class="rp-ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9a4.5 4.5 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>
+        <svg class="rp-ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9.5l5 5M21 9.5l-5 5"/></svg>
+      </button>
+      <span class="rp-after rp-live"><span class="live-dot" aria-hidden="true"></span>Live</span>
+      <button class="btn rp-after rp-back" id="rp-back" type="button">Back to live</button>
+    </div>
+    <p class="meta rp-credit" aria-live="polite"></p>
   </div>
+  <p class="rp-keys">Space pauses, M mutes, arrows skip, Shift+L returns to live</p>
 </radio-player>
 
 <style is:global>
@@ -20,89 +40,133 @@
     display: block;
   }
 
-  .rp-stage {
-    position: relative;
-    width: 100%;
-    max-width: 960px;
-    margin-inline: auto;
-    aspect-ratio: 16 / 9;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: var(--radius, 0);
+  .rp-frame {
+    padding: var(--frame-pad) var(--frame-pad) var(--frame-pad-bottom);
+    border-radius: var(--frame-radius);
+    box-shadow: var(--frame-shadow);
+  }
+  :root[data-theme="diary"] .rp-frame {
+    background: var(--card);
+  }
+  :root[data-theme="sleek"] .rp-frame {
     overflow: hidden;
-    background: #0a090c;
-    box-shadow: 0 30px 90px -30px rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  }
+
+  .rp-screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--frame-radius);
+    background: color-mix(in oklab, var(--fg) 8%, transparent);
+  }
+  :root[data-theme="diary"] .rp-screen {
+    border-radius: 1px;
+  }
+
+  .rp-screen #rp-yt,
+  .rp-screen iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
   }
 
   .rp-tuning,
   .rp-error {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    color: rgba(242, 237, 227, 0.65);
-    text-transform: uppercase;
-  }
-
-  .rp-frame-wrap {
     position: absolute;
     inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 0;
+  }
+  .rp-error {
+    background: var(--bg-2);
+    color: var(--fg-dim);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .rp-error[hidden],
+  .rp-tuning[hidden] {
+    display: none;
   }
 
-  .rp-frame-wrap iframe,
-  #rp-yt,
-  #rp-yt iframe {
-    width: 100% !important;
-    height: 100% !important;
-    border: none;
+  .rp-stamp {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.6rem;
+    pointer-events: none;
+  }
+  :root[data-theme="sleek"] .rp-stamp,
+  .rp-stamp:empty {
+    display: none;
   }
 
-  .rp-transport {
-    max-width: 960px;
-    margin-inline: auto;
+  .rp-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    margin-top: 1.25rem;
+  }
+  .rp-controls {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0.5rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    color: #f2ede3;
+    gap: 0.625rem;
+    min-height: 2.75rem;
+  }
+  .rp-credit {
+    margin: 0;
+    text-align: right;
+  }
+  .rp-keys {
+    margin: 0.75rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--fg-faint);
   }
 
-  .rp-btn {
-    background: none;
-    cursor: pointer;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    color: #f2ede3;
-    text-transform: uppercase;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    border-radius: var(--radius, 0);
+  .rp-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.5rem;
+    font-size: 0.9375rem;
+    color: var(--fg-dim);
   }
 
-  .rp-btn:disabled {
-    color: rgba(242, 237, 227, 0.4);
-    border-color: rgba(255, 255, 255, 0.12);
-    cursor: default;
+  radio-player[data-tuned-in="false"] .rp-after,
+  radio-player[data-tuned-in="true"] .rp-tune,
+  radio-player[data-tuned-in="true"] .rp-hint,
+  radio-player[data-live="true"] .rp-back,
+  radio-player[data-live="false"] .rp-live {
+    display: none;
   }
 
-  .rp-btn:not(:disabled):hover {
-    color: #fff;
-    border-color: #fff;
+  radio-player[data-playing="true"] .rp-ico-play,
+  radio-player[data-playing="false"] .rp-ico-pause,
+  radio-player[data-muted="true"] .rp-ico-on,
+  radio-player[data-muted="false"] .rp-ico-off {
+    display: none;
   }
 
-  .rp-label {
-    color: rgba(242, 237, 227, 0.55);
-    text-transform: uppercase;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex: 1;
+  .rp-ico-play {
+    fill: currentColor;
+  }
+
+  .btn-primary:focus-visible,
+  .btn:focus-visible,
+  .icon-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 767px) {
+    .rp-credit {
+      text-align: left;
+    }
   }
 </style>
 

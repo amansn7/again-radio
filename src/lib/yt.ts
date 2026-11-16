@@ -10,6 +10,7 @@ interface YTPlayerVars {
   iv_load_policy?: number;
   disablekb?: number;
   origin?: string;
+  start?: number;
 }
 
 interface YTPlayerOptions {
@@ -25,6 +26,7 @@ interface YTPlayerOptions {
 export interface YTPlayer {
   getCurrentTime(): number;
   getDuration(): number;
+  seekTo(seconds: number, allowSeekAhead: boolean): void;
   playVideo(): void;
   pauseVideo(): void;
   mute(): void;
@@ -32,6 +34,7 @@ export interface YTPlayer {
   isMuted(): boolean;
   loadVideoById(args: { videoId: string; startSeconds?: number }): void;
   destroy(): void;
+  unloadModule?(name: string): void;
 }
 
 interface YTNamespace {

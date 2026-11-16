@@ -4,21 +4,28 @@ const { ...attrs } = Astro.props;
 <theme-toggle {...attrs}></theme-toggle>
 
 <style is:global>
-  theme-toggle { display: inline-flex; align-items: center; }
-  .tt-group { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-  .tt-btn { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-dim); background: var(--bg-2); border: 0; border-right: 1px solid var(--line); padding: 4px 8px; cursor: pointer; line-height: 1; transition: background 150ms, color 150ms; }
-  .tt-btn:last-child { border-right: 0; }
-  .tt-btn[aria-checked="true"] { background: var(--accent); color: var(--bg); }
-  .tt-btn:hover:not([aria-checked="true"]) { color: var(--fg); background: var(--bg); }
-  @media (prefers-reduced-motion: reduce) { .tt-btn { transition: none; } }
+  theme-toggle { display: inline-flex; align-items: center; gap: 0.75rem; }
+  .tt-group { position: relative; display: inline-flex; align-items: stretch; height: 2.25rem; box-sizing: border-box; padding: 0 3px; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in oklab, var(--fg) 5%, transparent); }
+  .tt-ind { position: absolute; top: 3px; bottom: 3px; left: 0; width: 0; border-radius: 999px; background: var(--card); }
+  .tt-group.is-ready .tt-ind { transition: transform var(--dur-2) var(--ease-out), width var(--dur-2) var(--ease-out); }
+  .tt-btn { position: relative; z-index: 1; padding: 0 1rem; font: 500 0.875rem/1 var(--font-body); color: var(--fg-dim); background: transparent; border: 0; border-radius: 999px; cursor: pointer; transition: color var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out); }
+  .tt-btn[aria-checked="true"] { color: var(--fg); }
+  .tt-btn:hover { color: var(--fg); }
+  .tt-btn:active { transform: scale(0.97); }
+  .tt-caption { white-space: nowrap; }
+  :root[data-theme="diary"] .tt-ind { box-shadow: 0 1px 2px color-mix(in oklab, var(--fg) 14%, transparent); }
+  :root[data-theme="sleek"] .tt-ind { box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--fg) 10%, transparent); }
+  @media (max-width: 639px) { .tt-caption { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .tt-btn, .tt-group.is-ready .tt-ind { transition: none; } }
 </style>
 
 <script>
-  import { readStoredChoice, writeStoredChoice, seededAutoTheme } from "../lib/theme.ts";
+  import { readStoredChoice, writeStoredChoice, seededAutoTheme, blockForHour } from "../lib/theme.ts";
   import type { ThemeChoice } from "../lib/theme.ts";
-  import type { HourBlock } from "../lib/station.ts";
+  import type { HourBlock, ThemeName } from "../lib/station.ts";
 
   const OPTIONS: ThemeChoice[] = ["auto", "diary", "sleek"];
+  const LABELS: Record<ThemeChoice, string> = { auto: "Auto", diary: "Diary", sleek: "Rave" };
 
   function pad(n: number): string { return String(n).padStart(2, "0"); }
   function todayKey(): string { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
@@ -47,7 +54,12 @@ const { ...attrs } = Astro.props;
       this._choice = readStoredChoice(store());
       this._render();
       this._applyTheme();
-      requestAnimationFrame(() => document.documentElement.classList.add("theme-live"));
+      this._moveIndicator();
+      requestAnimationFrame(() => {
+        document.documentElement.classList.add("theme-live");
+        this.querySelector(".tt-group")?.classList.add("is-ready");
+      });
+      document.fonts.ready.then(() => this._moveIndicator());
     }
 
     attributeChangedCallback(): void {
@@ -62,14 +74,23 @@ const { ...attrs } = Astro.props;
     }
 
     private _applyTheme(): void {
-      let resolved: "diary" | "sleek";
+      const blocks = this._blocks();
+      const hour = this._hour();
+      let resolved: ThemeName;
       if (this._choice === "auto") {
-        const blocks = this._blocks();
-        resolved = blocks.length ? seededAutoTheme(blocks, this._hour(), todayKey()) : "diary";
+        resolved = blocks.length ? seededAutoTheme(blocks, hour, todayKey()) : "diary";
       } else {
         resolved = this._choice;
       }
       document.documentElement.dataset.theme = resolved;
+      this._updateCaption(resolved, blocks, hour);
+    }
+
+    private _updateCaption(resolved: ThemeName, blocks: HourBlock[], hour: number): void {
+      const caption = this.querySelector<HTMLElement>(".tt-caption");
+      if (!caption) return;
+      caption.hidden = this._choice !== "auto" || !blocks.length;
+      if (!caption.hidden) caption.textContent = `${LABELS[resolved]} until ${pad(blockForHour(blocks, hour).to % 24)}:00`;
     }
 
     private _select(choice: ThemeChoice): void {
@@ -85,12 +106,21 @@ const { ...attrs } = Astro.props;
         btn.setAttribute("aria-checked", String(checked));
         btn.tabIndex = checked ? 0 : -1;
       });
+      this._moveIndicator();
+    }
+
+    private _moveIndicator(): void {
+      const active = this.querySelector<HTMLButtonElement>('.tt-btn[aria-checked="true"]');
+      const ind = this.querySelector<HTMLElement>(".tt-ind");
+      if (!active || !ind) return;
+      ind.style.width = `${active.offsetWidth}px`;
+      ind.style.transform = `translateX(${active.offsetLeft}px)`;
     }
 
     private _render(): void {
-      this.innerHTML = `<div class="tt-group" role="radiogroup" aria-label="Colour theme">${
-        OPTIONS.map(opt => `<button class="tt-btn" role="radio" aria-checked="${opt === this._choice}" data-choice="${opt}" tabindex="${opt === this._choice ? 0 : -1}">${opt}</button>`).join("")
-      }</div>`;
+      this.innerHTML = `<div class="tt-group" role="radiogroup" aria-label="Colour theme"><span class="tt-ind" aria-hidden="true"></span>${
+        OPTIONS.map(opt => `<button class="tt-btn" role="radio" aria-checked="${opt === this._choice}" data-choice="${opt}" tabindex="${opt === this._choice ? 0 : -1}">${LABELS[opt]}</button>`).join("")
+      }</div><span class="meta tt-caption" hidden></span>`;
 
       const group = this.querySelector(".tt-group")!;
       group.addEventListener("click", e => {

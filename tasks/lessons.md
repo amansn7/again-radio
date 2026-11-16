@@ -26,6 +26,13 @@ Rules learned from corrections. Append one line per mistake — specific, action
 - 2026-11-16 — stacking 20 USB002 shows inside one year column made the archive rail
   2000px tall. Rule: a list of items belongs in its own horizontal rail, not stacked in a
   column that is meant to be one item deep.
+- 2026-11-17 — answered "improve visual appeal" with a timid polish pass; the user called the
+  UI basic and non-functional. Rule: start from the subject (the artist's practice, his
+  shows, his materials) and the product's core verb (a radio = live, shared, tune in), write
+  a design language first, and make every theme a different medium, not a colour swap.
+- 2026-11-17 — the auto-mode classifier denies launching `agy ... --dangerously-skip-permissions`
+  (and a batch loop of agy launches). Rule: launch agy with `--mode accept-edits` one at a
+  time, or use native Claude subagents (Agent tool, model + effort per unit).
 - 2026-11-16 — a `const` declared later in a function body shadowed an outer one and the
   guard above it hit a temporal dead zone ("Cannot access 'x' before initialization").
   Rule: one binding per name per scope; do not shadow.

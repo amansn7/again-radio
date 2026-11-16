@@ -45,3 +45,22 @@ export function programPath(rotation: StationConfig["rotation"], index: number):
   const i = Math.min(Math.max(index, 0), rotation.length - 1);
   return rotation[i].program;
 }
+
+export const LIVE_EPOCH = Date.UTC(2026, 0, 1) / 1000;
+
+/** Where the shared broadcast is right now: programme index and seconds into it. */
+// ponytail: rotation weights ignored, every programme plays once per cycle; weight the durations if airtime should differ
+export function livePosition(
+  durations: number[],
+  nowSec: number,
+  epochSec: number = LIVE_EPOCH,
+): { index: number; offset: number } {
+  const total = durations.reduce((a, b) => a + b, 0);
+  if (total <= 0) return { index: 0, offset: 0 };
+  let t = (((nowSec - epochSec) % total) + total) % total;
+  for (let index = 0; index < durations.length; index++) {
+    if (t < durations[index]) return { index, offset: t };
+    t -= durations[index];
+  }
+  return { index: 0, offset: 0 };
+}

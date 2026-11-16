@@ -1,4 +1,97 @@
 ---
+const { ...attrs } = Astro.props;
 ---
+<live-status {...attrs}></live-status>
 
-<live-status {...Astro.props}></live-status>
+<style is:global>
+  live-status { display: inline-flex; align-items: center; gap: 0.5rem; min-width: 0; white-space: nowrap; font-size: 0.875rem; color: var(--fg-dim); }
+  live-status .ls-word { color: var(--fg-dim); }
+  live-status.is-live .ls-word { color: var(--fg); }
+  live-status .ls-hollow { width: 0.5rem; height: 0.5rem; border-radius: 50%; border: 1px solid var(--fg-dim); flex-shrink: 0; }
+  live-status .ls-detail { margin-left: 0.25rem; }
+  live-status .ls-go { font: inherit; color: var(--accent); background: none; border: 0; padding: 0.25rem; margin-left: 0.25rem; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; transition: transform var(--dur-1) var(--ease-out), color var(--dur-2) var(--ease-out); }
+  live-status .ls-go:hover { color: var(--fg); }
+  live-status .ls-go:active { transform: scale(0.97); }
+  :root[data-theme="sleek"] live-status .live-dot { box-shadow: 0 0 10px var(--accent); }
+  @media (max-width: 639px) {
+    live-status .ls-detail { display: none; }
+    live-status:not(.is-live) .ls-word { display: none; }
+  }
+</style>
+
+<script>
+  import { blockForHour } from "../lib/theme.ts";
+  import { RADIO_LIVE, RADIO_STATE } from "../lib/events.ts";
+  import type { StateInfo } from "../lib/events.ts";
+  import type { HourBlock } from "../lib/station.ts";
+
+  function pad(n: number): string { return String(n).padStart(2, "0"); }
+
+  function parseBlocks(raw: string | null): HourBlock[] {
+    if (!raw) return [];
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter((b): b is HourBlock =>
+        typeof b === "object" && b !== null &&
+        typeof (b as Record<string, unknown>).from === "number" &&
+        typeof (b as Record<string, unknown>).to === "number" &&
+        typeof (b as Record<string, unknown>).label === "string"
+      );
+    } catch { return []; }
+  }
+
+  class LiveStatus extends HTMLElement {
+    static observedAttributes = ["data-blocks", "data-hour"];
+    private _live = true;
+    private _timer: ReturnType<typeof setInterval> | null = null;
+
+    constructor() {
+      super();
+      this.addEventListener("click", e => {
+        if ((e.target as Element).closest(".ls-go")) document.dispatchEvent(new CustomEvent(RADIO_LIVE));
+      });
+    }
+
+    private _onState = (e: Event): void => {
+      const live = (e as CustomEvent<StateInfo>).detail.live;
+      if (live === this._live) return;
+      this._live = live;
+      this._render();
+    };
+
+    connectedCallback(): void {
+      this._render();
+      document.addEventListener(RADIO_STATE, this._onState);
+      this._timer = setInterval(() => this._tick(), 30_000);
+    }
+    disconnectedCallback(): void {
+      document.removeEventListener(RADIO_STATE, this._onState);
+      if (this._timer !== null) { clearInterval(this._timer); this._timer = null; }
+    }
+    attributeChangedCallback(): void { this._render(); }
+
+    private _tick(): void {
+      const detail = this.querySelector(".ls-detail");
+      if (detail) detail.textContent = this._detail();
+    }
+
+    private _detail(): string {
+      const now = new Date();
+      const blocks = parseBlocks(this.getAttribute("data-blocks"));
+      const rawHour = this.getAttribute("data-hour");
+      const hour = rawHour !== null && /^\d+$/.test(rawHour) ? parseInt(rawHour, 10) % 24 : now.getHours();
+      const time = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      return blocks.length ? `${time}, ${blockForHour(blocks, hour).label}` : time;
+    }
+
+    private _render(): void {
+      this.classList.toggle("is-live", this._live);
+      this.innerHTML = this._live
+        ? `<span class="live-dot" aria-hidden="true"></span><span class="ls-word">Live</span><span class="ls-detail num">${this._detail()}</span>`
+        : `<span class="ls-hollow" aria-hidden="true"></span><span class="ls-word">Replaying</span><button class="ls-go" type="button">Go live</button>`;
+    }
+  }
+
+  if (!customElements.get("live-status")) customElements.define("live-status", LiveStatus);
+</script>

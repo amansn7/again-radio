@@ -1,0 +1,150 @@
+import { loadCatalogue } from "../lib/catalogue.ts";
+import { RADIO_CUE, RADIO_SEARCH } from "../lib/events.ts";
+import { fetchJson, loadProgram, loadStation } from "../lib/station.ts";
+import { GROUPS, buildIndex, search, type Album, type Doc, type Sources, type Tour } from "../lib/search.ts";
+
+const ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>`;
+const SHOWS = "programs/usb002-every-show.json";
+const esc = (s: string) => s.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+const rec = (v: unknown): Record<string, unknown> => (typeof v === "object" && v !== null ? (v as Record<string, unknown>) : {});
+
+async function loadSources(): Promise<Sources> {
+  const [cat, station, shows, albums] = await Promise.allSettled([
+    loadCatalogue(), loadStation(), loadProgram(SHOWS), fetchJson("/data/albums.json"),
+  ]);
+  const paths = station.status === "fulfilled" ? station.value.rotation.map((r) => r.program) : [];
+  const progs = await Promise.allSettled(paths.map((p) => loadProgram(p)));
+  const a = albums.status === "fulfilled" ? rec(albums.value) : {};
+  return {
+    catalogue: cat.status === "fulfilled" ? cat.value : [],
+    programs: progs.flatMap((r, i) => (r.status === "fulfilled" ? [{ path: paths[i], program: r.value }] : [])),
+    shows: shows.status === "fulfilled" ? { path: SHOWS, program: shows.value } : null,
+    albums: Array.isArray(a.albums) ? (a.albums as Album[]) : [],
+    tour: Array.isArray(a.tour) ? (a.tour as Tour[]) : [],
+  };
+}
+
+class RadioSearch extends HTMLElement {
+  private index: Promise<Doc[]> | null = null;
+  private dlg!: HTMLDialogElement;
+  private input!: HTMLInputElement;
+  private list!: HTMLElement;
+  private hits: Doc[] = [];
+  private active = 0;
+  private opener: Element | null = null;
+  private shown = new Set<string>();
+
+  connectedCallback() {
+    this.innerHTML =
+      `<button type="button" class="btn rs-open" aria-haspopup="dialog">${ICON}<span>Search</span><kbd class="rs-kbd" aria-hidden="true">/</kbd></button>` +
+      `<dialog class="rs-dlg" aria-label="Search"><div class="rs-head">${ICON}` +
+      `<input class="rs-input" type="search" placeholder="Song, person, city, year" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="rs-list" aria-label="Search the radio"></div>` +
+      `<div class="rs-list" id="rs-list" role="listbox" aria-label="Results"></div></dialog>`;
+    this.dlg = this.querySelector("dialog")!;
+    this.input = this.querySelector("input")!;
+    this.list = this.querySelector(".rs-list")!;
+    this.querySelector(".rs-open")!.addEventListener("click", () => this.open());
+    this.input.addEventListener("input", () => this.render());
+    this.dlg.addEventListener("keydown", (e) => this.key(e));
+    this.dlg.addEventListener("click", (e) => { if (e.target === this.dlg) this.dlg.close(); });
+    this.dlg.addEventListener("close", () => (this.opener as HTMLElement | null)?.focus());
+    this.list.addEventListener("click", (e) => {
+      const i = (e.target as HTMLElement).closest<HTMLElement>("[data-i]");
+      if (i) this.pick(Number(i.dataset.i));
+    });
+    document.addEventListener("keydown", (e) => {
+      const t = e.target as HTMLElement;
+      if (t.matches("input, textarea, select, [contenteditable]") || this.dlg.open) return;
+      if (e.key === "/" || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k")) {
+        e.preventDefault();
+        this.open();
+      }
+    });
+    document.addEventListener(RADIO_SEARCH, (e) => this.open((e as CustomEvent<{ query?: string }>).detail?.query));
+  }
+
+  private open(query = "") {
+    if (this.dlg.open) return;
+    this.opener = document.activeElement;
+    this.input.value = query;
+    this.shown.clear();
+    this.dlg.showModal();
+    this.input.focus();
+    this.index ??= loadSources().then(buildIndex);
+    this.render();
+  }
+
+  private async render() {
+    const q = this.input.value;
+    if (!q.trim()) {
+      this.hits = [];
+      this.list.innerHTML = `<p class="rs-note meta">Try a name like Kyle or Delilah, a city like Glasgow, or a year.</p>`;
+      return;
+    }
+    const pending = this.index;
+    this.list.setAttribute("aria-busy", "true");
+    this.list.innerHTML = `<div class="skeleton rs-sk"></div><div class="skeleton rs-sk"></div><div class="skeleton rs-sk"></div>`;
+    const idx = await pending!;
+    if (q !== this.input.value) return;
+    this.list.removeAttribute("aria-busy");
+    this.hits = search(idx, q);
+    this.active = 0;
+    if (!this.hits.length) {
+      this.list.innerHTML = `<p class="rs-note meta">Nothing matches “${esc(q.trim())}”. Try a person's name, a city or an album.</p>`;
+      this.input.removeAttribute("aria-activedescendant");
+      return;
+    }
+    let html = "";
+    let n = 0;
+    for (const g of GROUPS) {
+      const rows = this.hits.map((d, i) => [d, i] as const).filter(([d]) => d.group === g);
+      if (!rows.length) continue;
+      const fresh = !this.shown.has(g);
+      this.shown.add(g);
+      html += `<div role="group" aria-label="${g}"><h3 class="rs-group">${g}</h3>`;
+      for (const [d, i] of rows) {
+        html += `<div class="rs-row${fresh ? " rs-in" : ""}" style="--n:${n++}" role="option" id="rs-${i}" data-i="${i}">` +
+          `<span class="rs-t"><span>${esc(d.title)}</span><span class="meta">${esc(d.context)}</span></span><span class="num meta">${esc(d.right)}</span></div>`;
+      }
+      html += `</div>`;
+    }
+    this.list.innerHTML = html;
+    this.mark();
+  }
+
+  private mark() {
+    this.list.querySelectorAll("[aria-selected]").forEach((r) => r.removeAttribute("aria-selected"));
+    const row = this.list.querySelector<HTMLElement>(`#rs-${this.active}`);
+    row?.setAttribute("aria-selected", "true");
+    row?.scrollIntoView({ block: "nearest" });
+    this.input.setAttribute("aria-activedescendant", `rs-${this.active}`);
+  }
+
+  private key(e: KeyboardEvent) {
+    const n = this.hits.length;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!n) return;
+      this.active = (this.active + (e.key === "ArrowDown" ? 1 : n - 1)) % n;
+      this.mark();
+    } else if (e.key === "Enter" && n) {
+      e.preventDefault();
+      this.pick(this.active);
+    }
+  }
+
+  private pick(i: number) {
+    const a = this.hits[i]?.action;
+    if (!a) return;
+    if (a.type === "query") {
+      this.input.value = a.query;
+      this.render();
+      return;
+    }
+    this.dlg.close();
+    if (a.type === "scroll") document.querySelector(a.target)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    else document.dispatchEvent(new CustomEvent(RADIO_CUE, { detail: a.type === "video" ? { video: a.video, offset: a.offset } : { program: a.program, offset: a.offset } }));
+  }
+}
+
+customElements.define("radio-search", RadioSearch);

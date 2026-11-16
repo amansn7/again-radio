@@ -25,11 +25,12 @@ import Archive from "../components/Archive.astro";
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231c1815'/><path d='M6 19c3-6 5-6 7 0s4 6 6 0 4-6 7 0' fill='none' stroke='%23f2eee6' stroke-width='2.2' stroke-linecap='round'/></svg>" />
   </head>
   <body class="min-h-[100dvh] flex flex-col">
+    <div class="ambient" aria-hidden="true"></div>
     <canvas id="field" aria-hidden="true"></canvas>
 
     <header class="layer wrap topbar">
       <a class="wordmark" href="/" aria-label="Again Radio, home">again radio</a>
-      <LiveStatus />
+      <LiveStatus data-blocks="[]" />
       <div class="topbar-end">
         <Search />
         <ThemeToggle data-blocks="[]" />
@@ -66,10 +67,14 @@ import Archive from "../components/Archive.astro";
     <style>
       .topbar {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 1.5rem;
+        gap: 0.75rem 1.5rem;
         min-height: 4rem;
         padding-block: 0.75rem;
+      }
+      @media (max-width: 639px) {
+        .topbar-end { flex-basis: 100%; justify-content: space-between; margin-left: 0; }
       }
       .wordmark {
         font-family: var(--font-name);
@@ -103,7 +108,7 @@ import Archive from "../components/Archive.astro";
           grid-template-areas: "name media" "track track";
           column-gap: clamp(2.5rem, 5vw, 5rem);
           row-gap: 2.5rem;
-          min-height: calc(100dvh - 4rem);
+          min-height: min(calc(100dvh - 4rem), 1000px);
           align-content: end;
           padding-block: 2rem 1.75rem;
         }

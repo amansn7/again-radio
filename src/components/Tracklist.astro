@@ -1,4 +1,99 @@
 ---
+const { ...attrs } = Astro.props;
 ---
+<tracklist-bar {...attrs}>
+  <div class="tl-bar" role="group" aria-label="Running order">
+    <span class="tl-skel skeleton"></span>
+  </div>
+  <div class="tl-tip" aria-hidden="true"></div>
+  <div class="tl-row">
+    <span class="tl-time num meta"></span>
+    <span class="tl-next meta" hidden><span class="tl-next-l">Next</span> <span class="tl-next-t"></span></span>
+  </div>
+</tracklist-bar>
 
-<tracklist-bar {...Astro.props}></tracklist-bar>
+<style is:global>
+  tracklist-bar { position: relative; display: block; width: 100%; }
+
+  .tl-bar { display: flex; align-items: flex-end; gap: 3px; height: 10px; }
+  .tl-skel { flex: 1; height: 4px; }
+
+  .tl-seg {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 2px;
+    height: 10px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    transform: scaleY(0.4);
+    transform-origin: bottom;
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+  .tl-seg:disabled { cursor: default; }
+  .tl-seg::after { content: ""; position: absolute; inset: -20px 0 -6px; }
+  .tl-seg:hover:not(:disabled),
+  .tl-seg:focus-visible { transform: scaleY(1); }
+  .tl-seg:focus-visible { outline-offset: 2px; }
+
+  .tl-track {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 2px;
+    background: color-mix(in oklab, var(--fg) 16%, transparent);
+    transition: background-color var(--dur-2) var(--ease-out);
+  }
+  .tl-seg.is-played .tl-track { background: color-mix(in oklab, var(--fg) 55%, transparent); }
+  .tl-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  :root[data-theme="sleek"] .tl-seg.is-current .tl-track { overflow: visible; }
+  :root[data-theme="sleek"] .tl-seg.is-current .tl-fill {
+    border-radius: 2px;
+    box-shadow: 0 0 12px color-mix(in oklab, var(--accent) 55%, transparent);
+  }
+
+  .tl-tip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    color: var(--fg);
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(calc(-100% - 8px));
+    transition: opacity var(--dur-1) var(--ease-out);
+  }
+  .tl-tip.is-on { opacity: 1; }
+  .tl-tip .num { color: var(--fg-dim); }
+
+  .tl-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 1.3rem;
+    margin-top: 0.6rem;
+  }
+  .tl-next { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tl-next-l { color: var(--fg-faint); }
+  .tl-next-t { color: var(--fg); }
+</style>
+
+<script>
+  import "./tracklist.ts";
+</script>

@@ -1,189 +1,250 @@
 import { loadYT } from "../lib/yt.ts";
 import { loadStation, loadProgram } from "../lib/station.ts";
-import { entryAt, nextProgramIndex, programPath } from "../lib/schedule.ts";
+import { entryAt, livePosition } from "../lib/schedule.ts";
+import { creditText, stampText, videoProgram } from "../lib/live.ts";
+import { bindKeys } from "./transport.ts";
 import type { Program } from "../lib/station.ts";
 import type { YTPlayer } from "../lib/yt.ts";
-import { RADIO_CUE, RADIO_STATE, RADIO_TIME, RADIO_TRACK } from "../lib/events.ts";
-import type { CueInfo, TrackInfo } from "../lib/events.ts";
+import { RADIO_CUE, RADIO_LIVE, RADIO_STATE, RADIO_TIME, RADIO_TRACK } from "../lib/events.ts";
+import type { CueInfo, StateInfo, TrackInfo } from "../lib/events.ts";
+
+const DRIFT = 8;
+const SETTLE_MS = 1500;
 
 class RadioPlayer extends HTMLElement {
   private player: YTPlayer | null = null;
-  private program: Program | null = null;
-  private rotationIndex = 0;
-  private rotation: { program: string; weight: number }[] = [];
-  private lastEntryIndex = -1;
-  private ticker: ReturnType<typeof setInterval> | null = null;
+  private rotation: { path: string; program: Program }[] = [];
+  private prog!: Program;
+  private path = "";
+  private live = true;
+  private tunedIn = false;
   private muted = true;
   private playing = false;
+  private userPaused = false;
+  private lastKey = "";
+  private anchor = 0;
+  private anchorAt = 0;
+  private ticker: ReturnType<typeof setInterval> | null = null;
+  private ac = new AbortController();
 
   connectedCallback() {
+    this.ac = new AbortController();
     this.init().catch((err: unknown) => {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error("[radio-player]", msg);
-      this.showError();
+      console.error("[radio-player]", err instanceof Error ? err.message : String(err));
+      this.setHidden(".rp-tuning", true);
+      this.setHidden(".rp-error", false);
     });
   }
 
   disconnectedCallback() {
-    if (this.ticker !== null) {
-      clearInterval(this.ticker);
-      this.ticker = null;
-    }
+    this.ac.abort();
+    if (this.ticker !== null) clearInterval(this.ticker);
     this.player?.destroy();
   }
 
-  private showError() {
-    const tuning = this.querySelector<HTMLElement>(".rp-tuning");
-    const error = this.querySelector<HTMLElement>(".rp-error");
-    if (tuning) tuning.hidden = true;
-    if (error) error.hidden = false;
+  private setHidden(sel: string, hidden: boolean) {
+    const el = this.querySelector<HTMLElement>(sel);
+    if (el) el.hidden = hidden;
+  }
+
+  private liveNow() {
+    const durations = this.rotation.map((r) => r.program.duration);
+    const { index, offset } = livePosition(durations, Date.now() / 1000);
+    return { ...this.rotation[index], index, offset: Math.floor(offset) };
   }
 
   private async init() {
     const [YT, station] = await Promise.all([loadYT(), loadStation()]);
+    const programs = await Promise.all(station.rotation.map((r) => loadProgram(r.program)));
+    this.rotation = programs.map((program, i) => ({ path: station.rotation[i].program, program }));
+    const at = this.liveNow();
+    this.prog = at.program;
+    this.path = at.path;
+    this.setAnchor(at.offset);
+    const signal = this.ac.signal;
+    const on = (sel: string, fn: () => void) =>
+      this.querySelector(sel)?.addEventListener("click", fn, { signal });
 
-    this.rotation = station.rotation;
-    this.rotationIndex = 0;
-    this.program = await loadProgram(programPath(this.rotation, 0));
-
-    const frameWrap = this.querySelector<HTMLElement>(".rp-frame-wrap");
-    const tuning = this.querySelector<HTMLElement>(".rp-tuning");
-    const ytEl = this.querySelector<HTMLElement>("#rp-yt");
-
-    if (!ytEl || !frameWrap || !tuning) return;
-
-    const prog = this.program;
-
-    this.player = new YT.Player(ytEl, {
-      videoId: prog.youtubeId,
+    this.player = new YT.Player(this.querySelector<HTMLElement>("#rp-yt")!, {
+      videoId: at.program.youtubeId,
       playerVars: {
-        enablejsapi: 1,
-        controls: 0,
-        modestbranding: 1,
-        rel: 0,
-        playsinline: 1,
-        autoplay: 1,
-        mute: 1,
-        cc_load_policy: 0,
-        iv_load_policy: 3,
-        disablekb: 1,
-        origin: window.location.origin,
+        enablejsapi: 1, controls: 0, modestbranding: 1, rel: 0, playsinline: 1,
+        autoplay: 1, mute: 1, cc_load_policy: 0, iv_load_policy: 3, disablekb: 1,
+        start: at.offset, origin: window.location.origin,
       },
       events: {
         onReady: () => {
-          tuning.hidden = true;
-          frameWrap.hidden = false;
-          this.enableControls();
-          this.updateProgramLabel();
-          this.startTicker();
-          this.emitFirstTrack();
+          this.setHidden(".rp-tuning", true);
+          this.setLabels();
+          this.emitState();
+          this.emitTrack();
+          this.ticker = setInterval(() => this.tick(), 250);
         },
         onStateChange: (e) => {
-          const playing = e.data === 1;
-          const ended = e.data === 0;
-          this.playing = playing;
-          document.dispatchEvent(
-            new CustomEvent(RADIO_STATE, { detail: { playing } })
-          );
-          this.updatePlayBtn(playing);
-          if (ended) this.advanceRotation();
+          const playing = e.data === 1 || e.data === 3;
+          // auto-captions cover the picture; the memory line is the caption here
+          if (e.data === 1) this.player?.unloadModule?.("captions");
+          if (playing !== this.playing) {
+            this.playing = playing;
+            this.emitState();
+          }
+          if (e.data === 0 && Date.now() - this.anchorAt > SETTLE_MS) this.ended();
         },
-        onError: () => this.showError(),
+        onError: () => {
+          this.setHidden(".rp-tuning", true);
+          this.setHidden(".rp-error", false);
+        },
       },
     });
 
-    this.setupTransport();
-
-    document.addEventListener(RADIO_CUE, (e) => {
-      const detail = (e as CustomEvent<CueInfo>).detail;
-      void this.cueProgram(detail.program, detail.offset);
-    });
-  }
-
-  private setupTransport() {
-    const playBtn = this.querySelector<HTMLButtonElement>("#rp-play");
-    const soundBtn = this.querySelector<HTMLButtonElement>("#rp-sound");
-
-    playBtn?.addEventListener("click", () => {
-      if (!this.player) return;
-      const playing = this.isPlaying();
-      if (playing) {
-        this.player.pauseVideo();
-      } else {
-        this.player.playVideo();
-      }
-    });
-
-    soundBtn?.addEventListener("click", () => {
-      if (!this.player) return;
-      this.muted = !this.muted;
-      if (this.muted) {
-        this.player.mute();
-      } else {
-        this.player.unMute();
-      }
-      this.updateSoundBtn();
-    });
-  }
-
-  private enableControls() {
-    const playBtn = this.querySelector<HTMLButtonElement>("#rp-play");
-    const soundBtn = this.querySelector<HTMLButtonElement>("#rp-sound");
-    if (playBtn) playBtn.disabled = false;
-    if (soundBtn) soundBtn.disabled = false;
-  }
-
-  private isPlaying(): boolean {
-    return this.playing;
-  }
-
-  private updatePlayBtn(playing: boolean) {
-    const playBtn = this.querySelector<HTMLButtonElement>("#rp-play");
-    if (!playBtn) return;
-    playBtn.textContent = playing ? "PAUSE" : "PLAY";
-    playBtn.setAttribute("aria-label", playing ? "Pause" : "Play");
-  }
-
-  private updateSoundBtn() {
-    const soundBtn = this.querySelector<HTMLButtonElement>("#rp-sound");
-    if (!soundBtn) return;
-    soundBtn.textContent = this.muted ? "SOUND OFF" : "SOUND ON";
-    soundBtn.setAttribute(
-      "aria-label",
-      this.muted ? "Turn sound on" : "Turn sound off"
+    on("#rp-tune", () => this.tuneIn());
+    on("#rp-play", () => this.toggle());
+    on("#rp-sound", () => this.setMuted(!this.muted));
+    on("#rp-back", () => this.goLive());
+    document.addEventListener(RADIO_LIVE, () => this.goLive(), { signal });
+    // Mobile browsers pause embeds in the background; come back to the live moment, like a radio.
+    document.addEventListener("visibilitychange", () => this.resumeIfDropped(), { signal });
+    window.addEventListener("pageshow", () => this.resumeIfDropped(), { signal });
+    document.addEventListener(RADIO_CUE, (e) => void this.cue((e as CustomEvent<CueInfo>).detail), { signal });
+    bindKeys(
+      {
+        toggle: () => this.toggle(),
+        mute: () => this.setMuted(!this.muted),
+        prev: () => this.step(-1),
+        next: () => this.step(1),
+        live: () => this.goLive(),
+      },
+      signal,
     );
-    soundBtn.setAttribute("aria-pressed", this.muted ? "false" : "true");
   }
 
-  private updateProgramLabel() {
-    const prog = this.program;
-    if (!prog) return;
-    const label = this.querySelector<HTMLElement>("#rp-prog-label");
-    if (!label) return;
-    const parts = [`NOW · ${prog.title}`];
-    label.textContent = parts.join("");
-    const iframe = this.querySelector<HTMLIFrameElement>("iframe");
-    if (iframe) {
-      iframe.title = `Fred again.. — ${prog.title}`;
-      iframe.setAttribute("aria-label", `Video: Fred again.. – ${prog.title}`);
+  private setAnchor(offset: number) {
+    this.anchor = offset;
+    this.anchorAt = Date.now();
+  }
+
+  private position(): number {
+    const settling = Date.now() - this.anchorAt < SETTLE_MS;
+    if (settling) return this.anchor + (this.playing ? (Date.now() - this.anchorAt) / 1000 : 0);
+    return this.player?.getCurrentTime() ?? 0;
+  }
+
+  private setMuted(muted: boolean) {
+    this.muted = muted;
+    if (muted) this.player?.mute();
+    else this.player?.unMute();
+    this.emitState();
+  }
+
+  private tuneIn() {
+    this.tunedIn = true;
+    this.muted = false;
+    this.goLive();
+  }
+
+  private toggle() {
+    this.userPaused = this.playing;
+    if (this.playing) this.player?.pauseVideo();
+    else if (this.live) this.goLive();
+    else this.player?.playVideo();
+  }
+
+  private resumeIfDropped() {
+    if (document.visibilityState !== "visible" || !this.tunedIn || this.userPaused || this.playing) return;
+    if (this.live) this.goLive();
+    else this.player?.playVideo();
+  }
+
+  private goLive() {
+    this.userPaused = false;
+    const at = this.liveNow();
+    this.live = true;
+    this.load(at.path, at.program, at.offset);
+  }
+
+  private load(path: string, prog: Program, offset: number) {
+    const same = this.prog.youtubeId === prog.youtubeId;
+    this.prog = prog;
+    this.path = path;
+    this.setAnchor(offset);
+    if (same) {
+      this.player?.seekTo(offset, true);
+      this.player?.playVideo();
+    } else {
+      this.player?.loadVideoById({ videoId: prog.youtubeId, startSeconds: offset });
+    }
+    if (this.muted) this.player?.mute();
+    else this.player?.unMute();
+    this.setLabels();
+    this.emitState();
+    this.emitTrack();
+  }
+
+  private async cue(d: CueInfo) {
+    try {
+      const path = "video" in d ? `video:${d.video.youtubeId}` : d.program;
+      const prog =
+        "video" in d
+          ? videoProgram(d.video)
+          : (this.rotation.find((r) => r.path === path)?.program ?? (await loadProgram(path)));
+      if (!this.tunedIn) {
+        this.tunedIn = true;
+        this.muted = false;
+      }
+      this.live = false;
+      this.load(path, prog, d.offset);
+    } catch {
+      /* a bad cue must not take the station down */
     }
   }
 
-  private emitFirstTrack() {
-    this.emitTrackAt(0);
+  private step(dir: 1 | -1) {
+    const info = entryAt(this.prog.entries, this.position());
+    if (!info || !this.tunedIn) return;
+    const to = dir < 0 && info.elapsed > 3 ? info.index : info.index + dir;
+    const entry = this.prog.entries[Math.max(to, 0)];
+    if (!entry || to >= this.prog.entries.length) return;
+    this.live = false;
+    this.load(this.path, this.prog, entry.offset);
   }
 
-  private emitTrackAt(seconds: number) {
-    const prog = this.program;
-    if (!prog || !prog.entries.length) return;
-    const info = entryAt(prog.entries, seconds);
+  private ended() {
+    const i = this.rotation.findIndex((r) => r.path === this.path);
+    if (!this.live || i < 0) return this.goLive();
+    const next = this.rotation[(i + 1) % this.rotation.length];
+    this.load(next.path, next.program, 0);
+  }
+
+  private tick() {
+    if (!this.player) return;
+    const current = Math.floor(this.position());
+    document.dispatchEvent(
+      new CustomEvent(RADIO_TIME, { detail: { current, duration: this.prog.duration } }),
+    );
+    if (Date.now() - this.anchorAt < SETTLE_MS) return;
+    if (this.live && this.playing && document.visibilityState === "visible") {
+      const at = this.liveNow();
+      if (current >= this.prog.duration) return this.ended();
+      if (at.path === this.path && Math.abs(current - at.offset) > DRIFT) return this.goLive();
+    }
+    this.emitTrack();
+  }
+
+  private emitTrack() {
+    const t = Math.floor(this.position());
+    const info = entryAt(this.prog.entries, t);
     if (!info) return;
-    this.lastEntryIndex = info.index;
+    const key = `${this.path}#${info.index}`;
+    if (key === this.lastKey) return;
+    this.lastKey = key;
     const detail: TrackInfo = {
-      programId: prog.id,
-      programTitle: prog.title,
-      venue: prog.venue,
-      date: prog.date,
+      programId: this.prog.id,
+      programPath: this.path,
+      programTitle: this.prog.title,
+      programDuration: this.prog.duration,
+      venue: this.prog.venue,
+      date: this.prog.date,
+      entries: this.prog.entries,
       entry: info.entry,
       index: info.index,
       elapsed: info.elapsed,
@@ -192,63 +253,24 @@ class RadioPlayer extends HTMLElement {
     document.dispatchEvent(new CustomEvent(RADIO_TRACK, { detail }));
   }
 
-  private async cueProgram(path: string, offset: number) {
-    try {
-      const program = await loadProgram(path);
-      this.program = program;
-      this.rotationIndex = -1;
-      this.lastEntryIndex = -1;
-      this.player?.loadVideoById({ videoId: program.youtubeId, startSeconds: offset });
-      if (this.muted) this.player?.mute();
-      else this.player?.unMute();
-      this.updateProgramLabel();
-      this.emitTrackAt(offset);
-    } catch {
-      // a bad cue should never take the station down
-    }
+  private emitState() {
+    const detail: StateInfo = {
+      playing: this.playing, muted: this.muted, live: this.live, tunedIn: this.tunedIn,
+    };
+    Object.entries(detail).forEach(([k, v]) => (this.dataset[k] = String(v)));
+    const play = this.querySelector("#rp-play");
+    play?.setAttribute("aria-label", this.playing ? "Pause" : "Play");
+    this.querySelector("#rp-sound")?.setAttribute("aria-label", this.muted ? "Unmute" : "Mute");
+    document.dispatchEvent(new CustomEvent(RADIO_STATE, { detail }));
   }
 
-  private startTicker() {
-    this.ticker = setInterval(() => {
-      if (!this.player || !this.program) return;
-      const current = Math.floor(this.player.getCurrentTime());
-      const duration = this.program.duration;
-      document.dispatchEvent(
-        new CustomEvent(RADIO_TIME, { detail: { current, duration } })
-      );
-      const info = entryAt(this.program.entries, current);
-      if (!info) return;
-      if (info.index !== this.lastEntryIndex) {
-        this.lastEntryIndex = info.index;
-        const detail: TrackInfo = {
-          programId: this.program.id,
-          programTitle: this.program.title,
-          venue: this.program.venue,
-          date: this.program.date,
-          entry: info.entry,
-          index: info.index,
-          elapsed: info.elapsed,
-          progress: info.progress,
-        };
-        document.dispatchEvent(new CustomEvent(RADIO_TRACK, { detail }));
-      }
-    }, 250);
-  }
-
-  private async advanceRotation() {
-    const next = nextProgramIndex(this.rotation, this.rotationIndex);
-    this.rotationIndex = next;
-    try {
-      this.program = await loadProgram(programPath(this.rotation, next));
-    } catch {
-      return;
-    }
-    this.lastEntryIndex = -1;
-    this.player?.loadVideoById({ videoId: this.program.youtubeId, startSeconds: 0 });
-    if (this.muted) this.player?.mute();
-    else this.player?.unMute();
-    this.updateProgramLabel();
-    this.emitFirstTrack();
+  private setLabels() {
+    const credit = this.querySelector(".rp-credit");
+    if (credit) credit.textContent = creditText(this.prog);
+    const stamp = this.querySelector<HTMLElement>(".rp-stamp");
+    if (stamp) stamp.textContent = stampText(this.prog.date);
+    const iframe = this.querySelector("iframe");
+    if (iframe) iframe.title = `Fred again.. ${this.prog.title}`;
   }
 }
 

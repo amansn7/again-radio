@@ -5,21 +5,26 @@ const { ...attrs } = Astro.props;
 
 <style is:global>
   hour-strip { display: block; width: 100%; }
-  .hs-root { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-  .hs-blocks { display: flex; }
-  .hs-block { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 0.5em; padding: 5px 8px; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-dim); background: var(--bg-2); border-right: 1px solid var(--line); white-space: nowrap; overflow: hidden; }
-  .hs-block:last-child { border-right: 0; }
-  .hs-block.is-current { color: var(--fg); }
-  .hs-block.is-current .hs-block-clock { color: var(--accent); }
-  .hs-block-clock { font-size: 0.5625rem; letter-spacing: 0.08em; color: var(--fg-dim); margin-left: auto; }
-  .hs-ticks { display: flex; list-style: none; margin: 0; padding: 0; }
-  .hs-tick { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; padding: 5px 0 7px; border-right: 1px solid var(--line); }
-  .hs-tick:last-child { border-right: 0; }
-  .hs-tick-num { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.02em; color: var(--fg-dim); line-height: 1; }
-  .hs-tick-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--line); margin-top: 5px; flex-shrink: 0; }
-  .hs-tick[aria-current="true"] .hs-tick-num { color: var(--accent); font-weight: 700; }
-  .hs-tick[aria-current="true"] .hs-tick-dot { background: var(--accent); width: 7px; height: 7px; margin-top: 4px; }
-  .hs-empty { padding: 8px 12px; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+  hour-strip .hs-root { display: flex; flex-direction: column; gap: 0.5rem; }
+  hour-strip .hs-labels { display: flex; min-width: 0; }
+  hour-strip .hs-label { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.875rem; line-height: 1.45; color: var(--fg-faint); }
+  hour-strip .hs-label.is-current { color: var(--fg); }
+  hour-strip .hs-skel { display: block; width: 40%; height: 0.875rem; }
+  hour-strip .hs-track { position: relative; height: 0.75rem; container-type: inline-size; }
+  hour-strip .hs-line,
+  hour-strip .hs-played { position: absolute; left: 0; right: 0; top: 50%; height: 1px; margin-top: -0.5px; }
+  hour-strip .hs-line { background: var(--line); }
+  hour-strip .hs-played { background: var(--fg-dim); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); transition: transform var(--dur-2) var(--ease-out); }
+  hour-strip .hs-ticks { position: absolute; inset: 0; display: flex; margin: 0; padding: 0; list-style: none; }
+  hour-strip .hs-tick { position: relative; flex: 1; }
+  hour-strip .hs-tick::before { content: ""; position: absolute; left: 0; top: 50%; width: 1px; height: 5px; margin-top: -2.5px; background: var(--line); }
+  hour-strip .hs-tick[aria-current="true"]::before { height: 9px; margin-top: -4.5px; background: var(--fg-dim); }
+  hour-strip .hs-cursor { position: absolute; left: 0; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--accent); transform: translateX(calc(var(--p, 0) * 100cqw - 50%)); transition: transform var(--dur-2) var(--ease-out); }
+  :root[data-theme="diary"] hour-strip .hs-cursor { box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 18%, transparent); }
+  :root[data-theme="sleek"] hour-strip .hs-cursor { box-shadow: 0 0 10px 2px color-mix(in oklab, var(--accent) 55%, transparent); }
+  @media (max-width: 639px) {
+    hour-strip .hs-label:not(.is-current) { display: none; }
+  }
 </style>
 
 <script>
@@ -27,7 +32,7 @@ const { ...attrs } = Astro.props;
   import type { HourBlock } from "../lib/station.ts";
 
   function pad(n: number): string { return String(n).padStart(2, "0"); }
-  function clock(): string { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+  function cap(s: string): string { return s.charAt(0).toUpperCase() + s.slice(1); }
 
   function parseBlocks(raw: string | null): HourBlock[] {
     if (!raw) return [];
@@ -47,50 +52,50 @@ const { ...attrs } = Astro.props;
     static observedAttributes = ["data-blocks", "data-hour"];
     private _timer: ReturnType<typeof setInterval> | null = null;
     private _hour = -1;
+    private _minute = -1;
 
     connectedCallback(): void {
       this._render();
-      this._timer = setInterval(() => this._tick(), 30_000);
+      this._timer = setInterval(() => this._tick(), 15_000);
     }
     disconnectedCallback(): void { if (this._timer !== null) { clearInterval(this._timer); this._timer = null; } }
     attributeChangedCallback(): void { this._render(); }
+
     private _tick(): void {
-      if (new Date().getHours() !== this._hour) { this._render(); return; }
-      const el = this.querySelector(".hs-block-clock");
-      if (el) el.textContent = clock();
+      const now = new Date();
+      if (now.getHours() !== this._hour) this._render();
+      else if (now.getMinutes() !== this._minute) this._place(now);
+    }
+
+    private _place(now: Date): void {
+      this._minute = now.getMinutes();
+      this.style.setProperty("--p", ((now.getHours() * 60 + now.getMinutes()) / 1440).toFixed(5));
     }
 
     private _render(): void {
+      const now = new Date();
       const blocks = parseBlocks(this.getAttribute("data-blocks"));
       const rawHour = this.getAttribute("data-hour");
-      const hour = rawHour !== null && /^\d+$/.test(rawHour) ? parseInt(rawHour, 10) % 24 : new Date().getHours();
+      const hour = rawHour !== null && /^\d+$/.test(rawHour) ? parseInt(rawHour, 10) % 24 : now.getHours();
+      this._hour = now.getHours();
+      this._place(now);
 
-      if (!blocks.length) { this.innerHTML = `<div class="hs-empty">—</div>`; return; }
+      const labelOf = (h: number): string => blockForHour(blocks, h).label;
+      const current = blockForHour(blocks, hour);
+      const labelsHtml = blocks.length
+        ? blocks.map(b => `<span class="hs-label${b === current ? " is-current" : ""}">` +
+            `${cap(b.label)}, ${b.from}:00 to ${b.to % 24}:00</span>`).join("")
+        : `<span class="skeleton hs-skel"></span>`;
 
-      const slices: { label: string; from: number; count: number }[] = [];
-      for (let h = 0; h < 24; h++) {
-        const label = blockForHour(blocks, h).label;
-        const last = slices[slices.length - 1];
-        if (last && last.label === label && last.from + last.count === h) last.count++;
-        else slices.push({ label, from: h, count: 1 });
-      }
+      const ticksHtml = Array.from({ length: 24 }, (_, h) =>
+        `<li class="hs-tick" role="listitem"${h === hour ? ' aria-current="true"' : ""}>` +
+        `<span class="sr-only">${pad(h)}:00${blocks.length ? `, ${labelOf(h)}` : ""}</span></li>`
+      ).join("");
 
-      this._hour = hour;
-      const blocksHtml = slices.map((s) => {
-        const isCurrent = hour >= s.from && hour < s.from + s.count;
-        return `<div class="hs-block${isCurrent ? " is-current" : ""}" style="flex:${s.count}">${s.label}` +
-          (isCurrent ? `<span class="hs-block-clock">${clock()}</span>` : "") + `</div>`;
-      }).join("");
-
-      const ticksHtml = Array.from({ length: 24 }, (_, h) => {
-        const isCurrent = h === hour;
-        const label = `${pad(h)}:00 — ${blockForHour(blocks, h).label}`;
-        return `<li class="hs-tick" role="listitem" aria-label="${label}"${isCurrent ? ' aria-current="true"' : ""}>` +
-          `<span class="hs-tick-num">${pad(h)}</span><span class="hs-tick-dot"></span></li>`;
-      }).join("");
-
-      this.innerHTML = `<div class="hs-root"><div class="hs-blocks">${blocksHtml}</div>` +
-        `<ol class="hs-ticks" role="list" aria-label="24-hour schedule">${ticksHtml}</ol></div>`;
+      this.innerHTML = `<div class="hs-root"><div class="hs-labels">${labelsHtml}</div>` +
+        `<div class="hs-track"><div class="hs-line"></div><div class="hs-played"></div>` +
+        `<ol class="hs-ticks" role="list" aria-label="24-hour schedule">${ticksHtml}</ol>` +
+        `<span class="hs-cursor" aria-hidden="true"></span></div></div>`;
     }
   }
 

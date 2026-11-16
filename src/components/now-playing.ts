@@ -1,173 +1,143 @@
 import type { ProgramEntry } from "../lib/station.ts";
-import { RADIO_STATE, RADIO_TIME, RADIO_TRACK } from "../lib/events.ts";
-import type { StateInfo, TimeInfo, TrackInfo } from "../lib/events.ts";
+import { RADIO_TRACK } from "../lib/events.ts";
+import type { TrackInfo } from "../lib/events.ts";
 import { coverArtUrl, resolveArtUrl } from "../lib/art.ts";
+import { dateStamp, personFromTitle } from "../lib/memories.ts";
 
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const RANGE = /\((\w+) (\d+)\s*[–-]\s*(\w+) (\d+) (\d{4})\)/;
 
-function formatTime(secs: number): string {
-  const m = Math.floor(secs / 60);
-  const s = Math.floor(secs % 60);
-  return `${m}:${s.toString().padStart(2, "0")}`;
+function nameOf(e: ProgramEntry): { name: string; rest: string } {
+  if (e.type === "interlude") return { name: "Again Radio", rest: "station ident" };
+  if (e.type === "id") return { name: "Unreleased", rest: "an ID with no title yet" };
+  const title = e.title ?? "";
+  const person = personFromTitle(title);
+  if (!person) return { name: title, rest: e.artist ?? "" };
+  return { name: person, rest: title.slice(person.length).replace(/[()]/g, "").trim() };
 }
 
-function albumName(album: string | undefined): string {
-  return (album ?? "").replace(/\s*\([^)]*\)\s*/, " ").trim();
+function when(album: string | undefined, iso: string | undefined): { stamp: string; plain: string } {
+  const m = album?.match(RANGE);
+  if (m) {
+    return {
+      stamp: dateStamp(album),
+      plain: `${m[1].slice(0, 3)} ${m[2]} to ${m[3].slice(0, 3)} ${m[4]}, ${m[5]}`,
+    };
+  }
+  const [y, mo, d] = (iso ?? "").split("-").map(Number);
+  if (!y || !mo || !d) return { stamp: "", plain: "" };
+  return { stamp: `'${String(y).slice(2)} ${mo} ${d}`, plain: `${MONTHS[mo - 1]} ${d}, ${y}` };
 }
 
-function formatDay(iso: string | undefined): string {
-  if (!iso) return "";
-  const d = new Date(`${iso}T00:00:00`);
-  if (Number.isNaN(d.getTime())) return iso;
-  const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
-  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+function letters(text: string): DocumentFragment {
+  const frag = document.createDocumentFragment();
+  let i = 0;
+  text.split(/\s+/).filter(Boolean).forEach((word, n) => {
+    if (n) frag.append(" ");
+    const w = document.createElement("span");
+    w.className = "w";
+    for (const ch of Array.from(word)) {
+      const l = document.createElement("span");
+      l.className = "l";
+      l.style.setProperty("--i", String(i++));
+      l.textContent = ch;
+      w.append(l);
+    }
+    frag.append(w);
+  });
+  return frag;
 }
 
-function initials(title: string | undefined): string {
-  const words = (title ?? "").split(/[\s,]+/).filter((w) => /[a-z0-9]/i.test(w));
-  if (!words.length) return "?";
-  return words.slice(0, 3).map((w) => w[0]).join("").toUpperCase();
-}
+const covers = new Map<string, Promise<string>>();
 
-const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+function coverFor(entry: ProgramEntry): Promise<string> {
+  const key = `${entry.title ?? ""}|${entry.album ?? ""}`;
+  let p = covers.get(key);
+  if (!p) {
+    p = resolveArtUrl(entry).then((u) => u ?? coverArtUrl());
+    covers.set(key, p);
+  }
+  return p;
+}
 
 class NowPlayingElement extends HTMLElement {
-  private artworkBox!: HTMLElement;
-  private fieldsEl!: HTMLElement;
-  private emptyEl!: HTMLElement;
-  private titleEl!: HTMLElement;
-  private artistEl!: HTMLElement;
-  private albumEl!: HTMLElement;
-  private albumWrap!: HTMLElement;
-  private programmeEl!: HTMLElement;
-  private stateDot!: HTMLElement;
-  private progressFill!: HTMLElement;
-  private timeElapsed!: HTMLElement;
-  private timeRemaining!: HTMLElement;
-
-  private currentEntry: ProgramEntry | null = null;
-  private lastPct = -1;
-  private lastSec = -1;
-  private lastArtKey: string | null = null;
-  private playing = false;
+  private fit!: HTMLElement;
+  private name!: HTMLElement;
+  private rest!: HTMLElement;
+  private meta!: HTMLElement;
+  private cover!: HTMLElement;
+  private seq = 0;
 
   connectedCallback() {
-    this.innerHTML = `
-      <div class="np-artwork-box"><div class="np-placeholder is-stamp">NOW PLAYING</div></div>
-      <div class="np-track-area">
-        <div class="np-empty-state"><hr class="rule" /><span class="stamp">NOW PLAYING</span></div>
-        <div class="np-fields">
-          <div class="np-title-wrap"><div class="np-title"></div></div>
-          <div class="np-artist-wrap"><div class="np-artist"></div></div>
-          <div class="np-album-wrap"><div class="np-album"></div></div>
-          <div class="np-programme"><span class="np-state-dot">&#9679;</span><span class="np-programme-text"></span></div>
-          <div class="np-progress-wrap">
-            <div class="np-progress-track"><div class="np-progress-fill"></div></div>
-            <div class="np-progress-times"><span class="np-elapsed">0:00</span><span class="np-remaining">0:00</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    `;
-
-    this.artworkBox = this.querySelector(".np-artwork-box") as HTMLElement;
-    this.fieldsEl = this.querySelector(".np-fields") as HTMLElement;
-    this.emptyEl = this.querySelector(".np-empty-state") as HTMLElement;
-    this.titleEl = this.querySelector(".np-title") as HTMLElement;
-    this.artistEl = this.querySelector(".np-artist") as HTMLElement;
-    this.albumEl = this.querySelector(".np-album") as HTMLElement;
-    this.albumWrap = this.querySelector(".np-album-wrap") as HTMLElement;
-    this.programmeEl = this.querySelector(".np-programme-text") as HTMLElement;
-    this.stateDot = this.querySelector(".np-state-dot") as HTMLElement;
-    this.progressFill = this.querySelector(".np-progress-fill") as HTMLElement;
-    this.timeElapsed = this.querySelector(".np-elapsed") as HTMLElement;
-    this.timeRemaining = this.querySelector(".np-remaining") as HTMLElement;
-
-    document.addEventListener(RADIO_TRACK, (e) => {
-      this.onTrack((e as CustomEvent<TrackInfo>).detail);
-    });
-    document.addEventListener(RADIO_TIME, (e) => {
-      this.onTime((e as CustomEvent<TimeInfo>).detail);
-    });
-    document.addEventListener(RADIO_STATE, (e) => {
-      this.playing = (e as CustomEvent<StateInfo>).detail.playing;
-      this.stateDot.textContent = this.playing ? "●" : "○";
-    });
+    const q = (s: string) => this.querySelector<HTMLElement>(s)!;
+    this.fit = q(".np-fit");
+    this.name = q(".np-name");
+    this.rest = q(".np-rest");
+    this.meta = q(".np-meta");
+    this.cover = q(".np-cover");
+    this.meta.dataset.empty = "";
+    document.addEventListener(RADIO_TRACK, (e) => this.onTrack((e as CustomEvent<TrackInfo>).detail));
+    setTimeout(() => {
+      if (this.fit.dataset.ready !== undefined) return;
+      this.fit.dataset.ready = "";
+      this.name.textContent = "Still tuning";
+      this.rest.textContent = "The station has not answered yet. Reload the page if this stays.";
+    }, 10_000);
   }
 
-  private async onTrack(info: TrackInfo) {
-    const { entry, venue, date } = info;
+  private onTrack({ entry, programTitle, date }: TrackInfo) {
+    const { name, rest } = nameOf(entry);
+    const longest = Math.max(5, ...name.split(/\s+/).map((w) => Array.from(w).length));
+    this.fit.style.setProperty("--len", String(longest));
 
-    this.fieldsEl.classList.remove("is-live");
-    await sleep(200);
+    const label = document.createElement("span");
+    label.className = "sr-only";
+    label.textContent = name;
+    const visual = document.createElement("span");
+    visual.className = "np-name-in";
+    visual.setAttribute("aria-hidden", "true");
+    visual.append(letters(name));
+    this.name.replaceChildren(label, visual);
 
-    this.currentEntry = entry;
-    this.titleEl.textContent = entry.title ?? "";
-    this.artistEl.textContent = entry.artist ?? "";
+    const restIn = document.createElement("span");
+    restIn.className = "np-rest-in";
+    restIn.textContent = rest;
+    this.rest.replaceChildren(restIn);
+    this.fit.dataset.ready = "";
 
-    if (entry.album) {
-      this.albumEl.textContent = albumName(entry.album);
-      this.albumWrap.style.visibility = "visible";
-    } else {
-      this.albumEl.textContent = "";
-      this.albumWrap.style.visibility = "hidden";
-    }
-
-    const parts = [venue, formatDay(date)].filter(Boolean);
-    this.programmeEl.textContent = parts.join(" · ");
-    this.stateDot.textContent = this.playing ? "●" : "○";
-
-    this.lastPct = -1;
-    this.emptyEl.classList.add("is-gone");
-    this.fieldsEl.classList.add("is-live");
-
-    const artKey = `${entry.type}|${entry.title ?? ""}|${entry.album ?? ""}`;
-    if (artKey !== this.lastArtKey) {
-      this.lastArtKey = artKey;
-      void this.updateArtwork(entry);
-    }
+    // without an album, name the artist rather than repeat the programme credit under the video
+    const artist = entry.artist && !/^fred again/i.test(entry.artist) ? entry.artist : "";
+    const metaText = entry.album?.replace(/\s*\([^)]*\)\s*/, " ").trim() || (artist !== rest ? artist : "");
+    this.meta.toggleAttribute("data-empty", entry.type !== "track" || !metaText);
+    this.q(".np-album").textContent = metaText || programTitle;
+    const w = when(entry.album, date);
+    this.q(".np-stamp").textContent = w.stamp;
+    this.q(".np-plain").textContent = w.plain;
+    if (entry.type === "track") void this.setCover(entry);
+    else this.cover.replaceChildren();
   }
 
-  private async updateArtwork(entry: ProgramEntry) {
-    if (entry.type === "id") {
-      this.artworkBox.innerHTML = `<div class="np-placeholder">${initials(entry.title)}</div>`;
-      return;
-    }
-    if (entry.type === "interlude") {
-      this.artworkBox.innerHTML = `<div class="np-ident">AGAIN RADIO</div>`;
-      return;
-    }
+  private q(s: string): HTMLElement {
+    return this.querySelector<HTMLElement>(s)!;
+  }
 
-    const resolved = await resolveArtUrl(entry);
-    const src = resolved ?? coverArtUrl();
-    const img = document.createElement("img");
-    img.alt = entry.title ?? "Track artwork";
-    const loaded = await new Promise<boolean>((res) => {
-      img.onload = () => res(true);
-      img.onerror = () => res(false);
-      img.src = src;
+  private async setCover(entry: ProgramEntry) {
+    const mine = ++this.seq;
+    this.cover.classList.add("skeleton");
+    this.cover.replaceChildren();
+    const src = await coverFor(entry);
+    if (mine !== this.seq) return;
+    const img = new Image();
+    img.alt = "";
+    img.addEventListener("load", () => {
+      if (mine !== this.seq) return;
+      this.cover.classList.remove("skeleton");
+      this.cover.replaceChildren(img);
     });
-    if (!loaded) {
-      this.artworkBox.innerHTML = `<div class="np-placeholder">${initials(entry.title)}</div>`;
-      return;
-    }
-    this.artworkBox.innerHTML = "";
-    this.artworkBox.appendChild(img);
-  }
-
-  private onTime({ current }: { current: number; duration: number }) {
-    const entry = this.currentEntry;
-    if (!entry) return;
-    const elapsed = Math.max(0, Math.min(current - entry.offset, entry.duration));
-    const pct = entry.duration > 0 ? Math.round((elapsed / entry.duration) * 100) : 0;
-    if (pct !== this.lastPct) {
-      this.lastPct = pct;
-      this.progressFill.style.width = `${pct}%`;
-    }
-    const sec = Math.floor(elapsed);
-    if (sec === this.lastSec) return;
-    this.lastSec = sec;
-    this.timeElapsed.textContent = formatTime(elapsed);
-    this.timeRemaining.textContent = formatTime(entry.duration - elapsed);
+    img.addEventListener("error", () => {
+      if (mine === this.seq) this.cover.classList.remove("skeleton");
+    });
+    img.src = src;
   }
 }
 
