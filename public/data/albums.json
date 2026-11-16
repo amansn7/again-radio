@@ -1,0 +1,26 @@
+{
+  "albums": [
+    { "year": 2019, "title": "Kyle (i found you)", "subtitle": "2019 · single", "kind": "single" },
+    { "year": 2019, "title": "Julie (stay)", "subtitle": "2019 · single", "kind": "single" },
+    { "year": 2019, "title": "Me (sorry)", "subtitle": "2019 · single", "kind": "single" },
+    { "year": 2020, "title": "Charades", "subtitle": "JAN 2020 · with Headie One", "kind": "single" },
+    { "year": 2020, "title": "GANG", "subtitle": "APR 2020 · with Headie One", "kind": "mixtape" },
+    { "year": 2020, "title": "Actual Life", "subtitle": "APR 14 — DEC 17 2020 · EP", "kind": "ep" },
+    { "year": 2021, "title": "Actual Life (April 14 - December 17 2020)", "subtitle": "APR 2021", "kind": "album" },
+    { "year": 2021, "title": "Actual Life 2 (February 2 - October 15 2021)", "subtitle": "NOV 2021", "kind": "album" },
+    { "year": 2022, "title": "USB", "subtitle": "JAN 2022", "kind": "compilation" },
+    { "year": 2022, "title": "Actual Life 3 (January 1 - September 9 2022)", "subtitle": "OCT 2022", "kind": "album" },
+    { "year": 2023, "title": "Secret Life", "subtitle": "MAY 2023 · with Brian Eno", "kind": "album" },
+    { "year": 2024, "title": "ten days", "subtitle": "SEP 2024", "kind": "album" },
+    { "year": 2024, "title": "two more days", "subtitle": "2024 · EP", "kind": "ep" },
+    { "year": 2025, "title": "Skepta .. Fred", "subtitle": "AUG 2025 · EP", "kind": "ep" },
+    { "year": 2025, "title": "USB002", "subtitle": "DEC 2025", "kind": "compilation" },
+    { "year": 2026, "title": "USB002 REMIXES", "subtitle": "2026", "kind": "compilation" },
+    { "year": 2026, "title": "9 Months & 50 Hours", "subtitle": "JUL 2026 · with Latin Mafia", "kind": "mixtape" }
+  ],
+  "tour": [
+    { "city": "Delhi", "date": "2026-12-05" },
+    { "city": "Mumbai", "date": "2026-12-09" },
+    { "city": "Bengaluru", "date": "2026-12-13" }
+  ]
+}

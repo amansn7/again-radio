@@ -1,5 +1,6 @@
 import { resolveArtUrl } from "../lib/art.ts";
 import type { ProgramEntry } from "../lib/station.ts";
+import { RADIO_TIME, RADIO_TRACK } from "../lib/events.ts";
 
 interface TrackDetail {
   entry: ProgramEntry;
@@ -246,7 +247,7 @@ export function startField(canvas: HTMLCanvasElement): () => void {
 
   document.addEventListener("visibilitychange", handleVisibility);
 
-  document.addEventListener("radio:track", ((e: Event) => {
+  document.addEventListener(RADIO_TRACK, ((e: Event) => {
     const ev = e as CustomEvent<TrackDetail>;
     currentEntry = ev.detail.entry;
     refreshTheme();
@@ -256,7 +257,7 @@ export function startField(canvas: HTMLCanvasElement): () => void {
     });
   }) as EventListener);
 
-  document.addEventListener("radio:time", ((e: Event) => {
+  document.addEventListener(RADIO_TIME, ((e: Event) => {
     const ev = e as CustomEvent<TimeDetail>;
     currentTime = ev.detail.current;
   }) as EventListener);

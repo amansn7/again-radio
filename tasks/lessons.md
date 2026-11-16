@@ -16,3 +16,16 @@ Rules learned from corrections. Append one line per mistake — specific, action
 - 2026-11-15 — `npx playwright screenshot` fails here: playwright 1.65 refuses to install
   chromium on macOS 12 and the cached headless shell is an older revision. Rule: use
   `node scripts/shot.mjs <url> <out.png> <w> <h> [theme]`, which drives the cached shell.
+- 2026-11-16 — delegates committed on their own (`git commit`) and one downloaded web
+  fonts into `public/fonts/` without being asked. Rule: put "edit files, do not run git"
+  and "no downloaded assets" in **every** brief, and audit `git status` for untracked
+  files before each phase commit.
+- 2026-11-16 — `loading="lazy"` on an `<img>` that is not yet in the DOM never loads, so
+  the artwork silently stayed blank. Rule: set `src` only after the element is in the
+  document, or drop `loading="lazy"`.
+- 2026-11-16 — stacking 20 USB002 shows inside one year column made the archive rail
+  2000px tall. Rule: a list of items belongs in its own horizontal rail, not stacked in a
+  column that is meant to be one item deep.
+- 2026-11-16 — a `const` declared later in a function body shadowed an outer one and the
+  guard above it hit a temporal dead zone ("Cannot access 'x' before initialization").
+  Rule: one binding per name per scope; do not shadow.

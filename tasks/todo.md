@@ -47,9 +47,15 @@ stops on a hidden tab and paints a single static frame under `prefers-reduced-mo
 The auto theme already shuffles by date+hour and crossfades.
 
 ## Phase 5 — USB002 + archive
-- [ ] `programs/usb002-every-show.json` from the 21 show chapters
-- [ ] `Archive.astro` — 2019→2026 rail, albums with date-range subtitles
-- [ ] India tour countdown (Delhi 5 Dec · Mumbai 9 Dec · Bengaluru 13 Dec 2026)
+- [x] `programs/usb002-every-show.json` from the 21 show chapters
+- [x] `Archive.astro` — 2019→2026 rail, albums with date-range subtitles
+- [x] India tour countdown (Delhi 5 Dec · Mumbai 9 Dec · Bengaluru 13 Dec 2026)
+
+Shipped: `usb002-every-show.json` — the 108-hour programme cut into the 20 city blocks
+Fred's own pinned chapter list marks, tiling 0→388800s exactly, each with the guest line
+from the source. `<archive-rail>` renders the 2019→2026 catalogue, a horizontal USB002
+show rail that cues the player at the right chapter via `radio:cue`, and a live India
+tour countdown. `public/data/albums.json` holds the release timeline and the tour dates.
 
 ## Deferred — needs a human
 - [ ] own 24/7 YouTube live channel (cleared audio, VPS, ffmpeg, systemd)

@@ -36,14 +36,21 @@ Read `docs/SPEC.md` before touching anything. It is the contract.
 npm run build          # must exit 0
 npm run preview        # local preview for screenshots
 node scripts/verify.mjs # data + structure checks
+node scripts/verify.mjs --selftest  # pure-logic checks
+node scripts/schedule.test.mjs      # schedule lookup against the real tracklist
 ```
 
-Screenshots (chromium is already cached):
+Screenshots — `npx playwright screenshot` **does not work here**: playwright 1.65 refuses
+to install chromium on macOS 12 and the cached headless shell is an older revision. Use
+the repo-local helper instead, which drives the cached shell:
 
 ```
-npx playwright screenshot --viewport-size=1440,900 http://localhost:4321 .verify/desktop.png
-npx playwright screenshot --viewport-size=390,844 http://localhost:4321 .verify/mobile.png
+node scripts/shot.mjs http://localhost:4321 .verify/desktop.png 1440 900
+node scripts/shot.mjs http://localhost:4321 .verify/mobile.png 390 844
+node scripts/shot.mjs http://localhost:4321 .verify/sleek.png 1440 900 sleek
 ```
+
+The last argument optionally presets the theme (`auto | diary | sleek`).
 
 Then read the PNGs with the Read tool and judge them honestly. Fix what looks wrong.
 
@@ -54,7 +61,7 @@ dies with it. Never background with `&`. Detach instead — it starts a new sess
 
 ```bash
 python3 scripts/detach.py .orchestrator/logs/<unit>.log sh -c \
-  'agy --print "Read .orchestrator/briefs/<unit>.md and execute it. Do not touch files outside your ownership list." \
+  'agy --print "Read .orchestrator/briefs/<unit>.md and execute it. \
    --model claude-sonnet-4-6 --mode accept-edits --dangerously-skip-permissions; echo "EXIT:$?"'
 ```
 
@@ -69,6 +76,12 @@ For long synchronous commands pass a generous `timeout` to the shell tool
 
 If a delegate's log ends in `error: interrupted`, it was killed by a timeout —
 relaunch it with `scripts/detach.py`.
+
+**Delegates do not commit.** The orchestrator owns every commit, so the diff and the
+message can be checked. Tell them in the brief: "edit files, do not run git".
+
+**Delegates do not download assets.** No web fonts, no images, no vendored files into
+`public/`. System font stacks only; artwork is hotlinked.
 
 ## Commit style
 

@@ -62,16 +62,16 @@ const CURATED: Record<string, string> = {
     "A borrowed voice held gently in a loop. Kammy's warmth carries the whole of Actual Life 3.",
   "Danielle (smile on my face)":
     "Whatever Danielle said made it into the record. That smile is now permanent.",
-  "Tanya":
-    "No parenthetical. The name alone is enough — Tanya doesn't need an explanation.",
+  "Tanya (maybe life)":
+    "Only on the record does the name get a second half. Tanya doesn't need an explanation.",
   "Delilah (pull me out of this)":
     "A voice note passed between friends, stretched until it holds the whole room up.",
-  "BBY":
-    "Abbreviated, intimate. The kind of nickname that only sticks between two people.",
+  "BBY vs. Real As It Gets (Fred again.. Bootleg)":
+    "Abbreviated, intimate, and welded to something else entirely. The kind of nickname that only sticks between two people.",
   "Stay With Me":
     "A simple ask made enormous by the space the production leaves around it.",
-  "Haribo":
-    "Sweet, sugar-rush short — over before you've decided how you feel about it.",
+  "Haribo vs. PTSD (Fred again.. Bootleg)":
+    "Sweet, sugar-rush short, dragged through something heavier. Over before you've decided how you feel about it.",
   "Feelings":
     "The title does the work. Everything else in the track is just proof.",
   "Strong":
@@ -82,15 +82,15 @@ const CURATED: Record<string, string> = {
     "Dense and shifting. The kind of track that changes depending on where you're standing.",
   "Lights Out":
     "The room goes dark and the music keeps going. That's the whole feeling.",
-  "Kahan":
+  "Kahan (last year)":
     "Two syllables and a year attached to them. Whatever happened, only that much was kept.",
   "Baby again..":
     "Skrillex and Four Tet together — and the name is a small, private thing between all of them.",
   "Rumble":
     "Low-end, persistent. The kind of bass that you feel before you hear.",
-  "Marnie":
+  "Marnie (wish i had u)":
     "Another name, another person who ended up inside a record without asking for it.",
-  "Angie (I've been lost)":
+  "Angie (i've been lost)":
     "The parenthetical is the admission. Angie just happened to be there for it.",
   "Clara (the night is dark)":
     "The last track of the Boiler Room set. The night is dark and the name is Clara.",
@@ -170,7 +170,7 @@ function buildFallback(title: string, ctx: MemoryContext | undefined): string {
 
 export function memoryFor(entry: ProgramEntry, ctx?: MemoryContext): MemoryLine {
   const person = personFromTitle(entry.title);
-  const stamp = dateStamp(entry.album);
+  const stamp = dateStamp(entry.album) || (ctx?.date ? formatDate(ctx.date) : "");
 
   if (entry.memory) {
     return { person, stamp, text: entry.memory, generated: false };

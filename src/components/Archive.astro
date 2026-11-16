@@ -1,21 +1,31 @@
 ---
 ---
-<archive></archive>
+<archive-rail></archive-rail>
 
 <style is:global>
-  archive { display: block; width: 100%; border-top: 1px solid var(--line); }
+  archive-rail { display: block; width: 100%; border-top: 1px solid var(--line); }
   .ar-root { display: flex; flex-direction: column; }
 
   .ar-rail {
     overflow-x: auto; overflow-y: hidden;
     scroll-snap-type: x proximity;
-    display: flex; gap: 0; min-height: 320px; outline: none;
+    display: flex; gap: 0; min-height: 168px; outline: none;
   }
   .ar-rail:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   @media (prefers-reduced-motion: reduce) { .ar-rail { scroll-behavior: auto; } }
 
+  .ar-band {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 7px 16px; border-top: 1px solid var(--line);
+    background: var(--bg-2);
+    font-family: var(--font-mono); font-size: 0.625rem;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim);
+  }
+  .ar-band-mark { color: var(--accent); flex-shrink: 0; }
+  .ar-band-note { margin-left: auto; }
+
   .ar-year {
-    flex: 0 0 160px; min-width: 160px; scroll-snap-align: start;
+    flex: 0 0 172px; min-width: 172px; scroll-snap-align: start;
     border-right: 1px solid var(--line);
     display: flex; flex-direction: column; padding: 0;
   }
@@ -38,28 +48,32 @@
     text-transform: uppercase; color: var(--fg-dim); display: block; margin-top: 2px;
   }
 
-  .ar-usb-label {
-    font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--accent);
-    padding: 6px 10px 4px; border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line); background: var(--bg-2); margin-top: auto;
+  .ar-shows-rail {
+    overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity;
+    display: flex; outline: none; border-top: 1px solid var(--line);
   }
-  .ar-shows { display: flex; flex-direction: column; gap: 0; }
+  .ar-shows-rail:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  @media (prefers-reduced-motion: reduce) { .ar-shows-rail { scroll-behavior: auto; } }
 
   .ar-show-btn {
-    background: none; border: none; border-bottom: 1px solid var(--line);
-    cursor: pointer; text-align: left; padding: 7px 10px;
-    display: flex; flex-direction: column; gap: 2px; width: 100%; color: inherit;
+    background: none; border: none; border-right: 1px solid var(--line);
+    cursor: pointer; text-align: left; padding: 10px 12px;
+    display: flex; flex-direction: column; gap: 3px; width: 232px; min-width: 232px;
+    color: inherit; scroll-snap-align: start; height: 116px;
   }
   .ar-show-btn:hover { background: var(--bg-2); }
   .ar-show-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
   .ar-show-city {
-    font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+    font-family: var(--font-display); font-size: 0.8125rem; font-weight: 700;
     color: var(--fg); text-transform: uppercase; line-height: 1.1;
   }
-  .ar-show-guest { font-family: var(--font-body); font-size: 0.6rem; color: var(--fg-dim); line-height: 1.3; }
-  .ar-show-ts { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.08em; color: var(--fg-dim); margin-top: 1px; }
+  .ar-show-guest {
+    font-family: var(--font-body); font-size: 0.625rem; color: var(--fg-dim); line-height: 1.35;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .ar-show-ts { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.08em; color: var(--fg-dim); margin-top: auto; }
 
   .ar-countdown {
     border-top: 1px solid var(--line); padding: 10px 16px;
@@ -86,10 +100,11 @@
 <script>
   import {
     parseAlbumsData, parseProgramData,
-    buildRailHtml, buildCountdownHtml,
+    buildRailHtml, buildShowsHtml, buildCountdownHtml,
     msUntil, fmtCountdown,
   } from "./archive-rail.ts";
   import type { TourDate } from "./archive-rail.ts";
+  import { RADIO_CUE } from "../lib/events.ts";
 
   class ArchiveElement extends HTMLElement {
     private _timerInterval: ReturnType<typeof setInterval> | null = null;
@@ -98,7 +113,14 @@
     async connectedCallback(): Promise<void> {
       this.innerHTML =
         `<div class="ar-root">` +
+        `<div class="ar-band"><span class="ar-band-mark">Archive</span>` +
+        `<span>2019 — 2026</span>` +
+        `<span class="ar-band-note"></span></div>` +
         `<div class="ar-rail" tabindex="0" aria-label="Catalogue, 2019 to 2026" role="region"></div>` +
+        `<div class="ar-band"><span class="ar-band-mark">USB002 Tour</span>` +
+        `<span>Every show, in order</span>` +
+        `<span class="ar-band-note ar-band-note-tour"></span></div>` +
+        `<div class="ar-shows-rail" tabindex="0" aria-label="USB002 tour shows" role="region"></div>` +
         `<div class="ar-countdown"></div>` +
         `</div>`;
 
@@ -114,12 +136,23 @@
       const programData = programRes.status === "fulfilled" ? parseProgramData(programRes.value) : { entries: [] };
 
       this._tourDates = albumsData.tour;
-      rail.innerHTML = buildRailHtml(albumsData.albums, programData.entries);
+      rail.innerHTML = buildRailHtml(albumsData.albums);
 
-      rail.querySelectorAll<HTMLButtonElement>(".ar-show-btn").forEach(btn => {
+      const showsRail = this.querySelector<HTMLElement>(".ar-shows-rail")!;
+      showsRail.innerHTML = buildShowsHtml(programData.entries);
+      showsRail.addEventListener("keydown", (e: KeyboardEvent) => this._onKey(e));
+
+      const note = this.querySelector<HTMLElement>(".ar-band-note");
+      if (note) note.textContent = `Catalogue · ${albumsData.albums.length} releases`;
+      const tourNote = this.querySelector<HTMLElement>(".ar-band-note-tour");
+      if (tourNote) {
+        tourNote.textContent = `108 hours · ${programData.entries.length} shows`;
+      }
+
+      showsRail.querySelectorAll<HTMLButtonElement>(".ar-show-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const offset = parseInt(btn.dataset.offset ?? "0", 10);
-          document.dispatchEvent(new CustomEvent("radio:cue", {
+          document.dispatchEvent(new CustomEvent(RADIO_CUE, {
             detail: { program: "programs/usb002-every-show.json", offset }
           }));
         });
@@ -150,14 +183,13 @@
     }
 
     private _onKey(e: KeyboardEvent): void {
-      const rail = this.querySelector<HTMLElement>(".ar-rail")!;
+      const target = e.currentTarget as HTMLElement;
       const col = this.querySelector<HTMLElement>(".ar-year");
-      if (!col) return;
-      const colW = col.offsetWidth;
-      if (e.key === "ArrowRight") { e.preventDefault(); rail.scrollBy({ left: colW }); }
-      else if (e.key === "ArrowLeft") { e.preventDefault(); rail.scrollBy({ left: -colW }); }
+      const step = col ? col.offsetWidth : 172;
+      if (e.key === "ArrowRight") { e.preventDefault(); target.scrollBy({ left: step }); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); target.scrollBy({ left: -step }); }
     }
   }
 
-  if (!customElements.get("archive")) customElements.define("archive", ArchiveElement);
+  if (!customElements.get("archive-rail")) customElements.define("archive-rail", ArchiveElement);
 </script>

@@ -85,50 +85,35 @@ export function fmtCountdown(ms: number): string {
   return parts.join(" ");
 }
 
-export function buildRailHtml(albums: Album[], shows: ShowEntry[]): string {
+export function buildRailHtml(albums: Album[]): string {
   const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 
-  // USB002 shows are distributed: if titles contain no year, all go to 2025
-  const showsByYear: Record<number, ShowEntry[]> = { 2025: [], 2026: [] };
-  const hasYearInTitle = shows.some(s => /\d{4}/.test(s.title));
-  for (const s of shows) {
-    if (hasYearInTitle) {
-      const m = s.title.match(/(\d{4})/);
-      const yr = m ? parseInt(m[1]) : 0;
-      if (yr === 2025 || yr === 2026) showsByYear[yr].push(s);
-    } else {
-      showsByYear[2025].push(s);
-    }
-  }
-
-  return years.map(yr => {
-    const yrAlbums = albums.filter(a => a.year === yr);
-    const releasesHtml = yrAlbums.map(a =>
+  return years.map((yr) => {
+    const yrAlbums = albums.filter((a) => a.year === yr);
+    const releasesHtml = yrAlbums.map((a) =>
       `<div class="ar-release">` +
       `<span class="ar-release-title">${a.title}</span>` +
       `<span class="ar-release-sub">${a.subtitle}</span>` +
       `</div>`
     ).join("");
 
-    const usbShows = showsByYear[yr] ?? [];
-    const usbHtml = usbShows.length
-      ? `<div class="ar-usb-label">USB002 Tour</div><div class="ar-shows">` +
-        usbShows.map(s =>
-          `<button class="ar-show-btn" ` +
-          `aria-label="Play USB002, ${s.title}, from ${fmtOffset(s.offset)}" ` +
-          `data-offset="${s.offset}">` +
-          `<span class="ar-show-city">${s.title}</span>` +
-          (s.memory ? `<span class="ar-show-guest">${s.memory}</span>` : "") +
-          `<span class="ar-show-ts">${fmtOffset(s.offset)}</span>` +
-          `</button>`
-        ).join("") + `</div>`
-      : "";
-
     return `<div class="ar-year" tabindex="-1">` +
       `<div class="ar-year-label">${yr}</div>` +
       `<div class="ar-releases">${releasesHtml}</div>` +
-      usbHtml + `</div>`;
+      `</div>`;
   }).join("");
+}
+
+export function buildShowsHtml(shows: ShowEntry[]): string {
+  return shows.map((s) =>
+    `<button class="ar-show-btn" ` +
+    `aria-label="Play USB002, ${s.title}, from ${fmtOffset(s.offset)}" ` +
+    `data-offset="${s.offset}">` +
+    `<span class="ar-show-city">${s.title}</span>` +
+    (s.memory ? `<span class="ar-show-guest">${s.memory}</span>` : "") +
+    `<span class="ar-show-ts">${fmtOffset(s.offset)}</span>` +
+    `</button>`
+  ).join("");
 }
 
 export function buildCountdownHtml(tourDates: TourDate[]): string {
