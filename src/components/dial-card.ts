@@ -77,10 +77,10 @@ export function cardEl(c: Card, air: TrackInfo | null, front: boolean): HTMLElem
   if (!c.cue) b.setAttribute("aria-disabled", "true");
   if (air && c.onAir(air)) b.setAttribute("aria-current", "true");
   b.innerHTML =
-    `<span class="dl-art"></span><span class="dl-body">` +
+    `<span class="dl-face"><span class="dl-art"></span><span class="dl-body">` +
     `<span class="dl-tags"><span class="dl-badge">${esc(c.badge)}</span>` +
     `<span class="dl-live"><span class="live-dot"></span>On air</span></span>` +
-    `<span class="dl-title">${esc(c.title)}</span><span class="dl-sub num">${esc(c.sub)}</span></span>`;
+    `<span class="dl-title">${esc(c.title)}</span><span class="dl-sub num">${esc(c.sub)}</span></span></span>`;
   void c.art().then((url) => { if (url && b.isConnected) loadArt(b, cardSize(url), front); });
   return b;
 }

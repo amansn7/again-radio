@@ -43,32 +43,38 @@
     perspective: 900px; perspective-origin: 50% calc(5rem + var(--card-h) / 2);
   }
   .dl-track { position: absolute; inset: 0; transform-style: preserve-3d; }
+  /* The shell carries the glow; the face carries the look and the reflection. A reflection
+     copies its element's shadow clipped to a rectangle, which drew square tints at the
+     rounded corners, so the glow must live on an element that is not reflected. */
   .dl-card {
     --rim: var(--accent);
     position: absolute; left: 50%; top: 5rem; width: var(--card-w);
-    display: flex; flex-direction: column; gap: 0.15rem; padding: 0.5rem; overflow: hidden; isolation: isolate;
+    display: block; padding: 0; border: 0; background: none;
     font: inherit; text-align: left; color: var(--fg); cursor: pointer;
-    border-radius: 18px; border: 1px solid color-mix(in oklab, var(--rim) 60%, transparent);
-    background:
-      radial-gradient(120% 80% at 20% 10%, color-mix(in oklab, var(--rim) 45%, transparent), transparent 65%),
-      color-mix(in oklab, var(--bg) 80%, transparent);
-    box-shadow:
-      inset 0 0 0 1px color-mix(in oklab, var(--rim) 20%, transparent),
-      0 22px 60px -22px color-mix(in oklab, var(--rim) 75%, transparent);
+    border-radius: 18px;
+    box-shadow: 0 22px 60px -22px color-mix(in oklab, var(--rim) 75%, transparent);
     backface-visibility: hidden;
     transition: transform 700ms var(--ease-out), opacity 700ms var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
   }
+  .dl-face {
+    display: flex; flex-direction: column; gap: 0.15rem; padding: 0.5rem; overflow: hidden; isolation: isolate;
+    border-radius: inherit; border: 1px solid color-mix(in oklab, var(--rim) 60%, transparent);
+    background:
+      radial-gradient(120% 80% at 20% 10%, color-mix(in oklab, var(--rim) 45%, transparent), transparent 65%),
+      color-mix(in oklab, var(--bg) 80%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--rim) 20%, transparent);
+  }
   .dl-card[data-shape="wide"] { width: calc(var(--card-w) * 1.35); }
-  .dl-stage:not(.is-flat) .dl-card {
+  .dl-stage:not(.is-flat) .dl-face {
     -webkit-box-reflect: below 10px linear-gradient(transparent 68%, color-mix(in srgb, var(--fg) 32%, transparent));
   }
   .dl-track.is-still .dl-card { transition: box-shadow var(--dur-2) var(--ease-out); }
   .dl-card[data-front] {
     box-shadow:
-      inset 0 0 0 1px color-mix(in oklab, var(--rim) 45%, transparent),
       0 0 46px -6px color-mix(in oklab, var(--rim) 70%, transparent),
       0 28px 80px -24px color-mix(in oklab, var(--rim) 90%, transparent);
   }
+  .dl-card[data-front] .dl-face { box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--rim) 45%, transparent); }
   .dl-art {
     position: relative; display: block; aspect-ratio: 1; overflow: hidden; border-radius: 12px; isolation: isolate; -webkit-mask-image: -webkit-radial-gradient(white, black);
     background:
