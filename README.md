@@ -25,7 +25,7 @@ Fred again..'s music runs in one direction. It starts small and private: a voice
 **AGAIN RADIO** is engineered from that same thesis:
 - **Fragments, not feeds.** Content arrives one piece at a time — a sampled voice, a date range, a line of memory.
 - **Words are light.** Just as phrases are projected huge at Fred's shows, the name of the person behind each track commands the room, arriving word-by-word.
-- **The room breathes.** An ambient generative fabric pulses underneath everything, displaced by 2D noise and synchronized to the current track's BPM.
+- **The room breathes.** The official concert video plays full-bleed behind the entire page as a living projection, overlaid by liquid glass surfaces and a reactive orb pulsating to the track's BPM grid.
 - **Everyone hears the exact same moment.** It is an authentic live radio, not a personal playlist. Every listener across the globe shares the same playback second.
 
 ---
@@ -44,24 +44,19 @@ Every song is anchored to the human fragment it was born from:
 - **Date Range Stamps**: Formatted lifespans from album eras rendered as vintage camera date stamps (e.g., `JAN 1 — SEP 9 2022`).
 - **Curated & Generative Memory Lines**: Curated original prose for celebrated moments, paired with honest, non-hallucinated fallbacks for deep catalog cuts.
 
-### 🎨 The Living Fabric & Palette Engine
-- **Artwork Palette Extraction**: Samples colors from high-resolution album artwork at runtime using `OffscreenCanvas` in `palette.ts`.
-- **Registered CSS `@property` Interpolation**: Dynamic palette variables (`--art-1`, `--art-2`, `--art-3`, `--art-accent`) crossfade smoothly without frame drops.
-- **BPM Beat Clock**: Ambient noise fabric swells and breathes with the track’s tempo, sending expanding ripple shockwaves across the viewport on track transitions.
+### 🎨 Ambient Stage & Dynamic Palette Engine
+- **Full-Bleed Concert Backdrop**: The official YouTube broadcast runs full-viewport behind the entire interface; sheets and controls form a tinted veil so the live show breathes through everywhere.
+- **Liquid Glass Architecture**: Translucent glass surfaces (`src/lib/glass.ts`) featuring custom SVG refraction filters, pointer-responsive specular sheen, and soft frosted fallbacks.
+- **Dynamic Artwork Palette**: Colors are sampled in real time from album artwork using `OffscreenCanvas` (`src/lib/palette.ts`) and injected into registered CSS `@property` tokens (`--art-1`, `--art-2`, `--art-3`, `--art-accent`) for smooth 2.4-second crossfades.
+- **Tempo Beat Clock & Reactive Orb**: Because YouTube audio cannot be directly analyzed across origins, a rAF tempo clock (`src/lib/pulse.ts`) locks onto the track's BPM grid, pulsing the kinetic hero typography and the floating Siri-style orb (`src/components/Orb.astro`) on every kick and offbeat.
 
-### 🌓 Dual Aesthetic Universes
+### 🌌 The Aesthetic: Rave (The Room)
 
-The station reflects the two halves of Fred's creative world:
-
-| Aspect | `diary` &mdash; **Diary** (The Fragment) | `sleek` &mdash; **Rave** (The Room) |
-|---|---|---|
-| **Medium** | Back of an old photograph, notebook margin, voice memo | The room at the show, stage spotlights, LED walls |
-| **Ground** | Textured paper tinted subtly by album artwork | Deep, dark ground pulled from shadowed art tones |
-| **The Fabric** | Fine ink threads, ruled notebook lines | Additive LED strands with soft volumetric glow |
-| **Name Type** | *Instrument Serif*, sentence case, tight leading | **Instrument Sans 600**, tight tracking |
-| **Video Frame** | White photograph border with paper shadow | Borderless projection with ambient color bloom |
-| **Memory Line** | Serif italic caption, fading in like ink drying | Projected transcript lighting up word by word |
-| **Date Stamp** | Vintage camera orange-red imprint (`'22 7 29`) | Tabular sans-serif numerals, subdued |
+The interface is built around a single, cohesive aesthetic &mdash; **Rave** (`data-theme="sleek"`):
+- **Medium**: The room at the show &mdash; stage lights on the crowd, soft lens bloom, and projected typography.
+- **Ground**: Deep, dark backdrop derived from the track's shadowed artwork colors.
+- **Typography**: Precision tabular numbers and clean headings set in self-hosted **Instrument Sans**, paired with poetic memory lines in **Instrument Serif**.
+- **Atmosphere**: Radial stage vignette and subtle analog film grain overlay that remains fixed to prevent scrolling repaints.
 
 ---
 
@@ -107,7 +102,7 @@ Navigate the station without taking your hands off the keyboard:
 flowchart TD
     subgraph Client ["Client Browser (Astro + Vanilla TS Islands)"]
         UI["UI Layer<br/>(NowPlaying, MemoryCard, Tracklist, Hero)"]
-        Fabric["Generative Fabric<br/>(Canvas 2D, Noise, Beat Clock)"]
+        Stage["Stage Atmosphere<br/>(Full-Bleed Video, Liquid Glass, Pulse Orb, Beat Clock)"]
         EventBus["Event Contract<br/>(radio:track, radio:time, radio:cue, radio:live)"]
         Palette["Palette Engine<br/>(OffscreenCanvas, CSS @property)"]
         YT["YouTube IFrame API<br/>(Fixed Background Embed)"]
@@ -129,7 +124,7 @@ flowchart TD
     Catalogue -->|Search index| UI
     PresenceWorker <-->|WebSocket listener count| UI
     EventBus <--> UI
-    EventBus -->|Trigger pulse & wave| Fabric
+    EventBus -->|Trigger beat pulse & glow| Stage
     EventBus -->|Extract colors| Palette
     Palette -->|Update --art-* variables| UI
     YT -->|Playback state & clock| EventBus
