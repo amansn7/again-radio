@@ -3,6 +3,15 @@
 Read `STATUS.md` first for current state, open work and traps. Read `docs/SPEC.md` before
 touching anything. It is the contract.
 
+Current goal: **India launch**. Phases 14–17 are live by Mon 30 Nov 2026, before Delhi on
+5 Dec. Design: `docs/superpowers/specs/2026-11-18-india-launch-design.md`. Source review:
+`docs/REVIEW-ux.md`. Work the phases in order. Anything in the design's Non-goals waits
+until after the tour.
+
+- Phone first. 390×844 is the primary screenshot. 1440×900 must not regress.
+- Facts shown to fans (samples, setlists, show times, gates) carry a source URL in the data,
+  or the UI omits them.
+
 ## How to work here
 
 - Lazy is correct. Reuse what exists, use the platform, write the smallest thing that
@@ -84,4 +93,18 @@ message can be checked. Tell them in the brief: "edit files, do not run git".
 ## Commit style
 
 `phase N: <what shipped>` — one commit per verified phase, local only.
-Never `git push`. Never deploy.
+Never `git push`.
+
+## Deploy
+
+Each phase ships live once its gate passes and it is committed. Only the orchestrator
+deploys. Delegates never do.
+
+```
+npm run build && npx wrangler@3.99.0 pages deploy dist --project-name again-radio
+```
+
+wrangler 3.99.0 is pinned because newer versions refuse to start on macOS 12.6. After a
+deploy, screenshot https://again-radio.pages.dev at 390×844 and check it. If the live site
+breaks, redeploy the previous commit's `dist` before fixing forward. The presence Worker is
+not redeployed unless a phase changes it.
