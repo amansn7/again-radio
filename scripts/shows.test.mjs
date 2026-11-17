@@ -9,6 +9,7 @@ const json = JSON.parse(readFileSync(new URL("../public/data/shows.json", import
 const { shows } = parseShows(json);
 const D = 86400_000, H = 3600_000, delhi = shows[0].t;
 assert(parseShows({ checked: "x", shows: [{ city: "A", venue: "V", tz: "UTC", start: "nope", country: "C" }, ...json.shows] }).shows.length === 5, "parse drops bad rows");
+assert(parseShows({ shows: [{ ...json.shows[0], tz: "Asia/Mumbai" }] }).shows.length === 0, "parse drops invalid tz");
 assert(onAir(shows, delhi - 1) === undefined && onAir(shows, delhi) === shows[0] && onAir(shows, delhi + 9 * H) === undefined, "on-air boundaries");
 assert(upcoming(shows, delhi + 9 * H)[0].city === "Mumbai", "upcoming skips ended");
 assert(stations(shows).map((s) => `${s.city}${s.shows.length}`).join() === "Delhi1,Mumbai2,Bengaluru2", "station grouping");

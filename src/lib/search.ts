@@ -1,7 +1,7 @@
 import type { CatalogueItem } from "./catalogue.ts";
 import type { Program, ProgramEntry } from "./station.ts";
 import { personFromTitle } from "./memories.ts";
-import { dayLabel, type Show } from "./shows.ts";
+import { dayLabel, upcoming, type Show } from "./shows.ts";
 
 export type Group = "Songs" | "In sets" | "Shows" | "Releases" | "On tour";
 export const GROUPS: Group[] = ["Songs", "In sets", "Shows", "Releases", "On tour"];
@@ -96,7 +96,7 @@ export function buildIndex(src: Sources): Doc[] {
     d.art = { entry: { offset: 0, duration: 0, type: "track", album: a.title } };
     docs.push(d);
   }
-  for (const t of src.tour) {
+  for (const t of upcoming(src.tour, Date.now())) {
     docs.push(doc("On tour", t.city, t.venue, dayLabel(t),
       { type: "scroll", target: "#tour" }, [t.venue, t.start.slice(0, 10), "tour", t.country]));
   }

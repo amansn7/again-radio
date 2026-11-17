@@ -7,7 +7,7 @@ import {
 
 const DAY = 86400_000;
 const TUNE_MS = 6000;
-const HINT = `<p class="sb-hint">Tap a station to tune to it. The dial drifts toward the next show in real time.</p>`;
+const HINT = `<p class="sb-hint">Tap a station to tune to it. The band drifts toward the next show in real time.</p>`;
 
 const dayNum = (s: Show) => new Date(s.t).toLocaleDateString("en-GB", { day: "numeric", timeZone: s.tz });
 const local = (s: Show) =>
@@ -94,8 +94,8 @@ class ShowBand extends HTMLElement {
     const ticks = Array.from({ length: n }, (_, d) =>
       `<b class="${d % 7 ? "" : "maj"}"${up.length ? "" : ` style="left:${3 + d * 2.4}%"`}></b>`).join("");
     const head = up.length
-      ? `<div class="sb-head"><p class="sb-kick"><i class="dot"></i><span></span></p><p class="sb-city"></p>` +
-        `<p class="sb-read num" aria-live="off"></p><p class="sb-sub"></p></div>`
+      ? `<div class="sb-head"><p class="sb-kick"><i class="dot"></i><span></span></p><p class="sb-city" aria-live="polite"></p>` +
+        `<p class="sb-read num" aria-live="off"></p><p class="sb-sub" aria-live="polite"></p></div>`
       : `<p class="none">No shows announced yet.</p>`;
     const stns = sts.map((st, i) =>
       `<button type="button" class="st${i % 2 ? " lo" : ""}" style="--pw:${st.shows.length * 12 - 4}px" aria-label="${esc(st.city)}, ${esc(st.shows.map(dayLabel).join(" and "))}">` +

@@ -8,6 +8,7 @@ export const WIDE: Geom = { needle: 14, cap: 34, end: 91 };
 export const NARROW: Geom = { needle: 10, cap: 22, end: 84 };
 
 const DAY = 86400_000;
+export const validTz = (tz: string) => { try { new Intl.DateTimeFormat("en", { timeZone: tz }); return true; } catch { return false; } };
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 
 export function parseShows(raw: unknown): ShowsData {
@@ -17,7 +18,7 @@ export function parseShows(raw: unknown): ShowsData {
   for (const s of rows) {
     const city = str(s?.city), venue = str(s?.venue), tz = str(s?.tz), start = str(s?.start);
     const t = Date.parse(start);
-    if (city && venue && tz && !Number.isNaN(t)) shows.push({ city, country: str(s.country), venue, start, tz, t });
+    if (city && venue && tz && !Number.isNaN(t) && validTz(tz)) shows.push({ city, country: str(s.country), venue, start, tz, t });
   }
   return { checked: str(r.checked), shows: shows.sort((a, b) => a.t - b.t) };
 }

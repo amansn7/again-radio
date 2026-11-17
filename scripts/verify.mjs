@@ -105,6 +105,8 @@ function main() {
       const at = `shows.json show ${i}`;
       for (const k of ["city", "country", "venue", "tz"]) if (!String(r?.[k] ?? "").trim()) fail(`${at}: missing "${k}"`);
       if (!/^\d{4}-\d\d-\d\dT\d\d:\d\d(:\d\d)?[+-]\d\d:\d\d$/.test(r?.start ?? "")) fail(`${at}: bad start`);
+      else if (Number.isNaN(Date.parse(r.start))) fail(`${at}: start is not a real date`);
+      try { new Intl.DateTimeFormat("en", { timeZone: r.tz }); } catch { fail(`${at}: invalid tz "${r.tz}"`); }
     });
     if (rows.length && rows.every((r) => Date.parse(r.start) + 9 * 3600_000 < Date.now())) {
       warn.push("shows.json: every show has ended — add new dates or empty the list");

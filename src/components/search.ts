@@ -105,10 +105,15 @@ class RadioSearch extends HTMLElement {
     this.list.hidden = true;
     this.querySelector<HTMLElement>(".rs-loading")!.hidden = false;
     status.textContent = "Loading search results.";
-    const idx = await pending!;
+    let idx: Doc[] | undefined;
+    try { idx = await pending!; } catch { if (this.index === pending) this.index = null; }
     if (q !== this.input.value) return;
     this.results.removeAttribute("aria-busy");
     this.querySelector<HTMLElement>(".rs-loading")!.hidden = true;
+    if (!idx) {
+      status.textContent = "Search is unavailable right now. Try again.";
+      return;
+    }
     this.list.replaceChildren();
     this.hits = search(idx, q);
     this.active = 0;
