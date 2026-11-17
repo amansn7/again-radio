@@ -60,4 +60,6 @@ read the PNGs and judge honestly.
 - Never re-stream or download YouTube audio; embeds only. Art is hotlinked, never stored.
 - Field colours must stay derived from artwork and deepened toward night; a flat wash
   reading as "pastel slab" was rejected.
+- Hero legibility on bright frames (USB002 yellow wall): a dark pool/shadow behind the hero
+  text was tried and rejected as not nice. Current answer is the 55% mid scrim; leave it.
 - The transport row sits on the dark stage: it uses fixed on-media colours, not theme vars.
