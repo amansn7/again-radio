@@ -81,8 +81,9 @@ function wire() {
 }
 
 /** Called every frame while the tab is visible and motion is allowed. */
-export function onPulse(fn: (b: Beat) => void): void {
+export function onPulse(fn: (b: Beat) => void): () => void {
   if (!still) wire();
   subs.add(fn);
   start();
+  return () => subs.delete(fn);
 }

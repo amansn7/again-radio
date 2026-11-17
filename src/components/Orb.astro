@@ -18,8 +18,9 @@
     --orb-bg: var(--bg, #000);
     position: relative; display: block; aspect-ratio: 1; container-type: inline-size; isolation: isolate;
     pointer-events: none;
-    transition: --orb-c1 1.8s ease, --orb-c2 1.8s ease, --orb-c3 1.8s ease, --orb-c4 1.8s ease;
+    transition: --orb-c1 1.8s ease, --orb-c2 1.8s ease, --orb-c3 1.8s ease, --orb-c4 1.8s ease, opacity 180ms ease;
   }
+  radio-orb.is-away { opacity: 0; }
   radio-orb::before {
     content: ""; position: absolute; inset: -28%; z-index: -1; border-radius: 50%;
     background: radial-gradient(closest-side, color-mix(in oklab, var(--orb-c1) 60%, var(--orb-c3)), transparent);
