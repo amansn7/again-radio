@@ -102,3 +102,33 @@ export function liveSlot(
   }
   return { index: cycleOrder(lengths.length, cycle)[0], offset: 0, cycle };
 }
+
+export interface OnAir {
+  index: number;
+  cycle: number;
+  /** Seconds into the video. */
+  offset: number;
+}
+
+const playable = (slots: Slot[], bad: Set<string>, i: number) => !bad.has(slots[i].program.youtubeId);
+
+/** The next playable slot in broadcast order, from its start. */
+export function slotAfter(slots: Slot[], bad: Set<string>, index: number, cycle: number): OnAir {
+  for (let k = 0; k < slots.length * 2; k++) {
+    const order = cycleOrder(slots.length, cycle);
+    const i = order.indexOf(index);
+    if (i === order.length - 1) {
+      cycle++;
+      index = cycleOrder(slots.length, cycle)[0];
+    } else index = order[i + 1];
+    if (playable(slots, bad, index)) break;
+  }
+  return { index, cycle, offset: slots[index].start };
+}
+
+/** The shared broadcast right now, skipping anything that would not play here. */
+export function onAirNow(slots: Slot[], bad: Set<string>, nowSec: number): OnAir {
+  const at = liveSlot(slots.map((s) => s.length), nowSec);
+  if (!playable(slots, bad, at.index)) return slotAfter(slots, bad, at.index, at.cycle);
+  return { index: at.index, cycle: at.cycle, offset: slots[at.index].start + Math.floor(at.offset) };
+}
