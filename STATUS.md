@@ -4,19 +4,18 @@ Updated 2026-11-17. Contract: `docs/SPEC.md`. Plan: `tasks/todo.md`. Conventions
 
 ## Where it stands
 
-Phase 0–5 shipped and verified; a design pass followed. Site is feature-complete for v1
-(synced official YouTube embeds, 4 programmes, memory layer, hour strip, archive rail,
-India tour countdown, 3 themes, generative field).
+Phase 0–6 shipped and verified; design v3 is deployed live on Cloudflare Pages
+(https://again-radio.pages.dev) with Cloudflare Worker + Durable Object for real-time
+presence (again-radio-presence.again-radio-listeners.workers.dev).
 
 Latest commits:
 
 ```
-acfd804 docs: record the design pass
-13b8601 design: dim the field into a room, crossfade palettes, wire Instrument Sans/Serif, grain + vignette stage
-80d6f42 fonts: self-host Instrument Sans + Instrument Serif (latin subset)
-dc69abd docs: correct the curated line count
-63bb624 phase 5: USB002 programme, archive rail, tour countdown, shared event contract
-90e26a0 phase 3-4: memory layer, memory card, generative art field
+d39703f docs: add project README for GitHub repository
+2ced3e4 phase 6: deploy Cloudflare Pages and presence
+7c68220 design v3: full-bleed video, Rave only, beat clock, glass hero, tap for sound
+a0a4eb5 design v2: live radio engine, breathing fabric, name-in-lights hero, search, running order, Diary/Rave media
+31429b0 design v2: design language, art-derived tokens, event + catalogue contracts, hero layout skeleton
 ```
 
 ## Verify (all green at last run)
@@ -41,15 +40,13 @@ read the PNGs and judge honestly.
 
 ## Open work
 
-1. **Remote access (next).** `cloudflared` exists at `~/.local/bin/cloudflared`; no
-   `wrangler`, no Cloudflare credentials in env. Two paths:
-   - Instant: `cloudflared tunnel --url http://localhost:4321` (ephemeral `trycloudflare.com`).
-   - Proper: Cloudflare Pages (`npx wrangler pages deploy dist`) — needs one-time auth/token.
+1. **Remote access & Deploy — Shipped.**
+   - Cloudflare Pages: live at https://again-radio.pages.dev.
+   - Presence Worker: live at again-radio-presence.again-radio-listeners.workers.dev.
 2. **24/7 YouTube live channel — blocked on rights, not code.** Streaming the catalogue
    continuously is unlicensed; the encoder (ffmpeg + launchd/systemd) can be built only for
    audio the operator owns or licenses. Do not build a re-stream of the embeds.
    Needs a human decision: licensed audio vs. keep embeds.
-3. **Deploy** (Cloudflare Pages) — same credential dependency as 1.
 
 ## Traps learned
 
