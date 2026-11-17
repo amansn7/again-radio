@@ -1,40 +1,92 @@
 ---
 ---
-<archive-rail></archive-rail>
+<show-band id="tour"></show-band>
 
 <style is:global>
-  archive-rail { display: block; width: 100%; padding-block: clamp(4rem, 8vw, 7rem); }
-  .ar-head { display: grid; gap: 0.5rem; margin-bottom: 2.25rem; }
+  show-band { display: block; width: 100%; padding-block: clamp(4rem, 8vw, 7rem); }
+  show-band .section-title { margin: 0 0 1.5rem; }
 
-  .ar-tour { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 2rem 4rem; align-items: end; }
-  .ar-timer { display: flex; flex-wrap: wrap; gap: 0.25rem 2rem; margin: 0 0 0.5rem; }
-  .ar-cd { display: flex; align-items: baseline; gap: 0.5rem; }
-  .ar-cd-n {
-    font-family: var(--font-name); font-weight: var(--name-weight); letter-spacing: var(--name-tracking);
-    font-size: clamp(3.25rem, 7vw, 6rem); line-height: 1.15; color: var(--fg);
+  .sb-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 1rem; align-items: end; }
+  .sb-head p { margin: 0; }
+  .sb-kick { grid-column: 1 / -1; display: flex; gap: 0.5rem; align-items: center; font-size: 0.8125rem; color: var(--fg-dim); }
+  show-band .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  .sb-head.on .dot { animation: sb-ping 1.6s ease-out infinite; }
+  @keyframes sb-ping {
+    from { box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent) 60%, transparent); }
+    to { box-shadow: 0 0 0 10px color-mix(in oklab, var(--accent) 0%, transparent); }
   }
-  .ar-cd-u { color: var(--fg-dim); font-size: 1rem; }
-  .ar-tour-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
-  .ar-tour-list li { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
-  .ar-tour-city { font-size: 1.125rem; color: var(--fg-dim); }
-  .ar-tour-list .is-next .ar-tour-city { color: var(--fg); }
-  .ar-error { max-width: 36rem; }
+  .sb-city {
+    font-family: var(--font-name); font-weight: var(--name-weight); letter-spacing: var(--name-tracking);
+    font-size: clamp(2.25rem, 4.5vw, 2.75rem); line-height: 1.1; padding-bottom: 0.04em; color: var(--fg);
+  }
+  .sb-read {
+    font-size: clamp(1.75rem, 3vw, 2.125rem); font-weight: 500; letter-spacing: -0.015em; line-height: 1.1;
+    text-align: right; white-space: nowrap; color: var(--fg);
+  }
+  .sb-read small { font-size: 0.9375rem; font-weight: 400; color: var(--fg-dim); margin: 0 2px 0 1px; }
+  .sb-head .sb-sub {
+    grid-column: 1 / -1; margin-top: 0.125rem;
+    font-family: var(--font-serif); font-style: italic; font-size: 1.125rem; line-height: 1.4; color: var(--fg-dim);
+  }
+  show-band .none { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: 1.625rem; color: var(--fg-dim); }
 
-  @media (max-width: 767px) {
-    .ar-tour { grid-template-columns: 1fr; }
+  .sb-band {
+    position: relative; height: 132px; margin-top: 1.375rem; overflow: clip; user-select: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  }
+  .sb-rail { position: absolute; inset: 34px 0 auto; height: 34px; }
+  .sb-rail b {
+    position: absolute; bottom: 0; width: 1px; height: 14px; background: var(--line);
+    transform: scaleY(var(--lift, 1)); transform-origin: bottom;
+  }
+  .sb-rail b.maj { height: 30px; background: color-mix(in oklab, var(--fg) 30%, transparent); }
+
+  show-band .st {
+    position: absolute; top: 18px; transform: translateX(-50%); display: grid; justify-items: center;
+    padding: 0 6px; border: 0; background: none; color: var(--fg-dim); font: inherit; cursor: pointer;
+    transition: left 0.9s var(--ease-out), color var(--dur-2) var(--ease-out);
+  }
+  show-band .st.edge { justify-items: start; transform: translateX(calc(-6px - var(--pw) / 2)); }
+  .st.edge .lab { margin-left: calc(var(--pw) / 2 + 8px); }
+  .st .pins { display: flex; gap: 4px; height: 12px; align-items: center; }
+  .st .pins i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--fg-dim); background: var(--bg); }
+  .st.next .pins i:first-child, .st.tuned .pins i {
+    background: var(--accent); border-color: var(--accent);
+    box-shadow: 0 0 calc(4px + var(--glow, 0) * 18px) var(--accent);
+  }
+  .st .lab { margin-top: 48px; font-size: 0.78125rem; line-height: 1.3; white-space: nowrap; }
+  .st.lo .lab { margin-top: 66px; }
+  .st .lab span { margin-left: 4px; color: var(--fg-faint); }
+  .st.next, .st.tuned, .st:hover { color: var(--fg); }
+  .st:focus-visible { outline-offset: 4px; border-radius: 6px; }
+
+  .sb-needle {
+    position: absolute; left: var(--needle); top: 10px; bottom: 26px; width: 2px; margin-left: -1px;
+    background: linear-gradient(var(--accent) 60%, transparent); pointer-events: none;
+  }
+  .sb-needle::before {
+    content: ""; position: absolute; top: -4px; left: -4px; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 16px var(--accent);
+  }
+  .sb-needle span { position: absolute; top: -7px; left: 10px; font-size: 0.6875rem; line-height: 1.4; color: var(--accent); }
+
+  .sb-band.quiet { height: 70px; }
+  .quiet .sb-rail { top: 16px; }
+  .quiet .sb-rail b { opacity: 0.5; }
+  .quiet .sb-needle { top: 4px; bottom: 20px; }
+  .sb-hint { margin: 0.125rem 0 0; font-size: 0.75rem; color: var(--fg-faint); }
+
+  @media (max-width: 520px) {
+    .sb-head { grid-template-columns: 1fr; }
+    .sb-read { text-align: left; font-size: 1.75rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    show-band .st { transition: none; }
+    .sb-head.on .dot { animation: none; }
   }
 </style>
 
 <script>
-  class ArchiveElement extends HTMLElement {
-    connectedCallback(): void {
-      this.innerHTML =
-        `<section class="wrap" id="tour" aria-labelledby="ar-tour"><div class="ar-head">` +
-        `<h2 class="section-title" id="ar-tour">India, December 2026</h2>` +
-        `<p class="meta">Three nights, three cities.</p></div>` +
-        `<p class="meta">Upcoming shows are loading.</p></section>`;
-    }
-  }
-
-  if (!customElements.get("archive-rail")) customElements.define("archive-rail", ArchiveElement);
+  import "./show-band.ts";
 </script>
