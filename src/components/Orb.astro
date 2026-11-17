@@ -1,0 +1,74 @@
+---
+---
+<radio-orb {...Astro.props} aria-hidden="true">
+  <i class="o-body"><i class="o-mesh"></i><i class="o-dots"></i><i class="o-sheen"></i></i>
+</radio-orb>
+
+<style is:global>
+  /* Conic-mesh orb after SmoothUI SiriOrb, Eduardo Calvo, MIT: github.com/educlopez/smoothui */
+  @property --orb-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  @property --orb-c1 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+  @property --orb-c2 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+  @property --orb-c3 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+  @property --orb-c4 { syntax: "<color>"; inherits: true; initial-value: transparent; }
+
+  :where(radio-orb) { width: 10rem; }
+  radio-orb {
+    --orb-kick: 0; --orb-hat: 0; --orb-swell: 0.5;
+    --orb-bg: var(--bg, #000);
+    position: relative; display: block; aspect-ratio: 1; container-type: inline-size; isolation: isolate;
+    pointer-events: none;
+    transition: --orb-c1 1.8s ease, --orb-c2 1.8s ease, --orb-c3 1.8s ease, --orb-c4 1.8s ease;
+  }
+  radio-orb::before {
+    content: ""; position: absolute; inset: -28%; z-index: -1; border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in oklab, var(--orb-c1) 60%, var(--orb-c3)), transparent);
+    filter: blur(8cqw);
+    opacity: calc(0.3 + var(--orb-swell) * 0.25 + var(--orb-kick) * 0.4);
+  }
+  radio-orb .o-body, radio-orb .o-body > i {
+    position: absolute; inset: 0; display: block; border-radius: 50%;
+  }
+  radio-orb .o-body {
+    overflow: hidden; isolation: isolate;
+    background: radial-gradient(circle at 50% 60%, color-mix(in oklab, var(--orb-c2) 75%, var(--orb-bg)), color-mix(in oklab, var(--orb-c3) 45%, var(--orb-bg)));
+    transform: scale(calc(1 + var(--orb-kick) * 0.12));
+    filter: brightness(calc(1 + var(--orb-kick) * 0.3 + var(--orb-hat) * 0.08)) saturate(calc(0.8 + var(--orb-swell) * 0.4));
+    animation: orb-breathe 5.5s ease-in-out infinite;
+  }
+  radio-orb .o-mesh {
+    background:
+      conic-gradient(from calc(var(--orb-angle) * 2) at 25% 70%, var(--orb-c3), transparent 20% 80%, var(--orb-c3)),
+      conic-gradient(from calc(var(--orb-angle) * 2) at 45% 75%, var(--orb-c2), transparent 30% 60%, var(--orb-c2)),
+      conic-gradient(from calc(var(--orb-angle) * -3) at 80% 20%, var(--orb-c1), transparent 40% 60%, var(--orb-c1)),
+      conic-gradient(from calc(var(--orb-angle) * 1.5) at 60% 35%, var(--orb-c4), transparent 25% 75%, var(--orb-c4)),
+      conic-gradient(from calc(var(--orb-angle) * 2) at 15% 5%, var(--orb-c2), transparent 10% 90%, var(--orb-c2)),
+      conic-gradient(from calc(var(--orb-angle) * 1) at 20% 80%, var(--orb-c1), transparent 10% 90%, var(--orb-c1)),
+      conic-gradient(from calc(var(--orb-angle) * -2) at 85% 10%, var(--orb-c3), transparent 20% 80%, var(--orb-c3));
+    box-shadow: inset var(--orb-bg) 0 0 2px 0.4px;
+    filter: blur(max(4px, 1.5cqw)) contrast(1.3) saturate(1.05);
+    animation: orb-spin 20s linear infinite;
+  }
+  radio-orb .o-dots {
+    background-image: radial-gradient(circle at center, var(--orb-bg) max(0.1px, 0.8cqw), transparent max(0.1px, 0.8cqw));
+    background-size: max(0.2px, 1.6cqw) max(0.2px, 1.6cqw);
+    backdrop-filter: blur(max(8px, 3cqw)) contrast(3);
+    mix-blend-mode: overlay;
+    mask-image: radial-gradient(black 25%, transparent 75%);
+  }
+  radio-orb .o-sheen {
+    background: radial-gradient(circle at 30% 24%, hsl(0 0% 100% / 0.3), transparent 34%);
+    mix-blend-mode: screen;
+    opacity: calc(0.45 + var(--orb-hat) * 0.55);
+  }
+  @keyframes orb-spin { to { --orb-angle: 360deg; } }
+  @keyframes orb-breathe { 50% { scale: 1.04; } }
+  @media (prefers-reduced-motion: reduce) {
+    radio-orb { transition: none; }
+    radio-orb .o-body, radio-orb .o-mesh { animation: none; }
+  }
+</style>
+
+<script>
+  import "./orb.ts";
+</script>

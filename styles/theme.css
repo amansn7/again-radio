@@ -75,12 +75,24 @@
   --grain-opacity: 0.16;
   --grain-blend: overlay;
 
-  /* Liquid glass: light passing through, a bright rim, a soft drop onto the video. */
+  /* Liquid glass (src/lib/glass.ts): a lens over the video, a rim lit top and bottom, a soft drop. */
   --glass-light: #ffffff;
   --glass-tint: color-mix(in oklab, var(--glass-light) 7%, transparent);
-  --glass-edge: color-mix(in oklab, var(--glass-light) 22%, transparent);
+  --glass-tint-regular: color-mix(in oklab, var(--glass-light) 12%, transparent);
+  --glass-tint-refract: color-mix(in oklab, var(--glass-light) 3%, transparent);
+  --glass-solid: color-mix(in oklab, var(--bg-2) 92%, transparent);
+  --glass-edge: color-mix(in oklab, var(--glass-light) 16%, transparent);
   --glass-drop: color-mix(in oklab, #000 45%, transparent);
   --glass-radius: 28px;
+  --glass-rim:
+    inset 0 1px 0 color-mix(in oklab, var(--glass-light) 55%, transparent),
+    inset 0 -1px 0 color-mix(in oklab, var(--glass-light) 28%, transparent),
+    inset 0 0 0 1px var(--glass-edge),
+    inset 0 6px 6px -6px color-mix(in oklab, var(--glass-light) 30%, transparent),
+    inset 0 -6px 6px -6px color-mix(in oklab, var(--glass-light) 14%, transparent);
+  --lg-shadow:
+    0 2px 8px color-mix(in oklab, #000 18%, transparent),
+    0 18px 44px -14px var(--glass-drop);
 }
 
 html {
@@ -218,21 +230,23 @@ body::after {
   pointer-events: none;
 }
 
-/* A pane of liquid glass over the video. Safari ignores var() inside the backdrop filter. */
+/* A pane of liquid glass over the video. This frost is the fallback everywhere; glass.ts swaps in
+   refraction on Chromium. Literals, not var(): Safari ignores var() inside backdrop-filter, and its
+   blur stays at or under 16px. */
 .glass {
   position: relative;
   background: var(--glass-tint);
-  -webkit-backdrop-filter: blur(24px) saturate(1.9) brightness(1.06);
-  backdrop-filter: blur(24px) saturate(1.9) brightness(1.06);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6) brightness(1.05);
+  backdrop-filter: blur(16px) saturate(1.6) brightness(1.05);
   border-radius: var(--glass-radius);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklab, var(--glass-light) 50%, transparent),
-    inset 0 -1px 0 color-mix(in oklab, var(--glass-light) 12%, transparent),
-    inset 0 0 0 1px var(--glass-edge),
-    0 24px 60px -18px var(--glass-drop);
+  box-shadow: var(--glass-rim), var(--lg-shadow);
 }
 
-/* Specular sheen: light caught on the upper-left edge of the pane. */
+.glass[data-glass="regular"] {
+  background: var(--glass-tint-regular);
+}
+
+/* Specular sheen: light on the top and bottom lips, plus a highlight that follows the pointer. */
 .glass::before {
   content: "";
   position: absolute;
@@ -240,13 +254,32 @@ body::after {
   z-index: -1;
   border-radius: inherit;
   pointer-events: none;
-  background: linear-gradient(
-    140deg,
-    color-mix(in oklab, var(--glass-light) 20%, transparent),
-    transparent 38%,
-    transparent 72%,
-    color-mix(in oklab, var(--glass-light) 7%, transparent)
-  );
+  background:
+    radial-gradient(9rem circle at var(--gx, 50%) var(--gy, -9rem), color-mix(in oklab, var(--glass-light) 16%, transparent), transparent),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--glass-light) 14%, transparent),
+      transparent 42%,
+      transparent 78%,
+      color-mix(in oklab, var(--glass-light) 6%, transparent)
+    );
+}
+
+@media (prefers-reduced-transparency: no-preference) {
+  [data-glass-mode="refract"] {
+    background: var(--glass-tint-refract);
+    -webkit-backdrop-filter: var(--glass-filter);
+    backdrop-filter: var(--glass-filter);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  [data-glass] {
+    background: var(--glass-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 .num {

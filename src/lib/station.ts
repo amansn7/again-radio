@@ -18,6 +18,7 @@ export interface ProgramEntry {
   title?: string;
   artist?: string;
   album?: string;
+  art?: string;
   bpm?: number;
   memory?: string;
 }
@@ -103,6 +104,8 @@ function parseStation(v: unknown, where: string): StationConfig {
   };
 }
 
+const ART_URL = /^https:\/\/(is[0-9]-ssl\.mzstatic\.com|coverartarchive\.org)\//;
+
 function parseEntry(v: unknown, where: string): ProgramEntry {
   if (!isRecord(v)) fail(where, "expected an object");
   const type = v.type;
@@ -118,6 +121,11 @@ function parseEntry(v: unknown, where: string): ProgramEntry {
   if (artist !== undefined) entry.artist = artist;
   const album = optString(v.album, where, "album");
   if (album !== undefined) entry.album = album;
+  const art = optString(v.art, where, "art");
+  if (art !== undefined) {
+    if (!ART_URL.test(art)) fail(where, `"art" must be an https mzstatic or coverartarchive URL`);
+    entry.art = art;
+  }
   const bpm = optInt(v.bpm, where, "bpm");
   if (bpm !== undefined) entry.bpm = bpm;
   const memory = optString(v.memory, where, "memory");

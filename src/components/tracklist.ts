@@ -1,15 +1,8 @@
 import { RADIO_CUE, RADIO_TIME, RADIO_TRACK } from "../lib/events.ts";
 import type { TimeInfo, TrackInfo } from "../lib/events.ts";
 import { personFromTitle } from "../lib/memories.ts";
+import { clock } from "./live-status.ts";
 import type { ProgramEntry } from "../lib/station.ts";
-
-function fmt(total: number): string {
-  const t = Math.max(0, Math.floor(total));
-  const h = Math.floor(t / 3600);
-  const m = Math.floor((t % 3600) / 60);
-  const s = String(t % 60).padStart(2, "0");
-  return h ? `${h}:${String(m).padStart(2, "0")}:${s}` : `${m}:${s}`;
-}
 
 function shortName(e: ProgramEntry): string {
   if (e.type === "interlude") return "Interlude";
@@ -86,7 +79,7 @@ class TracklistBar extends HTMLElement {
       b.disabled = !playable;
       b.setAttribute(
         "aria-label",
-        playable ? `Play ${e.title ?? shortName(e)}, from ${fmt(e.offset)}` : (e.title ?? shortName(e)),
+        playable ? `Play ${e.title ?? shortName(e)}, from ${clock(e.offset)}` : (e.title ?? shortName(e)),
       );
       const track = el("span", "tl-track");
       const fill = el("i", "tl-fill");
@@ -137,7 +130,7 @@ class TracklistBar extends HTMLElement {
     const sec = Math.floor(elapsed);
     if (sec !== this.lastSec) {
       this.lastSec = sec;
-      this.time.textContent = `${fmt(elapsed)} of ${fmt(entry.duration)}`;
+      this.time.textContent = `${clock(elapsed)} of ${clock(entry.duration)}`;
     }
   }
 
@@ -148,7 +141,7 @@ class TracklistBar extends HTMLElement {
     const name = document.createElement("span");
     name.textContent = shortName(entry);
     const at = el("span", "num");
-    at.textContent = fmt(entry.offset);
+    at.textContent = clock(entry.offset);
     this.tip.replaceChildren(name, at);
     const w = this.tip.offsetWidth;
     const left = seg.offsetLeft + seg.offsetWidth / 2 - w / 2;

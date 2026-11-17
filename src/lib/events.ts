@@ -12,6 +12,8 @@ export const RADIO_SEARCH = "radio:search";
 export interface TrackInfo {
   programId: string;
   programPath: string;
+  /** The video on screen; its thumbnail is the closest thing to "the video's colours". */
+  youtubeId: string;
   programTitle: string;
   programDuration: number;
   venue?: string;

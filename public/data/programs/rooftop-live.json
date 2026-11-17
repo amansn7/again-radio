@@ -22,6 +22,7 @@
       "title": ".one",
       "artist": "Fred again..",
       "album": "ten days",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/bb/00/6b/bb006b8e-2d17-7f1c-cedc-f76a70b3af1f/5021732456847.jpg/600x600bb.jpg",
       "bpm": 118
     },
     {
@@ -30,7 +31,8 @@
       "type": "track",
       "title": "adore u",
       "artist": "Fred again.., Obongjayar",
-      "album": "ten days"
+      "album": "ten days",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/7f/97/dd/7f97ddab-43e6-6e83-923a-e243d37d722c/5054197770555.jpg/600x600bb.jpg"
     },
     {
       "offset": 1054,
@@ -39,6 +41,7 @@
       "title": "Roze (forgive)",
       "artist": "Fred again.., I Am Roze",
       "album": "ten days",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg",
       "bpm": 130
     },
     {
@@ -47,7 +50,8 @@
       "type": "track",
       "title": "No Love",
       "artist": "Summer Walker, SZA",
-      "album": "Over It"
+      "album": "Over It",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/58/cf/0a/58cf0af2-25fe-740d-a869-574e55f3a504/22UMGIM27510.rgb.jpg/600x600bb.jpg"
     },
     {
       "offset": 2141,
@@ -56,6 +60,7 @@
       "title": "little mystery",
       "artist": "Fred again.., John Martyn",
       "album": "ten days",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/00/18/26/001826cf-00fa-b38c-c4bd-f89510432f34/5021732543820.jpg/600x600bb.jpg",
       "bpm": 120
     },
     {
@@ -64,7 +69,8 @@
       "type": "track",
       "title": "Hannah (the sun)",
       "artist": "Fred again..",
-      "album": "ten days"
+      "album": "ten days",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
     },
     {
       "offset": 2920,
@@ -73,6 +79,7 @@
       "title": "fear less",
       "artist": "Fred again.., Sampha",
       "album": "ten days",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/bb/00/6b/bb006b8e-2d17-7f1c-cedc-f76a70b3af1f/5021732456847.jpg/600x600bb.jpg",
       "bpm": 112
     },
     {
@@ -81,7 +88,8 @@
       "type": "track",
       "title": "Weak Become Heroes",
       "artist": "The Streets",
-      "album": "The Streets"
+      "album": "The Streets",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/b3/d6/96/mzi.khhagquh.jpg/600x600bb.jpg"
     },
     {
       "offset": 5555,

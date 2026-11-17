@@ -12,6 +12,7 @@
       "duration": 144,
       "type": "track",
       "title": "Can You Feel It",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/f1/e8/c1/f1e8c10a-df1a-2a90-4dc6-0c903d6432ac/827170141889.jpg/600x600bb.jpg",
       "artist": "Mr. Fingers"
     },
     {
@@ -20,7 +21,8 @@
       "type": "track",
       "title": "One More Time",
       "artist": "Daft Punk",
-      "album": "Discovery"
+      "album": "Discovery",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/fd/4a/77/fd4a77db-0ebc-d043-41a2-f32fa1bb0fb4/dj.qrikkdwj.jpg/600x600bb.jpg"
     },
     {
       "offset": 408,
@@ -33,6 +35,7 @@
       "duration": 252,
       "type": "track",
       "title": "Baby again..",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/0f/b2/d5/0fb2d5e5-55f1-97e1-c6e7-1ab064e77cca/5054197600371.jpg/600x600bb.jpg",
       "artist": "Fred again.., Skrillex, Four Tet",
       "bpm": 127
     },
@@ -41,6 +44,7 @@
       "duration": 288,
       "type": "track",
       "title": "LFO (Leeds Warehouse Mix)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/d9/23/19/d92319a8-a89d-b33c-97f0-d6cdf9a8660e/mzi.ugtfough.jpg/600x600bb.jpg",
       "artist": "LFO"
     },
     {
@@ -48,6 +52,7 @@
       "duration": 192,
       "type": "track",
       "title": "De Barrio",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/53/83/69/53836973-a9ed-7c14-7e91-380224b166e6/00_Cover_Art.jpg/600x600bb.jpg",
       "artist": "Torres De Lara"
     },
     {
@@ -55,6 +60,7 @@
       "duration": 96,
       "type": "track",
       "title": "Needle Guy",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a7/03/c1/a703c175-8462-a7cb-c380-b218863c519c/075679588722.jpg/600x600bb.jpg",
       "artist": "Dylan Brady"
     },
     {
@@ -63,13 +69,15 @@
       "type": "track",
       "title": "My Girls",
       "artist": "Animal Collective",
-      "album": "Merriweather Post Pavilion"
+      "album": "Merriweather Post Pavilion",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/64/79/67/64796709-9482-2221-b1b7-64cdbe1b99f2/dj.fuppzyzi.jpg/600x600bb.jpg"
     },
     {
       "offset": 1644,
       "duration": 204,
       "type": "track",
       "title": "Nightvision",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c1/e1/9f/c1e19f52-86a8-a278-1659-8a3eebb6cc90/artwork.jpg/600x600bb.jpg",
       "artist": "The Twelves"
     },
     {
@@ -93,6 +101,7 @@
       "duration": 72,
       "type": "track",
       "title": "Clubbed to Death",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Features115/v4/57/23/cd/5723cdb9-a27d-ecc4-40e4-0467d888b87c/dj.kxfugfyo.jpg/600x600bb.jpg",
       "artist": "Rob Dougan"
     },
     {
@@ -100,6 +109,7 @@
       "duration": 48,
       "type": "track",
       "title": "The Revolution Will Not Be Televised",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/f8/e8/5b/f8e85bc3-8854-a257-9622-524e0dbc7b76/29667527484.jpg/600x600bb.jpg",
       "artist": "Gil Scott-Heron"
     },
     {
@@ -124,7 +134,8 @@
       "type": "track",
       "title": "Giorgio by Moroder",
       "artist": "Daft Punk",
-      "album": "Random Access Memories"
+      "album": "Random Access Memories",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/600x600bb.jpg"
     },
     {
       "offset": 3036,
@@ -132,7 +143,8 @@
       "type": "track",
       "title": "Digital Love",
       "artist": "Daft Punk",
-      "album": "Discovery"
+      "album": "Discovery",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/fd/4a/77/fd4a77db-0ebc-d043-41a2-f32fa1bb0fb4/dj.qrikkdwj.jpg/600x600bb.jpg"
     },
     {
       "offset": 3300,
@@ -140,7 +152,8 @@
       "type": "track",
       "title": "Raspberry Beret",
       "artist": "Prince & The Revolution",
-      "album": "Around the World in a Day"
+      "album": "Around the World in a Day",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/de/3c/76/de3c7606-c57a-09d1-0ca0-32e020fc7660/886448892939.jpg/600x600bb.jpg"
     },
     {
       "offset": 3408,
@@ -148,13 +161,15 @@
       "type": "track",
       "title": "Digital Love",
       "artist": "Daft Punk",
-      "album": "Discovery"
+      "album": "Discovery",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/fd/4a/77/fd4a77db-0ebc-d043-41a2-f32fa1bb0fb4/dj.qrikkdwj.jpg/600x600bb.jpg"
     },
     {
       "offset": 3468,
       "duration": 252,
       "type": "track",
       "title": "Flight FM",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0e/5d/f4/0e5df4c2-6c69-7e3f-287e-573d688769fb/191404148976.png/600x600bb.jpg",
       "artist": "Joy Orbison"
     },
     {
@@ -162,6 +177,7 @@
       "duration": 262,
       "type": "track",
       "title": "Turn On The Lights again..",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1c/4d/34/1c4d3479-4fe5-5c0a-ccfe-c45cbb9bf843/5054197263439.jpg/600x600bb.jpg",
       "artist": "Fred again.., Swedish House Mafia, Future",
       "bpm": 132
     },
@@ -170,6 +186,7 @@
       "duration": 96,
       "type": "track",
       "title": "Pharaoh Dynamic",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/8a/10/34/8a1034d0-3197-a355-f0c8-8cad2a4b4d9c/artwork.jpg/600x600bb.jpg",
       "artist": "DJ Pharaoh"
     },
     {
@@ -185,7 +202,8 @@
       "type": "track",
       "title": "Starboy",
       "artist": "The Weeknd",
-      "album": "Starboy"
+      "album": "Starboy",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/92/bb/b592bb72-52e3-e756-9b26-9f56d08f47ab/16UMGIM67864.rgb.jpg/600x600bb.jpg"
     },
     {
       "offset": 4271,
@@ -214,6 +232,7 @@
       "duration": 240,
       "type": "track",
       "title": "2009",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/57/e1/95/57e19534-5888-083d-fe6b-088cbeab8cd6/5052075609355.png/600x600bb.jpg",
       "artist": "Tony Romera"
     },
     {
@@ -222,13 +241,15 @@
       "type": "track",
       "title": "Can't Do Without You",
       "artist": "Caribou",
-      "album": "Our Love"
+      "album": "Our Love",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e7/0d/e2/e70de2bb-85bd-c6b8-3eee-2e2836778f4a/56931.jpg/600x600bb.jpg"
     },
     {
       "offset": 5784,
       "duration": 96,
       "type": "track",
       "title": "Signatune",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/38/0e/cc/380ecc3f-3b17-72f2-e3d0-91339c24912a/mzi.bxdaznfw.jpg/600x600bb.jpg",
       "artist": "DJ Mehdi"
     },
     {
@@ -237,7 +258,8 @@
       "type": "track",
       "title": "Around the World",
       "artist": "Daft Punk",
-      "album": "Homework"
+      "album": "Homework",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Features115/v4/34/8d/c7/348dc71c-d75e-9baf-671a-994e9e74b018/dj.pimdxdmf.jpg/600x600bb.jpg"
     },
     {
       "offset": 6036,
@@ -246,6 +268,7 @@
       "title": "Delilah (pull me out of this)",
       "artist": "Fred again..",
       "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/b0/9c/b7/b09cb72c-cca9-5d66-bc9d-a9b5e5f86b22/5054197236389.jpg/600x600bb.jpg",
       "bpm": 134
     },
     {
@@ -254,7 +277,8 @@
       "type": "track",
       "title": "just stand there",
       "artist": "Fred again.., SOAK",
-      "album": "ten days"
+      "album": "ten days",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/bb/00/6b/bb006b8e-2d17-7f1c-cedc-f76a70b3af1f/5021732456847.jpg/600x600bb.jpg"
     },
     {
       "offset": 6516,
@@ -262,7 +286,8 @@
       "type": "track",
       "title": "One More Time",
       "artist": "Daft Punk",
-      "album": "Discovery"
+      "album": "Discovery",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/fd/4a/77/fd4a77db-0ebc-d043-41a2-f32fa1bb0fb4/dj.qrikkdwj.jpg/600x600bb.jpg"
     }
   ]
 }

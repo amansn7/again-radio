@@ -90,15 +90,25 @@ tour countdown. `public/data/albums.json` holds the release timeline and the tou
 
 ## Redesign v3 (2026-11-17)
 
-- [ ] T1 Remove glass panel behind waveform + memory text (unit W)
-- [ ] T2 Liquid Glass engine ported from pastebin isg9YcH2 to vanilla TS; apply to hero surfaces (unit G, opus/high)
-- [ ] T3 Waveform -> particle swarm in Sonic Waveform language (21st.dev, pointer ripple), beat clock driven (unit W, sonnet/high)
-- [ ] T4 Unified section: running order + shows + albums with choices, Warp Carousel ring (unit C, opus/high)
-- [ ] T5 Cards use album art / concert art (YouTube thumbnail) / song art (unit C)
-- [ ] T6 Live ticker for active listeners — BLOCKED on decision: needs a presence backend; SPEC forbids backend and fake counts
-- [ ] T7 Search results with parallax; choosing one flies into the radio and plays (unit S, sonnet/medium)
-- [ ] T8 Mobile background playback — best effort in player.ts (orchestrator); YouTube player pauses itself when hidden
+- [x] T1 Remove glass panel behind waveform + memory text (unit W)
+- [x] T2 Liquid Glass engine ported from pastebin isg9YcH2 to vanilla TS; apply to hero surfaces (unit G, opus/high)
+- [x] T3 Waveform -> particle swarm in Sonic Waveform language (21st.dev, pointer ripple), beat clock driven (unit W, sonnet/high)
+- [x] T4 Unified section: running order + shows + albums with choices, Warp Carousel ring (unit C, opus/high)
+- [x] T5 Cards use album art / concert art (YouTube thumbnail) / song art (unit C)
+- [x] T6 Live listener ticker — Worker + Durable Object, live locally via wrangler 3.99.0 + Vite proxy; production deploy + route need user login
+- [x] T7 Search results with parallax; choosing one flies into the radio and plays (unit S, sonnet/medium)
+- [x] T8 Mobile background playback — best effort in player.ts (re-play if the embed pauses within 2s of hiding); untested on a phone
 - [ ] T9 Integrate, gates, screenshots, tunnel check (orchestrator)
 
 Notes: React/shadcn pastes are ported, not installed (SPEC: no framework, no deps). 21st.dev sources are behind login;
 porting from listing descriptions.
+
+## Round 2 (2026-11-17 evening)
+
+- [x] N1 Siri orb built (MIT SmoothUI port), video-complement colours; placement by unit X
+- [x] N2 15 official performances in catalogue.json (+ rooftop-naples programme); Coachella full set not embeddable (login-only)
+- [ ] N3 Hero UX: kinetic glass name, text hierarchy, orb placement (unit X, fable/high)
+- [ ] N4 Dial art loads fast: precomputed art URLs (unit A) + right-sized images, prefetch, preconnect (unit C)
+- [ ] N5 Active timer, designed with the live ticker (unit X)
+- [x] N6 Dial card crops art horizontally -> square / 16:9 frames (unit C)
+- [ ] N7 Deploy to workers.dev: one Worker = dist assets + presence DO (orchestrator, after gates)

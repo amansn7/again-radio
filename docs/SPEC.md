@@ -9,7 +9,10 @@ Not affiliated with Fred again.. Do not use his wordmark or logo as the brand.
 ## Non-negotiables
 
 - Static site. Astro + vanilla TS island. Tailwind v4 for CSS.
-- No UI framework (no React/Vue/Svelte), no state library, no backend, no database.
+- No UI framework (no React/Vue/Svelte), no state library, no database.
+- One server piece only: the presence Worker (`worker/presence`, Cloudflare Worker + one
+  Durable Object) that counts open listener connections for the live ticker. It stores
+  nothing about listeners. The count shown is real or hidden, never invented.
 - Runtime deps: `astro`, `tailwindcss` only. Dev deps: `playwright` for screenshots.
 - One `<iframe>` (YouTube), fixed full-viewport behind the whole page and always playing.
   It starts muted (browser autoplay rules); the first click or key anywhere turns sound on.

@@ -10,7 +10,7 @@
   </div>
 
   <div class="rp-bar">
-    <div class="rp-controls glass">
+    <div class="rp-controls glass" data-glass>
       <button class="icon-btn" id="rp-play" type="button" aria-label="Pause">
         <svg class="rp-ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
         <svg class="rp-ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
@@ -19,16 +19,15 @@
         <svg class="rp-ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9a4.5 4.5 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>
         <svg class="rp-ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9.5l5 5M21 9.5l-5 5"/></svg>
       </button>
-      <span class="rp-live"><span class="live-dot" aria-hidden="true"></span>Live</span>
       <button class="btn rp-back" id="rp-back" type="button">Back to live</button>
-      <span class="meta rp-hint">Tap anywhere for sound</span>
+      <span class="rp-hint"><span class="rp-hint-touch">Tap anywhere for sound</span><span class="rp-hint-fine">Click anywhere for sound</span></span>
     </div>
+    <p class="rp-keys">Space pauses, M mutes, arrows skip, Shift+L returns to live</p>
     <p class="meta rp-credit" aria-live="polite"></p>
     <p class="rp-error" role="alert" hidden>
       The video didn't load. YouTube may be blocked on this network. Reload to try again.
     </p>
   </div>
-  <p class="rp-keys">Space pauses, M mutes, arrows skip, Shift+L returns to live</p>
 </radio-player>
 
 <style is:global>
@@ -77,10 +76,14 @@
   }
   .rp-error {
     flex-basis: 100%;
+    max-width: 52ch;
     margin: 0;
-    color: var(--fg-dim);
+    padding-left: 0.875rem;
+    border-left: 2px solid var(--accent);
+    color: var(--fg);
     font-size: 0.9375rem;
     line-height: 1.5;
+    text-shadow: 0 1px 10px var(--glass-drop);
   }
   .rp-error[hidden],
   .rp-tuning[hidden] {
@@ -102,39 +105,54 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem 1.5rem;
-    margin-top: 1.25rem;
+    gap: 0.75rem 1.25rem;
   }
   .rp-controls {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
-    min-height: 2.75rem;
-    padding: 6px 1.125rem 6px 6px;
+    gap: 0.5rem;
+    min-height: 3.25rem;
+    padding: 6px;
     border-radius: 999px;
   }
+  .rp-controls:has(.rp-hint),
+  radio-player[data-live="false"] .rp-controls { padding-right: 1.25rem; }
   .rp-credit {
-    margin: 0;
+    margin: 0 0 0 auto;
     text-align: right;
+    text-shadow: 0 1px 10px var(--glass-drop);
   }
   .rp-keys {
-    margin: 0.75rem 0 0;
+    margin: 0;
     font-size: 0.8125rem;
     color: var(--fg-faint);
   }
-
-  .rp-live {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-left: 0.5rem;
-    font-size: 0.9375rem;
-    color: var(--fg-dim);
+  @media not ((hover: hover) and (pointer: fine)) {
+    .rp-keys, .rp-hint-fine { display: none; }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .rp-hint-touch { display: none; }
   }
 
-  radio-player[data-live="true"] .rp-back,
-  radio-player[data-live="false"] .rp-live {
+  /* The one thing to do on arrival: a light runs through the invitation, the speaker glows. */
+  .rp-hint {
+    margin-left: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: transparent;
+    background: linear-gradient(100deg, var(--fg-dim) 40%, var(--fg) 50%, var(--fg-dim) 60%) 100% 0 / 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: rp-hint 3.2s var(--ease-in-out) 1.2s infinite;
+  }
+  @keyframes rp-hint { to { background-position: 0 0; } }
+  radio-player:has(.rp-hint)[data-muted="true"] #rp-sound {
+    border-color: color-mix(in oklab, var(--accent) 70%, transparent);
+    box-shadow: 0 0 18px color-mix(in oklab, var(--accent) 40%, transparent);
+  }
+  .rp-back { margin-left: 0.25rem; height: 2.5rem; }
+
+  radio-player[data-live="true"] .rp-back {
     display: none;
   }
 
@@ -158,6 +176,8 @@
 
   @media (max-width: 767px) {
     .rp-credit {
+      flex-basis: 100%;
+      margin-left: 0;
       text-align: left;
     }
   }
@@ -165,4 +185,5 @@
 
 <script>
   import "./player.ts";
+  import "../lib/glass.ts";
 </script>

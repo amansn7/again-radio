@@ -10,6 +10,8 @@ import type { CueInfo, StateInfo, TrackInfo } from "../lib/events.ts";
 
 const DRIFT = 8;
 const SETTLE_MS = 1500;
+// A pause this soon after the page hides is the browser/embed suspending us, not the listener.
+const HIDE_GRACE_MS = 2000;
 
 class RadioPlayer extends HTMLElement {
   private player: YTPlayer | null = null;
@@ -23,6 +25,8 @@ class RadioPlayer extends HTMLElement {
   private muted = true;
   private playing = false;
   private userPaused = false;
+  private hiddenAt = 0;
+  private lastFocus: HTMLElement | null = null;
   private lastKey = "";
   private anchor = 0;
   private anchorAt = 0;
@@ -36,7 +40,10 @@ class RadioPlayer extends HTMLElement {
     const soundOn = () => this.muted && this.setMuted(false);
     window.addEventListener("click", soundOn, { signal: wakeSignal });
     window.addEventListener("keydown", soundOn, { signal: wakeSignal });
-    // Focus moving into the embed blurs the window; take it straight back.
+    // Focus moving into the embed blurs the window; take it straight back to where the user was.
+    document.addEventListener("focusin", (e) => {
+      if (!(e.target instanceof HTMLIFrameElement)) this.lastFocus = e.target as HTMLElement;
+    }, { signal: this.ac.signal });
     window.addEventListener("blur", () => setTimeout(() => this.releaseFocus()), { signal: this.ac.signal });
     this.init().catch((err: unknown) => {
       console.error("[radio-player]", err instanceof Error ? err.message : String(err));
@@ -55,7 +62,9 @@ class RadioPlayer extends HTMLElement {
   // The embed grabs focus as it loads, which swallows the page's keyboard shortcuts.
   private releaseFocus() {
     const a = document.activeElement;
-    if (a instanceof HTMLIFrameElement && this.contains(a)) a.blur();
+    if (!(a instanceof HTMLIFrameElement) || !this.contains(a)) return;
+    a.blur();
+    if (this.lastFocus?.isConnected) this.lastFocus.focus({ preventScroll: true });
   }
 
   private setHidden(sel: string, hidden: boolean) {
@@ -90,7 +99,7 @@ class RadioPlayer extends HTMLElement {
       },
       events: {
         onReady: () => {
-          if (!this.muted) this.player?.unMute();
+          if (!this.muted) this.player?.unMute?.();
           this.setHidden(".rp-tuning", true);
           this.setLabels();
           this.emitState();
@@ -106,6 +115,10 @@ class RadioPlayer extends HTMLElement {
             this.emitState();
           }
           if (e.data === 0 && Date.now() - this.anchorAt > SETTLE_MS) this.ended();
+          // Keep the radio on in a background tab where the browser allows it.
+          if (e.data === 2 && document.hidden && !this.userPaused && Date.now() - this.hiddenAt < HIDE_GRACE_MS) {
+            this.player?.playVideo();
+          }
         },
         onError: () => {
           this.setHidden(".rp-tuning", true);
@@ -119,7 +132,10 @@ class RadioPlayer extends HTMLElement {
     on("#rp-back", () => this.goLive());
     document.addEventListener(RADIO_LIVE, () => this.goLive(), { signal });
     // Mobile browsers pause embeds in the background; come back to the live moment, like a radio.
-    document.addEventListener("visibilitychange", () => this.resumeIfDropped(), { signal });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) this.hiddenAt = Date.now();
+      this.resumeIfDropped();
+    }, { signal });
     window.addEventListener("pageshow", () => this.resumeIfDropped(), { signal });
     document.addEventListener(RADIO_CUE, (e) => void this.cue((e as CustomEvent<CueInfo>).detail), { signal });
     bindKeys(
@@ -149,8 +165,8 @@ class RadioPlayer extends HTMLElement {
     this.wake.abort();
     this.querySelector(".rp-hint")?.remove();
     this.muted = muted;
-    if (muted) this.player?.mute();
-    else this.player?.unMute();
+    if (muted) this.player?.mute?.();
+    else this.player?.unMute?.();
     this.emitState();
   }
 
@@ -185,8 +201,8 @@ class RadioPlayer extends HTMLElement {
     } else {
       this.player?.loadVideoById({ videoId: prog.youtubeId, startSeconds: offset });
     }
-    if (this.muted) this.player?.mute();
-    else this.player?.unMute();
+    if (this.muted) this.player?.mute?.();
+    else this.player?.unMute?.();
     this.setLabels();
     this.emitState();
     this.emitTrack();
@@ -249,6 +265,7 @@ class RadioPlayer extends HTMLElement {
     const detail: TrackInfo = {
       programId: this.prog.id,
       programPath: this.path,
+      youtubeId: this.prog.youtubeId,
       programTitle: this.prog.title,
       programDuration: this.prog.duration,
       venue: this.prog.venue,

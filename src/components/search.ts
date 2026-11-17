@@ -1,6 +1,8 @@
 import { loadCatalogue } from "../lib/catalogue.ts";
 import { RADIO_CUE, RADIO_SEARCH } from "../lib/events.ts";
 import { fetchJson, loadProgram, loadStation } from "../lib/station.ts";
+import "../lib/glass.ts";
+import { fly, loadArt, tilt } from "./search-fx.ts";
 import { GROUPS, buildIndex, search, type Album, type Doc, type Sources, type Tour } from "../lib/search.ts";
 
 const ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>`;
@@ -37,13 +39,14 @@ class RadioSearch extends HTMLElement {
   connectedCallback() {
     this.innerHTML =
       `<button type="button" class="btn rs-open" aria-haspopup="dialog">${ICON}<span>Search</span><kbd class="rs-kbd" aria-hidden="true">/</kbd></button>` +
-      `<dialog class="rs-dlg" aria-label="Search"><div class="rs-head">${ICON}` +
+      `<dialog class="rs-dlg glass" data-glass="regular" aria-label="Search"><div class="rs-head">${ICON}` +
       `<input class="rs-input" type="search" placeholder="Song, person, city, year" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="rs-list" aria-label="Search the radio"></div>` +
       `<div class="rs-list" id="rs-list" role="listbox" aria-label="Results"></div></dialog>`;
     this.dlg = this.querySelector("dialog")!;
     this.input = this.querySelector("input")!;
     this.list = this.querySelector(".rs-list")!;
     this.querySelector(".rs-open")!.addEventListener("click", () => this.open());
+    tilt(this.list);
     this.input.addEventListener("input", () => this.render());
     this.dlg.addEventListener("keydown", (e) => this.key(e));
     this.dlg.addEventListener("click", (e) => { if (e.target === this.dlg) this.dlg.close(); });
@@ -104,11 +107,12 @@ class RadioSearch extends HTMLElement {
       html += `<div role="group" aria-label="${g}"><h3 class="rs-group">${g}</h3>`;
       for (const [d, i] of rows) {
         html += `<div class="rs-row${fresh ? " rs-in" : ""}" style="--n:${n++}" role="option" id="rs-${i}" data-i="${i}">` +
-          `<span class="rs-t"><span>${esc(d.title)}</span><span class="meta">${esc(d.context)}</span></span><span class="num meta">${esc(d.right)}</span></div>`;
+          `<span class="rs-art" data-a="${i}"></span><span class="rs-t"><span>${esc(d.title)}</span><span class="meta">${esc(d.context)}</span></span><span class="rs-r num meta">${esc(d.right)}</span></div>`;
       }
       html += `</div>`;
     }
     this.list.innerHTML = html;
+    loadArt(this.list, this.hits.map((d) => d.art));
     this.mark();
   }
 
@@ -141,9 +145,13 @@ class RadioSearch extends HTMLElement {
       this.render();
       return;
     }
-    this.dlg.close();
-    if (a.type === "scroll") document.querySelector(a.target)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-    else document.dispatchEvent(new CustomEvent(RADIO_CUE, { detail: a.type === "video" ? { video: a.video, offset: a.offset } : { program: a.program, offset: a.offset } }));
+    if (a.type === "scroll") {
+      this.dlg.close();
+      document.querySelector(a.target)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      return;
+    }
+    const detail = a.type === "video" ? { video: a.video, offset: a.offset } : { program: a.program, offset: a.offset };
+    void fly(this.list.querySelector<HTMLElement>(`#rs-${i}`), this.dlg, () => document.dispatchEvent(new CustomEvent(RADIO_CUE, { detail })));
   }
 }
 

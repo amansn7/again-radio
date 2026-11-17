@@ -4,38 +4,7 @@
 
 <style is:global>
   archive-rail { display: block; width: 100%; padding-block: clamp(4rem, 8vw, 7rem); }
-  .ar-block { margin-bottom: clamp(4rem, 8vw, 7rem); }
-  .ar-block:last-child { margin-bottom: 0; }
   .ar-head { display: grid; gap: 0.5rem; margin-bottom: 2.25rem; }
-
-  .ar-scroll {
-    overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; outline: none;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent);
-  }
-  .ar-scroll::-webkit-scrollbar { display: none; }
-  .ar-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-
-  .ar-show:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-  .ar-shows { display: flex; gap: 1rem; padding-bottom: 0.5rem; }
-  .ar-show {
-    flex: 0 0 15.5rem; scroll-snap-align: start; display: flex; flex-direction: column; gap: 0.6rem;
-    min-height: 13rem; padding: 1.25rem; text-align: left; color: var(--card-fg); font: inherit; cursor: pointer;
-    background: var(--card); border: 1px solid transparent; border-radius: var(--radius);
-    transition: transform var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
-  }
-  .ar-show:hover { transform: translateY(-4px); }
-  .ar-show:active { transform: scale(0.98); }
-  .ar-show .meta { color: color-mix(in oklab, var(--card-fg) 65%, transparent); }
-  .ar-show-city {
-    font-family: var(--font-name); font-weight: var(--name-weight); letter-spacing: var(--name-tracking);
-    font-size: clamp(1.75rem, 2.4vw, 2.25rem); line-height: 1.05;
-  }
-  .ar-show-guest { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .ar-show-play { margin-top: auto; font-size: 0.875rem; color: var(--accent); }
-  :root[data-theme="sleek"] .ar-show { border-color: var(--line); backdrop-filter: blur(14px); }
-  :root[data-theme="sleek"] .ar-show:hover { border-color: color-mix(in oklab, var(--accent) 50%, transparent); }
 
   .ar-tour { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 2rem 4rem; align-items: end; }
   .ar-timer { display: flex; flex-wrap: wrap; gap: 0.25rem 2rem; margin: 0 0 0.5rem; }
@@ -57,58 +26,31 @@
 </style>
 
 <script>
-  import { buildShowsHtml, buildTourHtml, parseAlbumsData, parseProgramData } from "./archive-rail.ts";
-  import { RADIO_CUE } from "../lib/events.ts";
-
-  const EVERY_SHOW = "programs/usb002-every-show.json";
-  const get = (url: string): Promise<unknown> =>
-    fetch(url).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json() as Promise<unknown>; });
+  import { buildTourHtml, parseAlbumsData } from "./archive-rail.ts";
 
   class ArchiveElement extends HTMLElement {
     private timer: ReturnType<typeof setInterval> | null = null;
 
     async connectedCallback(): Promise<void> {
-      const sk = (h: string) => `<div class="skeleton" style="height:${h}"></div>`;
       this.innerHTML =
-        `<div class="wrap">` +
-        `<section class="ar-block" aria-labelledby="ar-shows"><div class="ar-head">` +
-        `<h2 class="section-title" id="ar-shows">Every show of the tour</h2>` +
-        `<p class="meta">108 hours across 20 rooms. Pick a room to drop in.</p></div>` +
-        `<div class="ar-scroll" tabindex="0" role="region" aria-label="Every show of the tour">${sk("13rem")}</div></section>` +
-        `<section class="ar-block" id="tour" aria-labelledby="ar-tour"><div class="ar-head">` +
+        `<section class="wrap" id="tour" aria-labelledby="ar-tour"><div class="ar-head">` +
         `<h2 class="section-title" id="ar-tour">India, December 2026</h2>` +
-        `<p class="meta">Three nights, three cities.</p></div><div class="ar-tour">${sk("8rem")}</div></section></div>`;
-
-      const [shows, tour] = Array.from(this.querySelectorAll<HTMLElement>(".ar-scroll, .ar-tour"));
-      const [a, p] = await Promise.allSettled([get("/data/albums.json"), get(`/data/${EVERY_SHOW}`)]);
-      const albums = a.status === "fulfilled" ? parseAlbumsData(a.value) : null;
-      const program = p.status === "fulfilled" ? parseProgramData(p.value) : null;
-      const err = (what: string) => `<p class="meta ar-error" role="alert">${what} could not be loaded. Check your connection and reload the page.</p>`;
-
-      if (albums) {
-        this.renderTour(tour, albums.tour);
-        this.timer = setInterval(() => this.renderTour(tour, albums.tour), 60_000);
-      } else tour.innerHTML = err("The tour dates");
-
-      if (program) {
-        shows.innerHTML = `<div class="ar-shows">${buildShowsHtml(program.entries)}</div>`;
-        shows.addEventListener("click", (e) => {
-          const b = (e.target as HTMLElement).closest<HTMLElement>(".ar-show");
-          if (b) document.dispatchEvent(new CustomEvent(RADIO_CUE, { detail: { program: `programs/usb002-every-show.json`, offset: Number(b.dataset.offset) } }));
-        });
-      } else shows.innerHTML = err("The shows");
-      shows.style.scrollSnapType = "x proximity";
-      shows.addEventListener("keydown", (e) => {
-        const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-        if (d && e.target === shows) { e.preventDefault(); shows.scrollBy({ left: d * 240, behavior: "smooth" }); }
-      });
+        `<p class="meta">Three nights, three cities.</p></div>` +
+        `<div class="ar-tour"><div class="skeleton" style="height:8rem"></div></div></section>`;
+      const tour = this.querySelector<HTMLElement>(".ar-tour")!;
+      try {
+        const res = await fetch("/data/albums.json");
+        if (!res.ok) throw new Error(String(res.status));
+        const dates = parseAlbumsData(await res.json()).tour;
+        const draw = () => { tour.innerHTML = buildTourHtml(dates); };
+        draw();
+        this.timer = setInterval(draw, 60_000);
+      } catch {
+        tour.innerHTML = `<p class="meta ar-error" role="alert">The tour dates could not be loaded. Check your connection and reload the page.</p>`;
+      }
     }
 
     disconnectedCallback(): void { if (this.timer !== null) clearInterval(this.timer); }
-
-    private renderTour(el: HTMLElement, dates: Parameters<typeof buildTourHtml>[0]): void {
-      el.innerHTML = buildTourHtml(dates);
-    }
   }
 
   if (!customElements.get("archive-rail")) customElements.define("archive-rail", ArchiveElement);

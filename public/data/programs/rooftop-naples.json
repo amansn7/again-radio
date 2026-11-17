@@ -1,0 +1,27 @@
+{
+  "id": "rooftop-naples",
+  "title": "Rooftop Live (Fede's Roof, Naples)",
+  "venue": "Fede's Roof, Naples",
+  "date": "2025-09-07",
+  "youtubeId": "2yfyPeAEV3A",
+  "duration": 3797,
+  "source": "set79 timestamps",
+  "entries": [
+    { "offset": 144, "duration": 247, "type": "track", "title": "you're a star", "artist": "Fred again.. & Amyl and The Sniffers" },
+    { "offset": 391, "duration": 211, "type": "track", "title": "ICEY..", "artist": "Fred again.. & BIA" },
+    { "offset": 602, "duration": 214, "type": "id", "title": "ID", "artist": "Fred again.., Danny Brown, JPEGMAFIA, PARISI & BEAM" },
+    { "offset": 816, "duration": 261, "type": "track", "title": "Last 1s Left", "artist": "Fred again.. & Skepta" },
+    { "offset": 1077, "duration": 446, "type": "track", "title": "I Think Of Angels (Fred again.. Remix)", "artist": "Cat Power" },
+    { "offset": 1523, "duration": 93, "type": "track", "title": "Lights Burn Dimmer", "artist": "Fred again.. & Jamie T" },
+    { "offset": 1616, "duration": 160, "type": "track", "title": "Hippodrome (Fred again.. Remix)", "artist": "Jamie T" },
+    { "offset": 1776, "duration": 213, "type": "track", "title": "..FEISTY", "artist": "Fred again.. & BIA" },
+    { "offset": 1989, "duration": 214, "type": "track", "title": "Trippie (Trust)", "artist": "SNAR SNAR" },
+    { "offset": 2203, "duration": 219, "type": "track", "title": "21 Years", "artist": "Skepta & Fred again.." },
+    { "offset": 2422, "duration": 310, "type": "track", "title": "HARDSTYLE 2", "artist": "KETTAMA, Fred again.. & Shady Nasty" },
+    { "offset": 2732, "duration": 223, "type": "track", "title": "Winny", "artist": "Winny, Fred again.. & Sammy Virji" },
+    { "offset": 2955, "duration": 162, "type": "track", "title": "Chill Bae (Fred again.. Remix)", "artist": "Lil Uzi Vert" },
+    { "offset": 3117, "duration": 166, "type": "track", "title": "Berry Patch (Halogenix Remix)", "artist": "Machinedrum & Holly" },
+    { "offset": 3283, "duration": 445, "type": "track", "title": "solo", "artist": "Fred again.. & Blanco" },
+    { "offset": 3728, "duration": 69, "type": "track", "title": "scared", "artist": "Fred again.. & Young Thug" }
+  ]
+}

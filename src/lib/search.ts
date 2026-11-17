@@ -1,5 +1,5 @@
 import type { CatalogueItem } from "./catalogue.ts";
-import type { Program } from "./station.ts";
+import type { Program, ProgramEntry } from "./station.ts";
 import { personFromTitle } from "./memories.ts";
 
 export type Group = "Songs" | "In sets" | "Shows" | "Releases" | "On tour";
@@ -11,7 +11,10 @@ export type Action =
   | { type: "query"; query: string }
   | { type: "scroll"; target: string };
 
+export interface Art { entry?: ProgramEntry; yt?: string }
+
 export interface Doc {
+  art?: Art;
   group: Group;
   title: string;
   context: string;
@@ -61,29 +64,37 @@ export function buildIndex(src: Sources): Doc[] {
   const docs: Doc[] = [];
   for (const c of src.catalogue) {
     const isSet = c.kind === "set";
-    docs.push(doc(isSet ? "Shows" : "Songs", c.title, c.album ?? c.channel, year(c.published),
+    const d = doc(isSet ? "Shows" : "Songs", c.title, c.album ?? c.channel, year(c.published),
       { type: "video", video: c, offset: 0 },
-      [c.song ?? "", c.album ?? "", c.channel, personFromTitle(c.title) ?? "", year(c.published)]));
+      [c.song ?? "", c.album ?? "", c.channel, personFromTitle(c.title) ?? "", year(c.published)]);
+    d.art = { yt: c.youtubeId };
+    docs.push(d);
   }
   for (const { path, program: p } of src.programs) {
     for (const e of p.entries) {
       if (e.type !== "track" || !e.title) continue;
-      docs.push(doc("In sets", e.title, `in ${p.title}`, fmtTime(e.offset),
+      const d = doc("In sets", e.title, `in ${p.title}`, fmtTime(e.offset),
         { type: "program", program: path, offset: e.offset },
-        [personFromTitle(e.title) ?? "", e.album ?? "", e.artist ?? "", e.memory ?? "", p.title, p.venue ?? "", year(p.date)]));
+        [personFromTitle(e.title) ?? "", e.album ?? "", e.artist ?? "", e.memory ?? "", p.title, p.venue ?? "", year(p.date)]);
+      d.art = { entry: e, yt: p.youtubeId };
+      docs.push(d);
     }
   }
   if (src.shows) {
     const { path, program: p } = src.shows;
     for (const e of p.entries) {
       if (!e.title) continue;
-      docs.push(doc("Shows", e.title, e.memory ?? p.title, fmtTime(e.offset),
-        { type: "program", program: path, offset: e.offset }, [e.memory ?? "", e.album ?? "", p.title]));
+      const d = doc("Shows", e.title, e.memory ?? p.title, fmtTime(e.offset),
+        { type: "program", program: path, offset: e.offset }, [e.memory ?? "", e.album ?? "", p.title]);
+      d.art = { yt: p.youtubeId };
+      docs.push(d);
     }
   }
   for (const a of src.albums) {
-    docs.push(doc("Releases", a.title, a.subtitle ?? a.kind ?? "", String(a.year),
-      { type: "query", query: a.title }, [a.subtitle ?? "", a.kind ?? "", String(a.year)]));
+    const d = doc("Releases", a.title, a.subtitle ?? a.kind ?? "", String(a.year),
+      { type: "query", query: a.title }, [a.subtitle ?? "", a.kind ?? "", String(a.year)]);
+    d.art = { entry: { offset: 0, duration: 0, type: "track", album: a.title } };
+    docs.push(d);
   }
   for (const t of src.tour) {
     docs.push(doc("On tour", t.city, "USB002 tour", year(t.date) ? t.date : "",

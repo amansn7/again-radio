@@ -1,0 +1,19 @@
+{
+  "items": [
+    { "youtubeId": "ahe9baHOWIg", "title": "Four Tet, Fred again.. and Skrillex, pop-up in Times Square", "kind": "set", "duration": 3631, "published": "2023-02-17", "channel": "The Lot Radio" },
+    { "youtubeId": "9Stt4wq3KCE", "title": "Overmono, Fred again.. and Lil Yachty at The Lot Radio", "kind": "set", "duration": 4381, "published": "2024-02-21", "channel": "The Lot Radio" },
+    { "youtubeId": "WiSXx_GcJ-c", "title": "Fred again.. at The Lot Radio, Brooklyn", "kind": "set", "duration": 3210, "published": "2021-12-06", "channel": "The Lot Radio" },
+    { "youtubeId": "4iQmPv_dTI0", "title": "Fred again.. Tiny Desk concert", "kind": "set", "duration": 1604, "published": "2023-04-10", "channel": "NPR Music" },
+    { "youtubeId": "2_64XAqYgJ0", "title": "Delilah / Billie live at Glastonbury 2023", "song": "Delilah (pull me out of this)", "kind": "live", "duration": 603, "published": "2023-07-01", "channel": "BBC Music" },
+    { "youtubeId": "2yfyPeAEV3A", "title": "Rooftop set over the piazza, Naples", "kind": "set", "duration": 3797, "published": "2025-09-07", "channel": "Fred again.." },
+    { "youtubeId": "o_N5JQYHJXk", "title": "Green room set after the Rome show", "kind": "set", "duration": 3391, "published": "2025-09-26", "channel": "Fred again.." },
+    { "youtubeId": "H2I6V0NlaHg", "title": "Studio Live, London", "kind": "set", "duration": 2296, "published": "2021-04-23", "channel": "Fred again.." },
+    { "youtubeId": "bZH9U1efx1c", "title": "Studio Live 2, London", "kind": "set", "duration": 2739, "published": "2021-10-21", "channel": "Fred again.." },
+    { "youtubeId": "O3OrcOr67sM", "title": "Studio Live 3, London", "kind": "set", "duration": 3550, "published": "2022-11-09", "channel": "Fred again.." },
+    { "youtubeId": "XpBRuwK5aN4", "title": "Actual Life 2 piano live", "kind": "set", "duration": 1860, "published": "2022-03-20", "channel": "Fred again..", "album": "Actual Life 2 (February 2 - October 15 2021)" },
+    { "youtubeId": "rTbIQ5sZrDg", "title": "Actual Life 3 piano live", "kind": "set", "duration": 1468, "published": "2022-12-22", "channel": "Fred again..", "album": "Actual Life 3 (January 1 - September 9 2022)" },
+    { "youtubeId": "baxOzJW6K1s", "title": "secret life, three days before the Coliseum, Los Angeles", "kind": "set", "duration": 2956, "published": "2024-06-12", "channel": "Fred again.." },
+    { "youtubeId": "0sZF6YzhrRU", "title": "Under the fabric with LATIN MAFIA, Mexico City", "kind": "set", "duration": 2070, "published": "2025-12-11", "channel": "Fred again.. and LATIN MAFIA" },
+    { "youtubeId": "mDtud5fLgFQ", "title": "Mixtape playback with LATIN MAFIA, Palacio de los Deportes", "kind": "set", "duration": 4151, "published": "2026-07-30", "channel": "Fred again.. and LATIN MAFIA" }
+  ]
+}

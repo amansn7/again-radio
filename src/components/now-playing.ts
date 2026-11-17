@@ -3,7 +3,7 @@ import { RADIO_TRACK } from "../lib/events.ts";
 import type { TrackInfo } from "../lib/events.ts";
 import { coverArtUrl, resolveArtUrl } from "../lib/art.ts";
 import { dateStamp, personFromTitle } from "../lib/memories.ts";
-import { onPulse } from "../lib/pulse.ts";
+import { NameLight, letters } from "./hero-name.ts";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const RANGE = /\((\w+) (\d+)\s*[–-]\s*(\w+) (\d+) (\d{4})\)/;
@@ -30,25 +30,6 @@ function when(album: string | undefined, iso: string | undefined): { stamp: stri
   return { stamp: `'${String(y).slice(2)} ${mo} ${d}`, plain: `${MONTHS[mo - 1]} ${d}, ${y}` };
 }
 
-function letters(text: string): DocumentFragment {
-  const frag = document.createDocumentFragment();
-  let i = 0;
-  text.split(/\s+/).filter(Boolean).forEach((word, n) => {
-    if (n) frag.append(" ");
-    const w = document.createElement("span");
-    w.className = "w";
-    for (const ch of Array.from(word)) {
-      const l = document.createElement("span");
-      l.className = "l";
-      l.style.setProperty("--i", String(i++));
-      l.textContent = ch;
-      w.append(l);
-    }
-    frag.append(w);
-  });
-  return frag;
-}
-
 const covers = new Map<string, Promise<string>>();
 
 function coverFor(entry: ProgramEntry): Promise<string> {
@@ -68,6 +49,9 @@ class NowPlayingElement extends HTMLElement {
   private meta!: HTMLElement;
   private cover!: HTMLElement;
   private seq = 0;
+  private light!: NameLight;
+  private swap = 0;
+  private still = matchMedia("(prefers-reduced-motion: reduce)");
 
   connectedCallback() {
     const q = (s: string) => this.querySelector<HTMLElement>(s)!;
@@ -78,11 +62,7 @@ class NowPlayingElement extends HTMLElement {
     this.cover = q(".np-cover");
     this.meta.dataset.empty = "";
     document.addEventListener(RADIO_TRACK, (e) => this.onTrack((e as CustomEvent<TrackInfo>).detail));
-    let beat = -1;
-    onPulse(({ kick, env }) => {
-      const v = Math.round(kick * env * 50) / 50;
-      if (v !== beat) this.name.style.setProperty("--beat", String((beat = v)));
-    });
+    this.light = new NameLight(this.name);
     setTimeout(() => {
       if (this.fit.dataset.ready !== undefined) return;
       this.fit.dataset.ready = "";
@@ -93,23 +73,7 @@ class NowPlayingElement extends HTMLElement {
 
   private onTrack({ entry, programTitle, date }: TrackInfo) {
     const { name, rest } = nameOf(entry);
-    const longest = Math.max(5, ...name.split(/\s+/).map((w) => Array.from(w).length));
-    this.fit.style.setProperty("--len", String(longest));
-
-    const label = document.createElement("span");
-    label.className = "sr-only";
-    label.textContent = name;
-    const visual = document.createElement("span");
-    visual.className = "np-name-in";
-    visual.setAttribute("aria-hidden", "true");
-    visual.append(letters(name));
-    this.name.replaceChildren(label, visual);
-
-    const restIn = document.createElement("span");
-    restIn.className = "np-rest-in";
-    restIn.textContent = rest;
-    this.rest.replaceChildren(restIn);
-    this.fit.dataset.ready = "";
+    this.showName(name, rest);
 
     // without an album, name the artist rather than repeat the programme credit under the video
     const artist = entry.artist && !/^fred again/i.test(entry.artist) ? entry.artist : "";
@@ -121,6 +85,36 @@ class NowPlayingElement extends HTMLElement {
     this.q(".np-plain").textContent = w.plain;
     if (entry.type === "track") void this.setCover(entry);
     else this.cover.replaceChildren();
+  }
+
+  // The old name dims and lifts away before the new one is thrown on, unless motion is off.
+  private showName(name: string, rest: string) {
+    const mine = ++this.swap;
+    const old = this.name.querySelector(".np-name-in");
+    const put = () => {
+      if (mine !== this.swap) return;
+      const longest = Math.max(5, ...name.split(/\s+/).map((w) => Array.from(w).length));
+      this.fit.style.setProperty("--len", String(longest));
+      this.fit.style.setProperty("--total", String(Math.max(10, Array.from(name).length)));
+      const label = document.createElement("span");
+      label.className = "sr-only";
+      label.textContent = name;
+      const visual = document.createElement("span");
+      visual.className = "np-name-in";
+      visual.setAttribute("aria-hidden", "true");
+      visual.append(letters(name));
+      this.name.replaceChildren(label, visual);
+      const restIn = document.createElement("span");
+      restIn.className = "np-rest-in";
+      restIn.textContent = rest;
+      this.rest.replaceChildren(restIn);
+      this.fit.dataset.ready = "";
+      this.light.arrive();
+    };
+    if (!old || this.still.matches || document.hidden) return put();
+    old.classList.add("np-out");
+    this.rest.firstElementChild?.classList.add("np-out");
+    setTimeout(put, 320);
   }
 
   private q(s: string): HTMLElement {

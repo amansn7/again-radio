@@ -48,5 +48,9 @@ export function parseCatalogue(raw: unknown): CatalogueItem[] {
 }
 
 export async function loadCatalogue(): Promise<CatalogueItem[]> {
-  return parseCatalogue(await fetchJson("/data/catalogue.json"));
+  try {
+    return parseCatalogue(await fetchJson("/data/catalogue.json"));
+  } catch {
+    return [];
+  }
 }

@@ -30,11 +30,14 @@ function validateProgram(p, file) {
       fail(`${at}: runs past program duration`);
     }
     if (e.type !== "id" && !String(e.title ?? "").trim()) fail(`${at}: empty title`);
+    if (e.art !== undefined && !ART_URL.test(e.art)) fail(`${at}: art must be an https mzstatic/coverartarchive URL`);
     if (!e.album && e.type === "track") noAlbum++;
     prevEnd = e.offset + e.duration;
   });
   if (noAlbum) warn.push(`${file}: ${noAlbum} track(s) with no album (song-art fallback)`);
 }
+
+const ART_URL = /^https:\/\/(is[0-9]-ssl\.mzstatic\.com|coverartarchive\.org)\//;
 
 function validateStation(s) {
   if (!Array.isArray(s.rotation) || !s.rotation.length) warn.push("station.json: empty rotation");
@@ -85,6 +88,17 @@ function main() {
       if (!Number.isInteger(it?.duration) || it.duration < 0) fail(`${at}: bad duration`);
       if (ids.has(it?.youtubeId)) fail(`${at}: duplicate id`);
       ids.add(it?.youtubeId);
+    });
+  }
+  const apath = join(DATA, "albums.json");
+  if (existsSync(apath)) {
+    const a = JSON.parse(readFileSync(apath, "utf8"));
+    (a.albums ?? []).forEach((r, i) => {
+      if (r?.art !== undefined && !ART_URL.test(r.art)) fail(`albums.json album ${i}: art must be an https mzstatic/coverartarchive URL`);
+      if (!Number.isInteger(r?.year) || !String(r?.title ?? "").trim() || typeof r?.subtitle !== "string") fail(`albums.json album ${i}: needs year, title, subtitle`);
+    });
+    (a.tour ?? []).forEach((t, i) => {
+      if (!String(t?.city ?? "").trim() || !/^\d{4}-\d{2}-\d{2}/.test(t?.date ?? "")) fail(`albums.json tour ${i}: needs city and ISO date`);
     });
   }
   for (const w of warn) console.log(`· ${w}`);
@@ -149,6 +163,18 @@ async function selftest() {
   assert(beatAt(1, 120, 200).env < 0.2, "envelope should fade in at the start");
   assert(beatAt(199, 120, 200).env < 0.3, "envelope should fade out at the end");
   assert(beatAt(30, 0, 200).kick === 0, "no tempo means no kick");
+
+  const { normTitle } = await import("../src/lib/art.ts");
+  assert(normTitle("Actual Life 3 (January 1 - September 9 2022)") === "actual life 3", "normTitle should drop the date parenthetical");
+  assert(normTitle("Kyle (I Found You) - Single") === "kyle", "normTitle should drop the release-type suffix");
+
+  const { albumEntry } = await import("../src/components/dial-data.ts");
+  const programs = ["boiler-room-london", "rooftop-live", "alex-palace-bangalter", "usb002-every-show"].map((id) => ({
+    path: `programs/${id}.json`, data: JSON.parse(readFileSync(join(DATA, "programs", `${id}.json`), "utf8")) }));
+  assert(albumEntry("Actual Life 3 (January 1 - September 9 2022)", programs)?.path === "programs/boiler-room-london.json", "Actual Life 3 should play from Boiler Room");
+  assert(albumEntry("USB002", programs)?.entry.title === "GLASGOW", "USB002 should play its first show");
+  assert(albumEntry("ten days", programs) !== null, "ten days is on air");
+  assert(albumEntry("Secret Life", programs) === null, "Secret Life is not on air yet");
 
   console.log("✓ selftest");
 }

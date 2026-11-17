@@ -3,6 +3,8 @@ export interface Album {
   title: string;
   subtitle: string;
   kind: string;
+  /** Precomputed by scripts/resolve-art.mjs; the runtime lookup is the fallback. */
+  art?: string;
 }
 
 export interface TourDate {
@@ -13,18 +15,6 @@ export interface TourDate {
 export interface AlbumsData {
   albums: Album[];
   tour: TourDate[];
-}
-
-export interface ShowEntry {
-  offset: number;
-  duration: number;
-  type: string;
-  title: string;
-  memory?: string;
-}
-
-export interface ProgramData {
-  entries: ShowEntry[];
 }
 
 function isAlbum(v: unknown): v is Album {
@@ -39,26 +29,12 @@ function isTourDate(v: unknown): v is TourDate {
   return typeof r.city === "string" && typeof r.date === "string";
 }
 
-function isShowEntry(v: unknown): v is ShowEntry {
-  if (typeof v !== "object" || v === null) return false;
-  const r = v as Record<string, unknown>;
-  return typeof r.offset === "number" && typeof r.duration === "number" &&
-    typeof r.type === "string" && typeof r.title === "string";
-}
-
 export function parseAlbumsData(raw: unknown): AlbumsData {
   if (typeof raw !== "object" || raw === null) return { albums: [], tour: [] };
   const r = raw as Record<string, unknown>;
   const albums = Array.isArray(r.albums) ? r.albums.filter(isAlbum) : [];
   const tour = Array.isArray(r.tour) ? r.tour.filter(isTourDate) : [];
   return { albums, tour };
-}
-
-export function parseProgramData(raw: unknown): ProgramData {
-  if (typeof raw !== "object" || raw === null) return { entries: [] };
-  const r = raw as Record<string, unknown>;
-  const entries = Array.isArray(r.entries) ? r.entries.filter(isShowEntry) : [];
-  return { entries };
 }
 
 export function fmtOffset(secs: number): string {
@@ -92,14 +68,6 @@ export function countdownParts(ms: number): { n: number; unit: string }[] {
 export function countdownHtml(ms: number): string {
   return countdownParts(ms).map((p) =>
     `<span class="ar-cd"><span class="ar-cd-n num">${p.n}</span><span class="ar-cd-u">${p.unit}</span></span>`).join("");
-}
-
-export function buildShowsHtml(shows: ShowEntry[]): string {
-  return shows.map((s) =>
-    `<button class="ar-show" aria-label="Play ${esc(s.title)} from ${fmtOffset(s.offset)}" data-offset="${s.offset}">` +
-    `<span class="ar-show-city">${esc(s.title.charAt(0) + s.title.slice(1).toLowerCase())}</span>` +
-    (s.memory ? `<span class="meta ar-show-guest">${esc(s.memory)}</span>` : "") +
-    `<span class="ar-show-play num">Play from ${fmtOffset(s.offset)}</span></button>`).join("");
 }
 
 export function buildTourHtml(tour: TourDate[]): string {

@@ -1,0 +1,122 @@
+---
+---
+<link rel="preconnect" href="https://i.ytimg.com" crossorigin />
+<link rel="preconnect" href="https://is1-ssl.mzstatic.com" crossorigin />
+<section class="dl-section" aria-labelledby="dl-title">
+  <warp-dial></warp-dial>
+</section>
+
+<style is:global>
+  .dl-section { padding-top: clamp(4rem, 8vw, 7rem); }
+  warp-dial { display: block; --card-w: clamp(12rem, 17vw, 15rem); }
+  .dl-head { display: grid; gap: 0.5rem; margin-bottom: 1.75rem; }
+  .dl-skel { height: calc(var(--card-w) + 8rem); }
+  .dl-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
+
+  .dl-seg { display: inline-flex; gap: 2px; padding: 4px; border-radius: 999px; }
+  .dl-seg [role="tab"] {
+    border: 0; background: none; cursor: pointer; border-radius: 999px; padding: 0.7rem 1.15rem;
+    font: 500 0.9375rem/1 var(--font-body); color: var(--fg-dim);
+    transition: background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out);
+  }
+  .dl-seg [role="tab"]:hover { color: var(--fg); }
+  .dl-seg [role="tab"]:active { transform: scale(0.97); }
+  .dl-seg [aria-selected="true"] { color: var(--fg); background: color-mix(in oklab, var(--fg) 16%, transparent); }
+
+  .dl-pick { display: inline-flex; align-items: center; border-radius: 999px; }
+  .dl-pick[hidden] { display: none; }
+  .dl-pick::after { content: "\25BE"; position: absolute; right: 1rem; pointer-events: none; color: var(--fg-dim); }
+  .dl-pick select {
+    appearance: none; background: none; border: 0; border-radius: 999px; cursor: pointer; max-width: 70vw;
+    padding: 0.8rem 2.5rem 0.8rem 1.15rem; font: 500 0.9375rem/1 var(--font-body); color: var(--fg);
+    text-overflow: ellipsis;
+  }
+  .dl-pick option { background: var(--bg); color: var(--fg); }
+  .dl-seg [role="tab"]:focus-visible, .dl-pick select:focus-visible, .dl-card:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 3px;
+  }
+
+  .dl-stage {
+    position: relative; overflow: hidden; touch-action: pan-y; user-select: none;
+    --card-h: calc(var(--card-w) + 5.75rem);
+    height: calc(var(--card-h) * 1.4 + 4rem);
+    perspective: 900px; perspective-origin: 50% calc(4rem + var(--card-h) / 2);
+  }
+  .dl-track { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .dl-card {
+    --rim: var(--accent);
+    position: absolute; left: 50%; top: 4rem; width: var(--card-w);
+    display: flex; flex-direction: column; gap: 0.15rem; padding: 0.5rem; overflow: hidden;
+    font: inherit; text-align: left; color: var(--fg); cursor: pointer;
+    border-radius: 18px; border: 1px solid color-mix(in oklab, var(--rim) 60%, transparent);
+    background:
+      radial-gradient(120% 80% at 20% 10%, color-mix(in oklab, var(--rim) 45%, transparent), transparent 65%),
+      color-mix(in oklab, var(--bg) 80%, transparent);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in oklab, var(--rim) 20%, transparent),
+      0 22px 60px -22px color-mix(in oklab, var(--rim) 75%, transparent);
+    backface-visibility: hidden;
+    transition: transform 700ms var(--ease-out), opacity 700ms var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+  }
+  .dl-card[data-shape="wide"] { width: calc(var(--card-w) * 1.35); }
+  .dl-stage:not(.is-flat) .dl-card {
+    -webkit-box-reflect: below 10px linear-gradient(transparent 68%, color-mix(in srgb, var(--fg) 32%, transparent));
+  }
+  .dl-track.is-still .dl-card { transition: box-shadow var(--dur-2) var(--ease-out); }
+  .dl-card[data-front] {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in oklab, var(--rim) 45%, transparent),
+      0 0 46px -6px color-mix(in oklab, var(--rim) 70%, transparent),
+      0 28px 80px -24px color-mix(in oklab, var(--rim) 90%, transparent);
+  }
+  .dl-art {
+    position: relative; display: block; aspect-ratio: 1; overflow: hidden; border-radius: 12px;
+    background:
+      radial-gradient(90% 90% at 30% 20%, color-mix(in oklab, var(--rim) 55%, transparent), transparent 70%),
+      color-mix(in oklab, var(--rim) 14%, var(--bg));
+  }
+  .dl-card[data-shape="wide"] .dl-art { aspect-ratio: 16 / 9; }
+  .dl-art img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;
+    animation: dl-in var(--dur-2) var(--ease-out);
+  }
+  .dl-body { display: grid; gap: 0.3rem; padding: 0.6rem 0.45rem 0.35rem; }
+  .dl-tags { display: flex; align-items: center; gap: 0.5rem; }
+  .dl-badge {
+    font: 600 0.6875rem/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.5rem; border-radius: 999px; color: var(--fg);
+    background: color-mix(in oklab, var(--rim) 30%, transparent);
+    border: 1px solid color-mix(in oklab, var(--rim) 55%, transparent);
+  }
+  .dl-live { display: none; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: var(--fg); }
+  .dl-card[aria-current="true"] .dl-live { display: inline-flex; }
+  .dl-title {
+    font-family: var(--font-name); font-weight: var(--name-weight); letter-spacing: var(--name-tracking);
+    font-size: clamp(1.05rem, 1.4vw, 1.3rem); line-height: 1.15;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .dl-sub { font-size: 0.8125rem; color: var(--fg-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dl-card[aria-disabled="true"] .dl-art { opacity: 0.45; filter: grayscale(0.7); }
+  .dl-card[aria-disabled="true"][data-front] { cursor: not-allowed; }
+  .dl-hint { text-align: center; margin-top: -0.5rem; }
+
+  .dl-stage.is-flat { height: auto; overflow: visible; perspective: none; }
+  .is-flat .dl-track {
+    position: static; display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 2rem var(--gutter) 3.5rem; scrollbar-width: none;
+  }
+  .is-flat .dl-card { position: relative; left: auto; top: auto; flex: 0 0 auto; scroll-snap-align: center; transition: none; }
+
+  @keyframes dl-in { from { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .dl-art img { animation: none; } }
+
+  @media (max-width: 639px) {
+    .dl-seg { display: flex; width: 100%; }
+    .dl-seg [role="tab"] { flex: 1; padding-inline: 0.25rem; white-space: nowrap; font-size: 0.875rem; }
+    .dl-stage { perspective: 640px; }
+  }
+</style>
+
+<script>
+  import "./dial.ts";
+</script>
