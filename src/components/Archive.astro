@@ -6,9 +6,15 @@
   show-band { display: block; width: 100%; padding-block: clamp(4rem, 8vw, 7rem); }
   show-band .section-title { margin: 0 0 1.5rem; }
 
-  .sb-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 1rem; align-items: end; }
+  .sb-head {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 1rem; align-items: end;
+    padding: clamp(1rem, 2.6vw, 1.5rem); border: 1px solid color-mix(in oklab, var(--fg) 14%, transparent);
+    border-radius: var(--glass-radius); background: color-mix(in oklab, var(--bg) 88%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15); backdrop-filter: blur(14px) saturate(1.15);
+    box-shadow: 0 14px 36px -20px color-mix(in oklab, #000 85%, transparent);
+  }
   .sb-head p { margin: 0; }
-  .sb-kick { grid-column: 1 / -1; display: flex; gap: 0.5rem; align-items: center; font-size: 0.8125rem; color: var(--fg-dim); }
+  .sb-kick { grid-column: 1 / -1; display: flex; gap: 0.5rem; align-items: center; font-size: 0.8125rem; color: var(--fg); }
   show-band .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
   .sb-head.on .dot { animation: sb-ping 1.6s ease-out infinite; }
   @keyframes sb-ping {
@@ -21,12 +27,12 @@
   }
   .sb-read {
     font-size: clamp(1.75rem, 3vw, 2.125rem); font-weight: 500; letter-spacing: -0.015em; line-height: 1.1;
-    text-align: right; white-space: nowrap; color: var(--fg);
+    text-align: right; white-space: nowrap; color: var(--fg); text-shadow: 0 2px 18px color-mix(in oklab, #000 35%, transparent);
   }
-  .sb-read small { font-size: 0.9375rem; font-weight: 400; color: var(--fg-dim); margin: 0 2px 0 1px; }
+  .sb-read small { font-size: 0.9375rem; font-weight: 400; color: color-mix(in oklab, var(--fg) 78%, var(--accent)); margin: 0 2px 0 1px; }
   .sb-head .sb-sub {
     grid-column: 1 / -1; margin-top: 0.125rem;
-    font-family: var(--font-serif); font-style: italic; font-size: 1.125rem; line-height: 1.4; color: var(--fg-dim);
+    font-family: var(--font-serif); font-style: italic; font-size: 1.125rem; line-height: 1.4; color: color-mix(in oklab, var(--fg) 78%, var(--bg));
   }
   show-band .none { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: 1.625rem; color: var(--fg-dim); }
 
@@ -78,8 +84,14 @@
   .sb-hint { margin: 0.125rem 0 0; font-size: 0.75rem; color: var(--fg-faint); }
 
   @media (max-width: 520px) {
-    .sb-head { grid-template-columns: 1fr; }
-    .sb-read { text-align: left; font-size: 1.75rem; }
+    .sb-head { grid-template-columns: minmax(0, 1fr) auto; gap: 0.35rem 0.5rem; padding: 1rem; }
+    .sb-city { font-size: clamp(2rem, 9vw, 2.5rem); }
+    .sb-read { text-align: right; font-size: clamp(1.25rem, 6vw, 1.75rem); }
+    .sb-read small { font-size: 0.8rem; }
+    .sb-head .sb-sub { font-size: 1rem; }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .sb-head { background: var(--bg-2); -webkit-backdrop-filter: none; backdrop-filter: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     show-band .st { transition: none; }
