@@ -3,6 +3,7 @@ import { RADIO_TRACK } from "../lib/events.ts";
 import type { TrackInfo } from "../lib/events.ts";
 import { coverArtUrl, resolveArtUrl } from "../lib/art.ts";
 import { dateStamp, personFromTitle } from "../lib/memories.ts";
+import { onPulse } from "../lib/pulse.ts";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const RANGE = /\((\w+) (\d+)\s*[–-]\s*(\w+) (\d+) (\d{4})\)/;
@@ -77,6 +78,11 @@ class NowPlayingElement extends HTMLElement {
     this.cover = q(".np-cover");
     this.meta.dataset.empty = "";
     document.addEventListener(RADIO_TRACK, (e) => this.onTrack((e as CustomEvent<TrackInfo>).detail));
+    let beat = -1;
+    onPulse(({ kick, env }) => {
+      const v = Math.round(kick * env * 50) / 50;
+      if (v !== beat) this.name.style.setProperty("--beat", String((beat = v)));
+    });
     setTimeout(() => {
       if (this.fit.dataset.ready !== undefined) return;
       this.fit.dataset.ready = "";

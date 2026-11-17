@@ -17,7 +17,9 @@ class RadioPlayer extends HTMLElement {
   private prog!: Program;
   private path = "";
   private live = true;
-  private tunedIn = false;
+  // Browsers block sound until a gesture, so the station starts muted and the first
+  // click or key anywhere turns it up. An explicit mute/unmute cancels that.
+  private wake = new AbortController();
   private muted = true;
   private playing = false;
   private userPaused = false;
@@ -29,6 +31,13 @@ class RadioPlayer extends HTMLElement {
 
   connectedCallback() {
     this.ac = new AbortController();
+    // Listen before YouTube loads: the first tap usually lands while it is still loading.
+    const wakeSignal = AbortSignal.any([this.ac.signal, this.wake.signal]);
+    const soundOn = () => this.muted && this.setMuted(false);
+    window.addEventListener("click", soundOn, { signal: wakeSignal });
+    window.addEventListener("keydown", soundOn, { signal: wakeSignal });
+    // Focus moving into the embed blurs the window; take it straight back.
+    window.addEventListener("blur", () => setTimeout(() => this.releaseFocus()), { signal: this.ac.signal });
     this.init().catch((err: unknown) => {
       console.error("[radio-player]", err instanceof Error ? err.message : String(err));
       this.setHidden(".rp-tuning", true);
@@ -38,8 +47,15 @@ class RadioPlayer extends HTMLElement {
 
   disconnectedCallback() {
     this.ac.abort();
+    this.wake = new AbortController();
     if (this.ticker !== null) clearInterval(this.ticker);
     this.player?.destroy();
+  }
+
+  // The embed grabs focus as it loads, which swallows the page's keyboard shortcuts.
+  private releaseFocus() {
+    const a = document.activeElement;
+    if (a instanceof HTMLIFrameElement && this.contains(a)) a.blur();
   }
 
   private setHidden(sel: string, hidden: boolean) {
@@ -74,6 +90,7 @@ class RadioPlayer extends HTMLElement {
       },
       events: {
         onReady: () => {
+          if (!this.muted) this.player?.unMute();
           this.setHidden(".rp-tuning", true);
           this.setLabels();
           this.emitState();
@@ -97,7 +114,6 @@ class RadioPlayer extends HTMLElement {
       },
     });
 
-    on("#rp-tune", () => this.tuneIn());
     on("#rp-play", () => this.toggle());
     on("#rp-sound", () => this.setMuted(!this.muted));
     on("#rp-back", () => this.goLive());
@@ -130,16 +146,12 @@ class RadioPlayer extends HTMLElement {
   }
 
   private setMuted(muted: boolean) {
+    this.wake.abort();
+    this.querySelector(".rp-hint")?.remove();
     this.muted = muted;
     if (muted) this.player?.mute();
     else this.player?.unMute();
     this.emitState();
-  }
-
-  private tuneIn() {
-    this.tunedIn = true;
-    this.muted = false;
-    this.goLive();
   }
 
   private toggle() {
@@ -150,7 +162,7 @@ class RadioPlayer extends HTMLElement {
   }
 
   private resumeIfDropped() {
-    if (document.visibilityState !== "visible" || !this.tunedIn || this.userPaused || this.playing) return;
+    if (document.visibilityState !== "visible" || this.userPaused || this.playing) return;
     if (this.live) this.goLive();
     else this.player?.playVideo();
   }
@@ -187,10 +199,6 @@ class RadioPlayer extends HTMLElement {
         "video" in d
           ? videoProgram(d.video)
           : (this.rotation.find((r) => r.path === path)?.program ?? (await loadProgram(path)));
-      if (!this.tunedIn) {
-        this.tunedIn = true;
-        this.muted = false;
-      }
       this.live = false;
       this.load(path, prog, d.offset);
     } catch {
@@ -200,7 +208,7 @@ class RadioPlayer extends HTMLElement {
 
   private step(dir: 1 | -1) {
     const info = entryAt(this.prog.entries, this.position());
-    if (!info || !this.tunedIn) return;
+    if (!info) return;
     const to = dir < 0 && info.elapsed > 3 ? info.index : info.index + dir;
     const entry = this.prog.entries[Math.max(to, 0)];
     if (!entry || to >= this.prog.entries.length) return;
@@ -217,9 +225,10 @@ class RadioPlayer extends HTMLElement {
 
   private tick() {
     if (!this.player) return;
-    const current = Math.floor(this.position());
+    const exact = this.position();
+    const current = Math.floor(exact);
     document.dispatchEvent(
-      new CustomEvent(RADIO_TIME, { detail: { current, duration: this.prog.duration } }),
+      new CustomEvent(RADIO_TIME, { detail: { current, exact, duration: this.prog.duration } }),
     );
     if (Date.now() - this.anchorAt < SETTLE_MS) return;
     if (this.live && this.playing && document.visibilityState === "visible") {
@@ -255,7 +264,7 @@ class RadioPlayer extends HTMLElement {
 
   private emitState() {
     const detail: StateInfo = {
-      playing: this.playing, muted: this.muted, live: this.live, tunedIn: this.tunedIn,
+      playing: this.playing, muted: this.muted, live: this.live,
     };
     Object.entries(detail).forEach(([k, v]) => (this.dataset[k] = String(v)));
     const play = this.querySelector("#rp-play");

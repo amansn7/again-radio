@@ -11,16 +11,19 @@ Not affiliated with Fred again.. Do not use his wordmark or logo as the brand.
 - Static site. Astro + vanilla TS island. Tailwind v4 for CSS.
 - No UI framework (no React/Vue/Svelte), no state library, no backend, no database.
 - Runtime deps: `astro`, `tailwindcss` only. Dev deps: `playwright` for screenshots.
-- One `<canvas>` for generative art. One `<iframe>` (YouTube).
+- One `<iframe>` (YouTube), fixed full-viewport behind the whole page and always playing.
+  It starts muted (browser autoplay rules); the first click or key anywhere turns sound on.
 - Every visual is derived from the playing track's artwork. No stock hero images.
-- Three themes as CSS custom properties on `<html data-theme>`: `diary`, `sleek`, `auto`.
-- `auto` shuffles between diary and sleek per hour block, seeded by date+hour, and
-  crossfades. A manual toggle locks a theme until the user returns to `auto`.
+- One theme, Rave (`data-theme="sleek"`), with colours sampled from the artwork
+  (`src/lib/palette.ts`) into registered `--art-*` properties that crossfade in CSS.
 
 ## Rights rules (hard)
 
 - The site **embeds official YouTube content only**. Never re-stream, re-host, or proxy
   the audio. Never download it.
+- **No audio analysis.** The embed is cross-origin and must not be proxied, so anything
+  "reacting to the music" follows the playback clock on the track's beat grid
+  (`src/lib/pulse.ts`, `bpm` from the entry, 124 when unknown).
 - Artwork is **hotlinked, never stored**: Cover Art Archive or iTunes Search API.
   Never use Deezer images (their terms forbid storing, and they lack CORS).
 - Memory copy is written original. Never copy prose from interviews, Wikipedia pull
@@ -31,9 +34,8 @@ Not affiliated with Fred again.. Do not use his wordmark or logo as the brand.
 
 ```
 src/pages/index.astro
-src/components/{Player,NowPlaying,MemoryCard,HourStrip,Archive,ThemeToggle}.astro
-src/lib/{station,schedule,theme,art,memories}.ts
-src/canvas/field.ts
+src/components/{Player,NowPlaying,MemoryCard,HourStrip,Archive}.astro
+src/lib/{station,schedule,theme,art,memories,palette}.ts
 public/data/station.json
 public/data/programs/<id>.json
 styles/theme.css
@@ -50,10 +52,10 @@ scripts/verify.mjs
   "tagline": "24 hours of a life in progress",
   "rotation": [{ "program": "programs/boiler-room-london.json", "weight": 1 }],
   "hourBlocks": [
-    { "from": 4, "to": 10, "theme": "diary", "label": "dawn" },
-    { "from": 10, "to": 16, "theme": "sleek", "label": "day" },
-    { "from": 16, "to": 22, "theme": "diary", "label": "dusk" },
-    { "from": 22, "to": 4, "theme": "sleek", "label": "night" }
+    { "from": 4, "to": 10, "label": "dawn" },
+    { "from": 10, "to": 16, "label": "day" },
+    { "from": 16, "to": 22, "label": "dusk" },
+    { "from": 22, "to": 4, "label": "night" }
   ]
 }
 ```

@@ -48,10 +48,7 @@ the repo-local helper instead, which drives the cached shell:
 ```
 node scripts/shot.mjs http://localhost:4321 .verify/desktop.png 1440 900
 node scripts/shot.mjs http://localhost:4321 .verify/mobile.png 390 844
-node scripts/shot.mjs http://localhost:4321 .verify/sleek.png 1440 900 sleek
 ```
-
-The last argument optionally presets the theme (`auto | diary | sleek`).
 
 Then read the PNGs with the Read tool and judge them honestly. Fix what looks wrong.
 

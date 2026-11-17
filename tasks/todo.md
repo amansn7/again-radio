@@ -87,3 +87,18 @@ tour countdown. `public/data/albums.json` holds the release timeline and the tou
 - [ ] own 24/7 YouTube live channel (cleared audio, VPS, ffmpeg, systemd)
 - [ ] Cloudflare Pages deploy
 - [ ] live chat embed, listener promise wall, PWA
+
+## Redesign v3 (2026-11-17)
+
+- [ ] T1 Remove glass panel behind waveform + memory text (unit W)
+- [ ] T2 Liquid Glass engine ported from pastebin isg9YcH2 to vanilla TS; apply to hero surfaces (unit G, opus/high)
+- [ ] T3 Waveform -> particle swarm in Sonic Waveform language (21st.dev, pointer ripple), beat clock driven (unit W, sonnet/high)
+- [ ] T4 Unified section: running order + shows + albums with choices, Warp Carousel ring (unit C, opus/high)
+- [ ] T5 Cards use album art / concert art (YouTube thumbnail) / song art (unit C)
+- [ ] T6 Live ticker for active listeners — BLOCKED on decision: needs a presence backend; SPEC forbids backend and fake counts
+- [ ] T7 Search results with parallax; choosing one flies into the radio and plays (unit S, sonnet/medium)
+- [ ] T8 Mobile background playback — best effort in player.ts (orchestrator); YouTube player pauses itself when hidden
+- [ ] T9 Integrate, gates, screenshots, tunnel check (orchestrator)
+
+Notes: React/shadcn pastes are ported, not installed (SPEC: no framework, no deps). 21st.dev sources are behind login;
+porting from listing descriptions.

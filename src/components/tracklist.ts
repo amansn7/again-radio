@@ -120,10 +120,10 @@ class TracklistBar extends HTMLElement {
     const nxt = info.entries[info.index + 1];
     this.next.hidden = !nxt;
     if (nxt) this.next.querySelector<HTMLElement>(".tl-next-t")!.textContent = shortName(nxt);
-    this.onTime({ current: info.entry.offset + info.elapsed, duration: info.programDuration });
+    this.onTime({ current: info.entry.offset + info.elapsed });
   }
 
-  private onTime({ current }: TimeInfo) {
+  private onTime({ current }: Pick<TimeInfo, "current">) {
     const info = this.info;
     if (!info) return;
     const { entry } = info;

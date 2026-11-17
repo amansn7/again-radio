@@ -1,6 +1,8 @@
 import { RADIO_TIME, RADIO_TRACK } from "../lib/events.ts";
 import type { TimeInfo, TrackInfo } from "../lib/events.ts";
 import { memoryFor } from "../lib/memories.ts";
+import { onPulse } from "../lib/pulse.ts";
+import type { Beat } from "../lib/pulse.ts";
 import type { ProgramEntry } from "../lib/station.ts";
 
 const BARS = 48;
@@ -29,6 +31,8 @@ class MemoryCardElement extends HTMLElement {
   private wave!: HTMLElement;
   private text!: HTMLElement;
   private bars: HTMLElement[] = [];
+  private shape: number[] = [];
+  private level: number[] = [];
   private entry: ProgramEntry | null = null;
   private lit = 0;
 
@@ -37,6 +41,22 @@ class MemoryCardElement extends HTMLElement {
     this.text = this.querySelector<HTMLElement>(".mc-text")!;
     document.addEventListener(RADIO_TRACK, (e) => this.onTrack((e as CustomEvent<TrackInfo>).detail));
     document.addEventListener(RADIO_TIME, (e) => this.onTime((e as CustomEvent<TimeInfo>).detail));
+    onPulse((b) => this.onBeat(b));
+  }
+
+  // Centre bars ride the kick, the edges catch the hats; fast attack, slow release.
+  private onBeat({ kick, hat, swell, env }: Beat) {
+    const t = performance.now() / 1000;
+    this.bars.forEach((bar, i) => {
+      const edge = Math.abs(i / (BARS - 1) - 0.5) * 2;
+      const shimmer = 0.5 + 0.5 * Math.sin(t * (2 + this.shape[i] * 3) + i);
+      const drive = kick * (1 - edge) + hat * edge * 0.8 + 0.18 * shimmer;
+      const target = Math.max(0.1, env * this.shape[i] * (0.35 + 0.9 * drive) * (0.82 + 0.18 * swell));
+      const cur = this.level[i] ?? target;
+      const next = cur + (target - cur) * (target > cur ? 0.55 : 0.12);
+      this.level[i] = next;
+      bar.style.transform = `scaleY(${next.toFixed(3)})`;
+    });
   }
 
   private onTrack(info: TrackInfo) {
@@ -54,9 +74,10 @@ class MemoryCardElement extends HTMLElement {
     });
     this.dataset.ready = "";
 
-    this.bars = heights(info.entry.title ?? info.entry.type).map((h) => {
+    this.shape = heights(info.entry.title ?? info.entry.type);
+    this.bars = this.shape.map((h) => {
       const b = document.createElement("i");
-      b.style.setProperty("--h", h.toFixed(3));
+      b.style.transform = `scaleY(${h.toFixed(3)})`;
       return b;
     });
     this.wave.replaceChildren(...this.bars);

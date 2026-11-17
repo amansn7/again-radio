@@ -1,7 +1,7 @@
 ---
 const { ...attrs } = Astro.props;
 ---
-<memory-card {...attrs}>
+<memory-card class="glass" {...attrs}>
   <div class="mc-wave" aria-hidden="true"></div>
   <div class="mc-skel" aria-hidden="true">
     <i class="skeleton"></i><i class="skeleton"></i><i class="skeleton"></i>
@@ -14,6 +14,8 @@ const { ...attrs } = Astro.props;
     order: 1;
     display: block;
     min-width: 0;
+    max-width: 36rem;
+    padding: 1.25rem 1.5rem 1.375rem;
   }
 
   .mc-text,
@@ -40,25 +42,27 @@ const { ...attrs } = Astro.props;
     animation-delay: calc(var(--i) * 45ms);
   }
 
-  :root[data-theme="diary"] .mc-text { font-family: var(--font-serif); font-style: italic; }
-  :root[data-theme="diary"] .mc-wave { display: none; }
 
-  :root[data-theme="sleek"] .mc-wave {
+  /* Bars are scaled per frame by memory-card.ts on the track's beat grid. */
+  .mc-wave {
     display: flex;
     align-items: center;
-    gap: 3px;
-    height: 28px;
-    margin-bottom: 0.875rem;
+    gap: 4px;
+    height: 56px;
+    margin-bottom: 1rem;
   }
   .mc-wave i {
-    flex: none;
-    width: 2px;
-    height: calc(var(--h) * 100%);
-    border-radius: 1px;
-    background: var(--fg-dim);
-    transition: background-color var(--dur-2) var(--ease-out);
+    flex: 1 1 0;
+    max-width: 6px;
+    height: 100%;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--glass-light) 62%, transparent);
+    transition: background-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
   }
-  .mc-wave i.on { background: var(--accent); }
+  .mc-wave i.on {
+    background: var(--accent);
+    box-shadow: 0 0 10px color-mix(in oklab, var(--accent) 65%, transparent);
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .mc-text .mw { animation-delay: 0s !important; }

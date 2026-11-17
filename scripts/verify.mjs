@@ -72,6 +72,21 @@ function main() {
       validateProgram(JSON.parse(readFileSync(join(pdir, f), "utf8")), `programs/${f}`);
     }
   }
+  const cpath = join(DATA, "catalogue.json");
+  if (existsSync(cpath)) {
+    const KINDS = new Set(["song", "video", "live", "set", "film", "other"]);
+    const ids = new Set();
+    (JSON.parse(readFileSync(cpath, "utf8")).items ?? []).forEach((it, i) => {
+      const at = `catalogue.json item ${i} (${it?.title ?? "?"})`;
+      if (!/^[\w-]{11}$/.test(it?.youtubeId ?? "")) fail(`${at}: bad youtubeId`);
+      if (!String(it?.title ?? "").trim()) fail(`${at}: empty title`);
+      if (!String(it?.channel ?? "").trim()) fail(`${at}: empty channel`);
+      if (!KINDS.has(it?.kind)) fail(`${at}: unknown kind "${it?.kind}"`);
+      if (!Number.isInteger(it?.duration) || it.duration < 0) fail(`${at}: bad duration`);
+      if (ids.has(it?.youtubeId)) fail(`${at}: duplicate id`);
+      ids.add(it?.youtubeId);
+    });
+  }
   for (const w of warn) console.log(`· ${w}`);
   if (errors.length) {
     for (const e of errors) console.error(`✗ ${e}`);
@@ -106,30 +121,34 @@ async function selftest() {
   if (errors.length) { console.error("selftest: full-day blocks rejected"); process.exit(1); }
   errors.length = 0;
 
-  const { blockForHour, seededAutoTheme, themeForHour } = await import("../src/lib/theme.ts");
+  const { blockForHour } = await import("../src/lib/theme.ts");
   const blocks = [
-    { from: 4, to: 10, theme: "diary", label: "dawn" },
-    { from: 10, to: 16, theme: "sleek", label: "day" },
-    { from: 16, to: 22, theme: "diary", label: "dusk" },
-    { from: 22, to: 4, theme: "sleek", label: "night" },
+    { from: 4, to: 10, label: "dawn" },
+    { from: 10, to: 16, label: "day" },
+    { from: 16, to: 22, label: "dusk" },
+    { from: 22, to: 4, label: "night" },
   ];
   for (const h of [22, 23, 0, 1, 2, 3]) {
     assert(blockForHour(blocks, h).label === "night", `night block should cover hour ${h}`);
   }
   assert(blockForHour(blocks, 4).label === "dawn", "night block must not cover hour 4");
   assert(blockForHour([], 3).label === "day", "empty blocks should fall back to a default block");
-  assert(themeForHour(blocks, 5) === "diary", "themeForHour(5) should be diary");
-  assert(themeForHour(blocks, 12) === "sleek", "themeForHour(12) should be sleek");
 
-  const dateKey = "2026-11-15";
-  let flips = 0;
-  for (let h = 0; h < 24; h++) {
-    const auto = seededAutoTheme(blocks, h, dateKey);
-    assert(auto === seededAutoTheme(blocks, h, dateKey), `seededAutoTheme not deterministic at ${h}`);
-    assert(auto === "diary" || auto === "sleek", `seededAutoTheme returned "${auto}"`);
-    if (auto !== themeForHour(blocks, h)) flips++;
-  }
-  assert(flips >= 2 && flips <= 12, `seededAutoTheme flipped ${flips}/24 hours, expected roughly a third`);
+  const { derivePalette } = await import("../src/lib/palette.ts");
+  const [art1, art2, art3, accent] = derivePalette([[200, 40, 40], [20, 20, 20], [120, 120, 120], [240, 240, 240]]);
+  assert(art3.join() === "20,20,20", "art-3 should be the darkest sampled colour");
+  assert(art2.join() === "120,120,120", "art-2 should be the second-lightest colour");
+  assert(art1.join() === "120,120,120", "art-1 should be the median colour");
+  assert(accent.join() === "255,55,55", `accent should be the saturated red lifted to luma 120, got ${accent}`);
+
+  const { beatAt } = await import("../src/lib/pulse.ts");
+  assert(beatAt(30, 120, 200).kick > 0.99, "kick should peak on the beat");
+  assert(beatAt(30.45, 120, 200).kick < 0.01, "kick should decay before the next beat");
+  assert(beatAt(30.25, 120, 200).hat > 0.99, "hat should peak on the off-beat");
+  assert(beatAt(30, 120, 200).env === 1, "envelope should be full mid-track");
+  assert(beatAt(1, 120, 200).env < 0.2, "envelope should fade in at the start");
+  assert(beatAt(199, 120, 200).env < 0.3, "envelope should fade out at the end");
+  assert(beatAt(30, 0, 200).kick === 0, "no tempo means no kick");
 
   console.log("✓ selftest");
 }

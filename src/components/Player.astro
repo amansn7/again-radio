@@ -1,36 +1,32 @@
 ---
 ---
-<radio-player data-playing="false" data-muted="true" data-live="true" data-tuned-in="false">
+<radio-player data-playing="false" data-muted="true" data-live="true">
   <div class="rp-frame">
-    <div class="rp-screen">
+    <div class="rp-screen" inert>
       <div id="rp-yt"></div>
-      <div class="rp-tuning skeleton"><span class="meta">Tuning in</span></div>
-      <div class="rp-error" hidden>
-        <p>The video didn't load. YouTube may be blocked on this network. Reload to try again.</p>
-      </div>
+      <div class="rp-tuning skeleton"></div>
       <span class="stamp rp-stamp" aria-hidden="true"></span>
     </div>
   </div>
 
   <div class="rp-bar">
-    <div class="rp-controls">
-      <button class="btn-primary rp-tune" id="rp-tune" type="button">
-        <span class="live-dot" aria-hidden="true"></span>Tune in
-      </button>
-      <span class="meta rp-hint">Sound starts when you tune in</span>
-
-      <button class="icon-btn rp-after" id="rp-play" type="button" aria-label="Pause">
+    <div class="rp-controls glass">
+      <button class="icon-btn" id="rp-play" type="button" aria-label="Pause">
         <svg class="rp-ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
         <svg class="rp-ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
       </button>
-      <button class="icon-btn rp-after" id="rp-sound" type="button" aria-label="Unmute">
+      <button class="icon-btn" id="rp-sound" type="button" aria-label="Unmute">
         <svg class="rp-ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9a4.5 4.5 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>
         <svg class="rp-ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9.5l5 5M21 9.5l-5 5"/></svg>
       </button>
-      <span class="rp-after rp-live"><span class="live-dot" aria-hidden="true"></span>Live</span>
-      <button class="btn rp-after rp-back" id="rp-back" type="button">Back to live</button>
+      <span class="rp-live"><span class="live-dot" aria-hidden="true"></span>Live</span>
+      <button class="btn rp-back" id="rp-back" type="button">Back to live</button>
+      <span class="meta rp-hint">Tap anywhere for sound</span>
     </div>
     <p class="meta rp-credit" aria-live="polite"></p>
+    <p class="rp-error" role="alert" hidden>
+      The video didn't load. YouTube may be blocked on this network. Reload to try again.
+    </p>
   </div>
   <p class="rp-keys">Space pauses, M mutes, arrows skip, Shift+L returns to live</p>
 </radio-player>
@@ -40,50 +36,48 @@
     display: block;
   }
 
-  .rp-frame {
-    padding: var(--frame-pad) var(--frame-pad) var(--frame-pad-bottom);
-    border-radius: var(--frame-radius);
-    box-shadow: var(--frame-shadow);
-  }
-  :root[data-theme="diary"] .rp-frame {
-    background: var(--card);
-  }
-  :root[data-theme="sleek"] .rp-frame {
-    overflow: hidden;
-  }
-
+  /* The video is the page's backdrop: fixed to the viewport, cover-fit, behind the hero copy. */
   .rp-screen {
-    position: relative;
-    aspect-ratio: 16 / 9;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
     overflow: hidden;
-    border-radius: var(--frame-radius);
-    background: color-mix(in oklab, var(--fg) 8%, transparent);
-  }
-  :root[data-theme="diary"] .rp-screen {
-    border-radius: 1px;
+    pointer-events: none;
+    background: var(--bg);
   }
 
   .rp-screen #rp-yt,
   .rp-screen iframe {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    left: 50%;
+    top: 50%;
+    width: max(100vw, 177.78dvh);
+    height: max(100dvh, 56.25vw);
+    transform: translate(-50%, -50%);
     border: 0;
   }
 
-  .rp-tuning,
-  .rp-error {
+  /* Wash toward the theme ground so the copy reads on any frame. */
+  .rp-screen::after {
+    content: "";
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
-    padding: 1.5rem;
-    text-align: center;
+    background: linear-gradient(
+      to top,
+      color-mix(in oklab, var(--bg) 58%, transparent),
+      color-mix(in oklab, var(--bg) 8%, transparent) 55%,
+      color-mix(in oklab, var(--bg) 40%, transparent)
+    );
+  }
+
+  .rp-tuning {
+    position: absolute;
+    inset: 0;
     border-radius: 0;
   }
   .rp-error {
-    background: var(--bg-2);
+    flex-basis: 100%;
+    margin: 0;
     color: var(--fg-dim);
     font-size: 0.9375rem;
     line-height: 1.5;
@@ -117,6 +111,8 @@
     align-items: center;
     gap: 0.625rem;
     min-height: 2.75rem;
+    padding: 6px 1.125rem 6px 6px;
+    border-radius: 999px;
   }
   .rp-credit {
     margin: 0;
@@ -137,9 +133,6 @@
     color: var(--fg-dim);
   }
 
-  radio-player[data-tuned-in="false"] .rp-after,
-  radio-player[data-tuned-in="true"] .rp-tune,
-  radio-player[data-tuned-in="true"] .rp-hint,
   radio-player[data-live="true"] .rp-back,
   radio-player[data-live="false"] .rp-live {
     display: none;

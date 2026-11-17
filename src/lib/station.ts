@@ -1,9 +1,6 @@
-export type ThemeName = "diary" | "sleek";
-
 export interface HourBlock {
   from: number;
   to: number;
-  theme: ThemeName;
   label: string;
 }
 
@@ -44,9 +41,6 @@ function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);
 }
 
-function isTheme(v: unknown): v is ThemeName {
-  return v === "diary" || v === "sleek";
-}
 
 function isEntryType(v: unknown): v is ProgramEntry["type"] {
   return v === "track" || v === "interlude" || v === "id";
@@ -81,12 +75,9 @@ function optInt(v: unknown, where: string, key: string): number | undefined {
 
 function parseHourBlock(v: unknown, where: string): HourBlock {
   if (!isRecord(v)) fail(where, "expected an object");
-  const theme = v.theme;
-  if (!isTheme(theme)) fail(where, `"theme" must be "diary" or "sleek"`);
   return {
     from: reqInt(v.from, where, "from"),
     to: reqInt(v.to, where, "to"),
-    theme,
     label: reqString(v.label, where, "label"),
   };
 }

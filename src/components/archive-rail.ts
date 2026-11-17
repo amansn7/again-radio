@@ -71,66 +71,48 @@ export function fmtOffset(secs: number): string {
 }
 
 export function msUntil(dateStr: string): number {
-  return new Date(dateStr).getTime() - Date.now();
+  // tour dates are local to India
+  return new Date(`${dateStr.slice(0, 10)}T00:00:00+05:30`).getTime() - Date.now();
 }
 
-export function fmtCountdown(ms: number): string {
-  const totalMin = Math.floor(ms / 60000);
-  const days = Math.floor(totalMin / 1440);
-  const hrs = Math.floor((totalMin % 1440) / 60);
-  const mins = totalMin % 60;
-  const parts: string[] = [];
-  if (days > 0) parts.push(`${days}D`);
-  parts.push(`${hrs}H`, `${mins}M`);
-  return parts.join(" ");
+export const esc = (s: string): string => s.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+
+const plural = (n: number, w: string): string => `${n} ${w}${n === 1 ? "" : "s"}`;
+
+export function countdownParts(ms: number): { n: number; unit: string }[] {
+  const totalMin = Math.max(0, Math.floor(ms / 60000));
+  const d = Math.floor(totalMin / 1440), h = Math.floor((totalMin % 1440) / 60), m = totalMin % 60;
+  return [
+    ...(d > 0 ? [{ n: d, unit: plural(d, "day").slice(String(d).length + 1) }] : []),
+    { n: h, unit: plural(h, "hour").slice(String(h).length + 1) },
+    { n: m, unit: plural(m, "minute").slice(String(m).length + 1) },
+  ];
 }
 
-export function buildRailHtml(albums: Album[]): string {
-  const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
-
-  return years.map((yr) => {
-    const yrAlbums = albums.filter((a) => a.year === yr);
-    const releasesHtml = yrAlbums.map((a) =>
-      `<div class="ar-release">` +
-      `<span class="ar-release-title">${a.title}</span>` +
-      `<span class="ar-release-sub">${a.subtitle}</span>` +
-      `</div>`
-    ).join("");
-
-    return `<div class="ar-year" tabindex="-1">` +
-      `<div class="ar-year-label">${yr}</div>` +
-      `<div class="ar-releases">${releasesHtml}</div>` +
-      `</div>`;
-  }).join("");
+export function countdownHtml(ms: number): string {
+  return countdownParts(ms).map((p) =>
+    `<span class="ar-cd"><span class="ar-cd-n num">${p.n}</span><span class="ar-cd-u">${p.unit}</span></span>`).join("");
 }
 
 export function buildShowsHtml(shows: ShowEntry[]): string {
   return shows.map((s) =>
-    `<button class="ar-show-btn" ` +
-    `aria-label="Play USB002, ${s.title}, from ${fmtOffset(s.offset)}" ` +
-    `data-offset="${s.offset}">` +
-    `<span class="ar-show-city">${s.title}</span>` +
-    (s.memory ? `<span class="ar-show-guest">${s.memory}</span>` : "") +
-    `<span class="ar-show-ts">${fmtOffset(s.offset)}</span>` +
-    `</button>`
-  ).join("");
+    `<button class="ar-show" aria-label="Play ${esc(s.title)} from ${fmtOffset(s.offset)}" data-offset="${s.offset}">` +
+    `<span class="ar-show-city">${esc(s.title.charAt(0) + s.title.slice(1).toLowerCase())}</span>` +
+    (s.memory ? `<span class="meta ar-show-guest">${esc(s.memory)}</span>` : "") +
+    `<span class="ar-show-play num">Play from ${fmtOffset(s.offset)}</span></button>`).join("");
 }
 
-export function buildCountdownHtml(tourDates: TourDate[]): string {
-  if (!tourDates.length) return "";
-
-  const citiesHtml = tourDates.map(t => {
-    const dateLabel = new Date(t.date).toLocaleDateString("en-GB", {
-      day: "numeric", month: "short", year: "numeric"
-    }).toUpperCase();
-    const isFuture = msUntil(t.date) > 0;
-    return `<span class="ar-city-item${isFuture ? " is-next" : ""}">${t.city} ${dateLabel}</span>`;
-  }).join(`<span class="ar-city-item"> · </span>`);
-
-  const nextDate = tourDates.find(t => msUntil(t.date) > 0);
-  const timerHtml = nextDate
-    ? `<span class="ar-timer" data-next="${nextDate.date}"><span class="ar-timer-val">${fmtCountdown(msUntil(nextDate.date))}</span></span>`
-    : `<span class="ar-timer">TOUR COMPLETE</span>`;
-
-  return `<div class="ar-on-tour">On Tour</div><div class="ar-cities">${citiesHtml}</div>${timerHtml}`;
+export function buildTourHtml(tour: TourDate[]): string {
+  const next = tour.find((t) => msUntil(t.date) > 0);
+  const timer = next
+    ? `<p class="ar-timer" aria-label="Time until ${esc(next.city)}">${countdownHtml(msUntil(next.date))}</p>` +
+      `<p class="meta">until ${esc(next.city)}</p>`
+    : `<p class="meta">The tour is over. Thank you for coming.</p>`;
+  const list = tour.map((t) => {
+    const d = new Date(t.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", timeZone: "UTC" });
+    const past = msUntil(t.date) <= 0;
+    return `<li class="${t === next ? "is-next" : ""}"><span class="ar-tour-city">${esc(t.city)}</span>` +
+      `<span class="meta num">${d}${past ? ", played" : ""}</span></li>`;
+  }).join("");
+  return `<div class="ar-tour-clock">${timer}</div><ul class="ar-tour-list">${list}</ul>`;
 }

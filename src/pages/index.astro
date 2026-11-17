@@ -1,7 +1,6 @@
 ---
 import "../../styles/theme.css";
 import HourStrip from "../components/HourStrip.astro";
-import ThemeToggle from "../components/ThemeToggle.astro";
 import Player from "../components/Player.astro";
 import NowPlaying from "../components/NowPlaying.astro";
 import MemoryCard from "../components/MemoryCard.astro";
@@ -13,7 +12,7 @@ import Archive from "../components/Archive.astro";
 ---
 
 <!doctype html>
-<html lang="en" data-theme="diary">
+<html lang="en" data-theme="sleek">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,14 +25,12 @@ import Archive from "../components/Archive.astro";
   </head>
   <body class="min-h-[100dvh] flex flex-col">
     <div class="ambient" aria-hidden="true"></div>
-    <canvas id="field" aria-hidden="true"></canvas>
 
     <header class="layer wrap topbar">
       <a class="wordmark" href="/" aria-label="Again Radio, home">again radio</a>
       <LiveStatus data-blocks="[]" />
       <div class="topbar-end">
         <Search />
-        <ThemeToggle data-blocks="[]" />
       </div>
     </header>
 
@@ -66,6 +63,7 @@ import Archive from "../components/Archive.astro";
 
     <style>
       .topbar {
+        z-index: 3;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -120,7 +118,7 @@ import Archive from "../components/Archive.astro";
 
     <script>
       import { loadStation } from "../lib/station.ts";
-      import { startField } from "../canvas/field.ts";
+      import { startPalette } from "../lib/palette.ts";
 
       function applyHour(): void {
         const hour = String(new Date().getHours());
@@ -145,8 +143,7 @@ import Archive from "../components/Archive.astro";
       bootstrap();
       setInterval(applyHour, 60_000);
 
-      const field = document.querySelector<HTMLCanvasElement>("#field");
-      if (field) startField(field);
+      startPalette();
     </script>
   </body>
 </html>

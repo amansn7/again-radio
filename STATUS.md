@@ -32,9 +32,10 @@ read the PNGs and judge honestly.
 
 ## Run it
 
-- Preview server currently detached on http://localhost:4321 (pid 86396,
-  `.orchestrator/logs/preview.log`). Restart:
-  `python3 scripts/detach.py .orchestrator/logs/preview.log npx astro preview --port 4321`
+- Dev server (live reload) detached on http://127.0.0.1:4321, log `.orchestrator/logs/dev.log`.
+  Restart: `python3 scripts/detach.py .orchestrator/logs/dev.log npx astro dev --host 127.0.0.1 --port 4321`
+- Public URL: `cloudflared tunnel --url http://127.0.0.1:4321` (detached, log
+  `.orchestrator/logs/tunnel.log`). Quick-tunnel URLs change on every restart; HMR works through it.
 - Long commands / background work must use `scripts/detach.py` + `ps -p <pid>` polling
   (a bare `&` dies with the shell tool's process-group kill).
 

@@ -46,39 +46,8 @@
   --maxw: 1440px;
 }
 
-/* Diary: the fragment. A photograph's back, a notebook page, ink. */
-:root,
-:root[data-theme="diary"] {
-  --bg: color-mix(in oklab, var(--art-1) 9%, #f2eee6);
-  --bg-2: color-mix(in oklab, var(--art-1) 15%, #e8e2d6);
-  --fg: color-mix(in oklab, var(--art-1) 16%, #1c1815);
-  --fg-dim: color-mix(in oklab, var(--fg) 66%, var(--bg));
-  --fg-faint: color-mix(in oklab, var(--fg) 32%, var(--bg));
-  --line: color-mix(in oklab, var(--fg) 14%, transparent);
-  --accent: color-mix(in oklab, var(--art-accent) 58%, #2b1b10);
-  --accent-2: color-mix(in oklab, var(--art-2) 60%, #2b1b10);
-  --on-accent: #f7f3ec;
-  --card: color-mix(in oklab, var(--bg) 60%, #fffdf8);
-  --card-fg: var(--fg);
-  --stamp: #e0521e;
-
-  --font-name: var(--font-serif);
-  --name-weight: 400;
-  --name-tracking: -0.012em;
-
-  --radius: 4px;
-  --frame-pad: 12px;
-  --frame-pad-bottom: 46px;
-  --frame-radius: 2px;
-  --frame-shadow:
-    0 1px 2px color-mix(in oklab, var(--fg) 12%, transparent),
-    0 24px 48px -22px color-mix(in oklab, var(--art-1) 55%, transparent);
-  --grain-opacity: 0.32;
-  --grain-blend: multiply;
-}
-
-/* Rave: the room. The art deepened to near black, light on a crowd. */
-:root[data-theme="sleek"] {
+/* Rave: the room. The art deepened to near black, light on a crowd. The only theme. */
+:root {
   --bg: color-mix(in oklab, var(--art-1) 13%, #0e0d0c);
   --bg-2: color-mix(in oklab, var(--art-1) 20%, #171513);
   --fg: #f1ece4;
@@ -105,6 +74,13 @@
     0 40px 120px -24px color-mix(in oklab, var(--art-accent) 42%, transparent);
   --grain-opacity: 0.16;
   --grain-blend: overlay;
+
+  /* Liquid glass: light passing through, a bright rim, a soft drop onto the video. */
+  --glass-light: #ffffff;
+  --glass-tint: color-mix(in oklab, var(--glass-light) 7%, transparent);
+  --glass-edge: color-mix(in oklab, var(--glass-light) 22%, transparent);
+  --glass-drop: color-mix(in oklab, #000 45%, transparent);
+  --glass-radius: 28px;
 }
 
 html {
@@ -115,16 +91,6 @@ html {
     --art-2 2.4s var(--ease-in-out),
     --art-3 2.4s var(--ease-in-out),
     --art-accent 2.4s var(--ease-in-out);
-}
-
-html.theme-live {
-  transition:
-    --art-1 2.4s var(--ease-in-out),
-    --art-2 2.4s var(--ease-in-out),
-    --art-3 2.4s var(--ease-in-out),
-    --art-accent 2.4s var(--ease-in-out),
-    background-color 600ms var(--ease-in-out),
-    color 600ms var(--ease-in-out);
 }
 
 body {
@@ -175,15 +141,6 @@ body::after {
   scrollbar-color: var(--line) transparent;
 }
 
-#field {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
 /* Light pools from the artwork: a light leak on paper (Diary), haze under stage lights (Rave). */
 .ambient {
   position: fixed;
@@ -217,11 +174,6 @@ body::after {
   animation: drift-b 61s var(--ease-in-out) infinite alternate;
 }
 
-:root[data-theme="diary"] .ambient {
-  opacity: 0.22;
-  mix-blend-mode: multiply;
-}
-
 :root[data-theme="sleek"] .ambient {
   opacity: 0.32;
   mix-blend-mode: screen;
@@ -249,11 +201,12 @@ body::after {
   padding-inline: var(--gutter);
 }
 
-/* Below the fold sits on solid paper / solid dark so the fabric only lives behind the hero. */
+/* Below the fold is a tinted veil, not a solid sheet: the video stays visible behind everything. */
 .sheet {
+  --veil: color-mix(in oklab, var(--bg) 45%, transparent);
   position: relative;
   z-index: 2;
-  background: var(--bg);
+  background: var(--veil);
 }
 
 .sheet::before {
@@ -261,8 +214,39 @@ body::after {
   position: absolute;
   inset: -120px 0 auto 0;
   height: 120px;
-  background: linear-gradient(to bottom, transparent, var(--bg));
+  background: linear-gradient(to bottom, transparent, var(--veil));
   pointer-events: none;
+}
+
+/* A pane of liquid glass over the video. Safari ignores var() inside the backdrop filter. */
+.glass {
+  position: relative;
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(24px) saturate(1.9) brightness(1.06);
+  backdrop-filter: blur(24px) saturate(1.9) brightness(1.06);
+  border-radius: var(--glass-radius);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--glass-light) 50%, transparent),
+    inset 0 -1px 0 color-mix(in oklab, var(--glass-light) 12%, transparent),
+    inset 0 0 0 1px var(--glass-edge),
+    0 24px 60px -18px var(--glass-drop);
+}
+
+/* Specular sheen: light caught on the upper-left edge of the pane. */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    140deg,
+    color-mix(in oklab, var(--glass-light) 20%, transparent),
+    transparent 38%,
+    transparent 72%,
+    color-mix(in oklab, var(--glass-light) 7%, transparent)
+  );
 }
 
 .num {
@@ -291,10 +275,6 @@ body::after {
   letter-spacing: 0.08em;
   color: var(--stamp);
   font-variant-numeric: tabular-nums;
-}
-
-:root[data-theme="diary"] .stamp {
-  text-shadow: 0 0 6px color-mix(in oklab, var(--stamp) 45%, transparent);
 }
 
 .btn,
@@ -419,27 +399,20 @@ body::after {
   to { background-position: 0 0; }
 }
 
-/* Diary: the name develops like a print in the tray. */
-@keyframes develop {
-  from { opacity: 0; filter: blur(6px) sepia(0.8); }
-  to { opacity: 1; filter: blur(0) sepia(0); }
-}
-
 /* Rave: letters arrive like light hitting a wall. */
 @keyframes arrive {
   from { opacity: 0; transform: translateY(0.35em); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Memory words: ink drying (diary) or a caption lighting up (rave). */
+/* Memory words: a caption lighting up. */
 @keyframes word-in {
   from { opacity: 0; filter: blur(3px); }
   to { opacity: 1; filter: blur(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html,
-  html.theme-live {
+  html {
     transition: none;
   }
   *,

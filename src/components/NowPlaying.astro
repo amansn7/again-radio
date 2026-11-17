@@ -7,7 +7,7 @@ const { ...attrs } = Astro.props;
     <h2 class="np-name" aria-live="polite"></h2>
     <p class="np-rest"></p>
   </div>
-  <div class="np-meta">
+  <div class="np-meta glass">
     <span class="np-cover skeleton" aria-hidden="true"></span>
     <span class="np-meta-text">
       <span class="np-album"></span>
@@ -54,19 +54,36 @@ const { ...attrs } = Astro.props;
     );
   }
   .np-name .w { display: inline-block; white-space: nowrap; }
-  :root[data-theme="diary"] .np-name-in { animation: develop var(--dur-3) var(--ease-out) both; }
-  :root[data-theme="sleek"] .np-name .l {
+  /* Glass letters: the video shows through, the rim holds the shape, the top edge catches
+     light on every beat (--beat is written per frame by now-playing.ts). */
+  /* The rim is a tight halo, not text-stroke: stroke exposes the variable font's overlapping contours. */
+  .np-name-in {
+    filter:
+      drop-shadow(0 0 0.6px color-mix(in oklab, var(--glass-light) calc(55% + var(--beat, 0) * 45%), transparent))
+      drop-shadow(0 14px 36px var(--glass-drop));
+  }
+  .np-name .l {
     display: inline-block;
+    color: transparent;
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--glass-light) calc(78% + var(--beat, 0) * 22%), transparent) 0%,
+      color-mix(in oklab, var(--glass-light) calc(30% + var(--beat, 0) * 25%), transparent) 22%,
+      color-mix(in oklab, var(--glass-light) 9%, transparent) 50%,
+      color-mix(in oklab, var(--glass-light) 12%, transparent) 78%,
+      color-mix(in oklab, var(--glass-light) 46%, transparent) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
     animation: arrive 700ms var(--ease-out) both;
     animation-delay: calc(var(--i) * 28ms);
   }
 
-  .np-rest { margin: 0.75rem 0 0; min-height: 1.5em; color: var(--fg-dim); }
-  :root[data-theme="diary"] .np-rest {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.75rem;
-    line-height: 1.2;
+  .np-rest {
+    margin: 0.75rem 0 0;
+    min-height: 1.5em;
+    color: var(--fg);
+    text-shadow: 0 1px 14px var(--glass-drop);
   }
   :root[data-theme="sleek"] .np-rest {
     font-family: var(--font-body);
@@ -75,7 +92,6 @@ const { ...attrs } = Astro.props;
     line-height: 1.25;
   }
   .np-rest-in { display: inline-block; }
-  :root[data-theme="diary"] .np-rest-in { animation: develop var(--dur-3) var(--ease-out) 150ms both; }
   :root[data-theme="sleek"] .np-rest-in { animation: arrive 700ms var(--ease-out) 250ms both; }
 
   .np-meta {
@@ -83,7 +99,11 @@ const { ...attrs } = Astro.props;
     display: flex;
     align-items: center;
     gap: 0.875rem;
+    width: fit-content;
+    max-width: 100%;
     min-height: 44px;
+    padding: 6px 1.25rem 6px 6px;
+    border-radius: 999px;
     transition: opacity var(--dur-2) var(--ease-out);
   }
   .np-meta[data-empty] { visibility: hidden; }
@@ -91,7 +111,7 @@ const { ...attrs } = Astro.props;
     flex: none;
     width: 44px;
     height: 44px;
-    border-radius: var(--radius);
+    border-radius: 50%;
     overflow: hidden;
     background: var(--line);
   }
@@ -106,7 +126,6 @@ const { ...attrs } = Astro.props;
     white-space: nowrap;
   }
   .np-when { display: flex; min-height: 1.3rem; align-items: center; }
-  :root[data-theme="diary"] .np-plain { display: none; }
   :root[data-theme="sleek"] .np-stamp { display: none; }
 
   @media (prefers-reduced-motion: reduce) {

@@ -20,7 +20,6 @@ const { ...attrs } = Astro.props;
   hour-strip .hs-tick::before { content: ""; position: absolute; left: 0; top: 50%; width: 1px; height: 5px; margin-top: -2.5px; background: var(--line); }
   hour-strip .hs-tick[aria-current="true"]::before { height: 9px; margin-top: -4.5px; background: var(--fg-dim); }
   hour-strip .hs-cursor { position: absolute; left: 0; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--accent); transform: translateX(calc(var(--p, 0) * 100cqw - 50%)); transition: transform var(--dur-2) var(--ease-out); }
-  :root[data-theme="diary"] hour-strip .hs-cursor { box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 18%, transparent); }
   :root[data-theme="sleek"] hour-strip .hs-cursor { box-shadow: 0 0 10px 2px color-mix(in oklab, var(--accent) 55%, transparent); }
   @media (max-width: 639px) {
     hour-strip .hs-label:not(.is-current) { display: none; }

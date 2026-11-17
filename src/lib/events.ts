@@ -25,6 +25,8 @@ export interface TrackInfo {
 
 export interface TimeInfo {
   current: number;
+  /** Sub-second playback position, for anything that has to land on the beat. */
+  exact: number;
   duration: number;
 }
 
@@ -32,7 +34,6 @@ export interface StateInfo {
   playing: boolean;
   muted: boolean;
   live: boolean;
-  tunedIn: boolean;
 }
 
 /** Either a programme path (`programs/<id>.json`) at an offset, or one catalogue video. */
