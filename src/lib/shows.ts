@@ -64,5 +64,11 @@ export function heading(up: Show[]): string {
   return one ? `${up[0].country}, ${month(up[0])}` : "Upcoming shows";
 }
 
+/** True when the viewer's clock reads the same as the venue's at show time (no "your time" needed). */
+export function sameZone(s: Show, viewerTz = Intl.DateTimeFormat().resolvedOptions().timeZone): boolean {
+  const at = (timeZone: string) => new Date(s.t).toLocaleString("en-GB", { timeZone });
+  return at(s.tz) === at(viewerTz);
+}
+
 export const dayLabel = (s: Show) =>
   new Date(s.t).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: s.tz });

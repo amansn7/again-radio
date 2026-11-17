@@ -112,3 +112,14 @@ porting from listing descriptions.
 - [ ] N5 Active timer, designed with the live ticker (unit X)
 - [x] N6 Dial card crops art horizontally -> square / 16:9 frames (unit C)
 - [ ] N7 Deploy to workers.dev: one Worker = dist assets + presence DO (orchestrator, after gates)
+
+## Phase 14 — First screen and quick fixes (India launch, plan `docs/superpowers/plans/2026-11-18-phase-14-first-screen.md`)
+- [x] Sets without a tracklist named by `place` in the hero (`catalogue.json` `place`, `videoProgram`)
+- [x] "You are here" line: `hereText` replaces "0:00 into the video"
+- [x] One-tap "Tune in" button, keyboard operable, removed once sound is on
+- [x] YouTube's error card hidden from the first error (`data-novideo`); mid scrim 30%, hero text shadow
+- [x] Dial reflection off under 640px, shortcuts behind `?`, "your time" hidden for same-zone viewers, hint contrast, "Tracklist"/"Set" copy
+- [x] Gate green; new `scripts/live.test.mjs`, `scripts/ui.check.mjs`
+
+Review: legibility over bright real footage could not be judged headless (YouTube does not play
+there); check on the live site and raise the 30% stop in `Player.astro` if needed.

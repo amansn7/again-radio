@@ -30,7 +30,8 @@ const { ...attrs } = Astro.props;
   live-status .live-dot { box-shadow: 0 0 10px var(--accent); }
   live-status .ls-hollow { width: 0.5rem; height: 0.5rem; border-radius: 50%; border: 1px solid var(--fg-dim); }
   live-status:not(.is-live) .ls-sign { color: var(--fg-dim); font-weight: 400; }
-  live-status .ls-t { color: var(--fg); }
+  live-status .ls-clock { color: var(--fg); overflow: hidden; text-overflow: ellipsis; }
+  live-status .ls-short { display: none; }
   live-status .ls-go {
     min-width: 44px; min-height: 44px; font: inherit; color: var(--accent); background: none; border: 0; padding: 0.25rem; margin: -0.25rem 0 -0.25rem 0.25rem;
     cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
@@ -41,7 +42,7 @@ const { ...attrs } = Astro.props;
   live-status .ls-n { display: inline-flex; overflow: hidden; color: var(--fg); }
   live-status .ls-d.roll { animation: ls-roll var(--dur-2) var(--ease-out); }
   @keyframes ls-roll { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }
-  @media (max-width: 479px) { live-status .ls-long { display: none; } }
+  @media (max-width: 479px) { live-status .ls-long { display: none; } live-status .ls-short { display: inline; } }
 </style>
 
 <script>

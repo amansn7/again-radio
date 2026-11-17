@@ -74,6 +74,7 @@
   .dl-stage:not(.is-flat) .dl-face {
     -webkit-box-reflect: below 10px linear-gradient(transparent 68%, color-mix(in srgb, var(--fg) 32%, transparent));
   }
+  @media (max-width: 639px) { .dl-stage:not(.is-flat) .dl-face { -webkit-box-reflect: none; } }
   .dl-track.is-still .dl-card { transition: box-shadow var(--dur-2) var(--ease-out); }
   .dl-card[data-front] {
     box-shadow:

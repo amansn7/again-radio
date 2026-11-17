@@ -6,6 +6,8 @@ export interface CatalogueItem {
   youtubeId: string;
   title: string;
   song?: string;
+  /** Poster-style name for the hero when the video has no tracklist, e.g. "The Lot Radio". */
+  place?: string;
   kind: CatalogueKind;
   duration: number;
   published?: string;
@@ -33,6 +35,8 @@ function parseItem(v: unknown): CatalogueItem | null {
   const item: CatalogueItem = { youtubeId, title, kind, duration, channel };
   const song = str(r.song);
   if (song) item.song = song;
+  const place = str(r.place);
+  if (place) item.place = place;
   const published = str(r.published);
   if (published) item.published = published;
   const album = str(r.album);

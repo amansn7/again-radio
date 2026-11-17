@@ -54,9 +54,18 @@ class RadioPlayer extends HTMLElement {
     this.ac = new AbortController();
     // Listen before YouTube loads: the first tap usually lands while it is still loading.
     const wakeSignal = AbortSignal.any([this.ac.signal, this.wake.signal]);
-    const soundOn = () => this.muted && this.setMuted(false);
+    // The tune-in button acts on its own click: a keydown handler that moved focus would let the
+    // key's activation land on the next button instead.
+    // Moving focus is not asking for sound: Tab and lone modifiers would otherwise remove the
+    // tune-in button before a keyboard user can reach it.
+    const NAV = new Set(["Tab", "Shift", "Control", "Alt", "Meta", "Escape"]);
+    const soundOn = (e: Event) => {
+      if (e instanceof KeyboardEvent && NAV.has(e.key)) return;
+      if (!(e.target instanceof Element && e.target.closest("#rp-tune")) && this.muted) this.setMuted(false);
+    };
     window.addEventListener("click", soundOn, { signal: wakeSignal });
     window.addEventListener("keydown", soundOn, { signal: wakeSignal });
+    this.querySelector("#rp-tune")?.addEventListener("click", () => this.muted && this.setMuted(false), { signal: wakeSignal });
     // Focus moving into the embed blurs the window; take it straight back to where the user was.
     document.addEventListener("focusin", (e) => {
       if (!(e.target instanceof HTMLIFrameElement)) this.lastFocus = e.target as HTMLElement;
@@ -131,6 +140,7 @@ class RadioPlayer extends HTMLElement {
             this.player?.unloadModule?.("captions");
             this.errors = 0;
             this.setHidden(".rp-error", true);
+            delete this.dataset.novideo;
             this.fader.onPlaying();
           }
           if (playing !== this.playing) {
@@ -145,6 +155,7 @@ class RadioPlayer extends HTMLElement {
         },
         // Not embeddable here, removed, or blocked: skip it rather than go silent.
         onError: () => {
+          this.dataset.novideo = "";
           this.bad.add(this.prog.youtubeId);
           if (++this.errors >= 3) {
             this.setHidden(".rp-tuning", true);
@@ -207,7 +218,12 @@ class RadioPlayer extends HTMLElement {
 
   private setMuted(muted: boolean) {
     this.wake.abort();
-    this.querySelector(".rp-hint")?.remove();
+    const tune = this.querySelector<HTMLElement>("#rp-tune");
+    if (tune) {
+      const had = document.activeElement === tune;
+      tune.remove();
+      if (had) this.querySelector<HTMLElement>("#rp-sound")?.focus();
+    }
     this.muted = muted;
     if (muted) this.player?.mute?.();
     else this.player?.unMute?.();

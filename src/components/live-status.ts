@@ -1,6 +1,7 @@
-import { RADIO_LIVE, RADIO_STATE, RADIO_TIME, RADIO_TRACK } from "../lib/events.ts";
+import { RADIO_LIVE, RADIO_STATE, RADIO_TIME, RADIO_TRACK, lastTrack } from "../lib/events.ts";
 import type { StateInfo, TimeInfo, TrackInfo } from "../lib/events.ts";
 import { watchListeners } from "./listeners.ts";
+import { hereText } from "../lib/live.ts";
 
 export function clock(total: number): string {
   const t = Math.max(0, Math.floor(total));
@@ -16,7 +17,8 @@ export function clock(total: number): string {
 class LiveStatus extends HTMLElement {
   private live = true;
   private shown = "";
-  private sec = -1;
+  private here = "";
+  private place: string | undefined;
   private stop: (() => void) | null = null;
   private ac = new AbortController();
 
@@ -25,16 +27,17 @@ class LiveStatus extends HTMLElement {
     this.innerHTML =
       `<span class="ls-sign"><span class="live-dot" aria-hidden="true"></span><span class="ls-hollow" aria-hidden="true" hidden></span>` +
       `<span class="ls-word">Live</span><button class="ls-go" type="button" hidden>Go live</button></span>` +
-      `<span class="ls-clock num" hidden><span class="ls-t"></span> <span class="ls-in">in</span></span>` +
+      `<span class="ls-clock" hidden><span class="ls-short"></span><span class="ls-long"></span></span>` +
       `<span class="ls-count" hidden><span class="ls-n num"></span> listening</span>`;
     const signal = (this.ac = new AbortController()).signal;
     this.q(".ls-go").addEventListener("click", () => document.dispatchEvent(new CustomEvent(RADIO_LIVE)), { signal });
     document.addEventListener(RADIO_STATE, (e) => this.setLive((e as CustomEvent<StateInfo>).detail.live), { signal });
     document.addEventListener(RADIO_TIME, (e) => this.tick((e as CustomEvent<TimeInfo>).detail.current), { signal });
     document.addEventListener(RADIO_TRACK, (e) => {
-      const video = (e as CustomEvent<TrackInfo>).detail.programPath.startsWith("video:");
-      this.q(".ls-in").innerHTML = `in<span class="ls-long">to the ${video ? "video" : "set"}</span>`;
+      this.place = (e as CustomEvent<TrackInfo>).detail.venue;
+      this.here = "";
     }, { signal });
+    this.place = lastTrack?.venue;
     this.stop = watchListeners((n) => this.count(n));
   }
 
@@ -59,9 +62,11 @@ class LiveStatus extends HTMLElement {
   }
 
   private tick(current: number): void {
-    if (current === this.sec) return;
-    this.sec = current;
-    this.q(".ls-t").textContent = clock(current);
+    const { short, long } = hereText(current, this.place);
+    if (long === this.here) return;
+    this.here = long;
+    this.q(".ls-short").textContent = short;
+    this.q(".ls-long").textContent = long;
     this.q(".ls-clock").hidden = false;
   }
 

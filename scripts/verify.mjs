@@ -86,6 +86,7 @@ function main() {
       if (!String(it?.channel ?? "").trim()) fail(`${at}: empty channel`);
       if (!KINDS.has(it?.kind)) fail(`${at}: unknown kind "${it?.kind}"`);
       if (!Number.isInteger(it?.duration) || it.duration < 0) fail(`${at}: bad duration`);
+      if (it?.place !== undefined && (typeof it.place !== "string" || !it.place.trim() || it.place.length > 32)) fail(`${at}: place must be a non-empty string of at most 32 chars`);
       if (ids.has(it?.youtubeId)) fail(`${at}: duplicate id`);
       ids.add(it?.youtubeId);
     });

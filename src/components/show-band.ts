@@ -1,7 +1,7 @@
 import { onPulse } from "../lib/pulse.ts";
 import { esc } from "./archive-rail.ts";
 import {
-  NARROW, WIDE, dayLabel, glow, heading, onAir, parseShows, readout, stations, upcoming, xOf,
+  NARROW, WIDE, dayLabel, glow, heading, onAir, parseShows, readout, sameZone, stations, upcoming, xOf,
   type Geom, type Show, type Station,
 } from "../lib/shows.ts";
 
@@ -13,7 +13,8 @@ const dayNum = (s: Show) => new Date(s.t).toLocaleDateString("en-GB", { day: "nu
 const local = (s: Show) =>
   new Date(s.t).toLocaleTimeString("en-GB", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: s.tz }).replace(":00", "");
 const yours = (s: Show) => new Date(s.t).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" });
-const subLine = (s: Show) => `${dayLabel(s)}, ${local(s)} local · ${s.venue} · ${yours(s)} your time`;
+const subLine = (s: Show) =>
+  `${dayLabel(s)}, ${local(s)} local · ${s.venue}${sameZone(s) ? "" : ` · ${yours(s)} your time`}`;
 
 class ShowBand extends HTMLElement {
   private shows: Show[] = [];

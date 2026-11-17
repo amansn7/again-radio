@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { parseShows, upcoming, onAir, stations, xOf, glow, readout, heading, dayLabel, WIDE } from "../src/lib/shows.ts";
+import { parseShows, upcoming, onAir, stations, xOf, glow, readout, heading, dayLabel, sameZone, WIDE } from "../src/lib/shows.ts";
 
 process.env.TZ = "UTC"; // viewer tz must differ from the show tz for the tz checks to bite
 const fail = (m) => { console.error("✗", m); process.exit(1); };
@@ -29,4 +29,6 @@ assert(dayLabel(shows[0]) === "Sat 5 Dec", "dayLabel");
 const early = (start) => ({ city: "Delhi", country: "India", venue: "V", tz: "Asia/Kolkata", start, t: Date.parse(start) });
 assert(dayLabel(early("2026-12-05T01:00:00+05:30")) === "Sat 5 Dec", "dayLabel uses show tz, not UTC");
 assert(heading([early("2027-01-01T01:00:00+05:30")]) === "India, January 2027", "heading uses show tz across month rollover");
+assert(sameZone(shows[0], "Asia/Kolkata") && sameZone(shows[0], "Asia/Calcutta"), "India viewer");
+assert(!sameZone(shows[0], "Europe/London") && !sameZone(shows[0]), "non-India viewer (TZ=UTC)");
 console.log("✓ shows");

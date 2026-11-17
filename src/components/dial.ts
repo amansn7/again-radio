@@ -8,7 +8,7 @@ import { cardEl, warm } from "./dial-card.ts";
 import { Ring } from "./dial-ring.ts";
 import { drift, type Drift } from "./dial-drift.ts";
 
-const CHOICES: [Choice, string][] = [["order", "Running order"], ["shows", "Shows"], ["albums", "Albums"]];
+const CHOICES: [Choice, string][] = [["order", "Tracklist"], ["shows", "Shows"], ["albums", "Albums"]];
 const HEAD =
   `<div class="wrap dl-head"><h2 class="section-title" id="dl-title">On the dial</h2>` +
   `<p class="meta">Every track, every show, every record. Turn the ring and drop in.</p></div>`;
@@ -51,7 +51,7 @@ class WarpDial extends HTMLElement {
       `<button type="button" role="tab" id="dl-tab-${c}" aria-controls="dl-ring" data-c="${c}">${label}</button>`).join("");
     this.innerHTML = HEAD +
       `<div class="wrap dl-controls"><div class="dl-seg glass" data-glass role="tablist" aria-label="Browse by">${tabs}</div>` +
-      `<label class="dl-pick glass" data-glass><span class="sr-only">Programme</span><select></select></label>` +
+      `<label class="dl-pick glass" data-glass><span class="sr-only">Set</span><select></select></label>` +
       `<button type="button" class="icon-btn dl-auto glass" data-glass aria-pressed="false" aria-label="Pause auto-scroll" hidden>` +
       `<svg class="dl-ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>` +
       `<svg class="dl-ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg></button></div>` +
@@ -115,7 +115,7 @@ class WarpDial extends HTMLElement {
     const p = this.programs[this.sel];
     this.cards = this.choice === "order" ? trackCards(p) : this.choice === "shows" ? showCards(this.programs, this.catalogue) : albumCards(this.albums, this.programs);
     this.querySelector("select")!.value = String(this.sel);
-    const label = this.choice === "order" ? `Running order of ${p.data.title}` : this.choice === "shows" ? "Shows" : "Albums";
+    const label = this.choice === "order" ? `Tracklist of ${p.data.title}` : this.choice === "shows" ? "Shows" : "Albums";
     this.querySelector(".dl-track")!.setAttribute("aria-label", label);
     const air = this.air;
     this.ring.reset(this.cards.length, air ? Math.max(0, this.cards.findIndex((c) => c.onAir(air))) : 0);

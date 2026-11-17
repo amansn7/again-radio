@@ -10,6 +10,10 @@
   </div>
 
   <div class="rp-bar">
+    <button class="btn-primary rp-tune" id="rp-tune" type="button" aria-label="Tune in with sound">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9a4.5 4.5 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>
+      Tune in
+    </button>
     <div class="rp-controls glass" data-glass>
       <button class="icon-btn" id="rp-play" type="button" aria-label="Pause">
         <svg class="rp-ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
@@ -23,9 +27,11 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3.5c2.5 0 4 1.5 5 5s2.5 5 5 5H20M4 17h3.5c1.3 0 2.3-.4 3-1.2M13.5 8.2c.7-.8 1.7-1.2 3-1.2H20M17 4l3 3-3 3M17 14l3 3-3 3"/></svg>
       </button>
       <button class="btn rp-back" id="rp-back" type="button">Back to live</button>
-      <span class="rp-hint"><span class="rp-hint-touch">Tap anywhere for sound</span><span class="rp-hint-fine">Click anywhere for sound</span></span>
     </div>
-    <p class="rp-keys">Space pauses, M mutes, arrows skip, Shift+L returns to live</p>
+    <details class="rp-keys">
+      <summary class="icon-btn" aria-label="Keyboard shortcuts">?</summary>
+      <p class="glass" data-glass>Space pauses, M mutes, arrows skip, Shift+L goes back to live</p>
+    </details>
     <p class="meta rp-credit" aria-live="polite"></p>
     <p class="rp-error" role="alert" hidden>
       The video didn't load. YouTube may be blocked on this network. Reload to try again.
@@ -67,6 +73,9 @@
     border: 0;
   }
 
+  /* YouTube's own error card never shows through; the ambient field stays the picture. */
+  radio-player[data-novideo] .rp-screen iframe { visibility: hidden; }
+
   /* Wash toward the theme ground so the copy reads on any frame. */
   .rp-screen::after {
     content: "";
@@ -75,7 +84,7 @@
     background: linear-gradient(
       to top,
       color-mix(in oklab, var(--bg) 58%, transparent),
-      color-mix(in oklab, var(--bg) 8%, transparent) 55%,
+      color-mix(in oklab, var(--bg) 30%, transparent) 55%,
       color-mix(in oklab, var(--bg) 40%, transparent)
     );
   }
@@ -126,41 +135,47 @@
     padding: 6px;
     border-radius: 999px;
   }
-  .rp-controls:has(.rp-hint),
   radio-player[data-live="false"] .rp-controls { padding-right: 1.25rem; }
   .rp-credit {
     margin: 0 0 0 auto;
     text-align: right;
     text-shadow: 0 1px 10px var(--glass-drop);
   }
-  .rp-keys {
+  .rp-keys { position: relative; }
+  .rp-keys summary { list-style: none; width: 2rem; height: 2rem; font-size: 0.875rem; color: var(--fg-dim); }
+  .rp-keys summary::-webkit-details-marker { display: none; }
+  .rp-keys summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .rp-keys p {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 0;
+    z-index: 2;
+    width: max-content;
+    max-width: 22rem;
     margin: 0;
+    padding: 0.625rem 0.875rem;
+    border-radius: var(--radius);
     font-size: 0.8125rem;
-    color: var(--fg-faint);
+    color: var(--fg-dim);
   }
   @media not ((hover: hover) and (pointer: fine)) {
-    .rp-keys, .rp-hint-fine { display: none; }
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .rp-hint-touch { display: none; }
+    .rp-keys { display: none; }
   }
 
-  /* The one thing to do on arrival: a light runs through the invitation, the speaker glows. */
-  .rp-hint {
-    margin-left: 0.5rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: transparent;
-    background: linear-gradient(100deg, var(--fg-dim) 40%, var(--fg) 50%, var(--fg-dim) 60%) 100% 0 / 300% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    animation: rp-hint 3.2s var(--ease-in-out) 1.2s infinite;
+  /* The one thing to do on arrival. Any click or key also turns sound on (player.ts);
+     this is the target that says so. */
+  .rp-tune {
+    height: 3.5rem;
+    padding: 0 1.75rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent) 45%, transparent);
+    animation: rp-tune 2.4s var(--ease-in-out) 1s infinite;
   }
-  @keyframes rp-hint { to { background-position: 0 0; } }
-  radio-player:has(.rp-hint)[data-muted="true"] #rp-sound {
-    border-color: color-mix(in oklab, var(--accent) 70%, transparent);
-    box-shadow: 0 0 18px color-mix(in oklab, var(--accent) 40%, transparent);
-  }
+  .rp-tune svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  @keyframes rp-tune { 50% { box-shadow: 0 0 28px 4px color-mix(in oklab, var(--accent) 45%, transparent); } }
+  @media (prefers-reduced-motion: reduce) { .rp-tune { animation: none; } }
+  @media (max-width: 639px) { .rp-tune { flex-basis: 100%; } }
   .rp-back { margin-left: 0.25rem; height: 2.5rem; }
   .rp-shuffle svg { fill: none; }
   .rp-shuffle[aria-pressed="true"] {
