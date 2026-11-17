@@ -17,7 +17,8 @@ const BALL_FS = `
 precision highp float;
 varying vec2 vP;
 uniform mat3 uM;
-uniform float uT, uFacet, uKick, uPx, uGlow;
+uniform float uT, uFacet, uKick, uPx, uGlow, uSeed, uBurst;
+uniform vec3 uBurstAt;
 uniform vec3 uC1, uC2, uC3, uC4;
 const float PI = 3.14159265;
 const float ROWS = 26.0;
@@ -56,7 +57,7 @@ void main() {
   float bw = 2.0 * PI / cols;
   float col = floor((lon + PI) / bw);
   float lonC = (col + 0.5) * bw - PI;
-  float id = hash(vec2(row, col));
+  float id = hash(vec2(row, col) + uSeed * 97.0);
 
   vec3 tn = vec3(cos(latC) * cos(lonC), sin(latC), cos(latC) * sin(lonC));
   tn = normalize(tn + (vec3(id, hash(vec2(col, row)), fract(id * 7.13)) - 0.5) * 0.035);
@@ -64,6 +65,13 @@ void main() {
   vec3 r = reflect(vec3(0.0, 0.0, -1.0), vn);
   vec3 mirror = room(r) * (0.45 + 0.85 * id * id) + 0.03;
   mirror += vec3(1.0) * pow(max(dot(r, KEY), 0.0), 900.0) * 30.0 * (0.5 + id);
+  // Twinkle: every tile flares on its own clock, so no two moments (or shows) repeat.
+  float tw = pow(max(sin(uT * (2.0 + 5.0 * id) + id * 50.0), 0.0), 40.0);
+  mirror += vec3(1.0, 0.97, 0.92) * tw * (0.7 + 1.3 * uKick);
+  // Tap shimmer: a ring of lit tiles racing out from the touch point.
+  float ang = acos(clamp(dot(vn, uBurstAt), -1.0, 1.0));
+  float ring = exp(-pow((ang - uBurst * 2.6) * 4.5, 2.0)) * exp(-uBurst * 1.0);
+  mirror += mix(vec3(1.0, 0.96, 0.9), uC1, 0.3 * id) * (ring * (0.6 + 3.4 * id * id) + exp(-uBurst * 7.0) * 0.35);
 
   // Grout: distance to the tile edge in tile units, widened near the limb to stay anti-aliased.
   vec2 cell = abs(fract(vec2((lat + PI * 0.5) / bh, (lon + PI) / bw)) - 0.5);
@@ -95,7 +103,7 @@ attribute vec3 aN;
 attribute float aS;
 uniform mat3 uM;
 uniform vec2 uC, uRes;
-uniform float uSpread, uOn, uKick, uDpr, uR, uT, uMode;
+uniform float uSpread, uOn, uKick, uDpr, uR, uT, uMode, uSeed, uBurst;
 varying float vI;
 varying float vS;
 const vec3 LIGHT = vec3(0.24, 0.86, 0.45);
@@ -104,7 +112,7 @@ void main() {
   if (uMode > 0.5) {
     // Star glints where a tile catches the key light toward the viewer.
     vI = pow(max(dot(n, normalize(LIGHT + vec3(0, 0, 1))), 0.0), 40.0) * uOn * step(0.0, n.z)
-      * (0.5 + 0.5 * sin(uT * 7.0 + aS * 60.0));
+      * (0.5 + 0.5 * sin(uT * (5.0 + 6.0 * aS) + aS * 60.0 + uSeed * 100.0));
     vS = -1.0;
     vec2 at = uC + vec2(n.x, -n.y) * uR;
     gl_Position = vI > 0.01 ? vec4(at / uRes * vec2(2, -2) + vec2(-1, 1), 0, 1) : vec4(2, 2, 2, 1);
@@ -113,7 +121,8 @@ void main() {
   }
   vec3 r = reflect(-LIGHT, n);
   float lit = max(dot(n, LIGHT), 0.0);
-  vI = sqrt(lit) * smoothstep(0.1, 0.4, r.z) * uOn * (0.6 + 0.4 * fract(aS * 13.7)) * (0.75 + uKick * 0.7);
+  vI = sqrt(lit) * smoothstep(0.1, 0.4, r.z) * uOn * (0.6 + 0.4 * sin(uT * (2.0 + 5.0 * fract(aS * 7.3)) + aS * 80.0 + uSeed * 40.0))
+    * (0.75 + uKick * 0.7) * (1.0 + 1.5 * exp(-uBurst * 3.0));
   vS = aS;
   vec2 px = uC + vec2(r.x, -r.y) / r.z * uSpread;
   gl_Position = vI > 0.002 ? vec4(px / uRes * vec2(2, -2) + vec2(-1, 1), 0, 1) : vec4(2, 2, 2, 1);
@@ -144,7 +153,7 @@ const SPOTS = 320;
 
 export interface Frame {
   cx: number; cy: number; r: number; // canvas px
-  rot: number; t: number; facet: number; kick: number; spots: number; glow: number; dim: number;
+  rot: number; tilt: number; seed: number; burst: number; burstAt: [number, number, number]; t: number; facet: number; kick: number; spots: number; glow: number; dim: number;
 }
 
 export type Colours = [number, number, number][];
@@ -209,8 +218,8 @@ export function createDisco(canvas: HTMLCanvasElement) {
     },
     draw(f: Frame, dpr: number) {
       const { width: w, height: h } = canvas;
-      // Ball tilted 0.35 rad toward the viewer, spinning about its own vertical axis.
-      const [cr, sr, ct, st] = [Math.cos(f.rot), Math.sin(f.rot), Math.cos(0.35), Math.sin(0.35)];
+      // Ball tilted toward the viewer, spinning about its own vertical axis.
+      const [cr, sr, ct, st] = [Math.cos(f.rot), Math.sin(f.rot), Math.cos(f.tilt), Math.sin(f.tilt)];
       m.set([cr, st * sr, -ct * sr, 0, ct, st, sr, -st * cr, ct * cr]);
 
       gl.viewport(0, 0, w, h);
@@ -228,6 +237,9 @@ export function createDisco(canvas: HTMLCanvasElement) {
       gl.uniform1f(u(ball, "uFacet"), f.facet);
       gl.uniform1f(u(ball, "uKick"), f.kick);
       gl.uniform1f(u(ball, "uGlow"), f.glow);
+      gl.uniform1f(u(ball, "uSeed"), f.seed);
+      gl.uniform1f(u(ball, "uBurst"), f.burst);
+      gl.uniform3fv(u(ball, "uBurstAt"), f.burstAt);
       gl.bindBuffer(gl.ARRAY_BUFFER, quad);
       gl.enableVertexAttribArray(aQuad);
       gl.vertexAttribPointer(aQuad, 2, gl.FLOAT, false, 0, 0);
@@ -247,6 +259,8 @@ export function createDisco(canvas: HTMLCanvasElement) {
       gl.uniform1f(u(spot, "uR"), f.r);
       gl.uniform1f(u(spot, "uT"), f.t);
       gl.uniform1f(u(spot, "uMode"), 0);
+      gl.uniform1f(u(spot, "uSeed"), f.seed);
+      gl.uniform1f(u(spot, "uBurst"), f.burst);
       gl.bindBuffer(gl.ARRAY_BUFFER, spots);
       gl.enableVertexAttribArray(aN);
       gl.enableVertexAttribArray(aS);

@@ -32,9 +32,8 @@ const { ...attrs } = Astro.props;
   .mc-orb-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 6px; }
   .disco-stage {
     position: fixed; top: 0; left: 0; z-index: 100;
-    pointer-events: none; opacity: 0; transition: opacity 180ms ease;
+    pointer-events: none;
   }
-  .disco-stage.is-on { opacity: 1; }
 
   .mc-text,
   .mc-skel {
