@@ -39,7 +39,7 @@
   .dl-stage {
     position: relative; overflow-x: clip; overflow-y: visible; touch-action: pan-y; user-select: none;
     --card-h: calc(var(--card-w) + 5.75rem);
-    height: calc(var(--card-h) * 1.75 + 8rem);
+    height: calc(var(--card-h) * 2.05 + 8rem);
     perspective: 900px; perspective-origin: 50% calc(5rem + var(--card-h) / 2);
   }
   .dl-track { position: absolute; inset: 0; transform-style: preserve-3d; }
@@ -67,6 +67,13 @@
       inset 0 0 0 1px color-mix(in oklab, var(--glass-light) 26%, transparent),
       var(--card-shadow);
   }
+  .dl-reflection {
+    pointer-events: none; cursor: default; border-color: transparent; box-shadow: none !important;
+    opacity: calc(var(--mirror-opacity, 1) * 0.24);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 33%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 33%, transparent 100%);
+  }
+  .dl-reflection .dl-live { display: none !important; }
   .dl-art {
     position: relative; display: block; aspect-ratio: 1; overflow: hidden; border-radius: 12px; isolation: isolate; -webkit-mask-image: -webkit-radial-gradient(white, black);
     background:
