@@ -10,7 +10,8 @@ export type Action =
   | { type: "video"; video: CatalogueItem; offset: number }
   | { type: "program"; program: string; offset: number }
   | { type: "query"; query: string }
-  | { type: "scroll"; target: string };
+  | { type: "scroll"; target: string }
+  | { type: "link"; url: string };
 
 export interface Art { entry?: ProgramEntry; yt?: string }
 
@@ -26,12 +27,15 @@ export interface Doc {
 }
 
 export interface Album { year: number; title: string; subtitle?: string; kind?: string }
+/** A released track (public/data/songs.json, from MusicBrainz). */
+export interface Song { title: string; release: string; year: number; with?: string[] }
 export interface Sources {
   catalogue: CatalogueItem[];
   programs: { path: string; program: Program }[];
   shows: { path: string; program: Program } | null;
   albums: Album[];
   tour: Show[];
+  songs: Song[];
 }
 
 export function norm(s: string): string {
@@ -90,9 +94,21 @@ export function buildIndex(src: Sources): Doc[] {
       docs.push(d);
     }
   }
+  // A song already on air is found as its moments; the rest link out to YouTube.
+  const onAir = new Set(src.programs.flatMap(({ program: p }) => p.entries.map((e) => norm(e.title ?? ""))));
+  for (const s of src.songs) {
+    if (onAir.has(norm(s.title))) continue;
+    const by = s.with?.length ? ` · with ${s.with.join(", ")}` : "";
+    const d = doc("Songs", s.title, `${s.release}${by}`, String(s.year),
+      { type: "link", url: `https://www.youtube.com/results?search_query=${encodeURIComponent(`Fred again.. ${s.title}`)}` },
+      [personFromTitle(s.title) ?? "", s.release, ...(s.with ?? []), String(s.year)]);
+    d.art = { entry: { offset: 0, duration: 0, type: "track", title: s.title, album: s.release } };
+    docs.push(d);
+  }
   for (const a of src.albums) {
+    const tracks = src.songs.filter((s) => norm(s.release) === norm(a.title)).map((s) => s.title);
     const d = doc("Releases", a.title, a.subtitle ?? a.kind ?? "", String(a.year),
-      { type: "query", query: a.title }, [a.subtitle ?? "", a.kind ?? "", String(a.year)]);
+      { type: "query", query: a.title }, [a.subtitle ?? "", a.kind ?? "", String(a.year), ...tracks]);
     d.art = { entry: { offset: 0, duration: 0, type: "track", album: a.title } };
     docs.push(d);
   }

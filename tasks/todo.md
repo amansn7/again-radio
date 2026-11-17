@@ -123,3 +123,11 @@ porting from listing descriptions.
 
 Review: legibility over bright real footage could not be judged headless (YouTube does not play
 there); check on the live site and raise the 30% stop in `Player.astro` if needed.
+
+## Phase 15 — Search finds the canon (India launch)
+- [x] `public/data/songs.json`: 162 released tracks from MusicBrainz (`node scripts/songs.mjs` rebuilds; remixes/edits/extended skipped, album beats single as the release)
+- [x] Songs not on air are "Songs" results that open a YouTube search in a new tab (marked ↗); songs on air stay as their moments
+- [x] Releases match their tracks ("marea" also finds Actual Life)
+- [x] `verify.mjs` validates songs.json; search test covers marea, adore u, leavemealone, ten, places to be, rumble, delilah, jungle; ui.check covers the link-out row
+
+Review: no official-video IDs yet (no keyless source); link-out is a YouTube search for "Fred again.. <title>".

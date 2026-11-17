@@ -91,6 +91,18 @@ function main() {
       ids.add(it?.youtubeId);
     });
   }
+  const songsPath = join(DATA, "songs.json");
+  if (existsSync(songsPath)) {
+    const titles = new Set();
+    (JSON.parse(readFileSync(songsPath, "utf8")).songs ?? []).forEach((r, i) => {
+      const at = `songs.json song ${i} (${r?.title ?? "?"})`;
+      if (!String(r?.title ?? "").trim() || !String(r?.release ?? "").trim() || !Number.isInteger(r?.year)) fail(`${at}: needs title, release, year`);
+      if (r.with !== undefined && !(Array.isArray(r.with) && r.with.every((w) => typeof w === "string" && w.trim()))) fail(`${at}: with must be a list of names`);
+      const k = r.title.toLowerCase();
+      if (titles.has(k)) fail(`${at}: duplicate title`);
+      titles.add(k);
+    });
+  }
   const apath = join(DATA, "albums.json");
   if (existsSync(apath)) {
     const a = JSON.parse(readFileSync(apath, "utf8"));

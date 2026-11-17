@@ -67,5 +67,13 @@ await calm.waitForTimeout(100);
 if (await calm.locator("#rp-tune").count()) await fail("reduced motion: #rp-tune not removed at once");
 if ((await calm.locator("radio-player").getAttribute("data-muted")) !== "false") await fail("reduced motion: click did not unmute");
 
+// Search finds songs that are not on air and marks them as opening YouTube.
+const finder = await browser.newPage({ viewport: { width: 390, height: 844 } });
+await finder.goto(url, { waitUntil: "domcontentloaded" });
+await finder.waitForSelector("radio-search", { timeout: 10_000 });
+await finder.keyboard.press("/");
+await finder.keyboard.type("marea");
+await finder.waitForSelector(".rs-row:has-text('Marea') .rs-out", { timeout: 10_000 }).catch(() => fail("search: Marea not found as a YouTube link-out"));
+
 await browser.close();
 console.log("✓ ui");

@@ -5,7 +5,7 @@ Updated 2026-11-17. Contract: `docs/SPEC.md`. Plan: `tasks/todo.md`. Conventions
 ## Where it stands
 
 Current goal: India launch (design `docs/superpowers/specs/2026-11-18-india-launch-design.md`).
-Phase 14 (first screen) shipped on branch `phase-14`; next: phase 15 (search finds the canon).
+Phase 14 (first screen) and phase 15 (search finds the canon) shipped; next: phase 16 (share the moment).
 
 Phase 0–6 shipped and verified; design v3 is deployed live on Cloudflare Pages
 (https://again-radio.pages.dev) with Cloudflare Worker + Durable Object for real-time
