@@ -3,7 +3,7 @@ import Orb from "./Orb.astro";
 const { ...attrs } = Astro.props;
 ---
 <memory-card {...attrs}>
-  <Orb class="mc-orb" />
+  <button class="mc-orb-btn" type="button" aria-label="Disco ball"><Orb class="mc-orb" /></button>
   <div class="mc-body">
     <div class="mc-skel" aria-hidden="true">
       <i class="skeleton"></i><i class="skeleton"></i><i class="skeleton"></i>
@@ -23,6 +23,18 @@ const { ...attrs } = Astro.props;
     min-width: 0;
   }
   memory-card .mc-orb { width: 4.75rem; }
+  .mc-orb-btn {
+    all: unset; display: block; border-radius: 50%; cursor: pointer;
+    transition: transform 400ms var(--ease-out);
+  }
+  .mc-orb-btn:hover { transform: scale(1.06); }
+  .mc-orb-btn:active { transform: scale(0.94); transition-duration: 120ms; }
+  .mc-orb-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 6px; }
+  .disco-stage {
+    position: fixed; top: 0; left: 0; z-index: 100;
+    pointer-events: none; opacity: 0; transition: opacity 180ms ease;
+  }
+  .disco-stage.is-on { opacity: 1; }
 
   .mc-text,
   .mc-skel {
@@ -68,4 +80,6 @@ const { ...attrs } = Astro.props;
 
 <script>
   import "./memory-card.ts";
+  const btn = document.querySelector<HTMLElement>(".mc-orb-btn");
+  btn?.addEventListener("click", () => import("./disco.ts").then((m) => m.disco(btn.querySelector("radio-orb")!)));
 </script>
