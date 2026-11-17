@@ -1,0 +1,10 @@
+{
+  "checked": "2026-11-18",
+  "shows": [
+    { "city": "Delhi", "country": "India", "venue": "Leisure Valley Ground, Gurugram", "start": "2026-12-05T15:00:00+05:30", "tz": "Asia/Kolkata" },
+    { "city": "Mumbai", "country": "India", "venue": "Mahalaxmi Race Course", "start": "2026-12-08T15:00:00+05:30", "tz": "Asia/Kolkata" },
+    { "city": "Mumbai", "country": "India", "venue": "Mahalaxmi Race Course", "start": "2026-12-09T15:00:00+05:30", "tz": "Asia/Kolkata" },
+    { "city": "Bengaluru", "country": "India", "venue": "NICE Grounds", "start": "2026-12-12T15:00:00+05:30", "tz": "Asia/Kolkata" },
+    { "city": "Bengaluru", "country": "India", "venue": "NICE Grounds", "start": "2026-12-13T15:00:00+05:30", "tz": "Asia/Kolkata" }
+  ]
+}

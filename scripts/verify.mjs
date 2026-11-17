@@ -101,6 +101,18 @@ function main() {
       if (!String(t?.city ?? "").trim() || !/^\d{4}-\d{2}-\d{2}/.test(t?.date ?? "")) fail(`albums.json tour ${i}: needs city and ISO date`);
     });
   }
+  const spath = join(DATA, "shows.json");
+  if (existsSync(spath)) {
+    const rows = JSON.parse(readFileSync(spath, "utf8")).shows ?? [];
+    rows.forEach((r, i) => {
+      const at = `shows.json show ${i}`;
+      for (const k of ["city", "country", "venue", "tz"]) if (!String(r?.[k] ?? "").trim()) fail(`${at}: missing "${k}"`);
+      if (!/^\d{4}-\d\d-\d\dT\d\d:\d\d(:\d\d)?[+-]\d\d:\d\d$/.test(r?.start ?? "")) fail(`${at}: bad start`);
+    });
+    if (rows.length && rows.every((r) => Date.parse(r.start) + 9 * 3600_000 < Date.now())) {
+      warn.push("shows.json: every show has ended — add new dates or empty the list");
+    }
+  }
   for (const w of warn) console.log(`· ${w}`);
   if (errors.length) {
     for (const e of errors) console.error(`✗ ${e}`);
