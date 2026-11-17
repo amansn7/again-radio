@@ -2,8 +2,9 @@ import { loadCatalogue } from "../lib/catalogue.ts";
 import { RADIO_CUE, RADIO_SEARCH } from "../lib/events.ts";
 import { fetchJson, loadProgram, loadStation } from "../lib/station.ts";
 import "../lib/glass.ts";
+import { parseShows } from "../lib/shows.ts";
 import { fly, loadArt, tilt } from "./search-fx.ts";
-import { GROUPS, buildIndex, search, type Album, type Doc, type Sources, type Tour } from "../lib/search.ts";
+import { GROUPS, buildIndex, search, type Album, type Doc, type Sources } from "../lib/search.ts";
 
 const ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>`;
 const SHOWS = "programs/usb002-every-show.json";
@@ -11,8 +12,8 @@ const esc = (s: string) => s.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
 const rec = (v: unknown): Record<string, unknown> => (typeof v === "object" && v !== null ? (v as Record<string, unknown>) : {});
 
 async function loadSources(): Promise<Sources> {
-  const [cat, station, shows, albums] = await Promise.allSettled([
-    loadCatalogue(), loadStation(), loadProgram(SHOWS), fetchJson("/data/albums.json"),
+  const [cat, station, shows, albums, tour] = await Promise.allSettled([
+    loadCatalogue(), loadStation(), loadProgram(SHOWS), fetchJson("/data/albums.json"), fetchJson("/data/shows.json"),
   ]);
   const paths = station.status === "fulfilled" ? station.value.rotation.map((r) => r.program) : [];
   const progs = await Promise.allSettled(paths.map((p) => loadProgram(p)));
@@ -22,7 +23,7 @@ async function loadSources(): Promise<Sources> {
     programs: progs.flatMap((r, i) => (r.status === "fulfilled" ? [{ path: paths[i], program: r.value }] : [])),
     shows: shows.status === "fulfilled" ? { path: SHOWS, program: shows.value } : null,
     albums: Array.isArray(a.albums) ? (a.albums as Album[]) : [],
-    tour: Array.isArray(a.tour) ? (a.tour as Tour[]) : [],
+    tour: tour.status === "fulfilled" ? parseShows(tour.value).shows : [],
   };
 }
 

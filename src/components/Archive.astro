@@ -26,31 +26,14 @@
 </style>
 
 <script>
-  import { buildTourHtml, parseAlbumsData } from "./archive-rail.ts";
-
   class ArchiveElement extends HTMLElement {
-    private timer: ReturnType<typeof setInterval> | null = null;
-
-    async connectedCallback(): Promise<void> {
+    connectedCallback(): void {
       this.innerHTML =
         `<section class="wrap" id="tour" aria-labelledby="ar-tour"><div class="ar-head">` +
         `<h2 class="section-title" id="ar-tour">India, December 2026</h2>` +
         `<p class="meta">Three nights, three cities.</p></div>` +
-        `<div class="ar-tour"><div class="skeleton" style="height:8rem"></div></div></section>`;
-      const tour = this.querySelector<HTMLElement>(".ar-tour")!;
-      try {
-        const res = await fetch("/data/albums.json");
-        if (!res.ok) throw new Error(String(res.status));
-        const dates = parseAlbumsData(await res.json()).tour;
-        const draw = () => { tour.innerHTML = buildTourHtml(dates); };
-        draw();
-        this.timer = setInterval(draw, 60_000);
-      } catch {
-        tour.innerHTML = `<p class="meta ar-error" role="alert">The tour dates could not be loaded. Check your connection and reload the page.</p>`;
-      }
+        `<p class="meta">Upcoming shows are loading.</p></section>`;
     }
-
-    disconnectedCallback(): void { if (this.timer !== null) clearInterval(this.timer); }
   }
 
   if (!customElements.get("archive-rail")) customElements.define("archive-rail", ArchiveElement);

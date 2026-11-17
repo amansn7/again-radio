@@ -17,10 +17,5 @@
     { "year": 2025, "title": "USB002", "subtitle": "DEC 2025", "kind": "compilation" },
     { "year": 2026, "title": "USB002 REMIXES", "subtitle": "2026", "kind": "compilation" },
     { "year": 2026, "title": "9 Months & 50 Hours", "subtitle": "JUL 2026 · with Latin Mafia", "kind": "mixtape", "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/90/52/6e/90526e94-89c7-8387-458f-1972f7995d48/1200214495824.jpg/600x600bb.jpg" }
-  ],
-  "tour": [
-    { "city": "Delhi", "date": "2026-12-05" },
-    { "city": "Mumbai", "date": "2026-12-09" },
-    { "city": "Bengaluru", "date": "2026-12-13" }
   ]
 }

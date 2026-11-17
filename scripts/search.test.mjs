@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { buildIndex, search } from "../src/lib/search.ts";
+import { parseShows } from "../src/lib/shows.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const read = (p) => JSON.parse(readFileSync(`${root}/public/data/${p}`, "utf8"));
@@ -15,7 +16,7 @@ const index = buildIndex({
   })),
   shows: { path: "programs/usb002-every-show.json", program: read("programs/usb002-every-show.json") },
   albums: albums.albums,
-  tour: albums.tour,
+  tour: parseShows(read("shows.json")).shows,
 });
 
 const fail = (m) => { console.error(`✗ ${m}`); process.exit(1); };
@@ -28,6 +29,7 @@ has("kyle", (d) => d.group === "Songs" && d.title.startsWith("Kyle"), "the song"
 has("kamy", (d) => d.group === "In sets" && d.title.startsWith("Kammy"), "Kammy via typo");
 has("glasgow", (d) => d.group === "Shows" && d.title === "GLASGOW", "the show");
 has("boiler", (d) => d.group === "In sets", "moments");
+has("mahalaxmi", (d) => d.group === "On tour" && d.title === "Mumbai", "venue");
 has("delhi", (d) => d.group === "On tour", "tour date");
 if (search(index, "").length || search(index, "  ").length) fail("empty query should return nothing");
 for (const g of new Set(search(index, "a").map((d) => d.group)))

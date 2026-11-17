@@ -97,9 +97,6 @@ function main() {
       if (r?.art !== undefined && !ART_URL.test(r.art)) fail(`albums.json album ${i}: art must be an https mzstatic/coverartarchive URL`);
       if (!Number.isInteger(r?.year) || !String(r?.title ?? "").trim() || typeof r?.subtitle !== "string") fail(`albums.json album ${i}: needs year, title, subtitle`);
     });
-    (a.tour ?? []).forEach((t, i) => {
-      if (!String(t?.city ?? "").trim() || !/^\d{4}-\d{2}-\d{2}/.test(t?.date ?? "")) fail(`albums.json tour ${i}: needs city and ISO date`);
-    });
   }
   const spath = join(DATA, "shows.json");
   if (existsSync(spath)) {

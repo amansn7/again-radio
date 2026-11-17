@@ -1,6 +1,7 @@
 import type { CatalogueItem } from "./catalogue.ts";
 import type { Program, ProgramEntry } from "./station.ts";
 import { personFromTitle } from "./memories.ts";
+import { dayLabel, type Show } from "./shows.ts";
 
 export type Group = "Songs" | "In sets" | "Shows" | "Releases" | "On tour";
 export const GROUPS: Group[] = ["Songs", "In sets", "Shows", "Releases", "On tour"];
@@ -25,13 +26,12 @@ export interface Doc {
 }
 
 export interface Album { year: number; title: string; subtitle?: string; kind?: string }
-export interface Tour { city: string; date: string }
 export interface Sources {
   catalogue: CatalogueItem[];
   programs: { path: string; program: Program }[];
   shows: { path: string; program: Program } | null;
   albums: Album[];
-  tour: Tour[];
+  tour: Show[];
 }
 
 export function norm(s: string): string {
@@ -97,8 +97,8 @@ export function buildIndex(src: Sources): Doc[] {
     docs.push(d);
   }
   for (const t of src.tour) {
-    docs.push(doc("On tour", t.city, "USB002 tour", year(t.date) ? t.date : "",
-      { type: "scroll", target: "#tour" }, [t.date, "tour", "usb002"]));
+    docs.push(doc("On tour", t.city, t.venue, dayLabel(t),
+      { type: "scroll", target: "#tour" }, [t.venue, t.start.slice(0, 10), "tour", t.country]));
   }
   return docs;
 }
