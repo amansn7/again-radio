@@ -167,7 +167,11 @@ again-radio/
 
 ---
 
-## Quick Start
+## Development workflow
+
+When running the development server (`npm run dev` or `npx astro dev`), the site will **not** automatically reload on file changes. Hot Module Replacement (HMR) and live reload have been disabled in `astro.config.mjs`. To see your changes, manually refresh the browser page.
+
+This ensures a stable dev environment where the page only updates on explicit user action.
 
 ### Prerequisites
 - **Node.js**: v20 or higher
