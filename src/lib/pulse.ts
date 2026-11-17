@@ -6,6 +6,7 @@ import type { ProgramEntry } from "./station.ts";
 // proxied). Motion is driven by the playback clock on the track's beat grid instead.
 const FALLBACK_BPM = 124;
 const RESYNC_S = 0.08;
+const FRAME_MS = 1000 / 30;
 
 export interface Beat {
   kick: number; // 1 on the beat, decaying
@@ -34,6 +35,7 @@ let exact = 0;
 let at = 0;
 let playing = false;
 let raf = 0;
+let lastFrame = 0;
 let still: MediaQueryList | null = null;
 const subs = new Set<(b: Beat) => void>();
 
@@ -46,6 +48,12 @@ const anchor = (t: number) => {
 function frame() {
   raf = 0;
   if (document.hidden || still?.matches || !subs.size) return;
+  const time = performance.now();
+  if (time - lastFrame < FRAME_MS) {
+    raf = requestAnimationFrame(frame);
+    return;
+  }
+  lastFrame = time;
   const e = entry;
   const b = e && playing ? beatAt(now() - e.offset, e.type === "interlude" ? 0 : (e.bpm ?? FALLBACK_BPM), e.duration) : REST;
   subs.forEach((fn) => fn(b));

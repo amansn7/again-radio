@@ -31,6 +31,7 @@ class RadioSearch extends HTMLElement {
   private dlg!: HTMLDialogElement;
   private input!: HTMLInputElement;
   private list!: HTMLElement;
+  private results!: HTMLElement;
   private hits: Doc[] = [];
   private active = 0;
   private opener: Element | null = null;
@@ -40,17 +41,23 @@ class RadioSearch extends HTMLElement {
     this.innerHTML =
       `<button type="button" class="btn rs-open" aria-haspopup="dialog">${ICON}<span>Search</span><kbd class="rs-kbd" aria-hidden="true">/</kbd></button>` +
       `<dialog class="rs-dlg glass" data-glass="regular" aria-label="Search"><div class="rs-head">${ICON}` +
-      `<input class="rs-input" type="search" placeholder="Song, person, city, year" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="rs-list" aria-label="Search the radio"></div>` +
-      `<div class="rs-list" id="rs-list" role="listbox" aria-label="Results"></div></dialog>`;
+      `<input class="rs-input" type="search" placeholder="Song, person, city, year" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="rs-list" aria-label="Search the radio"></div>` +
+      `<div class="rs-results"><p class="rs-status meta" role="status">Try a name like Kyle or Delilah, a city like Glasgow, or a year.</p>` +
+      `<div class="rs-loading" aria-hidden="true" hidden><div class="skeleton rs-sk"></div><div class="skeleton rs-sk"></div><div class="skeleton rs-sk"></div></div>` +
+      `<div class="rs-list" id="rs-list" role="listbox" aria-label="Results" hidden></div></div></dialog>`;
     this.dlg = this.querySelector("dialog")!;
     this.input = this.querySelector("input")!;
     this.list = this.querySelector(".rs-list")!;
+    this.results = this.querySelector(".rs-results")!;
     this.querySelector(".rs-open")!.addEventListener("click", () => this.open());
     tilt(this.list);
     this.input.addEventListener("input", () => this.render());
     this.dlg.addEventListener("keydown", (e) => this.key(e));
     this.dlg.addEventListener("click", (e) => { if (e.target === this.dlg) this.dlg.close(); });
-    this.dlg.addEventListener("close", () => (this.opener as HTMLElement | null)?.focus());
+    this.dlg.addEventListener("close", () => {
+      this.input.setAttribute("aria-expanded", "false");
+      (this.opener as HTMLElement | null)?.focus();
+    });
     this.list.addEventListener("click", (e) => {
       const i = (e.target as HTMLElement).closest<HTMLElement>("[data-i]");
       if (i) this.pick(Number(i.dataset.i));
@@ -72,6 +79,7 @@ class RadioSearch extends HTMLElement {
     this.input.value = query;
     this.shown.clear();
     this.dlg.showModal();
+    this.input.setAttribute("aria-expanded", "true");
     this.input.focus();
     this.index ??= loadSources().then(buildIndex);
     this.render();
@@ -79,24 +87,39 @@ class RadioSearch extends HTMLElement {
 
   private async render() {
     const q = this.input.value;
+    const status = this.querySelector<HTMLElement>(".rs-status")!;
     if (!q.trim()) {
       this.hits = [];
-      this.list.innerHTML = `<p class="rs-note meta">Try a name like Kyle or Delilah, a city like Glasgow, or a year.</p>`;
-      return;
-    }
-    const pending = this.index;
-    this.list.setAttribute("aria-busy", "true");
-    this.list.innerHTML = `<div class="skeleton rs-sk"></div><div class="skeleton rs-sk"></div><div class="skeleton rs-sk"></div>`;
-    const idx = await pending!;
-    if (q !== this.input.value) return;
-    this.list.removeAttribute("aria-busy");
-    this.hits = search(idx, q);
-    this.active = 0;
-    if (!this.hits.length) {
-      this.list.innerHTML = `<p class="rs-note meta">Nothing matches “${esc(q.trim())}”. Try a person's name, a city or an album.</p>`;
+      this.list.hidden = true;
+      this.list.replaceChildren();
+      this.results.removeAttribute("aria-busy");
+      this.querySelector<HTMLElement>(".rs-loading")!.hidden = true;
+      status.textContent = "Try a name like Kyle or Delilah, a city like Glasgow, or a year.";
+      this.input.setAttribute("aria-expanded", "false");
       this.input.removeAttribute("aria-activedescendant");
       return;
     }
+    const pending = this.index;
+    this.results.setAttribute("aria-busy", "true");
+    this.list.hidden = true;
+    this.querySelector<HTMLElement>(".rs-loading")!.hidden = false;
+    status.textContent = "Loading search results.";
+    const idx = await pending!;
+    if (q !== this.input.value) return;
+    this.results.removeAttribute("aria-busy");
+    this.querySelector<HTMLElement>(".rs-loading")!.hidden = true;
+    this.list.replaceChildren();
+    this.hits = search(idx, q);
+    this.active = 0;
+    if (!this.hits.length) {
+      status.textContent = `Nothing matches “${q.trim()}”. Try a person's name, a city or an album.`;
+      this.input.setAttribute("aria-expanded", "false");
+      this.input.removeAttribute("aria-activedescendant");
+      return;
+    }
+    status.textContent = "";
+    this.list.hidden = false;
+    this.input.setAttribute("aria-expanded", "true");
     let html = "";
     let n = 0;
     for (const g of GROUPS) {

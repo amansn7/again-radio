@@ -377,6 +377,14 @@ body::after {
   transform: none;
 }
 
+@media (max-width: 767px) {
+  .btn,
+  .btn-primary,
+  .icon-btn {
+    min-height: 44px;
+  }
+}
+
 .icon-btn svg,
 .btn svg,
 .btn-primary svg {

@@ -34,8 +34,10 @@
   .rs-input::placeholder { color: var(--fg-faint); }
   .rs-input::-webkit-search-cancel-button { display: none; }
 
-  .rs-list { overflow-y: auto; padding: 0.5rem; min-height: 4rem; }
-  .rs-note { padding: 1rem 0.75rem; max-width: 38ch; }
+  .rs-results { overflow-y: auto; min-height: 4rem; }
+  .rs-status { padding: 1rem 1.25rem; max-width: 38ch; }
+  .rs-status:empty { display: none; }
+  .rs-list { padding: 0.5rem; }
   .rs-sk { height: 2.75rem; margin: 0.4rem 0.25rem; }
   .rs-group { margin: 0.75rem 0.75rem 0.25rem; font: 500 0.8125rem/1.2 var(--font-body); color: var(--fg-faint); }
   .rs-row {
