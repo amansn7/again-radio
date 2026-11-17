@@ -42,7 +42,13 @@
     height: calc(var(--card-h) * 1.75 + 8rem);
     perspective: 900px; perspective-origin: 50% calc(5rem + var(--card-h) / 2);
   }
-  .dl-track { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .dl-track { position: absolute; inset: 0; transform-style: preserve-3d; transition: opacity 450ms var(--ease-in-out); }
+  .dl-auto[hidden] { display: none; }
+  .dl-auto svg { fill: none; }
+  .dl-auto .dl-ico-play { fill: currentColor; }
+  .dl-auto[aria-pressed="true"] .dl-ico-pause,
+  .dl-auto[aria-pressed="false"] .dl-ico-play { display: none; }
+  @media (prefers-reduced-motion: reduce) { .dl-auto { display: none; } }
   /* The shell carries the glow; the face carries the look and the reflection. A reflection
      copies its element's shadow clipped to a rectangle, which drew square tints at the
      rounded corners, so the glow must live on an element that is not reflected. */

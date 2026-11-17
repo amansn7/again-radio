@@ -6,6 +6,7 @@ import { esc, parseAlbumsData, type Album } from "./archive-rail.ts";
 import { EVERY_SHOW, albumCards, showCards, trackCards, type Card, type Choice, type Loaded } from "./dial-data.ts";
 import { cardEl, warm } from "./dial-card.ts";
 import { Ring } from "./dial-ring.ts";
+import { drift, type Drift } from "./dial-drift.ts";
 
 const CHOICES: [Choice, string][] = [["order", "Running order"], ["shows", "Shows"], ["albums", "Albums"]];
 const HEAD =
@@ -23,6 +24,7 @@ class WarpDial extends HTMLElement {
   private airPath = "";
   private cards: Card[] = [];
   private ring!: Ring;
+  private drift!: Drift;
   private live!: HTMLElement;
 
   async connectedCallback(): Promise<void> {
@@ -49,7 +51,10 @@ class WarpDial extends HTMLElement {
       `<button type="button" role="tab" id="dl-tab-${c}" aria-controls="dl-ring" data-c="${c}">${label}</button>`).join("");
     this.innerHTML = HEAD +
       `<div class="wrap dl-controls"><div class="dl-seg glass" data-glass role="tablist" aria-label="Browse by">${tabs}</div>` +
-      `<label class="dl-pick glass" data-glass><span class="sr-only">Programme</span><select></select></label></div>` +
+      `<label class="dl-pick glass" data-glass><span class="sr-only">Programme</span><select></select></label>` +
+      `<button type="button" class="icon-btn dl-auto glass" data-glass aria-pressed="false" aria-label="Pause auto-scroll" hidden>` +
+      `<svg class="dl-ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>` +
+      `<svg class="dl-ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg></button></div>` +
       `<div class="dl-stage" id="dl-ring" role="tabpanel"><div class="dl-track" role="group" aria-roledescription="carousel" aria-describedby="dl-hint"></div></div>` +
       `<p class="wrap meta dl-hint" id="dl-hint">Drag, scroll or use the arrow keys. Choose the front card to play.</p>` +
       `<p class="sr-only" aria-live="polite"></p>`;
@@ -76,6 +81,13 @@ class WarpDial extends HTMLElement {
       front: (i) => this.announce(i),
       prefetch: (i) => { if (this.cards[i]) warm(this.cards[i]); },
     });
+    this.drift = drift(this.ring, this.querySelector(".dl-stage")!, this.querySelector(".dl-track")!);
+    const auto = this.querySelector<HTMLButtonElement>(".dl-auto")!;
+    auto.addEventListener("click", () => {
+      const paused = this.drift.toggle();
+      auto.setAttribute("aria-pressed", String(paused));
+      auto.setAttribute("aria-label", paused ? "Resume auto-scroll" : "Pause auto-scroll");
+    });
     this.setChoice("order");
   }
 
@@ -93,7 +105,10 @@ class WarpDial extends HTMLElement {
     });
     this.querySelector("#dl-ring")!.setAttribute("aria-labelledby", `dl-tab-${c}`);
     this.querySelector<HTMLElement>(".dl-pick")!.hidden = c !== "order";
+    this.querySelector<HTMLElement>(".dl-auto")!.hidden = c === "order";
     this.show();
+    // Shows and Albums turn by themselves; the running order follows what is on air instead.
+    this.drift.enable(c !== "order");
   }
 
   private show(): void {
@@ -139,7 +154,7 @@ class WarpDial extends HTMLElement {
     }
     this.ring.each((el, i) => (this.cards[i].onAir(t) ? el.setAttribute("aria-current", "true") : el.removeAttribute("aria-current")));
     const i = this.cards.findIndex((c) => c.onAir(t));
-    if (i >= 0 && i !== this.ring.front && !this.ring.recent) this.ring.goto(i);
+    if (this.choice === "order" && i >= 0 && i !== this.ring.front && !this.ring.recent) this.ring.goto(i);
   }
 }
 
