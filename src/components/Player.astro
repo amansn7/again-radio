@@ -83,9 +83,9 @@
     inset: 0;
     background: linear-gradient(
       to top,
-      color-mix(in oklab, var(--bg) 58%, transparent),
-      color-mix(in oklab, var(--bg) 30%, transparent) 55%,
-      color-mix(in oklab, var(--bg) 40%, transparent)
+      color-mix(in oklab, var(--bg) 72%, transparent),
+      color-mix(in oklab, var(--bg) 55%, transparent) 55%,
+      color-mix(in oklab, var(--bg) 50%, transparent)
     );
   }
 
@@ -175,6 +175,44 @@
   .rp-tune svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   @keyframes rp-tune { 50% { box-shadow: 0 0 28px 4px color-mix(in oklab, var(--accent) 45%, transparent); } }
   @media (prefers-reduced-motion: reduce) { .rp-tune { animation: none; } }
+
+  /* Tune in (tune-in.ts): a ring of light leaves the tap and crosses the picture. */
+  .rp-wave {
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle closest-side,
+      transparent 62%,
+      color-mix(in oklab, var(--accent) 55%, transparent) 86%,
+      color-mix(in oklab, var(--accent) 20%, transparent) 94%,
+      transparent);
+    mix-blend-mode: screen;
+    transform: scale(0.02);
+    animation: rp-wave 1100ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes rp-wave {
+    70% { opacity: 0.9; }
+    to { transform: scale(1); opacity: 0; }
+  }
+  /* The button folds into the speaker; nothing else is captured, so the video keeps playing. */
+  :root.rp-morphing { view-transition-name: none; }
+  /* The shape that travels is the accent pill itself: its words leave first, the speaker
+     arrives last, and the fill hands over to the glass button as it lands. */
+  :root.rp-morphing .rp-controls { view-transition-name: rp-pill; }
+  :root.rp-morphing .rp-keys { view-transition-name: rp-keys; }
+  ::view-transition-group(rp-tune),
+  ::view-transition-group(rp-pill),
+  ::view-transition-group(rp-keys) { animation-duration: 560ms; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  ::view-transition-image-pair(rp-tune) {
+    border-radius: 999px;
+    background-color: var(--accent);
+    animation: rp-land 560ms ease-in forwards;
+  }
+  ::view-transition-old(rp-tune) { animation: rp-fade 160ms ease-out reverse both; }
+  ::view-transition-new(rp-tune) { animation: rp-fade 200ms ease-out 360ms both; }
+  @keyframes rp-land { 55% { background-color: var(--accent); } to { background-color: transparent; } }
+  @keyframes rp-fade { from { opacity: 0; } to { opacity: 1; } }
   @media (max-width: 639px) { .rp-tune { flex-basis: 100%; } }
   .rp-back { margin-left: 0.25rem; height: 2.5rem; }
   .rp-shuffle svg { fill: none; }

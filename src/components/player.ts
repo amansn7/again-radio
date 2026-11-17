@@ -1,4 +1,5 @@
 import { loadYT } from "../lib/yt.ts";
+import { tuneIn, type Point } from "./tune-in.ts";
 import { loadProgram } from "../lib/station.ts";
 import { entryAt } from "../lib/schedule.ts";
 import { creditText, stampText, videoProgram } from "../lib/live.ts";
@@ -40,6 +41,7 @@ class RadioPlayer extends HTMLElement {
   // click or key anywhere turns it up. An explicit mute/unmute cancels that.
   private wake = new AbortController();
   private muted = true;
+  private tap: Point | undefined;
   private playing = false;
   private userPaused = false;
   private hiddenAt = 0;
@@ -59,13 +61,20 @@ class RadioPlayer extends HTMLElement {
     // Moving focus is not asking for sound: Tab and lone modifiers would otherwise remove the
     // tune-in button before a keyboard user can reach it.
     const NAV = new Set(["Tab", "Shift", "Control", "Alt", "Meta", "Escape"]);
+    const mark = (e: Event) => {
+      if (e instanceof MouseEvent && e.detail > 0) this.tap = { x: e.clientX, y: e.clientY };
+    };
     const soundOn = (e: Event) => {
       if (e instanceof KeyboardEvent && NAV.has(e.key)) return;
+      mark(e);
       if (!(e.target instanceof Element && e.target.closest("#rp-tune")) && this.muted) this.setMuted(false);
     };
     window.addEventListener("click", soundOn, { signal: wakeSignal });
     window.addEventListener("keydown", soundOn, { signal: wakeSignal });
-    this.querySelector("#rp-tune")?.addEventListener("click", () => this.muted && this.setMuted(false), { signal: wakeSignal });
+    this.querySelector("#rp-tune")?.addEventListener("click", (e) => {
+      mark(e);
+      if (this.muted) this.setMuted(false);
+    }, { signal: wakeSignal });
     // Focus moving into the embed blurs the window; take it straight back to where the user was.
     document.addEventListener("focusin", (e) => {
       if (!(e.target instanceof HTMLIFrameElement)) this.lastFocus = e.target as HTMLElement;
@@ -219,11 +228,7 @@ class RadioPlayer extends HTMLElement {
   private setMuted(muted: boolean) {
     this.wake.abort();
     const tune = this.querySelector<HTMLElement>("#rp-tune");
-    if (tune) {
-      const had = document.activeElement === tune;
-      tune.remove();
-      if (had) this.querySelector<HTMLElement>("#rp-sound")?.focus();
-    }
+    if (tune) tuneIn(tune, this.querySelector("#rp-sound"), this.querySelector(".rp-screen"), this.tap);
     this.muted = muted;
     if (muted) this.player?.mute?.();
     else this.player?.unMute?.();

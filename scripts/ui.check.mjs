@@ -40,7 +40,8 @@ for (let i = 0; i < 15 && (await page.evaluate(() => document.activeElement?.id)
 }
 if ((await page.evaluate(() => document.activeElement?.id)) !== "rp-tune") await fail("#rp-tune not reachable by Tab");
 await page.keyboard.press("Enter");
-await page.waitForTimeout(300);
+if (!(await page.locator(".rp-wave").count())) await fail("no light wave on tune in");
+await page.waitForTimeout(600);
 if (await page.locator("#rp-tune").count()) await fail("#rp-tune still present after Enter");
 if ((await player.getAttribute("data-muted")) !== "false") await fail("Enter on #rp-tune did not unmute");
 const active = await page.evaluate(() => document.activeElement?.id ?? "");
@@ -55,6 +56,16 @@ const vis = await page.evaluate(() => {
 });
 if (vis !== "hidden") await fail(`iframe visibility is "${vis}" after error`);
 if (!(await page.locator(".ambient").isVisible())) await fail("ambient field hidden after error");
+
+// Reduced motion: same outcome, no wave, no morph.
+const calm = await browser.newPage({ viewport: { width: 390, height: 844 }, reducedMotion: "reduce" });
+await calm.goto(url, { waitUntil: "domcontentloaded" });
+await calm.waitForSelector("#rp-tune", { state: "visible", timeout: 10_000 }).catch(() => fail("reduced motion: no #rp-tune"));
+await calm.click("#rp-tune");
+if (await calm.locator(".rp-wave").count()) await fail("reduced motion: wave shown");
+await calm.waitForTimeout(100);
+if (await calm.locator("#rp-tune").count()) await fail("reduced motion: #rp-tune not removed at once");
+if ((await calm.locator("radio-player").getAttribute("data-muted")) !== "false") await fail("reduced motion: click did not unmute");
 
 await browser.close();
 console.log("✓ ui");
