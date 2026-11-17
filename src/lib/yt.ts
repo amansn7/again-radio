@@ -32,6 +32,7 @@ export interface YTPlayer {
   mute(): void;
   unMute(): void;
   isMuted(): boolean;
+  setVolume?(volume: number): void;
   loadVideoById(args: { videoId: string; startSeconds?: number }): void;
   destroy(): void;
   unloadModule?(name: string): void;

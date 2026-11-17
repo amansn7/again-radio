@@ -4,7 +4,9 @@
   "rotation": [
     { "program": "programs/boiler-room-london.json", "weight": 1 },
     { "program": "programs/rooftop-live.json", "weight": 1 },
-    { "program": "programs/alex-palace-bangalter.json", "weight": 1 }
+    { "program": "programs/alex-palace-bangalter.json", "weight": 1 },
+    { "program": "programs/rooftop-naples.json", "weight": 1 },
+    { "program": "programs/usb002-every-show.json", "weight": 1 }
   ],
   "hourBlocks": [
     { "from": 4, "to": 10, "label": "dawn" },

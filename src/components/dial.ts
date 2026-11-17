@@ -1,7 +1,7 @@
 import "../lib/glass.ts";
 import { loadProgram, loadStation } from "../lib/station.ts";
 import { loadCatalogue, type CatalogueItem } from "../lib/catalogue.ts";
-import { RADIO_CUE, RADIO_TRACK, type TrackInfo } from "../lib/events.ts";
+import { RADIO_CUE, RADIO_TRACK, lastTrack, type TrackInfo } from "../lib/events.ts";
 import { esc, parseAlbumsData, type Album } from "./archive-rail.ts";
 import { EVERY_SHOW, albumCards, showCards, trackCards, type Card, type Choice, type Loaded } from "./dial-data.ts";
 import { cardEl, warm } from "./dial-card.ts";
@@ -20,6 +20,7 @@ class WarpDial extends HTMLElement {
   private sel = 0;
   private picked = false;
   private air: TrackInfo | null = null;
+  private airPath = "";
   private cards: Card[] = [];
   private ring!: Ring;
   private live!: HTMLElement;
@@ -28,7 +29,7 @@ class WarpDial extends HTMLElement {
     this.innerHTML = HEAD + `<div class="wrap"><div class="skeleton dl-skel"></div></div>`;
     try {
       const station = await loadStation();
-      const paths = [...station.rotation.map((r) => r.program), EVERY_SHOW];
+      const paths = [...new Set([...station.rotation.map((r) => r.program), EVERY_SHOW])];
       const albums = fetch("/data/albums.json").then((r) => (r.ok ? r.json() : null)).catch(() => null);
       const catalogue = loadCatalogue().catch((): CatalogueItem[] => []);
       this.programs = await Promise.all(paths.map(async (path) => ({ path, data: await loadProgram(path) })));
@@ -40,15 +41,15 @@ class WarpDial extends HTMLElement {
     }
     this.renderShell();
     document.addEventListener(RADIO_TRACK, (e) => this.onTrack((e as CustomEvent<TrackInfo>).detail));
+    if (lastTrack) this.onTrack(lastTrack);
   }
 
   private renderShell(): void {
     const tabs = CHOICES.map(([c, label]) =>
       `<button type="button" role="tab" id="dl-tab-${c}" aria-controls="dl-ring" data-c="${c}">${label}</button>`).join("");
-    const opts = this.programs.map((p, i) => `<option value="${i}">${esc(p.data.title)}</option>`).join("");
     this.innerHTML = HEAD +
       `<div class="wrap dl-controls"><div class="dl-seg glass" data-glass role="tablist" aria-label="Browse by">${tabs}</div>` +
-      `<label class="dl-pick glass" data-glass><span class="sr-only">Programme</span><select>${opts}</select></label></div>` +
+      `<label class="dl-pick glass" data-glass><span class="sr-only">Programme</span><select></select></label></div>` +
       `<div class="dl-stage" id="dl-ring" role="tabpanel"><div class="dl-track" role="group" aria-roledescription="carousel" aria-describedby="dl-hint"></div></div>` +
       `<p class="wrap meta dl-hint" id="dl-hint">Drag, scroll or use the arrow keys. Choose the front card to play.</p>` +
       `<p class="sr-only" aria-live="polite"></p>`;
@@ -68,6 +69,7 @@ class WarpDial extends HTMLElement {
       this.querySelector<HTMLElement>(`#dl-tab-${this.choice}`)?.focus();
     });
     select.addEventListener("change", () => { this.picked = true; this.sel = Number(select.value); this.show(); });
+    this.options();
     this.ring = new Ring(this.querySelector(".dl-stage")!, this.querySelector(".dl-track")!, {
       build: (i) => cardEl(this.cards[i], this.air, i === this.ring.front),
       activate: (i) => this.play(i),
@@ -75,6 +77,11 @@ class WarpDial extends HTMLElement {
       prefetch: (i) => { if (this.cards[i]) warm(this.cards[i]); },
     });
     this.setChoice("order");
+  }
+
+  private options(): void {
+    this.querySelector("select")!.innerHTML =
+      this.programs.map((p, i) => `<option value="${i}">${esc(p.data.title)}</option>`).join("");
   }
 
   private setChoice(c: Choice): void {
@@ -111,8 +118,21 @@ class WarpDial extends HTMLElement {
 
   private onTrack(t: TrackInfo): void {
     this.air = t;
-    const prog = this.programs.findIndex((x) => x.path === t.programPath);
-    if (this.choice === "order" && prog >= 0 && prog !== this.sel && !this.picked && !this.ring.recent) {
+    let prog = this.programs.findIndex((x) => x.path === t.programPath);
+    if (prog < 0) {
+      // A catalogue video on air: its running order belongs on the dial like any programme.
+      prog = this.programs.push({ path: t.programPath, data: {
+        id: t.programId, title: t.programTitle, venue: t.venue, date: t.date,
+        youtubeId: t.youtubeId, duration: t.programDuration, entries: t.entries,
+      } }) - 1;
+      this.options();
+    }
+    // A new set on air wins over an earlier browse: the dial follows what is actually playing.
+    if (t.programPath !== this.airPath) {
+      this.airPath = t.programPath;
+      this.picked = false;
+    }
+    if (this.choice === "order" && prog !== this.sel && !this.picked) {
       this.sel = prog;
       this.show();
       return;

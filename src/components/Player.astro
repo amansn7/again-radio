@@ -19,6 +19,9 @@
         <svg class="rp-ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9a4.5 4.5 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>
         <svg class="rp-ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9.5l5 5M21 9.5l-5 5"/></svg>
       </button>
+      <button class="icon-btn rp-shuffle" id="rp-shuffle" type="button" aria-label="Shuffle this set" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3.5c2.5 0 4 1.5 5 5s2.5 5 5 5H20M4 17h3.5c1.3 0 2.3-.4 3-1.2M13.5 8.2c.7-.8 1.7-1.2 3-1.2H20M17 4l3 3-3 3M17 14l3 3-3 3"/></svg>
+      </button>
       <button class="btn rp-back" id="rp-back" type="button">Back to live</button>
       <span class="rp-hint"><span class="rp-hint-touch">Tap anywhere for sound</span><span class="rp-hint-fine">Click anywhere for sound</span></span>
     </div>
@@ -45,13 +48,21 @@
     background: var(--bg);
   }
 
+  /* Cover the viewport with the picture itself: --rp-a is the picture's aspect and --rp-fx/fy
+     the share of the 16:9 embed it fills once YouTube's own black bars are discounted
+     (measured from the thumbnail by player.ts). Bars are cropped away, the picture never stretched. */
+  .rp-screen {
+    --rp-a: 1.7778;
+    --rp-fx: 1;
+    --rp-fy: 1;
+  }
   .rp-screen #rp-yt,
   .rp-screen iframe {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: max(100vw, 177.78dvh);
-    height: max(100dvh, 56.25vw);
+    width: calc(max(100vw, 100lvh * var(--rp-a)) / var(--rp-fx));
+    height: calc(max(100vw / var(--rp-a), 100lvh) / var(--rp-fy));
     transform: translate(-50%, -50%);
     border: 0;
   }
@@ -151,6 +162,12 @@
     box-shadow: 0 0 18px color-mix(in oklab, var(--accent) 40%, transparent);
   }
   .rp-back { margin-left: 0.25rem; height: 2.5rem; }
+  .rp-shuffle svg { fill: none; }
+  .rp-shuffle[aria-pressed="true"] {
+    color: var(--accent);
+    border-color: color-mix(in oklab, var(--accent) 70%, transparent);
+  }
+  .rp-shuffle:disabled { opacity: 0.4; cursor: default; }
 
   radio-player[data-live="true"] .rp-back {
     display: none;

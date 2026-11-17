@@ -297,7 +297,7 @@ body::after {
   font-weight: var(--name-weight);
   letter-spacing: var(--name-tracking);
   font-size: clamp(1.75rem, 2.6vw, 2.5rem);
-  line-height: 1.05;
+  line-height: 1.2;
   color: var(--fg);
 }
 

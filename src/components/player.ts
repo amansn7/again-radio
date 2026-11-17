@@ -1,8 +1,11 @@
 import { loadYT } from "../lib/yt.ts";
-import { loadStation, loadProgram } from "../lib/station.ts";
-import { entryAt, livePosition } from "../lib/schedule.ts";
+import { loadProgram } from "../lib/station.ts";
+import { entryAt } from "../lib/schedule.ts";
 import { creditText, stampText, videoProgram } from "../lib/live.ts";
+import { cycleOrder, liveSlot, loadSlots, shuffled, type Slot } from "../lib/rotation.ts";
+import { videoFill } from "../lib/frame.ts";
 import { bindKeys } from "./transport.ts";
+import { bindSession, setSession, setSessionPlaying } from "./media-session.ts";
 import type { Program } from "../lib/station.ts";
 import type { YTPlayer } from "../lib/yt.ts";
 import { RADIO_CUE, RADIO_LIVE, RADIO_STATE, RADIO_TIME, RADIO_TRACK } from "../lib/events.ts";
@@ -12,13 +15,34 @@ const DRIFT = 8;
 const SETTLE_MS = 1500;
 // A pause this soon after the page hides is the browser/embed suspending us, not the listener.
 const HIDE_GRACE_MS = 2000;
+// Fades: long and unhurried when the station moves on by itself, short when the listener asks.
+const FADE_AUTO_MS = 1800;
+const FADE_USER_MS = 350;
+const FADE_IN_MS = 1200;
 
 class RadioPlayer extends HTMLElement {
   private player: YTPlayer | null = null;
-  private rotation: { path: string; program: Program }[] = [];
+  private slots: Slot[] = [];
+  private onSlot = -1;
+  private cycle = 0;
   private prog!: Program;
   private path = "";
+  /** Video seconds where this stretch hands over to the next. */
+  private end = 0;
   private live = true;
+  private shuffle = false;
+  private queue: number[] = [];
+  private played: number[] = [];
+  /** The entry the shuffle put on; leaving it by any route means the next pick is due. */
+  private picking = -1;
+  private bad = new Set<string>();
+  private errors = 0;
+  private fading = false;
+  private change: (() => void) | null = null;
+  private loaded = "";
+  private fadeTimer: ReturnType<typeof setInterval> | null = null;
+  private volume = 100;
+  private wantFadeIn = false;
   // Browsers block sound until a gesture, so the station starts muted and the first
   // click or key anywhere turns it up. An explicit mute/unmute cancels that.
   private wake = new AbortController();
@@ -56,6 +80,7 @@ class RadioPlayer extends HTMLElement {
     this.ac.abort();
     this.wake = new AbortController();
     if (this.ticker !== null) clearInterval(this.ticker);
+    if (this.fadeTimer !== null) clearInterval(this.fadeTimer);
     this.player?.destroy();
   }
 
@@ -72,26 +97,43 @@ class RadioPlayer extends HTMLElement {
     if (el) el.hidden = hidden;
   }
 
+  /** The shared broadcast right now, skipping anything that would not play here. */
   private liveNow() {
-    const durations = this.rotation.map((r) => r.program.duration);
-    const { index, offset } = livePosition(durations, Date.now() / 1000);
-    return { ...this.rotation[index], index, offset: Math.floor(offset) };
+    const at = liveSlot(this.slots.map((s) => s.length), Date.now() / 1000);
+    const slot = this.slots[at.index];
+    if (this.bad.has(slot.program.youtubeId)) return this.nextSlot(at.index, at.cycle);
+    return { index: at.index, cycle: at.cycle, offset: slot.start + Math.floor(at.offset) };
+  }
+
+  /** The next playable slot in broadcast order, from its start. */
+  private nextSlot(index: number, cycle: number) {
+    for (let k = 0; k < this.slots.length * 2; k++) {
+      const order = cycleOrder(this.slots.length, cycle);
+      const i = order.indexOf(index);
+      if (i === order.length - 1) {
+        cycle++;
+        index = cycleOrder(this.slots.length, cycle)[0];
+      } else index = order[i + 1];
+      if (!this.bad.has(this.slots[index].program.youtubeId)) break;
+    }
+    return { index, cycle, offset: this.slots[index].start };
   }
 
   private async init() {
-    const [YT, station] = await Promise.all([loadYT(), loadStation()]);
-    const programs = await Promise.all(station.rotation.map((r) => loadProgram(r.program)));
-    this.rotation = programs.map((program, i) => ({ path: station.rotation[i].program, program }));
+    const [YT, slots] = await Promise.all([loadYT(), loadSlots()]);
+    if (!slots.length) throw new Error("nothing to play");
+    this.slots = slots;
     const at = this.liveNow();
-    this.prog = at.program;
-    this.path = at.path;
+    this.useSlot(at.index, at.cycle);
     this.setAnchor(at.offset);
+    this.loaded = this.prog.youtubeId;
+    void this.fit();
     const signal = this.ac.signal;
     const on = (sel: string, fn: () => void) =>
       this.querySelector(sel)?.addEventListener("click", fn, { signal });
 
     this.player = new YT.Player(this.querySelector<HTMLElement>("#rp-yt")!, {
-      videoId: at.program.youtubeId,
+      videoId: this.prog.youtubeId,
       playerVars: {
         enablejsapi: 1, controls: 0, modestbranding: 1, rel: 0, playsinline: 1,
         autoplay: 1, mute: 1, cc_load_policy: 0, iv_load_policy: 3, disablekb: 1,
@@ -100,6 +142,7 @@ class RadioPlayer extends HTMLElement {
       events: {
         onReady: () => {
           if (!this.muted) this.player?.unMute?.();
+          this.player?.setVolume?.(this.volume);
           this.setHidden(".rp-tuning", true);
           this.setLabels();
           this.emitState();
@@ -108,21 +151,32 @@ class RadioPlayer extends HTMLElement {
         },
         onStateChange: (e) => {
           const playing = e.data === 1 || e.data === 3;
-          // auto-captions cover the picture; the memory line is the caption here
-          if (e.data === 1) this.player?.unloadModule?.("captions");
+          if (e.data === 1) {
+            // auto-captions cover the picture; the memory line is the caption here
+            this.player?.unloadModule?.("captions");
+            this.errors = 0;
+            this.setHidden(".rp-error", true);
+            if (this.wantFadeIn) this.fadeIn();
+          }
           if (playing !== this.playing) {
             this.playing = playing;
             this.emitState();
           }
-          if (e.data === 0 && Date.now() - this.anchorAt > SETTLE_MS) this.ended();
+          if (e.data === 0 && Date.now() - this.anchorAt > SETTLE_MS) this.advance();
           // Keep the radio on in a background tab where the browser allows it.
           if (e.data === 2 && document.hidden && !this.userPaused && Date.now() - this.hiddenAt < HIDE_GRACE_MS) {
             this.player?.playVideo();
           }
         },
+        // Not embeddable here, removed, or blocked: skip it rather than go silent.
         onError: () => {
-          this.setHidden(".rp-tuning", true);
-          this.setHidden(".rp-error", false);
+          this.bad.add(this.prog.youtubeId);
+          if (++this.errors >= 3) {
+            this.setHidden(".rp-tuning", true);
+            this.setHidden(".rp-error", false);
+            return;
+          }
+          this.advance();
         },
       },
     });
@@ -130,6 +184,7 @@ class RadioPlayer extends HTMLElement {
     on("#rp-play", () => this.toggle());
     on("#rp-sound", () => this.setMuted(!this.muted));
     on("#rp-back", () => this.goLive());
+    on("#rp-shuffle", () => this.setShuffle(!this.shuffle));
     document.addEventListener(RADIO_LIVE, () => this.goLive(), { signal });
     // Mobile browsers pause embeds in the background; come back to the live moment, like a radio.
     document.addEventListener("visibilitychange", () => {
@@ -137,17 +192,31 @@ class RadioPlayer extends HTMLElement {
       this.resumeIfDropped();
     }, { signal });
     window.addEventListener("pageshow", () => this.resumeIfDropped(), { signal });
+    window.addEventListener("resize", () => void this.fit(), { signal, passive: true });
     document.addEventListener(RADIO_CUE, (e) => void this.cue((e as CustomEvent<CueInfo>).detail), { signal });
-    bindKeys(
-      {
-        toggle: () => this.toggle(),
-        mute: () => this.setMuted(!this.muted),
-        prev: () => this.step(-1),
-        next: () => this.step(1),
-        live: () => this.goLive(),
-      },
-      signal,
-    );
+    const actions = {
+      toggle: () => this.toggle(),
+      mute: () => this.setMuted(!this.muted),
+      prev: () => this.step(-1),
+      next: () => this.step(1),
+      live: () => this.goLive(),
+    };
+    bindKeys(actions, signal);
+    bindSession({
+      play: () => !this.playing && this.toggle(),
+      pause: () => this.playing && this.toggle(),
+      next: actions.next,
+      prev: actions.prev,
+    });
+  }
+
+  private useSlot(index: number, cycle: number) {
+    const s = this.slots[index];
+    this.onSlot = index;
+    this.cycle = cycle;
+    this.prog = s.program;
+    this.path = s.path;
+    this.end = s.start + s.length;
   }
 
   private setAnchor(offset: number) {
@@ -183,23 +252,72 @@ class RadioPlayer extends HTMLElement {
     else this.player?.playVideo();
   }
 
-  private goLive() {
-    this.userPaused = false;
-    const at = this.liveNow();
-    this.live = true;
-    this.load(at.path, at.program, at.offset);
+  // --- fades: YouTube's own volume, so nothing is proxied and nothing is kept awake.
+
+  private ramp(to: number, ms: number, done?: () => void) {
+    if (this.fadeTimer !== null) clearInterval(this.fadeTimer);
+    const from = this.volume;
+    const t0 = Date.now();
+    // A hidden tab throttles timers to ~1s; a fade there would only stutter.
+    if (document.hidden) ms = 0;
+    const step = () => {
+      const k = ms ? Math.min((Date.now() - t0) / ms, 1) : 1;
+      this.volume = Math.round(from + (to - from) * k * k * (3 - 2 * k));
+      this.player?.setVolume?.(this.volume);
+      if (k < 1) return;
+      if (this.fadeTimer !== null) clearInterval(this.fadeTimer);
+      this.fadeTimer = null;
+      done?.();
+    };
+    if (ms) this.fadeTimer = setInterval(step, 40);
+    step();
   }
 
-  private load(path: string, prog: Program, offset: number) {
-    const same = this.prog.youtubeId === prog.youtubeId;
-    this.prog = prog;
-    this.path = path;
+  /** Fade out, change what is playing, fade back in once the new moment is actually playing. */
+  private transition(ms: number, change: () => void) {
+    // A newer request during a fade replaces the older one; the fade itself carries on.
+    this.change = change;
+    if (this.fading) return;
+    this.fading = true;
+    this.ramp(0, this.playing ? ms : 0, () => {
+      this.fading = false;
+      this.wantFadeIn = true;
+      const run = this.change;
+      this.change = null;
+      run?.();
+      // If YouTube never reports PLAYING (already playing through a seek), come up anyway.
+      setTimeout(() => this.wantFadeIn && this.fadeIn(), 1500);
+    });
+  }
+
+  private fadeIn() {
+    this.wantFadeIn = false;
+    this.ramp(100, FADE_IN_MS);
+  }
+
+  // --- what plays
+
+  private goLive(ms = FADE_USER_MS) {
+    this.userPaused = false;
+    this.live = true;
+    this.shuffle = false;
+    const at = this.liveNow();
+    this.transition(ms, () => {
+      this.useSlot(at.index, at.cycle);
+      this.load(at.offset);
+    });
+  }
+
+  private load(offset: number) {
+    const same = this.loaded === this.prog.youtubeId;
+    this.loaded = this.prog.youtubeId;
     this.setAnchor(offset);
     if (same) {
       this.player?.seekTo(offset, true);
       this.player?.playVideo();
     } else {
-      this.player?.loadVideoById({ videoId: prog.youtubeId, startSeconds: offset });
+      this.player?.loadVideoById({ videoId: this.prog.youtubeId, startSeconds: offset });
+      void this.fit();
     }
     if (this.muted) this.player?.mute?.();
     else this.player?.unMute?.();
@@ -208,49 +326,130 @@ class RadioPlayer extends HTMLElement {
     this.emitTrack();
   }
 
+  /** Scale the embed so the picture, not YouTube's black bars, covers the screen. */
+  private async fit() {
+    const id = this.prog.youtubeId;
+    const f = await videoFill(id);
+    if (id !== this.prog.youtubeId) return;
+    const s = this.querySelector<HTMLElement>(".rp-screen")!.style;
+    s.setProperty("--rp-fx", String(f.x));
+    s.setProperty("--rp-fy", String(f.y));
+    s.setProperty("--rp-a", String((16 * f.x) / (9 * f.y)));
+  }
+
   private async cue(d: CueInfo) {
     try {
       const path = "video" in d ? `video:${d.video.youtubeId}` : d.program;
       const prog =
         "video" in d
           ? videoProgram(d.video)
-          : (this.rotation.find((r) => r.path === path)?.program ?? (await loadProgram(path)));
-      this.live = false;
-      this.load(path, prog, d.offset);
+          : (this.slots.find((s) => s.path === path)?.program ?? (await loadProgram(path)));
+      this.userPaused = false;
+      this.transition(FADE_USER_MS, () => {
+        this.live = false;
+        this.onSlot = -1;
+        this.prog = prog;
+        this.path = path;
+        this.end = prog.duration;
+        this.picking = entryAt(prog.entries, d.offset)?.index ?? 0;
+        this.queue = this.shuffle ? this.shuffleFrom(this.picking) : [];
+        this.played = [];
+        this.load(d.offset);
+      });
     } catch {
       /* a bad cue must not take the station down */
     }
   }
 
+  // --- shuffle: the current set's tracks, current one first, nothing from other sets.
+
+  private shuffleFrom(current: number): number[] {
+    const rest = this.prog.entries.map((_, i) => i).filter((i) => i !== current);
+    return shuffled(rest);
+  }
+
+  private setShuffle(on: boolean) {
+    const here = entryAt(this.prog.entries, this.position());
+    if (on && (!here || this.prog.entries.length < 2)) return;
+    this.shuffle = on;
+    this.played = [];
+    this.queue = on ? this.shuffleFrom(here!.index) : [];
+    this.picking = on ? here!.index : -1;
+    if (on && this.live) {
+      // Shuffling leaves the shared broadcast, but this set keeps playing where it is.
+      this.live = false;
+      this.end = this.prog.duration;
+      this.onSlot = -1;
+    }
+    this.emitState();
+  }
+
+  private playEntry(i: number, ms: number) {
+    this.picking = i;
+    this.transition(ms, () => this.load(this.prog.entries[i].offset));
+  }
+
   private step(dir: 1 | -1) {
     const info = entryAt(this.prog.entries, this.position());
     if (!info) return;
+    if (this.shuffle) {
+      if (dir > 0) return this.nextShuffled(FADE_USER_MS);
+      if (info.elapsed > 3 || !this.played.length) return this.playEntry(info.index, FADE_USER_MS);
+      this.queue.unshift(this.picking);
+      return this.playEntry(this.played.pop()!, FADE_USER_MS);
+    }
     const to = dir < 0 && info.elapsed > 3 ? info.index : info.index + dir;
-    const entry = this.prog.entries[Math.max(to, 0)];
-    if (!entry || to >= this.prog.entries.length) return;
+    if (to < 0) return;
+    if (to >= this.prog.entries.length) return this.advance(FADE_USER_MS);
     this.live = false;
-    this.load(this.path, this.prog, entry.offset);
+    this.end = this.prog.duration;
+    this.onSlot = -1;
+    this.playEntry(to, FADE_USER_MS);
   }
 
-  private ended() {
-    const i = this.rotation.findIndex((r) => r.path === this.path);
-    if (!this.live || i < 0) return this.goLive();
-    const next = this.rotation[(i + 1) % this.rotation.length];
-    this.load(next.path, next.program, 0);
+  private nextShuffled(ms: number) {
+    const next = this.queue.shift();
+    if (next === undefined) return this.goLive(ms);
+    if (this.picking >= 0) this.played.push(this.picking);
+    this.playEntry(next, ms);
+  }
+
+  /** This stretch is over: the next track in the shuffle, else the next slot on air. */
+  private advance(ms = FADE_AUTO_MS) {
+    if (this.shuffle) return this.nextShuffled(ms);
+    if (!this.live || this.onSlot < 0) return this.goLive(ms);
+    let at = this.liveNow();
+    // Ran out ahead of the wall clock (or this one is broken): take the next slot early.
+    if (at.index === this.onSlot) at = this.nextSlot(this.onSlot, this.cycle);
+    this.transition(ms, () => {
+      this.useSlot(at.index, at.cycle);
+      this.load(at.offset);
+    });
   }
 
   private tick() {
     if (!this.player) return;
     const exact = this.position();
     const current = Math.floor(exact);
-    document.dispatchEvent(
-      new CustomEvent(RADIO_TIME, { detail: { current, exact, duration: this.prog.duration } }),
-    );
-    if (Date.now() - this.anchorAt < SETTLE_MS) return;
-    if (this.live && this.playing && document.visibilityState === "visible") {
-      const at = this.liveNow();
-      if (current >= this.prog.duration) return this.ended();
-      if (at.path === this.path && Math.abs(current - at.offset) > DRIFT) return this.goLive();
+    if (!document.hidden) {
+      document.dispatchEvent(
+        new CustomEvent(RADIO_TIME, { detail: { current, exact, duration: this.prog.duration } }),
+      );
+    }
+    if (Date.now() - this.anchorAt < SETTLE_MS || this.fading || this.wantFadeIn) return;
+    if (this.playing) {
+      const lead = document.hidden ? 0 : FADE_AUTO_MS / 1000;
+      if (this.shuffle) {
+        const info = entryAt(this.prog.entries, exact);
+        // Ticks can skip the fade window (hidden tab, slow device): crossing into the next entry counts too.
+        if (info && (info.index !== this.picking || exact >= info.entry.offset + info.entry.duration - lead)) {
+          return this.nextShuffled(FADE_AUTO_MS);
+        }
+      } else if (exact >= this.end - lead) return this.advance();
+      if (this.live && !document.hidden) {
+        const at = this.liveNow();
+        if (at.index === this.onSlot && Math.abs(current - at.offset) > DRIFT) return this.goLive();
+      }
     }
     this.emitTrack();
   }
@@ -262,6 +461,7 @@ class RadioPlayer extends HTMLElement {
     const key = `${this.path}#${info.index}`;
     if (key === this.lastKey) return;
     this.lastKey = key;
+    setSession(this.prog, info.entry);
     const detail: TrackInfo = {
       programId: this.prog.id,
       programPath: this.path,
@@ -281,12 +481,17 @@ class RadioPlayer extends HTMLElement {
 
   private emitState() {
     const detail: StateInfo = {
-      playing: this.playing, muted: this.muted, live: this.live,
+      playing: this.playing, muted: this.muted, live: this.live, shuffle: this.shuffle,
     };
     Object.entries(detail).forEach(([k, v]) => (this.dataset[k] = String(v)));
-    const play = this.querySelector("#rp-play");
-    play?.setAttribute("aria-label", this.playing ? "Pause" : "Play");
+    setSessionPlaying(this.playing);
+    this.querySelector("#rp-play")?.setAttribute("aria-label", this.playing ? "Pause" : "Play");
     this.querySelector("#rp-sound")?.setAttribute("aria-label", this.muted ? "Unmute" : "Mute");
+    const sh = this.querySelector<HTMLButtonElement>("#rp-shuffle");
+    if (sh) {
+      sh.setAttribute("aria-pressed", String(this.shuffle));
+      sh.disabled = this.prog.entries.length < 2;
+    }
     document.dispatchEvent(new CustomEvent(RADIO_STATE, { detail }));
   }
 

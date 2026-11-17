@@ -36,9 +36,17 @@ export interface StateInfo {
   playing: boolean;
   muted: boolean;
   live: boolean;
+  /** Tracks of the current set play in a shuffled order. */
+  shuffle: boolean;
 }
 
 /** Either a programme path (`programs/<id>.json`) at an offset, or one catalogue video. */
 export type CueInfo =
   | { program: string; offset: number }
   | { video: CatalogueItem; offset: number };
+
+/** The latest track on air, for anything that starts listening after the player spoke. */
+export let lastTrack: TrackInfo | null = null;
+if (typeof document !== "undefined") {
+  document.addEventListener(RADIO_TRACK, (e) => (lastTrack = (e as CustomEvent<TrackInfo>).detail));
+}

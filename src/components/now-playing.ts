@@ -51,6 +51,7 @@ class NowPlayingElement extends HTMLElement {
   private seq = 0;
   private light!: NameLight;
   private swap = 0;
+  private metaSwap = 0;
   private still = matchMedia("(prefers-reduced-motion: reduce)");
 
   connectedCallback() {
@@ -74,20 +75,38 @@ class NowPlayingElement extends HTMLElement {
   private onTrack({ entry, programTitle, date }: TrackInfo) {
     const { name, rest } = nameOf(entry);
     this.showName(name, rest);
+    this.showMeta(entry, programTitle, date);
 
-    // without an album, name the artist rather than repeat the programme credit under the video
-    const artist = entry.artist && !/^fred again/i.test(entry.artist) ? entry.artist : "";
-    const metaText = entry.album?.replace(/\s*\([^)]*\)\s*/, " ").trim() || (artist !== rest ? artist : "");
-    this.meta.toggleAttribute("data-empty", entry.type !== "track" || !metaText);
-    this.q(".np-album").textContent = metaText || programTitle;
-    const w = when(entry.album, date);
-    this.q(".np-stamp").textContent = w.stamp;
-    this.q(".np-plain").textContent = w.plain;
     if (entry.type === "track") void this.setCover(entry);
-    else this.cover.replaceChildren();
+    else {
+      ++this.seq;
+      this.cover.classList.remove("skeleton");
+      this.cover.replaceChildren();
+    }
   }
 
-  // The old name dims and lifts away before the new one is thrown on, unless motion is off.
+  private showMeta(entry: ProgramEntry, programTitle: string, date: string | undefined) {
+    const mine = ++this.metaSwap;
+    const update = () => {
+      if (mine !== this.metaSwap) return;
+      // without an album, name the artist rather than repeat the programme credit under the video
+      const artist = entry.artist && !/^fred again/i.test(entry.artist) ? entry.artist : "";
+      const rest = nameOf(entry).rest;
+      const metaText = entry.album?.replace(/\s*\([^)]*\)\s*/, " ").trim() || (artist !== rest ? artist : "");
+      this.meta.toggleAttribute("data-empty", entry.type !== "track" || !metaText);
+      this.q(".np-album").textContent = metaText || programTitle;
+      const w = when(entry.album, date);
+      this.q(".np-stamp").textContent = w.stamp;
+      this.q(".np-plain").textContent = w.plain;
+      this.meta.removeAttribute("data-changing");
+    };
+    if (!this.meta.hasAttribute("data-changing") && this.still.matches) return update();
+    this.meta.setAttribute("data-changing", "");
+    if (this.still.matches || document.hidden) return update();
+    setTimeout(update, 120);
+  }
+
+  // The old name lifts and softens away before the new one arrives.
   private showName(name: string, rest: string) {
     const mine = ++this.swap;
     const old = this.name.querySelector(".np-name-in");
@@ -114,7 +133,7 @@ class NowPlayingElement extends HTMLElement {
     if (!old || this.still.matches || document.hidden) return put();
     old.classList.add("np-out");
     this.rest.firstElementChild?.classList.add("np-out");
-    setTimeout(put, 320);
+    setTimeout(put, 220);
   }
 
   private q(s: string): HTMLElement {
@@ -123,8 +142,8 @@ class NowPlayingElement extends HTMLElement {
 
   private async setCover(entry: ProgramEntry) {
     const mine = ++this.seq;
-    this.cover.classList.add("skeleton");
-    this.cover.replaceChildren();
+    const previous = this.cover.querySelector("img");
+    if (!previous) this.cover.classList.add("skeleton");
     const src = await coverFor(entry);
     if (mine !== this.seq) return;
     const img = new Image();
@@ -132,10 +151,14 @@ class NowPlayingElement extends HTMLElement {
     img.addEventListener("load", () => {
       if (mine !== this.seq) return;
       this.cover.classList.remove("skeleton");
-      this.cover.replaceChildren(img);
+      img.classList.add("np-cover-in");
+      this.cover.append(img);
+      if (previous) setTimeout(() => previous.remove(), this.still.matches ? 0 : 360);
     });
     img.addEventListener("error", () => {
-      if (mine === this.seq) this.cover.classList.remove("skeleton");
+      if (mine !== this.seq) return;
+      this.cover.classList.remove("skeleton");
+      previous?.remove();
     });
     img.src = src;
   }
