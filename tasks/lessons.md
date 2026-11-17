@@ -36,3 +36,6 @@ Rules learned from corrections. Append one line per mistake — specific, action
 - 2026-11-16 — a `const` declared later in a function body shadowed an outer one and the
   guard above it hit a temporal dead zone ("Cannot access 'x' before initialization").
   Rule: one binding per name per scope; do not shadow.
+
+## 2026-11-18 — questions
+- Correction: user wants every question asked with concrete options and a recommended answer, never a bare open question. Rule: options + trade-offs + "I'd pick X" every time.

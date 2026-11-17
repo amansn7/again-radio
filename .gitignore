@@ -8,3 +8,4 @@ dist/
 .env
 .wrangler/
 worker/presence/runtime.d.ts
+.superpowers/
