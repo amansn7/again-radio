@@ -43,8 +43,8 @@ function rollText(el: HTMLElement, value: string): void {
     const from = old[i] ?? " ", to = value[i] ?? " ";
     const toX = width(value.slice(0, i));
     const wheelWidth = Math.max(width(from), width(to));
-    const content = from === to ? `<span>${esc(to)}</span><span>${esc(to)}</span>` : `<span>${esc(from)}</span><span>${esc(to)}</span>`;
-    return `<span class="sb-wheel" style="--wheel-to:${toX}px;--wheel-width:${wheelWidth}px;--wheel-delay:${Math.min(i * 18, 180)}ms"><span class="sb-wheel-track">${content}</span></span>`;
+    if (from === to) return `<span class="sb-wheel-static" style="--wheel-to:${toX}px;--wheel-width:${wheelWidth}px">${esc(to)}</span>`;
+    return `<span class="sb-wheel" style="--wheel-to:${toX}px;--wheel-width:${wheelWidth}px"><span class="sb-wheel-track"><span>${esc(from)}</span><span>${esc(to)}</span></span></span>`;
   }).join("") + "</span>";
   void el.offsetWidth;
   requestAnimationFrame(() => el.classList.add("sb-rolling"));
