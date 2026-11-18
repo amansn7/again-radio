@@ -1,7 +1,7 @@
 import type { CatalogueItem } from "./catalogue.ts";
 import type { Program, ProgramEntry } from "./station.ts";
 import { personFromTitle } from "./memories.ts";
-import { dayLabel, upcoming, type Show } from "./shows.ts";
+import { ON_AIR_MS, dayLabel, type Show } from "./shows.ts";
 
 export type Group = "Songs" | "In sets" | "Shows" | "Releases" | "On tour";
 export const GROUPS: Group[] = ["Songs", "In sets", "Shows", "Releases", "On tour"];
@@ -24,6 +24,8 @@ export interface Doc {
   action: Action;
   titleTokens: string[];
   tokens: string[];
+  /** Tour docs expire; search() drops them once now passes this. */
+  until?: number;
 }
 
 export interface Album { year: number; title: string; subtitle?: string; kind?: string }
@@ -115,9 +117,11 @@ export function buildIndex(src: Sources): Doc[] {
     d.art = { entry: { offset: 0, duration: 0, type: "track", album: a.title } };
     docs.push(d);
   }
-  for (const t of upcoming(src.tour, Date.now())) {
-    docs.push(doc("On tour", t.city, t.venue, dayLabel(t),
-      { type: "scroll", target: "#tour" }, [t.venue, t.start.slice(0, 10), "tour", t.country]));
+  for (const t of src.tour) {
+    const d = doc("On tour", t.city, t.venue, dayLabel(t),
+      { type: "scroll", target: "#tour" }, [t.venue, t.start.slice(0, 10), "tour", t.country]);
+    d.until = t.t + ON_AIR_MS;
+    docs.push(d);
   }
   return docs;
 }
@@ -162,7 +166,9 @@ export function search(index: Doc[], query: string, cap = 8): Doc[] {
   const qs = toks(query);
   if (!qs.length) return [];
   const scored: { d: Doc; s: number }[] = [];
+  const now = Date.now();
   for (const d of index) {
+    if (d.until && d.until <= now) continue;
     const s = score(qs, d);
     if (s) scored.push({ d, s });
   }

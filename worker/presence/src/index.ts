@@ -4,6 +4,8 @@ interface Env { PRESENCE: DurableObjectNamespace<Presence>; }
 
 const MIN_GAP_MS = 1000;
 const OPEN = 1;
+const MAX_PER_IP = 4;
+const ORIGIN_OK = /^(https:\/\/([a-z0-9-]+\.)?again-radio\.pages\.dev|http:\/\/(localhost|127\.0\.0\.1)(:\d+)?)$/;
 
 export class Presence extends DurableObject<Env> {
   private last = 0;
@@ -37,8 +39,14 @@ export class Presence extends DurableObject<Env> {
     if (request.headers.get("Upgrade") !== "websocket") {
       return Response.json({ n: this.count() }, { headers: { "Cache-Control": "no-store" } });
     }
+    const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+    const mine = this.ctx.getWebSockets().filter(
+      ws => ws.readyState === OPEN && ws.deserializeAttachment()?.ip === ip,
+    ).length;
+    if (mine >= MAX_PER_IP) return new Response("Too many connections", { status: 429 });
     const [client, server] = Object.values(new WebSocketPair());
     this.ctx.acceptWebSocket(server);
+    server.serializeAttachment({ ip });
     server.send(JSON.stringify({ n: this.count() }));
     this.changed();
     return new Response(null, { status: 101, webSocket: client });
@@ -64,6 +72,9 @@ export default {
     if (pathname !== "/presence" && !isCount) return new Response("Not found", { status: 404 });
     if (!isCount && request.headers.get("Upgrade") !== "websocket") {
       return new Response("Expected WebSocket", { status: 426 });
+    }
+    if (!isCount && !ORIGIN_OK.test(request.headers.get("Origin") ?? "")) {
+      return new Response("Forbidden", { status: 403 });
     }
     return env.PRESENCE.get(env.PRESENCE.idFromName("station")).fetch(request);
   },

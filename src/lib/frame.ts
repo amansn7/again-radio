@@ -31,7 +31,9 @@ export function measureFill(px: Uint8ClampedArray, w: number, h: number): Fill {
   const top = barWidth(px, h, (i, j) => (i * w + j) * 4, w);
   const bottom = barWidth(px, h, (i, j) => ((h - 1 - i) * w + j) * 4, w);
   // Only symmetric bars are letterboxing; a black edge on one side is part of the picture.
-  const sym = (a: number, b: number, len: number) => (a > len * 0.03 && Math.abs(a - b) <= 2 ? (len - a - b) / len : 1);
+  // A bar that hits the scan cap is a dark scene, not a bar.
+  const sym = (a: number, b: number, len: number) =>
+    a > len * 0.03 && a < len / 4 && b < len / 4 && Math.abs(a - b) <= 2 ? (len - a - b) / len : 1;
   return { x: sym(left, right, w), y: sym(top, bottom, h) };
 }
 

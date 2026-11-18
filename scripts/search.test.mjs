@@ -48,3 +48,8 @@ for (const g of new Set(search(index, "a").map((d) => d.group)))
   if (search(index, "a").filter((d) => d.group === g).length > 8) fail("cap 8 per group");
 
 console.log("✓ search");
+{
+  const past = buildIndex({ ...{ catalogue: [], programs: [], shows: null, albums: [], songs: [] },
+    tour: [{ ...parseShows(read("shows.json")).shows[0], t: 0 }] });
+  if (search(past, "tour").length) fail("a finished show should not be returned");
+}

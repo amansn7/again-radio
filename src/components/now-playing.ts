@@ -30,17 +30,7 @@ function when(album: string | undefined, iso: string | undefined): { stamp: stri
   return { stamp: `'${String(y).slice(2)} ${mo} ${d}`, plain: `${MONTHS[mo - 1]} ${d}, ${y}` };
 }
 
-const covers = new Map<string, Promise<string>>();
-
-function coverFor(entry: ProgramEntry): Promise<string> {
-  const key = `${entry.title ?? ""}|${entry.album ?? ""}`;
-  let p = covers.get(key);
-  if (!p) {
-    p = resolveArtUrl(entry).then((u) => u ?? coverArtUrl());
-    covers.set(key, p);
-  }
-  return p;
-}
+const coverFor = (entry: ProgramEntry): Promise<string> => resolveArtUrl(entry).then((u) => u ?? coverArtUrl());
 
 class NowPlayingElement extends HTMLElement {
   private fit!: HTMLElement;

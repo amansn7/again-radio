@@ -17,4 +17,8 @@ f = measureFill(img(W, H, (x) => x >= 30), W, H);
 if (f.x !== 1) fail("one dark edge must not be cropped");
 f = measureFill(img(W, H, () => true), W, H);
 if (f.x !== 1 || f.y !== 1) fail("full frame must stay full");
+f = measureFill(img(W, H, () => false), W, H);
+if (f.x !== 1 || f.y !== 1) fail(`all-dark frame read as ${JSON.stringify(f)}`);
+f = measureFill(img(W, H, (x, y) => x >= 20 && x < 140 && y >= 10 && y < 80), W, H);
+if (!near(f.x, 0.75) || !near(f.y, 70 / 90)) fail(`both-axis bars read as ${JSON.stringify(f)}`);
 console.log("✓ frame");

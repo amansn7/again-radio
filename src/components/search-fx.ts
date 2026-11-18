@@ -1,18 +1,12 @@
 import { resolveArtUrl } from "../lib/art.ts";
 import type { Art } from "../lib/search.ts";
 
-const cache = new Map<string, Promise<string | null>>();
 const yt = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function artUrl(a: Art): Promise<string | null> {
-  const key = a.entry ? `${a.entry.artist}|${a.entry.title}|${a.entry.album}` : (a.yt ?? "");
-  let p = cache.get(key);
-  if (!p) {
-    p = a.entry ? resolveArtUrl(a.entry).then((u) => u ?? (a.yt ? yt(a.yt) : null)) : Promise.resolve(a.yt ? yt(a.yt) : null);
-    cache.set(key, p);
-  }
-  return p;
+  const fallback = a.yt ? yt(a.yt) : null;
+  return a.entry ? resolveArtUrl(a.entry).then((u) => u ?? fallback) : Promise.resolve(fallback);
 }
 
 /** Row art loads after the row is in the DOM; `data-art` holds the index into hits. */

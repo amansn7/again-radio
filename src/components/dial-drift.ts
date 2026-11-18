@@ -22,7 +22,6 @@ export function drift(ring: Ring, stage: HTMLElement, track: HTMLElement): Drift
   let inView = false;
   let raf = 0;
   let last = 0;
-  let since = 0;
   let wrapping = false;
 
   const focused = () => stage.contains(document.activeElement);
@@ -35,7 +34,7 @@ export function drift(ring: Ring, stage: HTMLElement, track: HTMLElement): Drift
     raf = requestAnimationFrame(frame);
     const dt = Math.min(t - last, 50);
     last = t;
-    if (still()) { since = t; return; }
+    if (still()) return;
     if (ring.pos < ring.count - 1) return ring.scrub(Math.min(ring.count - 1, ring.pos + dt / MS_PER_CARD));
     wrapping = true;
     track.style.opacity = "0";
@@ -48,7 +47,7 @@ export function drift(ring: Ring, stage: HTMLElement, track: HTMLElement): Drift
 
   const start = () => {
     if (raf || !live()) return;
-    last = since = performance.now();
+    last = performance.now();
     raf = requestAnimationFrame(frame);
   };
 
