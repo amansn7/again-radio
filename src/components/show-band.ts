@@ -27,15 +27,25 @@ function rollText(el: HTMLElement, value: string): void {
     el.textContent = value;
     return;
   }
+  const style = getComputedStyle(el);
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d")!;
+  ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+  const lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
+  const spacing = Number.parseFloat(style.letterSpacing) || 0;
+  const width = (s: string) => ctx.measureText(s).width + spacing * s.length;
+  const nextWidth = width(value);
   const count = Math.max(old.length, value.length);
   el.classList.remove("sb-rolling");
   el.setAttribute("aria-label", value);
   el.dataset.value = value;
-  el.innerHTML = Array.from({ length: count }, (_, i) => {
+  el.innerHTML = `<span class="sb-roll-layout" style="--roll-width:${Math.max(width(old), nextWidth)}px;--roll-height:${lineHeight}">` + Array.from({ length: count }, (_, i) => {
     const from = old[i] ?? " ", to = value[i] ?? " ";
-    if (from === to) return `<span class="sb-wheel-static">${esc(to)}</span>`;
-    return `<span class="sb-wheel" style="--wheel-delay:${Math.min(i * 18, 180)}ms"><span class="sb-wheel-track"><span>${esc(from)}</span><span>${esc(to)}</span></span></span>`;
-  }).join("");
+    const toX = width(value.slice(0, i));
+    const wheelWidth = Math.max(width(from), width(to));
+    const content = from === to ? `<span>${esc(to)}</span><span>${esc(to)}</span>` : `<span>${esc(from)}</span><span>${esc(to)}</span>`;
+    return `<span class="sb-wheel" style="--wheel-to:${toX}px;--wheel-width:${wheelWidth}px;--wheel-delay:${Math.min(i * 18, 180)}ms"><span class="sb-wheel-track">${content}</span></span>`;
+  }).join("") + "</span>";
   void el.offsetWidth;
   requestAnimationFrame(() => el.classList.add("sb-rolling"));
   rollTimers.set(el, window.setTimeout(() => {
