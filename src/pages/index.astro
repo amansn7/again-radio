@@ -165,7 +165,7 @@ import OgMeta from "../components/OgMeta.astro";
       .footer-line { padding-block: 2.5rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 3rem; }
       .footer-community, .footer-support { min-width: 0; }
       .footer-heading { min-height: 1em; margin: 0 0 0.8rem; color: var(--fg-faint); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; }
-      .footer-panel { width: 100%; min-height: 3.5rem; border: 1px solid var(--line); border-radius: 1rem; background: color-mix(in oklab, var(--card) 55%, transparent); }
+      .footer-panel { box-sizing: border-box; width: 100%; height: 3.75rem; min-height: 3.75rem; border: 1px solid var(--line); border-radius: 1rem; background: color-mix(in oklab, var(--card) 55%, transparent); }
       .socials-toggle { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 0.5rem 0.85rem; color: var(--fg-dim); font-size: 0.8125rem; cursor: pointer; list-style: none; transition: color var(--dur-1), border-color var(--dur-1), background var(--dur-1); }
       .socials-toggle::-webkit-details-marker { display: none; }
       .socials-toggle:hover { color: var(--fg); border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); background: var(--card); }
@@ -181,11 +181,13 @@ import OgMeta from "../components/OgMeta.astro";
       .footer-links a:hover, .upi-link:hover, .paypal-qr:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); color: var(--fg); background: var(--card); }
       .footer-support-actions { display: flex; align-items: center; gap: 0.35rem; padding: 0.25rem; }
       .footer-support-actions .upi-link, .footer-support-actions .paypal-qr { border-color: transparent; background: transparent; }
+      .footer-support-actions .upi-link, .footer-support-actions .paypal-qr { height: 100%; min-height: 0; padding-block: 0.25rem; line-height: 1.15; }
       .upi-link { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 0.1rem; }
       .paypal-qr { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8125rem; }
       .paypal-qr img { width: 2rem; height: 2rem; border-radius: 4px; opacity: 0.78; transition: opacity var(--dur-1); }
       .paypal-qr:hover img, .paypal-qr:focus-visible img { opacity: 1; }
       .paypal-qr span { display: flex; flex-direction: column; }
+      .footer-support-actions small { line-height: 1.1; }
       .footer-disclaimer { grid-column: 1 / -1; margin: 0; padding-top: 1rem; border-top: 1px solid var(--line); }
       @media (max-width: 639px) {
         .footer-line { grid-template-columns: 1fr; gap: 1.5rem; }

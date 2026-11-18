@@ -137,7 +137,15 @@ class ShowBand extends HTMLElement {
     const read = live
       ? `On air <small>· ${Math.floor(since / 3600_000)} h ${Math.floor((since % 3600_000) / 60_000)} min in</small>`
       : readout(f.t - now).replace(" d ", "<small>d</small> ");
-    if (read !== this.read) this.querySelector(".sb-read")!.innerHTML = this.read = read;
+    if (read !== this.read) {
+      const readEl = this.querySelector<HTMLElement>(".sb-read")!;
+      readEl.innerHTML = this.read = read;
+      readEl.classList.remove("sb-tick");
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        void readEl.offsetWidth;
+        readEl.classList.add("sb-tick");
+      }
+    }
     this.btns[fi]?.style.setProperty("--glow", String(glow(live ? 0 : f.t - now)));
     this.btns.forEach((b, i) => {
       const x = xOf(sts[i].shows[0].t, now, up, g);

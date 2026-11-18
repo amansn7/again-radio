@@ -39,6 +39,15 @@ const { ...attrs } = Astro.props;
   .mc-orb-btn[data-hover]::after, .mc-orb-btn:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
   .mc-orb-btn:active { transform: scale(0.94); transition-duration: 120ms; }
   .mc-orb-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 6px; }
+  html.orb-feeding, html.orb-feeding * { cursor: none !important; }
+  .orb-feed { position: fixed; inset: 0; z-index: 70; width: 100vw; height: 100vh; overflow: visible; pointer-events: none; opacity: 0; transition: opacity 140ms ease-out; }
+  .orb-feed.is-active { opacity: var(--feed-strength, 0); }
+  .orb-feed path { fill: none; stroke: var(--accent); stroke-width: calc(0.5px + var(--feed-strength, 0) * 1.6px); stroke-linecap: round; stroke-dasharray: 1 12; filter: drop-shadow(0 0 3px color-mix(in oklab, var(--accent) 82%, transparent)); animation: orb-feed-stream calc(850ms - var(--feed-strength, 0) * 600ms) linear infinite; }
+  .orb-feed path:nth-child(2) { stroke: var(--orb-c1); stroke-dasharray: 1 17; animation-delay: -180ms; }
+  .orb-feed path:nth-child(3) { stroke: var(--orb-c2); stroke-dasharray: 1 22; animation-delay: -360ms; }
+  @keyframes orb-feed-stream { to { stroke-dashoffset: -26; } }
+  .orb-feed-cursor { position: fixed; z-index: 71; left: 0; top: 0; width: 10px; height: 10px; border: 1px solid color-mix(in oklab, var(--accent) 76%, white); border-radius: 50%; background: var(--fg); box-shadow: 0 0 12px color-mix(in oklab, var(--accent) 90%, transparent); opacity: 0; pointer-events: none; transform: translate3d(-50%, -50%, 0) scale(1); transition: opacity 140ms, scale 140ms var(--ease-out); }
+  .orb-feed-cursor.is-active { opacity: calc(0.9 - var(--feed-strength, 0) * 0.9); scale: calc(1 - var(--feed-strength, 0) * 0.72); }
   .disco-stage {
     position: fixed; top: 0; left: 0; z-index: 100;
     pointer-events: none;
@@ -98,6 +107,17 @@ const { ...attrs } = Astro.props;
     const orb = btn.querySelector<HTMLElement>("radio-orb");
     let pointer: PointerEvent | null = null;
     let frame = 0;
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.classList.add("orb-feed");
+    svg.setAttribute("aria-hidden", "true");
+    const paths = [0, 1, 2].map(() => {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      svg.append(path);
+      return path;
+    });
+    const cursor = document.createElement("i");
+    cursor.className = "orb-feed-cursor";
+    document.body.append(svg, cursor);
     addEventListener("pointermove", (e) => {
       if (!finePointer.matches || reducedMotion.matches || e.pointerType !== "mouse") return;
       pointer = e;
@@ -111,10 +131,29 @@ const { ...attrs } = Astro.props;
         const d = Math.hypot(dx, dy);
         const near = d < 154;
         const over = d < r.width * 0.56;
+        const pull = Math.pow(Math.max(0, 1 - d / 154), 1.35);
         btn.toggleAttribute("data-near", near);
         btn.toggleAttribute("data-hover", over);
         if (near) {
-          const pull = Math.pow(Math.max(0, 1 - d / 154), 1.35);
+          document.documentElement.classList.add("orb-feeding");
+          svg.classList.add("is-active");
+          cursor.classList.add("is-active");
+          svg.style.setProperty("--feed-strength", pull.toFixed(3));
+          cursor.style.setProperty("--feed-strength", pull.toFixed(3));
+          cursor.style.left = `${pointer.clientX}px`;
+          cursor.style.top = `${pointer.clientY}px`;
+          const cx = r.left + r.width / 2;
+          const cy = r.top + r.height / 2;
+          const vx = cx - pointer.clientX;
+          const vy = cy - pointer.clientY;
+          const length = Math.max(d, 1);
+          const nx = -vy / length;
+          const ny = vx / length;
+          paths.forEach((path, i) => {
+            const offset = (i - 1) * (5 + pull * 13);
+            const dPath = `M ${pointer.clientX} ${pointer.clientY} C ${pointer.clientX + vx * 0.32 + nx * offset} ${pointer.clientY + vy * 0.32 + ny * offset}, ${pointer.clientX + vx * 0.76 + nx * offset * 0.18} ${pointer.clientY + vy * 0.76 + ny * offset * 0.18}, ${cx} ${cy}`;
+            path.setAttribute("d", dPath);
+          });
           orb.style.setProperty("--orb-pull-x", `${Math.max(0, Math.min(100, 50 + dx / r.width * 100)).toFixed(1)}%`);
           orb.style.setProperty("--orb-pull-y", `${Math.max(0, Math.min(100, 50 + dy / r.height * 100)).toFixed(1)}%`);
           orb.style.setProperty("--orb-pull", pull.toFixed(3));
@@ -123,6 +162,11 @@ const { ...attrs } = Astro.props;
           btn.style.setProperty("--near-x", `${(dx / Math.max(d, 1) * 4).toFixed(1)}px`);
           btn.style.setProperty("--near-y", `${(dy / Math.max(d, 1) * 4).toFixed(1)}px`);
         } else {
+          document.documentElement.classList.remove("orb-feeding");
+          svg.classList.remove("is-active");
+          cursor.classList.remove("is-active");
+          svg.style.removeProperty("--feed-strength");
+          cursor.style.removeProperty("--feed-strength");
           ["--orb-pull-x", "--orb-pull-y", "--orb-pull", "--orb-pull-angle"].forEach((name) => orb.style.removeProperty(name));
           ["--near-x", "--near-y", "--near-strength"].forEach((name) => btn.style.removeProperty(name));
         }
@@ -130,6 +174,9 @@ const { ...attrs } = Astro.props;
     }, { passive: true });
     reducedMotion.addEventListener("change", () => {
       if (reducedMotion.matches) {
+        document.documentElement.classList.remove("orb-feeding");
+        svg.classList.remove("is-active");
+        cursor.classList.remove("is-active");
         btn.removeAttribute("data-near");
         btn.removeAttribute("data-hover");
         ["--orb-pull-x", "--orb-pull-y", "--orb-pull", "--orb-pull-angle"].forEach((name) => orb?.style.removeProperty(name));
