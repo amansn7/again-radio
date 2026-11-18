@@ -36,7 +36,7 @@ function rollText(el: HTMLElement, value: string): void {
   const width = (s: string) => ctx.measureText(s).width + spacing * s.length;
   const nextWidth = width(value);
   const reading = el.classList.contains("sb-read");
-  const boxWidth = reading ? Math.max(width("0") * 13, width(old), nextWidth) : Math.max(width(old), nextWidth);
+  const boxWidth = reading ? el.clientWidth : Math.max(width(old), nextWidth);
   const xOffset = reading ? boxWidth - nextWidth : 0;
   const count = Math.max(old.length, value.length);
   el.classList.remove("sb-rolling");
