@@ -33,9 +33,13 @@ function rollText(el: HTMLElement, value: string): void {
   ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
   const lineHeight = style.lineHeight === "normal" ? style.fontSize : style.lineHeight;
   const spacing = Number.parseFloat(style.letterSpacing) || 0;
-  const width = (s: string) => ctx.measureText(s).width + spacing * s.length;
-  const nextWidth = width(value);
   const reading = el.classList.contains("sb-read");
+  const digitWidth = ctx.measureText("0").width + spacing;
+  const glyphWidth = (s: string) => reading && /^\d$/.test(s) ? digitWidth : ctx.measureText(s).width + spacing;
+  const width = (s: string) => reading
+    ? Array.from(s).reduce((total, char) => total + glyphWidth(char), 0)
+    : ctx.measureText(s).width + spacing * s.length;
+  const nextWidth = width(value);
   const boxWidth = reading ? el.clientWidth : Math.max(width(old), nextWidth);
   const xOffset = reading ? boxWidth - nextWidth : 0;
   const count = Math.max(old.length, value.length);
@@ -45,7 +49,7 @@ function rollText(el: HTMLElement, value: string): void {
   el.innerHTML = `<span class="sb-roll-layout" style="--roll-width:${boxWidth}px;--roll-height:${lineHeight}">` + Array.from({ length: count }, (_, i) => {
     const from = old[i] ?? " ", to = value[i] ?? " ";
     const toX = xOffset + width(value.slice(0, i));
-    const wheelWidth = Math.max(width(from), width(to));
+    const wheelWidth = Math.max(glyphWidth(from), glyphWidth(to));
     if (from === to) return `<span class="sb-wheel-static" style="--wheel-to:${toX}px;--wheel-width:${wheelWidth}px">${esc(to)}</span>`;
     return `<span class="sb-wheel" style="--wheel-to:${toX}px;--wheel-width:${wheelWidth}px"><span class="sb-wheel-track"><span>${esc(from)}</span><span>${esc(to)}</span></span></span>`;
   }).join("") + "</span>";
