@@ -4,6 +4,18 @@ Notable changes to AGAIN RADIO are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and project versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- A moving show-band signal that connects the current-time marker with the next concert.
+- Cursor light that feeds into the orb as the pointer approaches.
+
+### Changed
+
+- Matched the height of the social and support footer panels for a more balanced layout.
+- Refined the footer and show-band motion for reduced-motion users.
+
 ## [0.2.0] - 2026-11-18
 
 ### Added

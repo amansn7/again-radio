@@ -1,12 +1,16 @@
 # STATUS — AGAIN RADIO
 
-Updated 2026-11-17. Contract: `docs/SPEC.md`. Plan: `tasks/todo.md`. Conventions: `AGENTS.md`.
+Updated 2026-11-18. Contract: `docs/SPEC.md`. Plan: `tasks/todo.md`. Conventions: `AGENTS.md`.
 
 ## Where it stands
 
 Current goal: India launch (design `docs/superpowers/specs/2026-11-18-india-launch-design.md`).
 Phases 14 (first screen), 15 (search finds the canon) and 16 (share the moment) shipped;
 next: phase 17 (tour mode). New sets need `node scripts/og.mjs` + rebuild for their share card.
+
+Recent interaction polish: the cursor feeds light toward the orb on desktop; the show band
+sweeps light from the now marker toward the next concert; the socials and support panels
+share a consistent height. These details respect reduced-motion preferences.
 
 Phase 0–6 shipped and verified; design v3 is deployed live on Cloudflare Pages
 (https://again-radio.pages.dev) with Cloudflare Worker + Durable Object for real-time
@@ -15,11 +19,11 @@ presence (again-radio-presence.again-radio-listeners.workers.dev).
 Latest commits:
 
 ```
-d39703f docs: add project README for GitHub repository
-2ced3e4 phase 6: deploy Cloudflare Pages and presence
-7c68220 design v3: full-bleed video, Rave only, beat clock, glass hero, tap for sound
-a0a4eb5 design v2: live radio engine, breathing fabric, name-in-lights hero, search, running order, Diary/Rave media
-31429b0 design v2: design language, art-derived tokens, event + catalogue contracts, hero layout skeleton
+b86ce6b Add motion to show band and polish cursor
+3d24c8f Add orb cursor feed and align footer panels
+5b105bc Polish orb motion, text fit, and footer sizing
+c66f97a Improve startup and align footer actions
+782ffba Start dial motion immediately and cue orb interaction
 ```
 
 ## Verify (all green at last run)

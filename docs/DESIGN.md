@@ -22,9 +22,10 @@ and every component must be able to say which one it serves.
    they are sung. Here the name of the person in the track is the largest thing on the page,
    and the memory line arrives word by word, as if projected. Type is the image.
 3. **The room breathes.** One living material sits under everything: **the fabric**, a field
-   of fine threads that rises and settles with the music. It is the only ambient motion, and
-   it is slow. Everything else moves only when the listener does something or when the track
-   changes.
+   of fine threads that rises and settles with the music. It is the signature ambient motion.
+   Local cues can answer real state or pointer input: the orb gathers nearby cursor light, and
+   the show band sends a restrained sweep from now toward the next concert. Everything else
+   moves only when the listener does something or when the track changes.
 4. **Everyone hears the same moment.** It is a radio, not a playlist. Live sync, a visible
    clock, "Back to live" when you wander. No fake listener counts; presence is shown by time,
    not by numbers.
@@ -43,7 +44,8 @@ displaced by slow 2D noise. Colour comes from the artwork palette, graded across
   (low contrast, normal compositing, `--bg` shows through).
 - **Rave**: threads are light, like LED strands in a dark room (additive `lighter`
   compositing, soft glow, deep ground).
-- Hidden tab: loop stops. Reduced motion: one static frame, no ripple.
+- Hidden tab: the fabric loop stops; show-band timing updates pause. Reduced motion: one
+  static fabric frame, no ripple or cursor-following motion; CSS cues are disabled.
 - Publishes `--art-1 --art-2 --art-3 --art-accent` on `<html>` whenever the palette changes.
 
 ## Two themes = two halves of the thesis
@@ -121,7 +123,8 @@ then the rest. No horizontal page scroll. The name always fits its column.
 ## Motion
 
 - One orchestrated moment per track change: fabric wave + name + memory words + palette.
-- Ambient motion only in the fabric (and the live dot, 2.4s breath).
+- Ambient motion stays slow and tied to meaningful state: the fabric, live dot, and show-band
+  signal. Pointer-following orb light runs only near the orb.
 - Response motion at `--dur-1`/`--dur-2`: hover lifts, focus rings, pressed `scale(.97)`.
 - Animate `transform`, `opacity`, `filter` only.
 - `prefers-reduced-motion: reduce`: no ambient motion; track change is an instant swap.
