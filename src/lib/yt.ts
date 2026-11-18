@@ -26,6 +26,7 @@ interface YTPlayerOptions {
 export interface YTPlayer {
   getCurrentTime(): number;
   getDuration(): number;
+  getPlayerState?(): number;
   seekTo(seconds: number, allowSeekAhead: boolean): void;
   playVideo(): void;
   pauseVideo(): void;

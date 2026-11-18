@@ -17,8 +17,6 @@ import type { CueInfo, StateInfo, TrackInfo } from "../lib/events.ts";
 
 const DRIFT = 8;
 const SETTLE_MS = 1500;
-// A pause this soon after the page hides is the browser/embed suspending us, not the listener.
-const HIDE_GRACE_MS = 2000;
 // Fades: long and unhurried when the station moves on by itself, short when the listener asks.
 const FADE_AUTO_MS = 1800;
 const FADE_USER_MS = 350;
@@ -45,7 +43,6 @@ class RadioPlayer extends HTMLElement {
   private tap: Point | undefined;
   private playing = false;
   private userPaused = false;
-  private hiddenAt = 0;
   private lastFocus: HTMLElement | null = null;
   private lastKey = "";
   private anchor = 0;
@@ -68,13 +65,13 @@ class RadioPlayer extends HTMLElement {
     const soundOn = (e: Event) => {
       if (e instanceof KeyboardEvent && NAV.has(e.key)) return;
       mark(e);
-      if (!(e.target instanceof Element && e.target.closest("#rp-tune")) && this.muted) this.setMuted(false);
+      if (!(e.target instanceof Element && e.target.closest("#rp-tune"))) this.startFromGesture();
     };
     window.addEventListener("click", soundOn, { signal: wakeSignal });
     window.addEventListener("keydown", soundOn, { signal: wakeSignal });
     this.querySelector("#rp-tune")?.addEventListener("click", (e) => {
       mark(e);
-      if (this.muted) this.setMuted(false);
+      this.startFromGesture();
     }, { signal: wakeSignal });
     // Focus moving into the embed blurs the window; take it straight back to where the user was.
     document.addEventListener("focusin", (e) => {
@@ -144,7 +141,7 @@ class RadioPlayer extends HTMLElement {
       videoId: this.prog.youtubeId,
       playerVars: {
         enablejsapi: 1, controls: 0, modestbranding: 1, rel: 0, playsinline: 1,
-        autoplay: 1, mute: 1, cc_load_policy: 0, iv_load_policy: 3, disablekb: 1,
+        autoplay: 0, mute: 1, cc_load_policy: 0, iv_load_policy: 3, disablekb: 1,
         start, origin: window.location.origin,
       },
       events: {
@@ -172,10 +169,8 @@ class RadioPlayer extends HTMLElement {
             this.emitState();
           }
           if (e.data === 0 && Date.now() - this.anchorAt > SETTLE_MS) this.advance();
-          // Keep the radio on in a background tab where the browser allows it.
-          if (e.data === 2 && document.hidden && !this.userPaused && Date.now() - this.hiddenAt < HIDE_GRACE_MS) {
-            this.player?.playVideo();
-          }
+          // Retry a browser-imposed pause while hidden; the browser may still suspend us.
+          if (e.data === 2 && document.hidden && !this.userPaused) this.player?.playVideo();
         },
         // Not embeddable here, removed, or blocked: skip it rather than go silent.
         onError: () => {
@@ -192,21 +187,20 @@ class RadioPlayer extends HTMLElement {
     });
 
     on("#rp-play", () => this.toggle());
-    on("#rp-sound", () => this.setMuted(!this.muted));
+    on("#rp-sound", () => this.toggleMute());
     on("#rp-back", () => this.goLive());
     on("#rp-shuffle", () => this.setShuffle(!this.shuffle.on));
     document.addEventListener(RADIO_LIVE, () => this.goLive(), { signal });
     // Mobile browsers pause embeds in the background; come back to the live moment, like a radio.
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) this.hiddenAt = Date.now();
-      this.resumeIfDropped();
+      if (!document.hidden) this.resumeIfDropped();
     }, { signal });
     window.addEventListener("pageshow", () => this.resumeIfDropped(), { signal });
     window.addEventListener("resize", () => void this.fit(), { signal, passive: true });
     document.addEventListener(RADIO_CUE, (e) => void this.cue((e as CustomEvent<CueInfo>).detail), { signal });
     const actions = {
       toggle: () => this.toggle(),
-      mute: () => this.setMuted(!this.muted),
+      mute: () => this.toggleMute(),
       prev: () => this.step(-1),
       next: () => this.step(1),
       live: () => this.goLive(),
@@ -245,9 +239,23 @@ class RadioPlayer extends HTMLElement {
     const tune = this.querySelector<HTMLElement>("#rp-tune");
     if (tune) tuneIn(tune, this.querySelector("#rp-sound"), this.querySelector(".rp-screen"), this.tap);
     this.muted = muted;
-    if (muted) this.player?.mute?.();
-    else this.player?.unMute?.();
+    if (muted) this.player?.mute();
+    else {
+      this.player?.unMute();
+      this.player?.setVolume?.(this.fader.volume);
+    }
     this.emitState();
+  }
+
+  private toggleMute() {
+    const actual = this.player?.isMuted?.();
+    this.setMuted(typeof actual === "boolean" ? !actual : !this.muted);
+  }
+
+  private startFromGesture() {
+    this.userPaused = false;
+    if (this.muted) this.setMuted(false);
+    this.player?.playVideo();
   }
 
   private toggle() {
@@ -258,7 +266,11 @@ class RadioPlayer extends HTMLElement {
   }
 
   private resumeIfDropped() {
-    if (document.visibilityState !== "visible" || this.userPaused || this.playing) return;
+    if (document.visibilityState !== "visible" || this.userPaused || !this.player) return;
+    const state = this.player.getPlayerState?.();
+    if (state === 1 || state === 3) return;
+    this.playing = false;
+    this.emitState();
     if (this.live) this.goLive();
     else this.player?.playVideo();
   }
