@@ -27,7 +27,7 @@
   }
   .sb-read {
     font-size: clamp(1.75rem, 3vw, 2.125rem); font-weight: 500; letter-spacing: -0.015em; line-height: 1.1;
-    text-align: right; white-space: nowrap; color: var(--fg); overflow: clip;
+    min-width: 13ch; text-align: right; white-space: nowrap; color: var(--fg); overflow: clip; font-variant-numeric: tabular-nums;
   }
   .sb-read.sb-tick { animation: sb-tick 220ms var(--ease-out); }
   @keyframes sb-tick { from { opacity: 0.72; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }

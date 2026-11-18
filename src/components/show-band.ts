@@ -35,13 +35,16 @@ function rollText(el: HTMLElement, value: string): void {
   const spacing = Number.parseFloat(style.letterSpacing) || 0;
   const width = (s: string) => ctx.measureText(s).width + spacing * s.length;
   const nextWidth = width(value);
+  const reading = el.classList.contains("sb-read");
+  const boxWidth = reading ? Math.max(width("0") * 13, width(old), nextWidth) : Math.max(width(old), nextWidth);
+  const xOffset = reading ? boxWidth - nextWidth : 0;
   const count = Math.max(old.length, value.length);
   el.classList.remove("sb-rolling");
   el.setAttribute("aria-label", value);
   el.dataset.value = value;
-  el.innerHTML = `<span class="sb-roll-layout" style="--roll-width:${Math.max(width(old), nextWidth)}px;--roll-height:${lineHeight}">` + Array.from({ length: count }, (_, i) => {
+  el.innerHTML = `<span class="sb-roll-layout" style="--roll-width:${boxWidth}px;--roll-height:${lineHeight}">` + Array.from({ length: count }, (_, i) => {
     const from = old[i] ?? " ", to = value[i] ?? " ";
-    const toX = width(value.slice(0, i));
+    const toX = xOffset + width(value.slice(0, i));
     const wheelWidth = Math.max(width(from), width(to));
     if (from === to) return `<span class="sb-wheel-static" style="--wheel-to:${toX}px;--wheel-width:${wheelWidth}px">${esc(to)}</span>`;
     return `<span class="sb-wheel" style="--wheel-to:${toX}px;--wheel-width:${wheelWidth}px"><span class="sb-wheel-track"><span>${esc(from)}</span><span>${esc(to)}</span></span></span>`;
