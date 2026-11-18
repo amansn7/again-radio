@@ -24,11 +24,19 @@ const { ...attrs } = Astro.props;
   }
   memory-card .mc-orb { width: 4.75rem; }
   .mc-orb-btn {
-    all: unset; display: block; border-radius: 50%; cursor: pointer;
-    transition: transform 400ms var(--ease-out);
+    all: unset; position: relative; display: block; border-radius: 50%; cursor: pointer;
+    transition: transform 400ms var(--ease-out), filter 400ms var(--ease-out);
   }
   .mc-orb-btn:hover { transform: scale(1.06); }
-  .mc-orb-btn[data-near] { transform: translate(var(--near-x, 0), var(--near-y, 0)) scale(1.08); filter: drop-shadow(0 0 0.65rem color-mix(in oklab, var(--accent) 50%, transparent)); }
+  .mc-orb-btn[data-near] { transform: translate(var(--near-x, 0), var(--near-y, 0)) scale(calc(1 + var(--near-strength, 0) * 0.09)); filter: drop-shadow(0 0 calc(0.35rem + var(--near-strength, 0) * 0.5rem) color-mix(in oklab, var(--accent) 55%, transparent)); }
+  .mc-orb-btn::after {
+    content: "click to spin"; position: absolute; left: 50%; top: calc(100% + 0.5rem); z-index: 1;
+    padding: 0.2rem 0.5rem; border: 1px solid var(--line); border-radius: 999px;
+    background: color-mix(in oklab, var(--bg-2) 88%, transparent); color: var(--fg-dim);
+    font: 500 0.65rem/1.3 var(--font-body); white-space: nowrap; opacity: 0; pointer-events: none;
+    transform: translate(-50%, -0.2rem); transition: opacity var(--dur-1), transform var(--dur-1) var(--ease-out);
+  }
+  .mc-orb-btn[data-hover]::after, .mc-orb-btn:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
   .mc-orb-btn:active { transform: scale(0.94); transition-duration: 120ms; }
   .mc-orb-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 6px; }
   .disco-stage {
@@ -76,6 +84,7 @@ const { ...attrs } = Astro.props;
   @media (prefers-reduced-motion: reduce) {
     .mc-text .mw { animation-delay: 0s !important; }
     .mc-orb-btn[data-near] { filter: none; transform: none; }
+    .mc-orb-btn::after { transition: none; }
   }
 </style>
 
@@ -86,27 +95,46 @@ const { ...attrs } = Astro.props;
     btn.addEventListener("click", () => import("./disco.ts").then((m) => m.disco(btn.querySelector("radio-orb")!)));
     const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-    let near = false;
+    const orb = btn.querySelector<HTMLElement>("radio-orb");
+    let pointer: PointerEvent | null = null;
+    let frame = 0;
     addEventListener("pointermove", (e) => {
       if (!finePointer.matches || reducedMotion.matches || e.pointerType !== "mouse") return;
-      const r = btn.getBoundingClientRect();
-      const dx = e.clientX - (r.left + r.width / 2);
-      const dy = e.clientY - (r.top + r.height / 2);
-      const d = Math.hypot(dx, dy);
-      const next = near ? d < 112 : d < 76;
-      if (next && d > 0) {
-        btn.style.setProperty("--near-x", `${(dx / d * 4).toFixed(1)}px`);
-        btn.style.setProperty("--near-y", `${(dy / d * 4).toFixed(1)}px`);
-      } else if (!next) {
-        btn.style.removeProperty("--near-x");
-        btn.style.removeProperty("--near-y");
-      }
-      if (next === near) return;
-      near = next;
-      btn.toggleAttribute("data-near", near);
+      pointer = e;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        if (!pointer || !orb) return;
+        const r = btn.getBoundingClientRect();
+        const dx = pointer.clientX - (r.left + r.width / 2);
+        const dy = pointer.clientY - (r.top + r.height / 2);
+        const d = Math.hypot(dx, dy);
+        const near = d < 154;
+        const over = d < r.width * 0.56;
+        btn.toggleAttribute("data-near", near);
+        btn.toggleAttribute("data-hover", over);
+        if (near) {
+          const pull = Math.pow(Math.max(0, 1 - d / 154), 1.35);
+          orb.style.setProperty("--orb-pull-x", `${Math.max(0, Math.min(100, 50 + dx / r.width * 100)).toFixed(1)}%`);
+          orb.style.setProperty("--orb-pull-y", `${Math.max(0, Math.min(100, 50 + dy / r.height * 100)).toFixed(1)}%`);
+          orb.style.setProperty("--orb-pull", pull.toFixed(3));
+          orb.style.setProperty("--orb-pull-angle", `${(Math.atan2(dy, dx) * 180 / Math.PI).toFixed(1)}deg`);
+          btn.style.setProperty("--near-strength", pull.toFixed(3));
+          btn.style.setProperty("--near-x", `${(dx / Math.max(d, 1) * 4).toFixed(1)}px`);
+          btn.style.setProperty("--near-y", `${(dy / Math.max(d, 1) * 4).toFixed(1)}px`);
+        } else {
+          ["--orb-pull-x", "--orb-pull-y", "--orb-pull", "--orb-pull-angle"].forEach((name) => orb.style.removeProperty(name));
+          ["--near-x", "--near-y", "--near-strength"].forEach((name) => btn.style.removeProperty(name));
+        }
+      });
     }, { passive: true });
     reducedMotion.addEventListener("change", () => {
-      if (reducedMotion.matches) { near = false; btn.removeAttribute("data-near"); }
+      if (reducedMotion.matches) {
+        btn.removeAttribute("data-near");
+        btn.removeAttribute("data-hover");
+        ["--orb-pull-x", "--orb-pull-y", "--orb-pull", "--orb-pull-angle"].forEach((name) => orb?.style.removeProperty(name));
+        ["--near-x", "--near-y", "--near-strength"].forEach((name) => btn.style.removeProperty(name));
+      }
     });
   }
 </script>

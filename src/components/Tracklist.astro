@@ -5,7 +5,7 @@ const { ...attrs } = Astro.props;
   <div class="tl-bar" role="group" aria-label="Tracklist">
     <span class="tl-skel skeleton"></span>
   </div>
-  <div class="tl-tip" aria-hidden="true"></div>
+  <div class="tl-tip glass" data-glass aria-hidden="true"></div>
   <div class="tl-row">
     <span class="tl-time num meta"></span>
     <span class="tl-next meta" hidden><span class="tl-next-l">Next</span> <span class="tl-next-t"></span></span>
@@ -67,9 +67,7 @@ const { ...attrs } = Astro.props;
     display: flex;
     gap: 0.6rem;
     padding: 0.35rem 0.6rem;
-    border: 1px solid var(--line);
     border-radius: var(--radius);
-    background: var(--bg-2);
     color: var(--fg);
     font-size: 0.8125rem;
     line-height: 1.3;
