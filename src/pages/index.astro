@@ -204,6 +204,9 @@ import OgMeta from "../components/OgMeta.astro";
       @media (max-width: 639px) {
         .footer-line { grid-template-columns: 1fr; gap: 1.5rem; }
         .footer-disclaimer { grid-column: auto; }
+        .footer-links { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.45rem; }
+        .footer-links .instagram-group { grid-column: 1 / -1; min-width: 0; }
+        .footer-links > a { width: 100%; }
       }
       @media (max-width: 380px) {
         .footer-support-actions { gap: 0.1rem; }
