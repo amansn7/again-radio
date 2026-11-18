@@ -68,7 +68,7 @@ import OgMeta from "../components/OgMeta.astro";
           <p class="footer-heading">Find me around the radio</p>
           <details class="socials-disclosure">
             <summary class="footer-panel socials-toggle glass" data-glass="regular"><span>Socials and contact</span><span class="socials-mark" aria-hidden="true">+</span></summary>
-            <nav class="footer-links glass" data-glass="regular" aria-label="Social and contact links">
+            <div class="socials-reveal"><nav class="footer-links glass" data-glass="regular" aria-label="Social and contact links">
               <div class="instagram-group">
                 <div class="instagram-label"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="18" cy="6" r=".8" class="fill"/></svg><span>Instagram</span></div>
                 <a href="https://www.instagram.com/islugabed/" target="_blank" rel="noreferrer" aria-label="Private Instagram account, @islugabed"><span>@islugabed</span><small><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>Private</small><b aria-hidden="true">↗</b></a>
@@ -78,7 +78,7 @@ import OgMeta from "../components/OgMeta.astro";
               <a href="https://github.com/amansn7/again-radio" target="_blank" rel="noreferrer" aria-label="GitHub, again-radio" title="GitHub · again-radio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.2-4-2-5-2m10 4v-3.1a2.7 2.7 0 0 0-.8-2.1c2.7-.3 5.5-1.3 5.5-6A4.7 4.7 0 0 0 17.5 7a4.3 4.3 0 0 0-.1-3S16.4 3.7 14 5.3a12 12 0 0 0-6 0C5.6 3.7 4.6 4 4.6 4A4.3 4.3 0 0 0 4.5 7 4.7 4.7 0 0 0 3.3 10.8c0 4.7 2.8 5.7 5.5 6A2.7 2.7 0 0 0 8 18.9V21"/></svg></a>
               <a href="mailto:iamamansaini1@gmail.com" aria-label="Email Aman" title="Email · iamamansaini1@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg></a>
               <a href="https://wa.me/919041951331" target="_blank" rel="noreferrer" aria-label="WhatsApp, +91 90419 51331" title="WhatsApp · +91 90419 51331"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.1A8 8 0 1 1 20 11.5Z"/><path d="M9 8.5c.4 2.5 2 4.1 4.5 4.5l1-1 2 1c-.4 2-2 2.5-3.5 2-3.5-1-5.5-3-6-6.5-.2-1.5.5-3 2.5-3.5l1 2Z"/></svg></a>
-            </nav>
+            </nav></div>
           </details>
         </div>
         <div class="footer-support">
@@ -175,6 +175,9 @@ import OgMeta from "../components/OgMeta.astro";
       .socials-toggle:hover { color: var(--fg); border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); background: var(--card); }
       .socials-mark { color: var(--accent); font-size: 1rem; transition: transform var(--dur-1) var(--ease-out); }
       .socials-disclosure[open] .socials-mark { transform: rotate(45deg); }
+      .socials-reveal { display: grid; grid-template-rows: 0fr; opacity: 0; transform: translateY(-0.4rem); visibility: hidden; transition: grid-template-rows 420ms var(--ease-out), opacity 260ms ease, transform 420ms var(--ease-out), visibility 0s linear 420ms; }
+      .socials-disclosure[open] .socials-reveal { grid-template-rows: 1fr; opacity: 1; transform: translateY(0); visibility: visible; transition-delay: 0s; }
+      .socials-reveal > nav { min-height: 0; overflow: hidden; }
       .footer-links { display: grid; grid-template-columns: minmax(12rem, 1fr) repeat(4, minmax(2.75rem, 0.42fr)); align-items: stretch; gap: 0.5rem; margin-top: 0.65rem; padding: 0.65rem; }
       .footer-links a, .upi-link, .paypal-qr { min-height: 2.75rem; padding: 0.45rem 0.75rem; border: 1px solid var(--line); border-radius: 0.75rem; background: color-mix(in oklab, var(--card) 55%, transparent); color: var(--fg-dim); text-decoration: none; transition: transform var(--dur-1) var(--ease-out), border-color var(--dur-1), color var(--dur-1), background var(--dur-1); }
       .footer-links a { display: flex; align-items: center; justify-content: center; width: 100%; padding-inline: 0.45rem; }

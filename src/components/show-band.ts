@@ -16,6 +16,21 @@ const yours = (s: Show) => new Date(s.t).toLocaleString([], { weekday: "short", 
 const subLine = (s: Show) =>
   `${dayLabel(s)}, ${local(s)} local · ${s.venue}${sameZone(s) ? "" : ` · ${yours(s)} your time`}`;
 
+function rollText(el: HTMLElement, value: string): void {
+  const old = el.dataset.value ?? value;
+  const count = Math.max(old.length, value.length);
+  el.classList.remove("sb-rolling");
+  el.setAttribute("aria-label", value);
+  el.dataset.value = value;
+  el.innerHTML = Array.from({ length: count }, (_, i) => {
+    const from = old[i] ?? " ", to = value[i] ?? " ";
+    if (from === to) return `<span class="sb-wheel-static">${esc(to)}</span>`;
+    return `<span class="sb-wheel" style="--wheel-delay:${Math.min(i * 18, 180)}ms"><span class="sb-wheel-track"><span>${esc(from)}</span><span>${esc(to)}</span></span></span>`;
+  }).join("");
+  void el.offsetWidth;
+  requestAnimationFrame(() => el.classList.add("sb-rolling"));
+}
+
 class ShowBand extends HTMLElement {
   private shows: Show[] = [];
   private up: Show[] = [];
@@ -124,14 +139,8 @@ class ShowBand extends HTMLElement {
     const showChanged = f !== this.cur;
     if (showChanged) {
       this.cur = f;
-      this.querySelector(".sb-city")!.textContent = f.city;
+      rollText(this.querySelector<HTMLElement>(".sb-city")!, f.city);
       this.querySelector(".sb-sub")!.textContent = subLine(f);
-      const head = this.querySelector<HTMLElement>(".sb-head")!;
-      head.classList.remove("sb-morph");
-      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        void head.offsetWidth;
-        head.classList.add("sb-morph");
-      }
       this.btns.forEach((b, i) => {
         b.classList.toggle("next", i === fi && !this.tuned);
         b.classList.toggle("tuned", i === fi && !!this.tuned);
@@ -142,11 +151,12 @@ class ShowBand extends HTMLElement {
     this.querySelector(".sb-kick span")!.textContent = live ? "On air now" : this.tuned ? "Tuned to" : "Next show";
     const since = now - f.t;
     const read = live
-      ? `On air <small>· ${Math.floor(since / 3600_000)} h ${Math.floor((since % 3600_000) / 60_000)} min in</small>`
-      : readout(f.t - now).replace(" d ", "<small>d</small> ");
+      ? `On air · ${Math.floor(since / 3600_000)} h ${Math.floor((since % 3600_000) / 60_000)} min in`
+      : readout(f.t - now);
     if (read !== this.read) {
       const readEl = this.querySelector<HTMLElement>(".sb-read")!;
-      readEl.innerHTML = this.read = read;
+      this.read = read;
+      rollText(readEl, read);
       readEl.classList.remove("sb-tick");
       if (!showChanged && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
         void readEl.offsetWidth;
