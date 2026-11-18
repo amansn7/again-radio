@@ -8,6 +8,7 @@ import {
 const DAY = 86400_000;
 const TUNE_MS = 6000;
 const HINT = `<p class="sb-hint">Tap a station to tune to it. The band drifts toward the next show in real time.</p>`;
+const rollTimers = new WeakMap<HTMLElement, number>();
 
 const dayNum = (s: Show) => new Date(s.t).toLocaleDateString("en-GB", { day: "numeric", timeZone: s.tz });
 const local = (s: Show) =>
@@ -17,7 +18,15 @@ const subLine = (s: Show) =>
   `${dayLabel(s)}, ${local(s)} local · ${s.venue}${sameZone(s) ? "" : ` · ${yours(s)} your time`}`;
 
 function rollText(el: HTMLElement, value: string): void {
+  const timer = rollTimers.get(el);
+  if (timer) clearTimeout(timer);
   const old = el.dataset.value ?? value;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || old === value) {
+    el.dataset.value = value;
+    el.setAttribute("aria-label", value);
+    el.textContent = value;
+    return;
+  }
   const count = Math.max(old.length, value.length);
   el.classList.remove("sb-rolling");
   el.setAttribute("aria-label", value);
@@ -29,6 +38,11 @@ function rollText(el: HTMLElement, value: string): void {
   }).join("");
   void el.offsetWidth;
   requestAnimationFrame(() => el.classList.add("sb-rolling"));
+  rollTimers.set(el, window.setTimeout(() => {
+    if (el.dataset.value !== value) return;
+    el.classList.remove("sb-rolling");
+    el.textContent = value;
+  }, 760));
 }
 
 class ShowBand extends HTMLElement {
