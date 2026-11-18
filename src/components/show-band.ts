@@ -21,7 +21,7 @@ function rollText(el: HTMLElement, value: string): void {
   const timer = rollTimers.get(el);
   if (timer) clearTimeout(timer);
   const old = el.dataset.value ?? value;
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches || old === value) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || (old === value && !el.classList.contains("sb-read"))) {
     el.dataset.value = value;
     el.setAttribute("aria-label", value);
     el.textContent = value;
@@ -55,6 +55,7 @@ function rollText(el: HTMLElement, value: string): void {
   }).join("") + "</span>";
   void el.offsetWidth;
   requestAnimationFrame(() => el.classList.add("sb-rolling"));
+  if (reading) return;
   rollTimers.set(el, window.setTimeout(() => {
     if (el.dataset.value !== value) return;
     el.classList.remove("sb-rolling");
@@ -188,11 +189,6 @@ class ShowBand extends HTMLElement {
       const readEl = this.querySelector<HTMLElement>(".sb-read")!;
       this.read = read;
       rollText(readEl, read);
-      readEl.classList.remove("sb-tick");
-      if (!showChanged && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        void readEl.offsetWidth;
-        readEl.classList.add("sb-tick");
-      }
     }
     this.btns[fi]?.style.setProperty("--glow", String(glow(live ? 0 : f.t - now)));
     const signal = this.querySelector<HTMLElement>(".sb-signal");

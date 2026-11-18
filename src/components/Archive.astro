@@ -29,8 +29,6 @@
     font-size: clamp(1.75rem, 3vw, 2.125rem); font-weight: 500; letter-spacing: -0.015em; line-height: 1.1;
     width: 17ch; min-width: 17ch; text-align: right; white-space: nowrap; color: var(--fg); overflow: clip; font-variant-numeric: tabular-nums;
   }
-  .sb-read.sb-tick { animation: sb-tick 220ms var(--ease-out); }
-  @keyframes sb-tick { from { opacity: 0.72; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
   .sb-read small { font-size: 0.9375rem; font-weight: 400; color: var(--fg-dim); margin: 0 2px 0 1px; }
   .sb-head .sb-sub {
     grid-column: 1 / -1; margin-top: 0.125rem;
@@ -105,7 +103,7 @@
   @media (prefers-reduced-motion: reduce) {
     show-band .st { transition: none; }
     .sb-head.on .dot { animation: none; }
-    .sb-read.sb-tick, .st.next .pins i:first-child, .sb-signal i, .sb-needle::before { animation: none; }
+    .st.next .pins i:first-child, .sb-signal i, .sb-needle::before { animation: none; }
     .sb-wheel, .sb-wheel-track { transition: none !important; }
     .sb-signal { transition: none; }
   }
