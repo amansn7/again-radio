@@ -59,9 +59,26 @@ import OgMeta from "../components/OgMeta.astro";
     </main>
 
     <footer class="sheet">
-      <p class="wrap meta footer-line">
-        Fan project. Not affiliated with Fred again.. All music &copy; its owners.
-      </p>
+      <div class="wrap footer-line">
+        <nav class="footer-links" aria-label="Social and contact links">
+          <a href="https://www.instagram.com/islugabed/" target="_blank" rel="noreferrer">Instagram · @islugabed</a>
+          <a href="https://www.instagram.com/iamannihilation/" target="_blank" rel="noreferrer">Instagram · @iamannihilation</a>
+          <a href="https://www.linkedin.com/in/iamamansaini/" target="_blank" rel="noreferrer">LinkedIn · iamamansaini</a>
+          <a href="mailto:iamamansaini1@gmail.com">Email · iamamansaini1@gmail.com</a>
+          <a href="https://wa.me/919041951331" target="_blank" rel="noreferrer">WhatsApp · +91 90419 51331</a>
+        </nav>
+        <div class="footer-support">
+          <p class="meta">Buy me a coffee</p>
+          <a href="upi://pay?pa=amansn7@oksbi" class="upi-link">UPI · amansn7@oksbi</a>
+          <div class="paypal-support">
+            <a class="paypal-qr" href="/images/paypal-qr.png" target="_blank" rel="noreferrer" aria-label="Open PayPal QR code">
+              <img src="/images/paypal-qr.png" alt="PayPal QR code" loading="lazy" />
+              <span>PayPal · scan to support</span>
+            </a>
+          </div>
+        </div>
+        <p class="meta footer-disclaimer">Fan project. Not affiliated with Fred again.. All music &copy; its owners.</p>
+      </div>
     </footer>
 
     <style>
@@ -133,7 +150,20 @@ import OgMeta from "../components/OgMeta.astro";
         .hero { min-height: calc(100dvh - 4.5rem); padding-block: 2rem 1.5rem; }
         .hero-name { width: 62%; }
       }
-      .footer-line { padding-block: 2.5rem; }
+      .footer-line { padding-block: 2.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1.5rem 3rem; }
+      .footer-links { display: flex; flex-wrap: wrap; align-content: start; gap: 0.5rem 1.25rem; }
+      .footer-links a, .upi-link { color: var(--fg-dim); font-size: 0.875rem; text-decoration: none; }
+      .footer-links a:hover, .upi-link:hover { color: var(--fg); }
+      .footer-support { display: flex; flex-direction: column; gap: 0.35rem; }
+      .footer-support p { margin: 0; }
+      .paypal-qr { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--fg-faint); font-size: 0.75rem; text-decoration: none; }
+      .paypal-qr img { width: 1.5rem; height: 1.5rem; border-radius: 3px; opacity: 0.72; transition: opacity var(--dur-1); }
+      .paypal-qr:hover img, .paypal-qr:focus-visible img { opacity: 1; }
+      .footer-disclaimer { grid-column: 1 / -1; margin: 0; padding-top: 1rem; border-top: 1px solid var(--line); }
+      @media (max-width: 639px) {
+        .footer-line { grid-template-columns: 1fr; gap: 1.25rem; }
+        .footer-disclaimer { grid-column: auto; }
+      }
     </style>
 
     <script>
