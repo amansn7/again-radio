@@ -105,7 +105,7 @@ class ShowBand extends HTMLElement {
     this.innerHTML =
       `<section class="wrap" aria-labelledby="sb-title"><h2 class="section-title" id="sb-title">${esc(heading(up))}</h2>${head}` +
       `<div class="sb-band${up.length ? "" : " quiet"}" role="group" aria-label="Upcoming shows" style="--needle:${g.needle}%">` +
-      `<div class="sb-rail">${ticks}</div>${stns}<div class="sb-needle" aria-hidden="true">${up.length ? "<span>now</span>" : ""}</div></div>` +
+      `<div class="sb-rail">${ticks}</div><div class="sb-signal" aria-hidden="true"><i></i></div>${stns}<div class="sb-needle" aria-hidden="true">${up.length ? "<span>now</span>" : ""}</div></div>` +
       `${up.length ? HINT : ""}</section>`;
     this.ticks = [...this.querySelectorAll<HTMLElement>(".sb-rail b")];
     this.btns = [...this.querySelectorAll<HTMLButtonElement>(".st")];
@@ -147,6 +147,13 @@ class ShowBand extends HTMLElement {
       }
     }
     this.btns[fi]?.style.setProperty("--glow", String(glow(live ? 0 : f.t - now)));
+    const signal = this.querySelector<HTMLElement>(".sb-signal");
+    const signalEnd = xOf(up[0].t, now, up, g);
+    const signalDistance = Math.max(0, signalEnd - g.needle);
+    signal?.style.setProperty("--signal-left", `${g.needle}%`);
+    signal?.style.setProperty("--signal-width", `${signalDistance}%`);
+    signal?.style.setProperty("--signal-distance", `${this.querySelector<HTMLElement>(".sb-band")!.clientWidth * signalDistance / 100}px`);
+    signal?.style.setProperty("--signal-streak", `${Math.max(0.9, Math.min(2.2, signalDistance * 0.12))}rem`);
     this.btns.forEach((b, i) => {
       const x = xOf(sts[i].shows[0].t, now, up, g);
       b.style.left = `${x}%`;

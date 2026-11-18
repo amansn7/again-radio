@@ -37,6 +37,13 @@
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
   }
+  .sb-signal { position: absolute; top: 67px; left: var(--signal-left, 10%); width: var(--signal-width, 0%); height: 1px; pointer-events: none; background: color-mix(in oklab, var(--accent) 28%, transparent); box-shadow: 0 0 8px color-mix(in oklab, var(--accent) 30%, transparent); transition: left 900ms var(--ease-out), width 900ms var(--ease-out); }
+  .sb-signal i { position: absolute; top: -1px; left: 0; width: var(--signal-streak, 1.5rem); height: 3px; border-radius: 50%; background: linear-gradient(90deg, transparent, var(--accent), transparent); box-shadow: 0 0 10px var(--accent); animation: sb-flow 2.4s var(--ease-in-out) infinite; }
+  @keyframes sb-flow {
+    0% { opacity: 0; transform: translateX(0); }
+    14%, 84% { opacity: 0.9; }
+    100% { opacity: 0; transform: translateX(var(--signal-distance, 0px)); }
+  }
   .sb-rail { position: absolute; inset: 34px 0 auto; height: 34px; }
   .sb-rail b {
     position: absolute; bottom: 0; width: 1px; height: 14px; background: var(--line);
@@ -74,7 +81,9 @@
   .sb-needle::before {
     content: ""; position: absolute; top: -4px; left: -4px; width: 10px; height: 10px; border-radius: 50%;
     background: var(--accent); box-shadow: 0 0 16px var(--accent);
+    animation: sb-now 2.4s var(--ease-in-out) infinite;
   }
+  @keyframes sb-now { 50% { transform: scale(1.18); box-shadow: 0 0 22px var(--accent); } }
   .sb-needle span { position: absolute; top: -7px; left: 10px; font-size: 0.6875rem; line-height: 1.4; color: var(--accent); }
 
   .sb-band.quiet { height: 70px; }
@@ -90,7 +99,8 @@
   @media (prefers-reduced-motion: reduce) {
     show-band .st { transition: none; }
     .sb-head.on .dot { animation: none; }
-    .sb-read.sb-tick, .st.next .pins i:first-child { animation: none; }
+    .sb-read.sb-tick, .st.next .pins i:first-child, .sb-signal i, .sb-needle::before { animation: none; }
+    .sb-signal { transition: none; }
   }
 </style>
 
