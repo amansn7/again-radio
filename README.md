@@ -12,7 +12,7 @@
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers_%26_DO-F38020?style=flat-square&logo=cloudflare&logoColor=white)](https://workers.cloudflare.com)
 [![License](https://img.shields.io/badge/License-MIT-gray?style=flat-square)](LICENSE)
 
-[**Live Station**](https://again-radio.pages.dev) &nbsp;•&nbsp; [**The Philosophy**](#the-philosophy-one-voice-then-a-room) &nbsp;•&nbsp; [**Architecture**](#architecture) &nbsp;•&nbsp; [**Memory Layer**](#the-memory-layer) &nbsp;•&nbsp; [**Controls**](#keyboard-controls) &nbsp;•&nbsp; [**Development**](#quick-start)
+[**Live Station**](https://again-radio.pages.dev) &nbsp;•&nbsp; [**The Philosophy**](#the-philosophy-one-voice-then-a-room) &nbsp;•&nbsp; [**Architecture**](#architecture) &nbsp;•&nbsp; [**Memory Layer**](#the-memory-layer) &nbsp;•&nbsp; [**Controls**](#keyboard-controls) &nbsp;•&nbsp; [**Development**](#development-workflow) &nbsp;•&nbsp; [**Changelog**](CHANGELOG.md)
 
 ---
 
@@ -169,6 +169,10 @@ again-radio/
 
 ## Development workflow
 
+Current project version: **0.2.0**. The version in `package.json` is canonical; keep
+the root version in `package-lock.json` in sync. Release notes live in
+[`CHANGELOG.md`](CHANGELOG.md).
+
 When running the development server (`npm run dev` or `npx astro dev`), the site will **not** automatically reload on file changes. Hot Module Replacement (HMR) and live reload have been disabled in `astro.config.mjs`. To see your changes, manually refresh the browser page.
 
 This ensures a stable dev environment where the page only updates on explicit user action.
@@ -207,6 +211,20 @@ node scripts/schedule.test.mjs
 npm run build
 ```
 Generates a static build inside `dist/`.
+
+### Versioning and release notes
+
+AGAIN RADIO uses Semantic Versioning (`MAJOR.MINOR.PATCH`):
+
+- **Patch** for backward-compatible fixes and small corrections.
+- **Minor** for backward-compatible features and meaningful data additions.
+- **Major** for changes that break established behavior or data contracts.
+
+For each release, update the version in `package.json` and the root package entries in
+`package-lock.json`, add a dated section to `CHANGELOG.md`, then run the verification
+commands above. Use a `vMAJOR.MINOR.PATCH` Git tag for published releases. Ordinary
+commits do not need a version bump; keep release notes under `Unreleased` until a release
+is prepared.
 
 ---
 
