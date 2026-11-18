@@ -8,6 +8,11 @@
 
   .sb-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 1rem; align-items: end; }
   .sb-head p { margin: 0; }
+  .sb-head.sb-morph .sb-kick, .sb-head.sb-morph .sb-city, .sb-head.sb-morph .sb-read, .sb-head.sb-morph .sb-sub { animation: sb-arrive 520ms var(--ease-out) both; }
+  .sb-head.sb-morph .sb-city { animation-delay: 35ms; }
+  .sb-head.sb-morph .sb-read { animation-delay: 65ms; }
+  .sb-head.sb-morph .sb-sub { animation-delay: 95ms; }
+  @keyframes sb-arrive { from { opacity: 0.15; transform: translateY(8px); filter: blur(3px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
   .sb-kick { grid-column: 1 / -1; display: flex; gap: 0.5rem; align-items: center; font-size: 0.8125rem; color: var(--fg-dim); }
   show-band .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
   .sb-head.on .dot { animation: sb-ping 1.6s ease-out infinite; }
@@ -99,7 +104,7 @@
   @media (prefers-reduced-motion: reduce) {
     show-band .st { transition: none; }
     .sb-head.on .dot { animation: none; }
-    .sb-read.sb-tick, .st.next .pins i:first-child, .sb-signal i, .sb-needle::before { animation: none; }
+    .sb-read.sb-tick, .sb-head.sb-morph .sb-kick, .sb-head.sb-morph .sb-city, .sb-head.sb-morph .sb-read, .sb-head.sb-morph .sb-sub, .st.next .pins i:first-child, .sb-signal i, .sb-needle::before { animation: none; }
     .sb-signal { transition: none; }
   }
 </style>

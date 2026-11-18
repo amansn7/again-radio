@@ -121,10 +121,17 @@ class ShowBand extends HTMLElement {
     const f = this.tuned ?? up[0];
     const live = f === onAir(up, now);
     const fi = sts.findIndex((st) => st.shows.includes(f));
-    if (f !== this.cur) {
+    const showChanged = f !== this.cur;
+    if (showChanged) {
       this.cur = f;
       this.querySelector(".sb-city")!.textContent = f.city;
       this.querySelector(".sb-sub")!.textContent = subLine(f);
+      const head = this.querySelector<HTMLElement>(".sb-head")!;
+      head.classList.remove("sb-morph");
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        void head.offsetWidth;
+        head.classList.add("sb-morph");
+      }
       this.btns.forEach((b, i) => {
         b.classList.toggle("next", i === fi && !this.tuned);
         b.classList.toggle("tuned", i === fi && !!this.tuned);
@@ -141,7 +148,7 @@ class ShowBand extends HTMLElement {
       const readEl = this.querySelector<HTMLElement>(".sb-read")!;
       readEl.innerHTML = this.read = read;
       readEl.classList.remove("sb-tick");
-      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (!showChanged && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
         void readEl.offsetWidth;
         readEl.classList.add("sb-tick");
       }
