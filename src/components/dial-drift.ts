@@ -1,7 +1,6 @@
 import type { Ring } from "./dial-ring.ts";
 
 const MS_PER_CARD = 4200;
-const EASE_IN_MS = 1200;
 const FADE_MS = 450;
 
 export interface Drift {
@@ -37,8 +36,7 @@ export function drift(ring: Ring, stage: HTMLElement, track: HTMLElement): Drift
     const dt = Math.min(t - last, 50);
     last = t;
     if (still()) { since = t; return; }
-    const ease = Math.min(1, (t - since) / EASE_IN_MS);
-    if (ring.pos < ring.count - 1) return ring.scrub(Math.min(ring.count - 1, ring.pos + (dt / MS_PER_CARD) * ease));
+    if (ring.pos < ring.count - 1) return ring.scrub(Math.min(ring.count - 1, ring.pos + dt / MS_PER_CARD));
     wrapping = true;
     track.style.opacity = "0";
     setTimeout(() => {

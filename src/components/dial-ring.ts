@@ -40,6 +40,8 @@ export class Ring {
 
   touch(): void { this.touched = performance.now(); }
 
+  resumeAuto(): void { this.touched = -Infinity; }
+
   reset(count: number, at = 0): void {
     this.track.replaceChildren();
     this.els.clear();

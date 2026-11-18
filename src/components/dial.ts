@@ -98,6 +98,7 @@ class WarpDial extends HTMLElement {
 
   private setChoice(c: Choice): void {
     this.choice = c;
+    this.ring.resumeAuto();
     this.querySelectorAll<HTMLElement>("[role=tab]").forEach((t) => {
       const on = t.dataset.c === c;
       t.setAttribute("aria-selected", String(on));

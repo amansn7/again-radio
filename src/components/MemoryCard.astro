@@ -3,7 +3,7 @@ import Orb from "./Orb.astro";
 const { ...attrs } = Astro.props;
 ---
 <memory-card {...attrs}>
-  <button class="mc-orb-btn" type="button" aria-label="Disco ball"><Orb class="mc-orb" /></button>
+  <button class="mc-orb-btn" type="button" aria-label="Make the orb dance"><Orb class="mc-orb" /></button>
   <div class="mc-body">
     <div class="mc-skel" aria-hidden="true">
       <i class="skeleton"></i><i class="skeleton"></i><i class="skeleton"></i>
@@ -28,6 +28,7 @@ const { ...attrs } = Astro.props;
     transition: transform 400ms var(--ease-out);
   }
   .mc-orb-btn:hover { transform: scale(1.06); }
+  .mc-orb-btn[data-near] { transform: translate(var(--near-x, 0), var(--near-y, 0)) scale(1.08); filter: drop-shadow(0 0 0.65rem color-mix(in oklab, var(--accent) 50%, transparent)); }
   .mc-orb-btn:active { transform: scale(0.94); transition-duration: 120ms; }
   .mc-orb-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 6px; }
   .disco-stage {
@@ -74,11 +75,38 @@ const { ...attrs } = Astro.props;
 
   @media (prefers-reduced-motion: reduce) {
     .mc-text .mw { animation-delay: 0s !important; }
+    .mc-orb-btn[data-near] { filter: none; transform: none; }
   }
 </style>
 
 <script>
   import "./memory-card.ts";
   const btn = document.querySelector<HTMLElement>(".mc-orb-btn");
-  btn?.addEventListener("click", () => import("./disco.ts").then((m) => m.disco(btn.querySelector("radio-orb")!)));
+  if (btn) {
+    btn.addEventListener("click", () => import("./disco.ts").then((m) => m.disco(btn.querySelector("radio-orb")!)));
+    const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    let near = false;
+    addEventListener("pointermove", (e) => {
+      if (!finePointer.matches || reducedMotion.matches || e.pointerType !== "mouse") return;
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      const d = Math.hypot(dx, dy);
+      const next = near ? d < 112 : d < 76;
+      if (next && d > 0) {
+        btn.style.setProperty("--near-x", `${(dx / d * 4).toFixed(1)}px`);
+        btn.style.setProperty("--near-y", `${(dy / d * 4).toFixed(1)}px`);
+      } else if (!next) {
+        btn.style.removeProperty("--near-x");
+        btn.style.removeProperty("--near-y");
+      }
+      if (next === near) return;
+      near = next;
+      btn.toggleAttribute("data-near", near);
+    }, { passive: true });
+    reducedMotion.addEventListener("change", () => {
+      if (reducedMotion.matches) { near = false; btn.removeAttribute("data-near"); }
+    });
+  }
 </script>
