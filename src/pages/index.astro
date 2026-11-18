@@ -61,14 +61,15 @@ import OgMeta from "../components/OgMeta.astro";
     <footer class="sheet">
       <div class="wrap footer-line">
         <div class="footer-community">
-          <p class="footer-heading">Find me around the radio</p>
-          <nav class="footer-links" aria-label="Social and contact links">
-            <a href="https://www.instagram.com/islugabed/" target="_blank" rel="noreferrer"><span>Instagram</span><small>@islugabed</small></a>
-            <a href="https://www.instagram.com/iamannihilation/" target="_blank" rel="noreferrer"><span>Instagram</span><small>@iamannihilation</small></a>
-            <a href="https://www.linkedin.com/in/slugabed" target="_blank" rel="noreferrer"><span>LinkedIn</span><small>slugabed</small></a>
-            <a href="mailto:iamamansaini1@gmail.com"><span>Email</span><small>Say hello</small></a>
-            <a href="https://wa.me/919041951331" target="_blank" rel="noreferrer"><span>WhatsApp</span><small>+91 90419 51331</small></a>
-          </nav>
+          <details class="socials-disclosure">
+            <summary class="socials-toggle"><span>Find me around the radio</span><span class="socials-mark" aria-hidden="true">+</span></summary>
+            <nav class="footer-links" aria-label="Social and contact links">
+              <div class="instagram-links"><span class="social-name">Instagram</span><a href="https://www.instagram.com/islugabed/" target="_blank" rel="noreferrer">@islugabed</a><a href="https://www.instagram.com/iamannihilation/" target="_blank" rel="noreferrer">@iamannihilation</a></div>
+              <a href="https://www.linkedin.com/in/slugabed" target="_blank" rel="noreferrer"><span>LinkedIn</span><small>slugabed</small></a>
+              <a href="mailto:iamamansaini1@gmail.com"><span>Email</span><small>Say hello</small></a>
+              <a href="https://wa.me/919041951331" target="_blank" rel="noreferrer"><span>WhatsApp</span><small>+91 90419 51331</small></a>
+            </nav>
+          </details>
         </div>
         <div class="footer-support">
           <p class="footer-heading">Keep the signal going</p>
@@ -156,9 +157,17 @@ import OgMeta from "../components/OgMeta.astro";
       .footer-line { padding-block: 2.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1.5rem 3rem; }
       .footer-community { min-width: 0; }
       .footer-heading { margin: 0 0 0.8rem; color: var(--fg-faint); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; }
-      .footer-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+      .socials-toggle { min-height: 2.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 0.5rem 0.85rem; border: 1px solid var(--line); border-radius: 999px; color: var(--fg-dim); background: color-mix(in oklab, var(--card) 55%, transparent); font-size: 0.8125rem; cursor: pointer; list-style: none; transition: color var(--dur-1), border-color var(--dur-1), background var(--dur-1); }
+      .socials-toggle::-webkit-details-marker { display: none; }
+      .socials-toggle:hover { color: var(--fg); border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); background: var(--card); }
+      .socials-mark { color: var(--accent); font-size: 1rem; transition: transform var(--dur-1) var(--ease-out); }
+      .socials-disclosure[open] .socials-mark { transform: rotate(45deg); }
+      .footer-links { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-top: 0.65rem; }
       .footer-links a, .upi-link, .paypal-qr { min-height: 2.75rem; padding: 0.45rem 0.75rem; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in oklab, var(--card) 55%, transparent); color: var(--fg-dim); text-decoration: none; transition: transform var(--dur-1) var(--ease-out), border-color var(--dur-1), color var(--dur-1), background var(--dur-1); }
       .footer-links a { display: flex; align-items: center; gap: 0.45rem; font-size: 0.8125rem; }
+      .instagram-links { display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem; min-height: 2.75rem; padding: 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in oklab, var(--card) 55%, transparent); font-size: 0.8125rem; }
+      .instagram-links .social-name { color: var(--fg-faint); padding-inline: 0.25rem; }
+      .instagram-links a { min-height: auto; padding: 0.28rem 0.5rem; border: 0; background: transparent; }
       .footer-links small, .upi-link small, .paypal-qr small { color: var(--fg-faint); font-size: 0.75rem; }
       .footer-links a:hover, .upi-link:hover, .paypal-qr:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); color: var(--fg); background: var(--card); }
       .footer-support { display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
@@ -173,7 +182,7 @@ import OgMeta from "../components/OgMeta.astro";
         .footer-disclaimer { grid-column: auto; }
       }
       @media (prefers-reduced-motion: reduce) {
-        .footer-links a, .upi-link, .paypal-qr, .paypal-qr img { transition: none; }
+        .socials-toggle, .socials-mark, .footer-links a, .upi-link, .paypal-qr, .paypal-qr img { transition: none; }
       }
     </style>
 
