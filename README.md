@@ -2,7 +2,7 @@
 
 # AGAIN RADIO
 
-**24 hours of a life in progress.**  
+**24 hours of a life in progress.**
 *A synchronized, always-on fan broadcast for Fred again..'s catalogue, where every track carries the memory it came from.*
 
 [![Live Broadcast](https://img.shields.io/badge/Status-24%2F7_Synced_Broadcast-10b981?style=flat-square)](https://again-radio.pages.dev)
@@ -33,7 +33,7 @@ Fred again..'s music runs in one direction. It starts small and private: a voice
 ## Highlights
 
 ### 📻 Synchronized Global Broadcast
-- **Epoch-Synced Playback**: Station rotation loops from a fixed epoch (`2026-01-01T00:00:00Z`). Playback position is computed deterministically:  
+- **Epoch-Synced Playback**: Station rotation loops from a fixed epoch (`2026-01-01T00:00:00Z`). Playback position is computed deterministically:
   $$\text{position} = (\text{now} - \text{epoch}) \pmod{\text{totalRotationDuration}}$$
 - **$O(\log N)$ Binary Search Schedule**: Instant track and offset resolution inside multi-hour shows using `schedule.ts`.
 - **Zero-Latency "Back to Live"**: Explore tracklists or archive sets freely; return to the synchronized live broadcast with a single tap or keypress (`L`).
@@ -222,7 +222,7 @@ This project strictly adheres to digital ethics and music copyright standards:
 
 ## Disclaimer
 
-> **Fan project. Not affiliated with Fred again.. or Atlantic Records / Warner Music Group.**  
+> **Fan project. Not affiliated with Fred again.. or Atlantic Records / Warner Music Group.**
 > All music, recordings, and artwork belong to their respective copyright owners.
 
 <div align="center">
