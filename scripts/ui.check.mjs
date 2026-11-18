@@ -75,5 +75,34 @@ await finder.keyboard.press("/");
 await finder.keyboard.type("marea");
 await finder.waitForSelector(".rs-row:has-text('Marea') .rs-out", { timeout: 10_000 }).catch(() => fail("search: Marea not found as a YouTube link-out"));
 
+// A shared moment opens on that moment, off live, still waiting for the tune-in tap.
+const linked = await browser.newPage({ viewport: { width: 390, height: 844 } });
+await linked.addInitScript(() => {
+  document.addEventListener("radio:track", (e) => {
+    window.__firstTrack ??= e.detail.programId;
+    window.__firstEntry ??= e.detail.entry.title;
+  });
+});
+// Arrive through the share page, which must forward to the moment.
+await linked.goto(new URL("/p/boiler-room-london?t=1592", url).href, { waitUntil: "domcontentloaded" });
+await linked.waitForFunction(() => window.__firstTrack, null, { timeout: 15_000 }).catch(() => fail("link: no track emitted"));
+const first = await linked.evaluate(() => window.__firstTrack);
+if (first !== "boiler-room-london") await fail(`link: opened on "${first}", not boiler-room-london`);
+const entry = await linked.evaluate(() => window.__firstEntry);
+if (entry !== "Feelings") await fail(`link: t=1592 should land on Feelings, got "${entry}"`);
+if (!(await linked.locator("#rp-tune").count())) await fail("link: tune-in button missing");
+
+// Share: no share sheet in this shell, so the link is copied to the clipboard.
+const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, permissions: ["clipboard-read", "clipboard-write"] });
+const sharer = await ctx.newPage();
+await sharer.goto(url, { waitUntil: "domcontentloaded" });
+await sharer.waitForSelector("#rp-share", { state: "visible", timeout: 10_000 }).catch(() => fail("share: no #rp-share"));
+await sharer.waitForFunction(() => document.querySelector(".rp-credit")?.textContent?.trim(), null, { timeout: 15_000 }).catch(() => fail("share: no track on air"));
+await sharer.click("#rp-share");
+await sharer.waitForTimeout(400);
+const copied = await sharer.evaluate(() => navigator.clipboard.readText());
+if (!/\/p\/[a-z0-9-]+/i.test(copied)) await fail(`share: clipboard has "${copied}"`);
+if (!(await sharer.locator(".rp-toast:not([hidden])").count())) await fail("share: no confirmation shown");
+
 await browser.close();
 console.log("✓ ui");

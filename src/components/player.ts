@@ -1,5 +1,6 @@
 import { loadYT } from "../lib/yt.ts";
 import { tuneIn, type Point } from "./tune-in.ts";
+import { parseLink, resolveLink } from "../lib/share.ts";
 import { loadProgram } from "../lib/station.ts";
 import { entryAt } from "../lib/schedule.ts";
 import { creditText, stampText, videoProgram } from "../lib/live.ts";
@@ -116,9 +117,23 @@ class RadioPlayer extends HTMLElement {
     const [YT, slots] = await Promise.all([loadYT(), loadSlots()]);
     if (!slots.length) throw new Error("nothing to play");
     this.slots = slots;
-    const at = this.liveNow();
-    this.useSlot(at.index, at.cycle);
-    this.setAnchor(at.offset);
+    // A shared moment opens on that moment; anything unreadable just tunes to live.
+    const link = parseLink(location.search);
+    const linked = link && resolveLink(link, slots);
+    let start: number;
+    if (linked) {
+      this.prog = linked.program;
+      this.path = linked.path;
+      this.offAir();
+      this.shuffle.reset(linked.program.entries.length, entryAt(linked.program.entries, linked.offset)?.index ?? 0);
+      start = linked.offset;
+    } else {
+      const at = this.liveNow();
+      this.useSlot(at.index, at.cycle);
+      start = at.offset;
+    }
+    if (link) history.replaceState(null, "", location.pathname);
+    this.setAnchor(start);
     this.loaded = this.prog.youtubeId;
     void this.fit();
     const signal = this.ac.signal;
@@ -130,7 +145,7 @@ class RadioPlayer extends HTMLElement {
       playerVars: {
         enablejsapi: 1, controls: 0, modestbranding: 1, rel: 0, playsinline: 1,
         autoplay: 1, mute: 1, cc_load_policy: 0, iv_load_policy: 3, disablekb: 1,
-        start: at.offset, origin: window.location.origin,
+        start, origin: window.location.origin,
       },
       events: {
         onReady: () => {

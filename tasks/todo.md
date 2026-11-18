@@ -131,3 +131,13 @@ there); check on the live site and raise the 30% stop in `Player.astro` if neede
 - [x] `verify.mjs` validates songs.json; search test covers marea, adore u, leavemealone, ten, places to be, rumble, delilah, jungle; ui.check covers the link-out row
 
 Review: no official-video IDs yet (no keyless source); link-out is a YouTube search for "Fred again.. <title>".
+
+## Phase 16 — Share the moment (India launch)
+- [x] Deep links `/?p=<id>&t=<s>` open that moment off live, still muted until Tune in; bad links fall back to live; URL cleaned after load
+- [x] Share button in the transport: share sheet where there is one, else copies "Listening to <track>, <set>, on again radio <link>" with a toast
+- [x] `/p/<id>` page per set (20: 5 programmes + 15 catalogue sets) with OG/Twitter tags, forwarding to the moment (keeps `t`)
+- [x] Preview cards `public/og/*.jpg` (1200×630, ~43 KB, our type and colour only) and icons rendered by `node scripts/og.mjs`
+- [x] `manifest.webmanifest` + icons: install to home screen; no service worker
+- [x] `scripts/share.test.mjs`; ui.check covers share page forwarding (lands on Feelings at t=1592) and clipboard share
+
+Review: re-run `node scripts/og.mjs` and redeploy when sets are added, or the new set shares with the default card.

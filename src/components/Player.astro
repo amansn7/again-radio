@@ -26,6 +26,9 @@
       <button class="icon-btn rp-shuffle" id="rp-shuffle" type="button" aria-label="Shuffle this set" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3.5c2.5 0 4 1.5 5 5s2.5 5 5 5H20M4 17h3.5c1.3 0 2.3-.4 3-1.2M13.5 8.2c.7-.8 1.7-1.2 3-1.2H20M17 4l3 3-3 3M17 14l3 3-3 3"/></svg>
       </button>
+      <button class="icon-btn rp-share" id="rp-share" type="button" aria-label="Share this moment">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M8 8l4-4 4 4M6 12v6.5h12V12"/></svg>
+      </button>
       <button class="btn rp-back" id="rp-back" type="button">Back to live</button>
     </div>
     <details class="rp-keys">
@@ -33,6 +36,7 @@
       <p class="glass" data-glass>Space pauses, M mutes, arrows skip, Shift+L goes back to live</p>
     </details>
     <p class="meta rp-credit" aria-live="polite"></p>
+    <p class="rp-toast glass" data-glass role="status" hidden></p>
     <p class="rp-error" role="alert" hidden>
       The video didn't load. YouTube may be blocked on this network. Reload to try again.
     </p>
@@ -215,7 +219,23 @@
   @keyframes rp-fade { from { opacity: 0; } to { opacity: 1; } }
   @media (max-width: 639px) { .rp-tune { flex-basis: 100%; } }
   .rp-back { margin-left: 0.25rem; height: 2.5rem; }
-  .rp-shuffle svg { fill: none; }
+  .rp-shuffle svg, .rp-share svg { fill: none; }
+  .rp-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 1.5rem;
+    z-index: 5;
+    margin: 0;
+    padding: 0.625rem 1rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    color: var(--fg);
+    transform: translateX(-50%);
+    animation: rp-toast var(--dur-2) var(--ease-out);
+  }
+  .rp-toast[hidden] { display: none; }
+  @keyframes rp-toast { from { opacity: 0; transform: translate(-50%, 0.5rem); } }
+  @media (prefers-reduced-motion: reduce) { .rp-toast { animation: none; } }
   .rp-shuffle[aria-pressed="true"] {
     color: var(--accent);
     border-color: color-mix(in oklab, var(--accent) 70%, transparent);
@@ -255,5 +275,6 @@
 
 <script>
   import "./player.ts";
+  import "./share-button.ts";
   import "../lib/glass.ts";
 </script>

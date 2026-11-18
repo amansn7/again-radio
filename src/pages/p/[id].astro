@@ -1,0 +1,39 @@
+---
+// One page per shareable set: it carries the link preview, then forwards to the moment.
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import OgMeta from "../../components/OgMeta.astro";
+import { sharePrograms } from "../../lib/share.ts";
+import type { Program } from "../../lib/station.ts";
+
+export function getStaticPaths() {
+  const read = (p: string): unknown => JSON.parse(readFileSync(join(process.cwd(), "public", "data", p), "utf8"));
+  return sharePrograms(read).map((program) => ({ params: { id: program.id }, props: { program } }));
+}
+
+const { program } = Astro.props as { program: Program };
+const when = program.date
+  ? new Date(`${program.date}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" })
+  : "";
+const where = [program.venue, when].filter(Boolean).join(", ");
+const card = existsSync(join(process.cwd(), "public", "og", `${program.id}.jpg`)) ? `/og/${program.id}.jpg` : "/og/default.jpg";
+const target = `/?p=${program.id}`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{program.title} · again radio</title>
+    <meta name="description" content={`${where}. Tune in on again radio, a 24-hour fan radio for Fred again..`} />
+    <OgMeta title={program.title} description={`${where} · on again radio, a 24-hour fan radio`} image={card} path={`/p/${program.id}`} />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <script is:inline define:vars={{ target }}>
+      const t = new URLSearchParams(location.search).get("t");
+      location.replace(target + (t && /^\d+$/.test(t) ? `&t=${t}` : ""));
+    </script>
+  </head>
+  <body>
+    <p><a href={target}>Tune in to {program.title}</a></p>
+  </body>
+</html>

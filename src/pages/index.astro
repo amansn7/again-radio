@@ -9,6 +9,7 @@ import LiveStatus from "../components/LiveStatus.astro";
 import Search from "../components/Search.astro";
 import Dial from "../components/Dial.astro";
 import Archive from "../components/Archive.astro";
+import OgMeta from "../components/OgMeta.astro";
 ---
 
 <!doctype html>
@@ -19,6 +20,9 @@ import Archive from "../components/Archive.astro";
     <meta name="description" content="A 24-hour fan radio for Fred again..'s catalogue, where every track carries the memory it came from. Fan project, not affiliated." />
     <meta name="theme-color" content="#1c1815" />
     <title>Again Radio</title>
+    <OgMeta title="again radio" description="A 24-hour fan radio for Fred again..'s catalogue, where every track carries the memory it came from." image="/og/default.jpg" path="/" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="preload" href="/fonts/instrument-sans-var.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231c1815'/><path d='M6 19c3-6 5-6 7 0s4 6 6 0 4-6 7 0' fill='none' stroke='%23f2eee6' stroke-width='2.2' stroke-linecap='round'/></svg>" />

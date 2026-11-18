@@ -9,3 +9,6 @@
 
 /data/*
   Cache-Control: public, max-age=0, must-revalidate
+
+/og/*
+  Cache-Control: public, max-age=86400

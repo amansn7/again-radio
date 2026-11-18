@@ -83,7 +83,7 @@ function parseHourBlock(v: unknown, where: string): HourBlock {
   };
 }
 
-function parseStation(v: unknown, where: string): StationConfig {
+export function parseStation(v: unknown, where: string): StationConfig {
   if (!isRecord(v)) fail(where, "expected an object");
   const rotation = v.rotation;
   if (!Array.isArray(rotation)) fail(where, `"rotation" must be an array`);
@@ -133,7 +133,7 @@ function parseEntry(v: unknown, where: string): ProgramEntry {
   return entry;
 }
 
-function parseProgram(v: unknown, where: string): Program {
+export function parseProgram(v: unknown, where: string): Program {
   if (!isRecord(v)) fail(where, "expected an object");
   const entries = v.entries;
   if (!Array.isArray(entries)) fail(where, `"entries" must be an array`);
