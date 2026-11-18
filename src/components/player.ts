@@ -141,14 +141,14 @@ class RadioPlayer extends HTMLElement {
       videoId: this.prog.youtubeId,
       playerVars: {
         enablejsapi: 1, controls: 0, modestbranding: 1, rel: 0, playsinline: 1,
-        autoplay: 0, mute: 1, cc_load_policy: 0, iv_load_policy: 3, disablekb: 1,
+        autoplay: 1, mute: 1, cc_load_policy: 0, iv_load_policy: 3, disablekb: 1,
         start, origin: window.location.origin,
       },
       events: {
         onReady: () => {
           if (!this.muted) this.player?.unMute?.();
           this.player?.setVolume?.(this.fader.volume);
-          this.setHidden(".rp-tuning", true);
+          this.player?.playVideo();
           this.setLabels();
           this.emitState();
           this.emitTrack();
@@ -157,6 +157,7 @@ class RadioPlayer extends HTMLElement {
         onStateChange: (e) => {
           const playing = e.data === 1 || e.data === 3;
           if (e.data === 1) {
+            this.setHidden(".rp-tuning", true);
             // auto-captions cover the picture; the memory line is the caption here
             this.player?.unloadModule?.("captions");
             this.errors = 0;
