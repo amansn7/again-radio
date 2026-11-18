@@ -1,0 +1,3245 @@
+{
+  "checked": "2026-11-18",
+  "scope": "Released recordings with a track-level Producer, Co-producer, or Additional Producer credit for Fred Gibson, Fred again.., or a verified alias. Songwriting, engineering, mixing, performance, and artist billing alone do not qualify.",
+  "coverage": "135 of 162 MusicBrainz artist-catalog tracks have a track-level producer credit in this ledger; 26 remain unverified and 1 have a reviewed non-producer credit. Producer-only tracks are listed separately where confirmed.",
+  "songs": [
+    {
+      "id": "fred-prod-fighting-for",
+      "title": "Fighting For?",
+      "artists": [
+        "Roots Manuva"
+      ],
+      "release": "Bleeds",
+      "year": 2015,
+      "fredCreditName": "Fred Gibson",
+      "roles": [
+        "additional producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://music.apple.com/us/song/1033571078",
+          "type": "track credits",
+          "note": "Apple Music track credits list Fred Gibson as Additional Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-after-the-afterparty-feat-lil-yachty",
+      "title": "After the Afterparty (feat. Lil Yachty)",
+      "artists": [
+        "Charli xcx",
+        "Lil Yachty"
+      ],
+      "release": "After the Afterparty - Single",
+      "year": 2016,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://music.apple.com/us/song/1161690780",
+          "type": "track credits",
+          "note": "Apple Music track credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-kyle-i-found-you",
+      "title": "Kyle (i found you)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life",
+      "year": 2019,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-fred-again/elkynhkxgxd0b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-me-sorry",
+      "title": "Me (Sorry)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life",
+      "year": 2019,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-fred-again/elkynhkxgxd0b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-adam-act-like",
+      "title": "Adam (act like)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-fred-again/elkynhkxgxd0b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-charades",
+      "title": "Charades",
+      "artists": [
+        "Fred again..",
+        "Headie One"
+      ],
+      "release": "GANG",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/nz-en/album/gang-headie-one-x-fred-again/g75ov596xp7ta",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-chika-scared",
+      "title": "Chika (scared)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-fred-again/elkynhkxgxd0b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-gang",
+      "title": "GANG",
+      "artists": [
+        "Fred again..",
+        "Headie One"
+      ],
+      "release": "GANG",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/nz-en/album/gang-headie-one-x-fred-again/g75ov596xp7ta",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-judge-me-interlude",
+      "title": "Judge Me (interlude)",
+      "artists": [
+        "Fred again..",
+        "Headie One",
+        "FKA twigs"
+      ],
+      "release": "GANG",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/nz-en/album/gang-headie-one-x-fred-again/g75ov596xp7ta",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-julia-deep-diving",
+      "title": "Julia (deep diving)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-know-me",
+      "title": "Know Me",
+      "artists": [
+        "Fred again..",
+        "Headie One"
+      ],
+      "release": "GANG",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/nz-en/album/gang-headie-one-x-fred-again/g75ov596xp7ta",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-kyren-my-son",
+      "title": "Kyren (My Son)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-fred-again/elkynhkxgxd0b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-marnie-wish-i-had-u",
+      "title": "Marnie (wish i had u)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-fred-again/elkynhkxgxd0b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-smoke",
+      "title": "Smoke",
+      "artists": [
+        "Fred again..",
+        "Headie One",
+        "Jamie xx"
+      ],
+      "release": "GANG",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/nz-en/album/gang-headie-one-x-fred-again/g75ov596xp7ta",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-soldiers",
+      "title": "SOLDIERS",
+      "artists": [
+        "Fred again..",
+        "Headie One",
+        "Sampha"
+      ],
+      "release": "GANG",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/nz-en/album/gang-headie-one-x-fred-again/g75ov596xp7ta",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-told",
+      "title": "Told",
+      "artists": [
+        "Fred again..",
+        "Headie One"
+      ],
+      "release": "GANG",
+      "year": 2020,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/nz-en/album/gang-headie-one-x-fred-again/g75ov596xp7ta",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-15th-october-2021",
+      "title": "15th October 2021",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-adam-interlude",
+      "title": "Adam (interlude)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-angie-i-ve-been-lost",
+      "title": "Angie (i’ve been lost)",
+      "artists": [
+        "Fred again..",
+        "Angie McMahon"
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-angie-interlude",
+      "title": "Angie (interlude)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-april-14th-2020",
+      "title": "April 14th 2020",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-bad-habits",
+      "title": "Bad Habits",
+      "artists": [
+        "Ed Sheeran"
+      ],
+      "release": "=",
+      "year": 2021,
+      "fredCreditName": "FRED",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.youtube.com/watch?v=hJWSZDJb-W4",
+          "type": "track credits",
+          "note": "Official Ed Sheeran/Atlantic credits list FRED as Producer; identity supported by the cited Fred Gibson profile."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-big-hen-steal-my-joy",
+      "title": "Big Hen (steal my joy)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-billie-interlude",
+      "title": "Billie (interlude)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-billie-loving-arms",
+      "title": "Billie (loving arms)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-carlos-interlude",
+      "title": "Carlos (interlude)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-carlos-make-it-thru",
+      "title": "Carlos (make it thru)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-catrin-the-city",
+      "title": "Catrin (The City)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-december-17th-2020",
+      "title": "December 17th 2020",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-dermot-see-yourself-in-my-eyes",
+      "title": "Dermot (see yourself in my eyes)",
+      "artists": [
+        "Fred again..",
+        "Dermot Kennedy"
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-don-t-judge-me",
+      "title": "Don’t Judge Me",
+      "artists": [
+        "Fred again..",
+        "FKA twigs",
+        "Headie One"
+      ],
+      "release": "Don’t Judge Me",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/dont-judge-me-fred-again-headie-one-raphael-saadiq/",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-faisal-envelops-me",
+      "title": "Faisal (envelops me)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-february-2nd-2021",
+      "title": "February 2nd 2021",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-gigi-what-you-went-through",
+      "title": "Gigi (What You Went Through)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-hackney-interlude",
+      "title": "Hackney (interlude)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-hannah-the-sun",
+      "title": "Hannah (the sun)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-kahan-last-year",
+      "title": "Kahan (last year)",
+      "artists": [
+        "Fred again..",
+        "Kodak Black"
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-lydia-please-make-it-better",
+      "title": "Lydia (please make it better)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-marco-and-everyone",
+      "title": "Marco (and Everyone)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-marea-we-ve-lost-dancing",
+      "title": "Marea (we’ve lost dancing)",
+      "artists": [
+        "Fred again..",
+        "The Blessed Madonna"
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-me-heavy",
+      "title": "Me (heavy)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-mollie-hear-your-name",
+      "title": "Mollie (Hear Your Name)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-sabrina-i-am-a-party",
+      "title": "Sabrina (i am a party)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-tanya-maybe-life",
+      "title": "Tanya (Maybe Life)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-tate-how-i-feel",
+      "title": "Tate (how i feel)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-tayla-every-night",
+      "title": "Tayla (Every Night)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-yasminah-see-your-face-again",
+      "title": "Yasminah (see your face again)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life (April 14 - December 17 2020)",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-april-14-december-17-2020-fred-again/yh2tkxef06pva",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-admit-it-u-dont-want-2",
+      "title": "Admit It (u dont want 2)",
+      "artists": [
+        "Fred again..",
+        "I. JORDAN"
+      ],
+      "release": "USB",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-baby-again",
+      "title": "Baby again..",
+      "artists": [
+        "Fred again..",
+        "Skrillex",
+        "Four Tet"
+      ],
+      "release": "USB",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-berwyngesaffneighbours",
+      "title": "BerwynGesaffNeighbours",
+      "artists": [
+        "Fred again..",
+        "BERWYN"
+      ],
+      "release": "USB",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-bleu-better-with-time",
+      "title": "Bleu (better with time)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-catrin-liverpool-street-station",
+      "title": "Catrin (Liverpool Street Station)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 Piano (February 2 - October 15 2021)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-piano-ep-february-2-october-15-2021-fred-again/tw8mpslzldc2b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-clara-courage-my-soul",
+      "title": "Clara (courage my soul)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-danielle-smile-on-my-face",
+      "title": "Danielle (smile on my face)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-delilah-pull-me-out-of-this",
+      "title": "Delilah (pull me out of this)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-dermot-all-that-i-got-is-you",
+      "title": "Dermot (all that i got is you)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-eyelar-shutters",
+      "title": "Eyelar (shutters)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-faisal-london-bridge-station",
+      "title": "Faisal (London Bridge Station)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 Piano (February 2 - October 15 2021)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-piano-ep-february-2-october-15-2021-fred-again/tw8mpslzldc2b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-itsnotreeaallllllll",
+      "title": "ItsNotREEAALLLLLLLL",
+      "artists": [
+        "Fred again..",
+        "Duoteque",
+        "orion sun"
+      ],
+      "release": "USB",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-january-1st-2022",
+      "title": "January 1st 2022",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-jungle",
+      "title": "Jungle",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "USB",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-kahan-mallaig-station",
+      "title": "Kahan (Mallaig Station)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 Piano (February 2 - October 15 2021)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-piano-ep-february-2-october-15-2021-fred-again/tw8mpslzldc2b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-kammy-like-i-do",
+      "title": "Kammy (like i do)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-kelly-nightmare",
+      "title": "Kelly (nightmare)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-leavemealone",
+      "title": "leavemealone",
+      "artists": [
+        "Fred again..",
+        "Baby Keem"
+      ],
+      "release": "USB",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-lights-out",
+      "title": "Lights Out",
+      "artists": [
+        "Fred again..",
+        "Romy",
+        "HAAi"
+      ],
+      "release": "USB",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-mustafa-time-to-move-you",
+      "title": "Mustafa (time to move you)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-nathan-still-breathing",
+      "title": "Nathan (still breathing)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-roze-euston-station",
+      "title": "Roze (Euston Station)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 Piano (February 2 - October 15 2021)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-piano-ep-february-2-october-15-2021-fred-again/tw8mpslzldc2b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-rumble",
+      "title": "Rumble",
+      "artists": [
+        "Fred again..",
+        "Skrillex",
+        "Flowdan"
+      ],
+      "release": "USB",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-september-9th-2022",
+      "title": "September 9th 2022",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-stayinit",
+      "title": "stayinit",
+      "artists": [
+        "Fred again..",
+        "Lil Yachty",
+        "Overmono"
+      ],
+      "release": "USB",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-tanya-salisbury-station",
+      "title": "Tanya (Salisbury Station)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 2 Piano (February 2 - October 15 2021)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-piano-ep-february-2-october-15-2021-fred-again/tw8mpslzldc2b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-winnie-end-of-me",
+      "title": "Winnie (end of me)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 (January 1 - September 9 2022)",
+      "year": 2022,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/gb-en/album/actual-life-3-january-1-september-9-2022-fred-again/w36xbir8qucna",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-adore-u",
+      "title": "adore u",
+      "artists": [
+        "Fred again..",
+        "Obongjayar"
+      ],
+      "release": "ten days",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-berwyn-kennington-tube",
+      "title": "Berwyn (kennington tube)",
+      "artists": [
+        "Fred again..",
+        "Dermot Kennedy"
+      ],
+      "release": "Actual Life 3 Piano (January 1 - September 9 2022)",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-3-piano-ep-fred-again/dm0b9e9blw0ia",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-chest",
+      "title": "Chest",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-cmon",
+      "title": "Cmon",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-come-on-home",
+      "title": "Come On Home",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-enough",
+      "title": "Enough",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-eyelar-stamford-street",
+      "title": "Eyelar (stamford street)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 Piano (January 1 - September 9 2022)",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-3-piano-ep-fred-again/dm0b9e9blw0ia",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-follow",
+      "title": "Follow",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-i-saw-you",
+      "title": "I Saw You",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-mustafa-southbank",
+      "title": "Mustafa (southbank)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 Piano (January 1 - September 9 2022)",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-3-piano-ep-fred-again/dm0b9e9blw0ia",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-nathan-varner-road",
+      "title": "Nathan (varner road)",
+      "artists": [
+        "Fred again..",
+        "Nathan Archie"
+      ],
+      "release": "Actual Life 3 Piano (January 1 - September 9 2022)",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-3-piano-ep-fred-again/dm0b9e9blw0ia",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-pause",
+      "title": "Pause",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-radio",
+      "title": "Radio",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-safety",
+      "title": "Safety",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-secret",
+      "title": "Secret",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-ten",
+      "title": "ten",
+      "artists": [
+        "Fred again..",
+        "Jozzy",
+        "Jim Legxacy"
+      ],
+      "release": "ten days",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-trying",
+      "title": "Trying",
+      "artists": [
+        "Fred again..",
+        "Brian Eno"
+      ],
+      "release": "Secret Life",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/secret-life-fred-again-brian-eno/v0kenfw6hhwqb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-winnie-rosslyn-crescent",
+      "title": "Winnie (rosslyn crescent)",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "Actual Life 3 Piano (January 1 - September 9 2022)",
+      "year": 2023,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-3-piano-ep-fred-again/dm0b9e9blw0ia",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-eight",
+      "title": ".eight",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-five",
+      "title": ".five",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-four",
+      "title": ".four",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-nine",
+      "title": ".nine",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-one",
+      "title": ".one",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-seven",
+      "title": ".seven",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-six",
+      "title": ".six",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-three",
+      "title": ".three",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-two",
+      "title": ".two",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-backseat",
+      "title": "backseat",
+      "artists": [
+        "Fred again..",
+        "The Japanese House",
+        "Scott Hardkiss"
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-fear-less",
+      "title": "fear less",
+      "artists": [
+        "Fred again..",
+        "Sampha"
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-glow",
+      "title": "glow",
+      "artists": [
+        "Fred again..",
+        "Duskus",
+        "Four Tet",
+        "Joy Anonymous",
+        "Skrillex"
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-just-stand-there",
+      "title": "just stand there",
+      "artists": [
+        "Fred again..",
+        "SOAK"
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-peace-u-need",
+      "title": "peace u need",
+      "artists": [
+        "Fred again..",
+        "Joy Anonymous"
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-places-to-be",
+      "title": "places to be",
+      "artists": [
+        "Fred again..",
+        "Anderson .Paak",
+        "CHIKA"
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-where-will-i-be",
+      "title": "where will i be",
+      "artists": [
+        "Fred again..",
+        "Emmylou Harris"
+      ],
+      "release": "ten days",
+      "year": 2024,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/ten-days-fred-again/pglnwqmrwe67b",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-feisty",
+      "title": "..FEISTY",
+      "artists": [
+        "Fred again..",
+        "Bïa"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-21-years",
+      "title": "21 Years",
+      "artists": [
+        "Fred again..",
+        "Skepta"
+      ],
+      "release": "Skepta .. Fred",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/skepta-fred-skepta-x-fred-again/qlnbyngnbjjlb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-ambery",
+      "title": "Ambery",
+      "artists": [
+        "Fred again..",
+        "Floating Points"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-back-2-back",
+      "title": "Back 2 Back",
+      "artists": [
+        "Fred again..",
+        "Skepta"
+      ],
+      "release": "Skepta .. Fred",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/skepta-fred-skepta-x-fred-again/qlnbyngnbjjlb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-facilita",
+      "title": "Facilita",
+      "artists": [
+        "Fred again..",
+        "Caribou",
+        "Menor Teteu"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-hardstyle-2",
+      "title": "HARDSTYLE 2",
+      "artists": [
+        "Fred again..",
+        "KETTAMA",
+        "Shady Nasty"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-i-luv-u",
+      "title": "I Luv U",
+      "artists": [
+        "Fred again..",
+        "Wallfacer"
+      ],
+      "release": "I Luv U",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/i-luv-u-fred-again-wallfacer/",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-icey",
+      "title": "ICEY..",
+      "artists": [
+        "Fred again..",
+        "Bïa"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-last-1s-left",
+      "title": "Last 1s Left",
+      "artists": [
+        "Fred again..",
+        "Skepta"
+      ],
+      "release": "Skepta .. Fred",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/skepta-fred-skepta-x-fred-again/qlnbyngnbjjlb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-lights-burn-dimmer",
+      "title": "Lights Burn Dimmer",
+      "artists": [
+        "Fred again.."
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-london",
+      "title": "London",
+      "artists": [
+        "Fred again..",
+        "Skepta"
+      ],
+      "release": "Skepta .. Fred",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/skepta-fred-skepta-x-fred-again/qlnbyngnbjjlb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-ok-ok",
+      "title": "OK OK",
+      "artists": [
+        "Fred again..",
+        "Danny Brown",
+        "BEAM",
+        "PARISI",
+        "JPEGMAFIA"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-solo",
+      "title": "solo",
+      "artists": [
+        "Fred again..",
+        "Blanco"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-talk-of-the-town",
+      "title": "Talk of the Town",
+      "artists": [
+        "Fred again..",
+        "Sammy Virji",
+        "Reggie"
+      ],
+      "release": "Talk of the Town",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/talk-of-the-town-fred-again-sammy-virji-reggie/etyi20lk5w3ic",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-victory-lap",
+      "title": "Victory Lap",
+      "artists": [
+        "Fred again..",
+        "Skepta",
+        "PlaqueBoyMax"
+      ],
+      "release": "Skepta .. Fred",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/skepta-fred-skepta-x-fred-again/qlnbyngnbjjlb",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-victory-lap-five",
+      "title": "Victory Lap Five",
+      "artists": [
+        "Fred again..",
+        "Skepta",
+        "PlaqueBoyMax",
+        "Denzel Curry",
+        "Hanumankind",
+        "That Mexican OT",
+        "D Double E",
+        "LYNY"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-winny",
+      "title": "Winny",
+      "artists": [
+        "Fred again..",
+        "Sammy Virji",
+        "Winny"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-you-re-a-star",
+      "title": "you’re a star",
+      "artists": [
+        "Fred again..",
+        "Amyl and the Sniffers"
+      ],
+      "release": "USB002",
+      "year": 2025,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/usb-fred-again/mtuk6su8ngrag",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-alvafro",
+      "title": "Alvafro",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-benjy-chord",
+      "title": "benjy chord",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-bonita",
+      "title": "Bonita",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-film-scene-soundtrack",
+      "title": "Film Scene Soundtrack",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-halo",
+      "title": "Halo",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA",
+        "Lil Yachty"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-hey-hey",
+      "title": "Hey Hey",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-i-wish-it-wasnt",
+      "title": "I wish it wasnt",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-mabe",
+      "title": "Mabe",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA",
+        "Mabe Fratti"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-piensas-en-mi",
+      "title": "Piensas En Mi",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-quiereme",
+      "title": "Quiereme",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-scared",
+      "title": "scared",
+      "artists": [
+        "Fred again..",
+        "Young Thug"
+      ],
+      "release": "scared",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/scared-fred-again-young-thug/b0govnfzbsqia",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    },
+    {
+      "id": "fred-prod-te-estoy-correteando",
+      "title": "Te Estoy Correteando",
+      "artists": [
+        "Fred again..",
+        "LATIN MAFIA"
+      ],
+      "release": "9 months & 50 hours",
+      "year": 2026,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/9-months-50-hours-fred-again-latin-mafia/h2mpnngb24dex",
+          "type": "track credits",
+          "note": "Qobuz track-level credits list Fred again.. as Producer."
+        }
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "eno-hyde-someday-world",
+      "title": "Someday World (tracks 1–9)",
+      "release": "Someday World",
+      "year": 2014,
+      "fredCreditName": "Fred Gibson",
+      "roles": [
+        "producer"
+      ],
+      "status": "release-level; track mapping needed",
+      "sources": [
+        {
+          "url": "https://musicbrainz.org/release/8778e8a2-5d11-4d06-97fa-80c0ccf08e66",
+          "type": "release credits",
+          "note": "Map the release-level producer relationships to individual tracks before counting them."
+        }
+      ]
+    },
+    {
+      "id": "maisie-peters-elvis-song",
+      "title": "Elvis Song",
+      "release": "You Signed Up for This",
+      "year": 2021,
+      "fredCreditName": "Fred again..",
+      "roles": [
+        "producer"
+      ],
+      "status": "secondary source; official credit needed",
+      "sources": [
+        {
+          "url": "https://readdork.com/track/maisie-peters-elvis-song",
+          "type": "track profile",
+          "note": "Secondary track profile identifies Fred again.. as producer; not counted as verified."
+        }
+      ]
+    },
+    {
+      "id": "roots-manuva-bleeds-unspecified",
+      "title": "Bleeds (unspecified additional tracks)",
+      "release": "Bleeds",
+      "year": 2015,
+      "fredCreditName": "Fred",
+      "roles": [
+        "production assistance"
+      ],
+      "status": "release-level; track mapping needed",
+      "sources": [
+        {
+          "url": "https://ninjatune.net/release/roots-manuva/bleeds",
+          "type": "label release page",
+          "note": "Label notes production assistance without specifying tracks; not counted as verified."
+        }
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "id": "actual-life-2-roze-forgive",
+      "title": "Roze (Forgive)",
+      "release": "Actual Life 2 (February 2 - October 15 2021)",
+      "year": 2021,
+      "status": "not counted: no Fred producer credit listed",
+      "sources": [
+        {
+          "url": "https://www.qobuz.com/us-en/album/actual-life-2-february-2-october-15-2021-fred-again/k7p4gnsxxy3bc",
+          "type": "track credits",
+          "note": "Qobuz lists Avery Wilson as Producer and Fred again.. as composer, mixer, engineer, programmer, vocalist, and main artist, but not Producer."
+        }
+      ]
+    }
+  ],
+  "reconciliation": {
+    "source": "https://musicbrainz.org/artist/bca46a0c-25c9-42ca-98c2-e64c8a5e337e",
+    "artistCatalogEntries": 162,
+    "verifiedArtistCatalogEntries": 135,
+    "unresolvedArtistCatalogEntries": 26,
+    "explicitlyExcludedArtistCatalogEntries": 1,
+    "unresolved": [
+      {
+        "title": "Julie (Stay)",
+        "release": "Julie (Stay)",
+        "year": 2019,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Tyron (interlude)",
+        "release": "GANG",
+        "year": 2020,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Jessie (i miss you)",
+        "release": "Jessie (i miss you)",
+        "year": 2020,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Diana (You Don’t Even Know)",
+        "release": "Diana (You Don’t Even Know)",
+        "year": 2021,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Kyle (Northern Line)",
+        "release": "Actual Life Piano (April 14 - December 17 2020)",
+        "year": 2021,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Julia (Gatwick Airport)",
+        "release": "Actual Life Piano (April 14 - December 17 2020)",
+        "year": 2021,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Yasminah (Alexanderplatz Station, Berlin)",
+        "release": "Actual Life Piano (April 14 - December 17 2020)",
+        "year": 2021,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "17th December 2020 (Waterloo Station)",
+        "release": "Actual Life Piano (April 14 - December 17 2020)",
+        "year": 2021,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Baxter (these are my friends)",
+        "release": "Baxter (these are my friends)",
+        "year": 2021,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Homies",
+        "release": "Hannah (the sun)",
+        "year": 2021,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Turn On the Lights again..",
+        "release": "USB",
+        "year": 2022,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Admit It (u don’t want 2)",
+        "release": "Admit It (u don’t want 2)",
+        "year": 2022,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Clara (the night is dark)",
+        "release": "Clara (the night is dark)",
+        "year": 2022,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Strong",
+        "release": "Strong",
+        "year": 2022,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Mike (desert island duvet)",
+        "release": "Mike (desert island duvet)",
+        "year": 2023,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "little mystery",
+        "release": "two more days",
+        "year": 2024,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "light dark light",
+        "release": "two more days",
+        "year": 2024,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Air Maxes",
+        "release": "Air Maxes",
+        "year": 2025,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Victory Lap Two",
+        "release": "Victory Lap Two",
+        "year": 2025,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Victory Lap Three",
+        "release": "Victory Lap Three",
+        "year": 2025,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Victory Lap Four",
+        "release": "Victory Lap Four",
+        "year": 2025,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "OGdub",
+        "release": "OGdub",
+        "year": 2025,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Piccolo",
+        "release": "USB002",
+        "year": 2025,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "This is Real (Disappear)",
+        "release": "This is Real (Disappear)",
+        "year": 2026,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "DID IT AGAIN",
+        "release": "DID IT AGAIN",
+        "year": 2026,
+        "status": "credit not yet verified"
+      },
+      {
+        "title": "Sexy Magic",
+        "release": "Sexy Magic",
+        "year": 2026,
+        "status": "credit not yet verified"
+      }
+    ]
+  }
+}

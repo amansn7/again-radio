@@ -103,6 +103,24 @@ function main() {
       titles.add(k);
     });
   }
+  const productionPath = join(DATA, "production.json");
+  if (existsSync(productionPath)) {
+    const production = JSON.parse(readFileSync(productionPath, "utf8"));
+    const ids = new Set();
+    for (const [group, rows] of [["songs", production.songs ?? []], ["candidates", production.candidates ?? []]]) {
+      if (!Array.isArray(rows)) { fail(`production.json: ${group} must be a list`); continue; }
+      rows.forEach((r, i) => {
+        const at = `production.json ${group} ${i} (${r?.title ?? "?"})`;
+        if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(r?.id ?? "")) fail(`${at}: bad id`);
+        if (ids.has(r?.id)) fail(`${at}: duplicate id`);
+        ids.add(r?.id);
+        if (!String(r?.title ?? "").trim() || !String(r?.release ?? "").trim() || !Number.isInteger(r?.year)) fail(`${at}: needs title, release, year`);
+        if (!Array.isArray(r?.roles) || !r.roles.length || !r.roles.every((role) => typeof role === "string" && role.trim())) fail(`${at}: needs credited roles`);
+        if (!Array.isArray(r?.sources) || !r.sources.length || !r.sources.every((s) => /^https:\/\//.test(s?.url ?? "") && String(s?.type ?? "").trim() && String(s?.note ?? "").trim())) fail(`${at}: needs source URLs, types, and notes`);
+      });
+    }
+    if (!String(production.scope ?? "").trim() || !String(production.coverage ?? "").trim()) fail("production.json: document scope and coverage limits");
+  }
   const apath = join(DATA, "albums.json");
   if (existsSync(apath)) {
     const a = JSON.parse(readFileSync(apath, "utf8"));

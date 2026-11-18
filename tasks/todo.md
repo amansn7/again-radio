@@ -141,3 +141,14 @@ Review: no official-video IDs yet (no keyless source); link-out is a YouTube sea
 - [x] `scripts/share.test.mjs`; ui.check covers share page forwarding (lands on Feelings at t=1592) and clipboard share
 
 Review: re-run `node scripts/og.mjs` and redeploy when sets are added, or the new set shares with the default card.
+## Production-credit catalogue reconciliation (snapshot 2026-11-18)
+- [x] Record scope and evidence rules in a separate `public/data/production.json` ledger; keep radio rotation and the existing 162-title MusicBrainz artist catalog separate
+- [x] Reconcile all 162 current artist-catalog entries into track-credit verified, explicit non-producer exclusion, or unresolved, with unresolved titles retained in the ledger
+- [x] Add 135 verified artist-catalog track credits, one reviewed exclusion (“Roze (Forgive)”), and 26 unresolved credits
+- [x] Add three verified producer-only tracks found in this pass: Roots Manuva “Fighting For?”, Charli xcx “After the Afterparty”, and Ed Sheeran “Bad Habits”
+- [x] Keep three leads separate from verified counts: *Someday World* track mapping, *Bleeds* unspecified assistance, and Maisie Peters “Elvis Song” (secondary source only)
+- [ ] Extend producer-only research across earlier aliases and external artist catalogs; this pass is not an all-career completeness claim
+- [ ] Add verified producer-only records to listener search after deciding their display and playback behavior
+- [ ] Add playable tracks to rotation only when official YouTube embed IDs and required track facts have sources
+
+Coverage: 138 verified total (135 matching the existing 162-title artist catalog, plus 3 producer-only); 26 artist-catalog entries still need track-level production-credit checks, and one entry is explicitly excluded. This is a reconciled snapshot of the current catalog, not a complete all-career production discography.
