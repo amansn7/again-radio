@@ -94,8 +94,11 @@ export function buildIndex(src: Sources): Doc[] {
       docs.push(d);
     }
   }
-  // A song already on air is found as its moments; the rest link out to YouTube.
-  const onAir = new Set(src.programs.flatMap(({ program: p }) => p.entries.map((e) => norm(e.title ?? ""))));
+  // A song the radio can play (catalogue or a set) is found there; only the rest link out to YouTube.
+  const onAir = new Set([
+    ...src.catalogue.map((c) => norm(c.song ?? c.title)),
+    ...src.programs.flatMap(({ program: p }) => p.entries.map((e) => norm(e.title ?? ""))),
+  ]);
   for (const s of src.songs) {
     if (onAir.has(norm(s.title))) continue;
     const by = s.with?.length ? ` · with ${s.with.join(", ")}` : "";

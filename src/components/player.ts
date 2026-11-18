@@ -177,12 +177,15 @@ class RadioPlayer extends HTMLElement {
         onError: () => {
           this.dataset.novideo = "";
           this.bad.add(this.prog.youtubeId);
+          // A seek on the broken player never errors again, so the next load must be a real one.
+          this.loaded = "";
           if (++this.errors >= 3) {
             this.setHidden(".rp-tuning", true);
             this.setHidden(".rp-error", false);
             return;
           }
-          this.advance();
+          // Shuffle and off-air picks stay inside this broken video; live skips it.
+          this.goLive(FADE_AUTO_MS);
         },
       },
     });
@@ -403,6 +406,8 @@ class RadioPlayer extends HTMLElement {
       );
     }
     if (Date.now() - this.anchorAt < SETTLE_MS || this.fader.busy) return;
+    // ENDED inside the settle window is ignored as possibly stale; if it was real, the state still says so.
+    if (this.player.getPlayerState?.() === 0) return this.advance();
     if (this.playing) {
       const lead = document.hidden ? 0 : FADE_AUTO_MS / 1000;
       if (this.shuffle.on) {

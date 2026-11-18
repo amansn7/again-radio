@@ -111,6 +111,7 @@ class RadioSearch extends HTMLElement {
       this.input.removeAttribute("aria-activedescendant");
       return;
     }
+    this.index ??= loadSources().then(buildIndex);
     const pending = this.index;
     this.results.setAttribute("aria-busy", "true");
     this.list.hidden = true;

@@ -49,7 +49,8 @@ function frame() {
   raf = 0;
   if (document.hidden || still?.matches || !subs.size) return;
   const time = performance.now();
-  if (time - lastFrame < FRAME_MS) {
+  // 2ms slack: two 60Hz vsyncs (~33.3ms) must not miss a 33.33ms budget.
+  if (time - lastFrame < FRAME_MS - 2) {
     raf = requestAnimationFrame(frame);
     return;
   }

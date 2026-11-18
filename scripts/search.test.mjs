@@ -37,6 +37,8 @@ has("delhi", (d) => d.group === "On tour", "tour date");
 for (const q of ["marea", "adore u", "leavemealone", "ten", "places to be", "rumble", "delilah", "jungle"])
   has(q, (d) => d.group === "Songs" || d.group === "In sets", "a song or a moment");
 has("marea", (d) => d.group === "Songs" && d.action.type === "link" && d.action.url.startsWith("https://www.youtube.com/"), "a YouTube link-out");
+has("kyle", (d) => d.action.type === "video" && d.title === "Kyle (i found you)", "the catalogue song as a video action");
+if (search(index, "found you").some((d) => d.action.type === "link")) fail("a catalogue song must not also link out");
 has("marea", (d) => d.group === "Releases" && d.title.startsWith("Actual Life (April"), "its release");
 has("hey hey", (d) => d.group === "Songs" && d.title === "Hey Hey" && d.context.includes("9 months & 50 hours"), "Hey Hey from 9 Months & 50 Hours");
 has("9 months 50 hours", (d) => d.group === "Releases" && d.title === "9 Months & 50 Hours", "the latest release");
