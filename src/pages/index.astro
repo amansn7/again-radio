@@ -60,22 +60,25 @@ import OgMeta from "../components/OgMeta.astro";
 
     <footer class="sheet">
       <div class="wrap footer-line">
-        <nav class="footer-links" aria-label="Social and contact links">
-          <a href="https://www.instagram.com/islugabed/" target="_blank" rel="noreferrer">Instagram · @islugabed</a>
-          <a href="https://www.instagram.com/iamannihilation/" target="_blank" rel="noreferrer">Instagram · @iamannihilation</a>
-          <a href="https://www.linkedin.com/in/iamamansaini/" target="_blank" rel="noreferrer">LinkedIn · iamamansaini</a>
-          <a href="mailto:iamamansaini1@gmail.com">Email · iamamansaini1@gmail.com</a>
-          <a href="https://wa.me/919041951331" target="_blank" rel="noreferrer">WhatsApp · +91 90419 51331</a>
-        </nav>
+        <div class="footer-community">
+          <p class="footer-heading">Find me around the radio</p>
+          <nav class="footer-links" aria-label="Social and contact links">
+            <a href="https://www.instagram.com/islugabed/" target="_blank" rel="noreferrer"><span>Instagram</span><small>@islugabed</small></a>
+            <a href="https://www.instagram.com/iamannihilation/" target="_blank" rel="noreferrer"><span>Instagram</span><small>@iamannihilation</small></a>
+            <a href="https://www.linkedin.com/in/slugabed" target="_blank" rel="noreferrer"><span>LinkedIn</span><small>slugabed</small></a>
+            <a href="mailto:iamamansaini1@gmail.com"><span>Email</span><small>Say hello</small></a>
+            <a href="https://wa.me/919041951331" target="_blank" rel="noreferrer"><span>WhatsApp</span><small>+91 90419 51331</small></a>
+          </nav>
+        </div>
         <div class="footer-support">
-          <p class="meta">Buy me a coffee</p>
-          <a href="upi://pay?pa=amansn7@oksbi" class="upi-link">UPI · amansn7@oksbi</a>
-          <div class="paypal-support">
-            <a class="paypal-qr" href="/images/paypal-qr.png" target="_blank" rel="noreferrer" aria-label="Open PayPal QR code">
-              <img src="/images/paypal-qr.png" alt="PayPal QR code" loading="lazy" />
-              <span>PayPal · scan to support</span>
-            </a>
-          </div>
+          <p class="footer-heading">Keep the signal going</p>
+          <a href="upi://pay?pa=amansn7@oksbi&pn=Aman%20Saini&cu=INR" class="upi-link">
+            <span>Buy me a coffee with UPI</span><small>GPay, PhonePe or another UPI app ↗</small>
+          </a>
+          <a class="paypal-qr" href="/images/paypal-qr.png" target="_blank" rel="noreferrer" aria-label="Open full-size PayPal QR code">
+            <img src="/images/paypal-qr.png" alt="" loading="lazy" />
+            <span>PayPal QR <small>Open to scan</small></span>
+          </a>
         </div>
         <p class="meta footer-disclaimer">Fan project. Not affiliated with Fred again.. All music &copy; its owners.</p>
       </div>
@@ -151,18 +154,26 @@ import OgMeta from "../components/OgMeta.astro";
         .hero-name { width: 62%; }
       }
       .footer-line { padding-block: 2.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1.5rem 3rem; }
-      .footer-links { display: flex; flex-wrap: wrap; align-content: start; gap: 0.5rem 1.25rem; }
-      .footer-links a, .upi-link { color: var(--fg-dim); font-size: 0.875rem; text-decoration: none; }
-      .footer-links a:hover, .upi-link:hover { color: var(--fg); }
-      .footer-support { display: flex; flex-direction: column; gap: 0.35rem; }
-      .footer-support p { margin: 0; }
-      .paypal-qr { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--fg-faint); font-size: 0.75rem; text-decoration: none; }
-      .paypal-qr img { width: 1.5rem; height: 1.5rem; border-radius: 3px; opacity: 0.72; transition: opacity var(--dur-1); }
+      .footer-community { min-width: 0; }
+      .footer-heading { margin: 0 0 0.8rem; color: var(--fg-faint); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; }
+      .footer-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+      .footer-links a, .upi-link, .paypal-qr { min-height: 2.75rem; padding: 0.45rem 0.75rem; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in oklab, var(--card) 55%, transparent); color: var(--fg-dim); text-decoration: none; transition: transform var(--dur-1) var(--ease-out), border-color var(--dur-1), color var(--dur-1), background var(--dur-1); }
+      .footer-links a { display: flex; align-items: center; gap: 0.45rem; font-size: 0.8125rem; }
+      .footer-links small, .upi-link small, .paypal-qr small { color: var(--fg-faint); font-size: 0.75rem; }
+      .footer-links a:hover, .upi-link:hover, .paypal-qr:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); color: var(--fg); background: var(--card); }
+      .footer-support { display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .upi-link { display: flex; flex-direction: column; justify-content: center; gap: 0.1rem; border-radius: 1rem; }
+      .paypal-qr { display: flex; align-items: center; gap: 0.6rem; border-radius: 1rem; font-size: 0.8125rem; }
+      .paypal-qr img { width: 2rem; height: 2rem; border-radius: 4px; opacity: 0.78; transition: opacity var(--dur-1); }
       .paypal-qr:hover img, .paypal-qr:focus-visible img { opacity: 1; }
+      .paypal-qr span { display: flex; flex-direction: column; }
       .footer-disclaimer { grid-column: 1 / -1; margin: 0; padding-top: 1rem; border-top: 1px solid var(--line); }
       @media (max-width: 639px) {
         .footer-line { grid-template-columns: 1fr; gap: 1.25rem; }
         .footer-disclaimer { grid-column: auto; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .footer-links a, .upi-link, .paypal-qr, .paypal-qr img { transition: none; }
       }
     </style>
 
