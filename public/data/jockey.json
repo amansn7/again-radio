@@ -122,6 +122,7 @@
       "outro": {
         "id": "delilah-outro",
         "audio": "/audio/jockey/delilah-outro.mp3",
+        "durationSeconds": 3.77,
         "text": "Delilah, pulling us all out of this. Unbelievable energy."
       }
     },
@@ -141,6 +142,7 @@
       "outro": {
         "id": "danielle-outro",
         "audio": "/audio/jockey/danielle-outro.mp3",
+        "durationSeconds": 3.71,
         "text": "Danielle, smile on my face. That smile is now permanent."
       }
     },
@@ -160,6 +162,7 @@
       "outro": {
         "id": "nathan-outro",
         "audio": "/audio/jockey/nathan-outro.mp3",
+        "durationSeconds": 3.42,
         "text": "Nathan, still breathing. The heartbeat of the archive."
       }
     },
@@ -207,6 +210,7 @@
       "outro": {
         "id": "rumble-outro",
         "audio": "/audio/jockey/rumble-outro.mp3",
+        "durationSeconds": 3.47,
         "text": "Flowdan and Skrillex with Fred. Heavyweight pressure."
       }
     },
@@ -302,6 +306,38 @@
         "audio": "/audio/jockey/kyle-thought.mp3",
         "text": "That voice note at the end of Kyle... \"I found you\". It's the moment you realize you're going to be alright."
       }
+    },
+    "places to be": {
+      "postSeconds": 16,
+      "intro": { "id": "places-to-be-intro", "text": "A little lift in the room. Let this one open the windows." }
+    },
+    "leavemealone": {
+      "postSeconds": 16,
+      "intro": { "id": "leavemealone-intro", "text": "All that pressure, all that release. Keep your eyes on the low end." }
+    },
+    "stayinit": {
+      "postSeconds": 16,
+      "intro": { "id": "stayinit-intro", "text": "No rush to leave this moment. Stay in it with us." }
+    },
+    "Billie (loving arms)": {
+      "postSeconds": 16,
+      "intro": { "id": "billie-intro", "text": "A voice like a hand on your shoulder. Here's Billie." }
+    },
+    "Carlos (make it thru)": {
+      "postSeconds": 16,
+      "intro": { "id": "carlos-intro", "text": "For the ones finding their way through. This is Carlos." }
+    },
+    "De Barrio": {
+      "postSeconds": 16,
+      "intro": { "id": "de-barrio-intro", "text": "Different streets, same shared pulse. Lock into this one." }
+    },
+    "Flight FM": {
+      "postSeconds": 16,
+      "intro": { "id": "flight-fm-intro", "text": "Lift off from here. Flight FM, on Again Radio." }
+    },
+    "Nightvision": {
+      "postSeconds": 16,
+      "intro": { "id": "nightvision-intro", "text": "For the late shift and the long way home. Here's Nightvision." }
     }
   },
   "transitions": {

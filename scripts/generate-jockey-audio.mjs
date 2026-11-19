@@ -27,37 +27,38 @@ if (!fs.existsSync(audioDir)) {
 
 // Collect all clips to synthesize
 const clips = [];
+const addClip = (clip) => { if (clip.audio) clips.push(clip); };
 
 for (const w of jockeyData.welcomes || []) {
-  clips.push({ id: w.id, audio: w.audio, text: w.text, label: `welcome:${w.id}` });
+  addClip({ id: w.id, audio: w.audio, text: w.text, label: `welcome:${w.id}` });
 }
 
 for (const s of jockeyData.sweepers || []) {
-  clips.push({ id: s.id, audio: s.audio, text: s.text, label: `sweeper:${s.id}` });
+  addClip({ id: s.id, audio: s.audio, text: s.text, label: `sweeper:${s.id}` });
 }
 
 for (const l of jockeyData.listeners || []) {
-  clips.push({ id: l.id, audio: l.audio, text: l.text, label: `listener:${l.id}` });
+  addClip({ id: l.id, audio: l.audio, text: l.text, label: `listener:${l.id}` });
 }
 
 for (const [title, trackData] of Object.entries(jockeyData.tracks || {})) {
   if (trackData.intro) {
-    clips.push({ id: trackData.intro.id, audio: trackData.intro.audio, text: trackData.intro.text, label: `intro:${title}` });
+    addClip({ id: trackData.intro.id, audio: trackData.intro.audio, text: trackData.intro.text, label: `intro:${title}` });
   }
   if (trackData.thought) {
-    clips.push({ id: trackData.thought.id, audio: trackData.thought.audio, text: trackData.thought.text, label: `thought:${title}` });
+    addClip({ id: trackData.thought.id, audio: trackData.thought.audio, text: trackData.thought.text, label: `thought:${title}` });
   }
   if (trackData.outro) {
-    clips.push({ id: trackData.outro.id, audio: trackData.outro.audio, text: trackData.outro.text, label: `outro:${title}` });
+    addClip({ id: trackData.outro.id, audio: trackData.outro.audio, text: trackData.outro.text, label: `outro:${title}` });
   }
 }
 
 for (const [key, t] of Object.entries(jockeyData.transitions || {})) {
-  clips.push({ id: t.id, audio: t.audio, text: t.text, label: `transition:${key}` });
+  addClip({ id: t.id, audio: t.audio, text: t.text, label: `transition:${key}` });
 }
 
 for (const f of jockeyData.facts || []) {
-  clips.push({ id: f.id, audio: f.audio, text: f.text, label: `fact:${f.id}` });
+  addClip({ id: f.id, audio: f.audio, text: f.text, label: `fact:${f.id}` });
 }
 
 console.log(`Found ${clips.length} clips to process.`);

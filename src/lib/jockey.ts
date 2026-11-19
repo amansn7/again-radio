@@ -9,6 +9,7 @@ import {
 import { JockeyDucker } from "./jockey-ducker.ts";
 import { JockeyAudio } from "./jockey-audio.ts";
 import { pickWelcome } from "./welcome.ts";
+import { outroLeadSeconds } from "./jockey-timing.ts";
 
 const LAST_WELCOME_KEY = "again-radio:last-welcome";
 
@@ -33,7 +34,7 @@ export interface TrackJockeyConfig {
   thoughtOffset?: number;
   intro?: JockeyClip;
   thought?: JockeyClip;
-  outro?: JockeyClip;
+  outro?: JockeyClip & { durationSeconds?: number };
 }
 
 export interface FactItem {
@@ -242,7 +243,9 @@ export class RadioJockey {
     }
 
     const endKey = `${info.programId}:${info.entry.title}`;
-    const outroWindow = trackConfig?.outro ? Math.ceil(trackConfig.outro.text.length / 13) + 2 : 0;
+    const outroWindow = trackConfig?.outro
+      ? outroLeadSeconds(trackConfig.outro.text, trackConfig.outro.durationSeconds)
+      : 0;
     if (!this._speaking && trackConfig?.outro && !this.spokeOutro.has(endKey) &&
         info.entry.duration - elapsed <= outroWindow && info.entry.duration - elapsed >= 0) {
       this.spokeOutro.add(endKey);

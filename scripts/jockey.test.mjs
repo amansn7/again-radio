@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { pickWelcome } from "../src/lib/welcome.ts";
+import { outroLeadSeconds } from "../src/lib/jockey-timing.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -103,6 +104,23 @@ test("hitting the post: intro speeches wrap before vocals", () => {
         estimatedDurationSec < track.postSeconds,
         `Track ${title} intro duration (~${estimatedDurationSec.toFixed(1)}s) wraps before post (${track.postSeconds}s)`
       );
+    }
+  }
+});
+
+test("configured intros have a speakable cue and measured outros leave a finish buffer", () => {
+  const data = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data/jockey.json"), "utf-8"));
+  const intros = Object.values(data.tracks).filter((track) => track.intro).length;
+  assert.ok(intros >= 20, `at least 20 configured song intros, found ${intros}`);
+  for (const [title, track] of Object.entries(data.tracks)) {
+    if (track.intro) {
+      assert.ok(track.intro.text.length / 15 < (track.postSeconds ?? 16), `${title} intro fits its post`);
+    }
+    if (track.outro) {
+      assert.ok(track.outro.durationSeconds > 0 && track.outro.durationSeconds <= 5,
+        `${title} outro has a measured duration`);
+      assert.equal(outroLeadSeconds(track.outro.text, track.outro.durationSeconds), track.outro.durationSeconds + 1.5,
+        `${title} outro scheduling includes the measured clip and safety buffer`);
     }
   }
 });
