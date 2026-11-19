@@ -52,7 +52,7 @@ export function showCards(programs: Loaded[], catalogue: CatalogueItem[]): Card[
           sub: `USB002 · ${year(data.date)}`,
           badge: "Show",
           shape: "wide" as const,
-          art: () => Promise.resolve(ytThumb(data.youtubeId, (index % 3) + 1)),
+          art: () => resolveAlbumArt("USB002"),
           cue: { program: path, offset: en.offset },
           onAir: (t: TrackInfo) => t.programPath === path && t.index === index,
         }))

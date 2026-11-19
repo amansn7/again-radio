@@ -47,6 +47,7 @@ Every song is anchored to the human fragment it was born from:
 ### 🎨 Ambient Stage & Dynamic Palette Engine
 - **Full-Bleed Concert Backdrop**: The official YouTube broadcast runs full-viewport behind the entire interface; sheets and controls form a tinted veil so the live show breathes through everywhere.
 - **Liquid Glass Architecture**: Translucent glass surfaces (`src/lib/glass.ts`) featuring custom SVG refraction filters, pointer-responsive specular sheen, and soft frosted fallbacks.
+- **Reflected Dial Cards**: The active card casts a soft, art-tinted reflection beneath the dial on desktop, with the reflection removed on mobile for a cleaner layout.
 - **Dynamic Artwork Palette**: Colors are sampled in real time from album artwork using `OffscreenCanvas` (`src/lib/palette.ts`) and injected into registered CSS `@property` tokens (`--art-1`, `--art-2`, `--art-3`, `--art-accent`) for smooth 2.4-second crossfades.
 - **Tempo Beat Clock & Reactive Orb**: Because YouTube audio cannot be directly analyzed across origins, a rAF tempo clock (`src/lib/pulse.ts`) locks onto the track's BPM grid, pulsing the kinetic hero typography and the floating Siri-style orb (`src/components/Orb.astro`) on every kick and offbeat.
 - **Pointer-Fed Orb & Show Radar**: On desktop, cursor light bends toward the orb as it approaches; the concert timeline carries a subtle moving signal from “now” toward the next show. Both cues honor reduced-motion preferences.
@@ -144,7 +145,7 @@ again-radio/
 │   │   ├── station.json    # Rotation schedule & hour block definitions
 │   │   ├── albums.json     # Curated discography & MBID metadata
 │   │   ├── catalogue.json  # Full search index & live set database
-│   │   └── programs/       # Show tracklists with millisecond offsets
+│   │   └── programs/       # Show tracklists with offsets and durations in seconds
 │   └── fonts/              # Self-hosted Instrument Sans & Serif (subset)
 ├── src/
 │   ├── components/         # Astro components + dedicated TypeScript islands
