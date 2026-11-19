@@ -7,6 +7,7 @@ import { EVERY_SHOW, albumCards, showCards, trackCards, type Card, type Choice, 
 import { cardEl, warm } from "./dial-card.ts";
 import { Ring } from "./dial-ring.ts";
 import { drift, type Drift } from "./dial-drift.ts";
+import { DialSelect } from "./dial-select.ts";
 
 const CHOICES: [Choice, string][] = [["order", "Tracklist"], ["shows", "Shows"], ["albums", "Albums"]];
 const HEAD =
@@ -25,7 +26,12 @@ class WarpDial extends HTMLElement {
   private cards: Card[] = [];
   private ring!: Ring;
   private drift!: Drift;
+  private picker!: DialSelect;
   private live!: HTMLElement;
+
+  disconnectedCallback(): void {
+    this.picker?.destroy();
+  }
 
   async connectedCallback(): Promise<void> {
     this.innerHTML = HEAD + `<div class="wrap"><div class="skeleton dl-skel"></div></div>`;
@@ -51,7 +57,13 @@ class WarpDial extends HTMLElement {
       `<button type="button" role="tab" id="dl-tab-${c}" aria-controls="dl-ring" data-c="${c}">${label}</button>`).join("");
     this.innerHTML = HEAD +
       `<div class="wrap dl-controls"><div class="dl-seg glass" data-glass role="tablist" aria-label="Browse by">${tabs}</div>` +
-      `<label class="dl-pick glass" data-glass><span class="sr-only">Set</span><select></select></label>` +
+      `<div class="dl-pick" id="dl-pick">` +
+      `<button type="button" class="dl-pick-btn glass" data-glass aria-haspopup="listbox" aria-expanded="false" id="dl-pick-btn" aria-label="Choose set">` +
+      `<span class="dl-pick-label"></span>` +
+      `<svg class="dl-pick-arrow" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false">` +
+      `<path d="M3.5 6L8 10.5L12.5 6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>` +
+      `</svg></button>` +
+      `<div class="dl-menu glass" data-glass="regular" role="listbox" id="dl-menu" aria-labelledby="dl-pick-btn" tabindex="-1" hidden></div></div>` +
       `<button type="button" class="icon-btn dl-auto glass" data-glass aria-pressed="false" aria-label="Pause auto-scroll" hidden>` +
       `<svg class="dl-ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>` +
       `<svg class="dl-ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg></button></div>` +
@@ -60,7 +72,6 @@ class WarpDial extends HTMLElement {
       `<p class="sr-only" aria-live="polite"></p>`;
     this.live = this.querySelector("[aria-live]")!;
     const seg = this.querySelector<HTMLElement>(".dl-seg")!;
-    const select = this.querySelector("select")!;
     seg.addEventListener("click", (e) => {
       const c = (e.target as HTMLElement).closest<HTMLElement>("[data-c]")?.dataset.c as Choice | undefined;
       if (c) this.setChoice(c);
@@ -73,7 +84,14 @@ class WarpDial extends HTMLElement {
       this.setChoice(CHOICES[i][0]);
       this.querySelector<HTMLElement>(`#dl-tab-${this.choice}`)?.focus();
     });
-    select.addEventListener("change", () => { this.picked = true; this.sel = Number(select.value); this.show(); });
+    this.picker = new DialSelect({
+      container: this.querySelector<HTMLElement>(".dl-pick")!,
+      onChange: (index) => {
+        this.picked = true;
+        this.sel = index;
+        this.show();
+      },
+    });
     this.options();
     this.ring = new Ring(this.querySelector(".dl-stage")!, this.querySelector(".dl-track")!, {
       build: (i) => cardEl(this.cards[i], this.air, i === this.ring.front),
@@ -92,8 +110,7 @@ class WarpDial extends HTMLElement {
   }
 
   private options(): void {
-    this.querySelector("select")!.innerHTML =
-      this.programs.map((p, i) => `<option value="${i}">${esc(p.data.title)}</option>`).join("");
+    this.picker.setOptions(this.programs.map((p) => p.data.title), this.sel);
   }
 
   private setChoice(c: Choice): void {
@@ -106,6 +123,7 @@ class WarpDial extends HTMLElement {
     });
     this.querySelector("#dl-ring")!.setAttribute("aria-labelledby", `dl-tab-${c}`);
     this.querySelector<HTMLElement>(".dl-pick")!.hidden = c !== "order";
+    if (c !== "order") this.picker.close(false);
     this.querySelector<HTMLElement>(".dl-auto")!.hidden = c === "order";
     this.show();
     // Shows and Albums turn by themselves; the running order follows what is on air instead.
@@ -115,7 +133,7 @@ class WarpDial extends HTMLElement {
   private show(): void {
     const p = this.programs[this.sel];
     this.cards = this.choice === "order" ? trackCards(p) : this.choice === "shows" ? showCards(this.programs, this.catalogue, this.albums) : albumCards(this.albums, this.programs);
-    this.querySelector("select")!.value = String(this.sel);
+    this.picker.setSelected(this.sel);
     const label = this.choice === "order" ? `Tracklist of ${p.data.title}` : this.choice === "shows" ? "Shows" : "Albums";
     this.querySelector(".dl-track")!.setAttribute("aria-label", label);
     const air = this.air;
