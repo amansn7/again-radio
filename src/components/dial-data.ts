@@ -42,8 +42,9 @@ export function trackCards({ path, data }: Loaded): Card[] {
 }
 
 /** Rotation programmes, USB002's shows and catalogue performances, newest first. */
-export function showCards(programs: Loaded[], catalogue: CatalogueItem[]): Card[] {
+export function showCards(programs: Loaded[], catalogue: CatalogueItem[], albums: Album[]): Card[] {
   const ids = new Set(programs.map((p) => p.data.youtubeId));
+  const usb002Art = albums.find((a) => normTitle(a.title) === "usb002")?.art;
   const groups: { date: string; cards: Card[] }[] = programs.map(({ path, data }) => ({
     date: data.date ?? "",
     cards: path === EVERY_SHOW
@@ -52,7 +53,7 @@ export function showCards(programs: Loaded[], catalogue: CatalogueItem[]): Card[
           sub: `USB002 · ${year(data.date)}`,
           badge: "Show",
           shape: "wide" as const,
-          art: () => resolveAlbumArt("USB002"),
+          art: usb002Art ? () => Promise.resolve(usb002Art) : none,
           cue: { program: path, offset: en.offset },
           onAir: (t: TrackInfo) => t.programPath === path && t.index === index,
         }))

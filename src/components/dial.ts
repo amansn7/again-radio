@@ -114,7 +114,7 @@ class WarpDial extends HTMLElement {
 
   private show(): void {
     const p = this.programs[this.sel];
-    this.cards = this.choice === "order" ? trackCards(p) : this.choice === "shows" ? showCards(this.programs, this.catalogue) : albumCards(this.albums, this.programs);
+    this.cards = this.choice === "order" ? trackCards(p) : this.choice === "shows" ? showCards(this.programs, this.catalogue, this.albums) : albumCards(this.albums, this.programs);
     this.querySelector("select")!.value = String(this.sel);
     const label = this.choice === "order" ? `Tracklist of ${p.data.title}` : this.choice === "shows" ? "Shows" : "Albums";
     this.querySelector(".dl-track")!.setAttribute("aria-label", label);
