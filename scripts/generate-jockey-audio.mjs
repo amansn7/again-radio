@@ -32,9 +32,16 @@ for (const s of jockeyData.sweepers || []) {
   clips.push({ id: s.id, audio: s.audio, text: s.text, label: `sweeper:${s.id}` });
 }
 
+for (const l of jockeyData.listeners || []) {
+  clips.push({ id: l.id, audio: l.audio, text: l.text, label: `listener:${l.id}` });
+}
+
 for (const [title, trackData] of Object.entries(jockeyData.tracks || {})) {
   if (trackData.intro) {
     clips.push({ id: trackData.intro.id, audio: trackData.intro.audio, text: trackData.intro.text, label: `intro:${title}` });
+  }
+  if (trackData.thought) {
+    clips.push({ id: trackData.thought.id, audio: trackData.thought.audio, text: trackData.thought.text, label: `thought:${title}` });
   }
   if (trackData.outro) {
     clips.push({ id: trackData.outro.id, audio: trackData.outro.audio, text: trackData.outro.text, label: `outro:${title}` });
@@ -75,8 +82,10 @@ async function synthesize(clip) {
       text: clip.text,
       model_id: "eleven_turbo_v2_5",
       voice_settings: {
-        stability: 0.65,
-        similarity_boost: 0.82
+        stability: 0.46,
+        similarity_boost: 0.78,
+        style: 0.38,
+        use_speaker_boost: true
       }
     })
   });

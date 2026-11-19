@@ -31,9 +31,25 @@ test("jockey data schema and audio files exist", () => {
       const audioPath = path.join(ROOT, "public", track.intro.audio.replace(/^\//, ""));
       assert.ok(fs.existsSync(audioPath), `Intro audio for ${title} exists`);
     }
+    if (track.thought?.audio) {
+      const audioPath = path.join(ROOT, "public", track.thought.audio.replace(/^\//, ""));
+      assert.ok(fs.existsSync(audioPath), `Thought audio for ${title} exists`);
+      const stat = fs.statSync(audioPath);
+      assert.ok(stat.size > 1000, `Thought audio for ${title} is non-empty (${stat.size} bytes)`);
+    }
     if (track.outro?.audio) {
       const audioPath = path.join(ROOT, "public", track.outro.audio.replace(/^\//, ""));
       assert.ok(fs.existsSync(audioPath), `Outro audio for ${title} exists`);
+    }
+  }
+
+  for (const l of data.listeners ?? []) {
+    assert.ok(l.id && l.text, `Listener clip ${l.id} has id and text`);
+    if (l.audio) {
+      const audioPath = path.join(ROOT, "public", l.audio.replace(/^\//, ""));
+      assert.ok(fs.existsSync(audioPath), `Listener audio ${l.audio} exists`);
+      const stat = fs.statSync(audioPath);
+      assert.ok(stat.size > 1000, `Listener audio ${l.audio} is non-empty (${stat.size} bytes)`);
     }
   }
 
@@ -80,4 +96,25 @@ test("hitting the post: intro speeches wrap before vocals", () => {
       );
     }
   }
+});
+
+test("listener shoutouts and mid-song thoughts stay within 2000 credit bucket", () => {
+  const dataPath = path.join(ROOT, "public/data/jockey.json");
+  const data = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
+
+  let bucketChars = 0;
+  for (const l of data.listeners ?? []) {
+    bucketChars += l.text.length;
+  }
+  for (const track of Object.values(data.tracks)) {
+    if (track.thought) {
+      bucketChars += track.thought.text.length;
+    }
+  }
+
+  assert.ok(
+    bucketChars <= 2000,
+    `Dynamic listener & thought bucket characters (${bucketChars}) is within 2000 credits`
+  );
+  assert.ok(bucketChars >= 1500, `Dynamic bucket is well utilized (${bucketChars} chars)`);
 });

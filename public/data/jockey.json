@@ -30,13 +30,47 @@
       "text": "Reconnecting to the live room. Right back on the pulse."
     }
   ],
+  "listeners": [
+    {
+      "id": "listener-intimate",
+      "audio": "/audio/jockey/listener-intimate.mp3",
+      "min": 1,
+      "max": 15,
+      "text": "Late night shift... just a handful of us locked in right now. Pure focus."
+    },
+    {
+      "id": "listener-gathering",
+      "audio": "/audio/jockey/listener-gathering.mp3",
+      "min": 16,
+      "max": 40,
+      "text": "Room's filling up nicely... shout to the crew locking in from across the globe."
+    },
+    {
+      "id": "listener-busy",
+      "audio": "/audio/jockey/listener-busy.mp3",
+      "min": 41,
+      "max": 9999,
+      "text": "Dozens of heads in the room right now sharing this frequency. Big love to every single one of you."
+    },
+    {
+      "id": "listener-moment",
+      "audio": "/audio/jockey/listener-moment.mp3",
+      "text": "Wherever you're listening from tonight—headphones, car speakers, bedroom—we're all in this room together."
+    }
+  ],
   "tracks": {
     "Delilah (pull me out of this)": {
       "postSeconds": 24,
+      "thoughtOffset": 72,
       "intro": {
         "id": "delilah-intro",
         "audio": "/audio/jockey/delilah-intro.mp3",
         "text": "Delilah Montagu singing straight out of her kitchen into an iPhone memo. Fred caught the feeling while waiting on his laundry. Hold tight... here it comes."
+      },
+      "thought": {
+        "id": "delilah-thought",
+        "audio": "/audio/jockey/delilah-thought.mp3",
+        "text": "Fred kept the actual phone hiss on Delilah's vocal. Most producers would scrub it clean. That imperfection is the magic."
       },
       "outro": {
         "id": "delilah-outro",
@@ -46,10 +80,16 @@
     },
     "Danielle (smile on my face)": {
       "postSeconds": 20,
+      "thoughtOffset": 65,
       "intro": {
         "id": "danielle-intro",
         "audio": "/audio/jockey/danielle-intro.mp3",
         "text": "Danielle Balbuena, 070 Shake on the vocal. That raw acoustic emotion wrapped in pure club euphoria."
+      },
+      "thought": {
+        "id": "danielle-thought",
+        "audio": "/audio/jockey/danielle-thought.mp3",
+        "text": "You can hear the raw ache in 070 Shake's voice... but Fred wraps it in chords that make you want to dance through it."
       },
       "outro": {
         "id": "danielle-outro",
@@ -59,10 +99,16 @@
     },
     "Nathan (still breathing)": {
       "postSeconds": 16,
+      "thoughtOffset": 50,
       "intro": {
         "id": "nathan-intro",
         "audio": "/audio/jockey/nathan-intro.mp3",
         "text": "The very first breath of the Actual Life journey. Nathan's words, caught in transit, reminding us all to just keep going."
+      },
+      "thought": {
+        "id": "nathan-thought",
+        "audio": "/audio/jockey/nathan-thought.mp3",
+        "text": "Nathan's voice note was recorded on a curb in Atlanta. That simple reminder to keep breathing carries the whole album."
       },
       "outro": {
         "id": "nathan-outro",
@@ -72,26 +118,44 @@
     },
     "Kammy (like i do)": {
       "postSeconds": 22,
+      "thoughtOffset": 68,
       "intro": {
         "id": "kammy-intro",
         "audio": "/audio/jockey/kammy-intro.mp3",
         "text": "Kammy Purcell on the vocal. Fred pitched down her acapella from an Instagram video while riding the Eurostar. Pure warmth."
+      },
+      "thought": {
+        "id": "kammy-thought",
+        "audio": "/audio/jockey/kammy-thought.mp3",
+        "text": "Kammy's vocal was an offhand Instagram freestyle. Fred slowed it down on a train and built a sanctuary around it."
       }
     },
     "Tanya (maybe life)": {
       "postSeconds": 18,
+      "thoughtOffset": 58,
       "intro": {
         "id": "tanya-intro",
         "audio": "/audio/jockey/tanya-intro.mp3",
         "text": "Tanya. Only on the record does the name get a second half. Turn this one up."
+      },
+      "thought": {
+        "id": "tanya-thought",
+        "audio": "/audio/jockey/tanya-thought.mp3",
+        "text": "Tanya's words \"maybe life\"... it's that feeling when you're not sure where things are going, but you let the beat carry you anyway."
       }
     },
     "Rumble": {
       "postSeconds": 28,
+      "thoughtOffset": 80,
       "intro": {
         "id": "rumble-intro",
         "audio": "/audio/jockey/rumble-intro.mp3",
         "text": "Pangbourne crew in full effect. Skrillex, Flowdan, and Fred. Four years in the making. Watch the low end on this drop."
+      },
+      "thought": {
+        "id": "rumble-thought",
+        "audio": "/audio/jockey/rumble-thought.mp3",
+        "text": "Three days in the countryside tweaking that one modular sub-bass. You don't just hear this track, you feel it in your ribs."
       },
       "outro": {
         "id": "rumble-outro",
@@ -101,50 +165,95 @@
     },
     "Baby again..": {
       "postSeconds": 24,
+      "thoughtOffset": 70,
       "intro": {
         "id": "baby-again-intro",
         "audio": "/audio/jockey/baby-again-intro.mp3",
         "text": "Written during those legendary countryside sessions with Skrillex and Four Tet. Turn the lights out for this one."
+      },
+      "thought": {
+        "id": "baby-again-thought",
+        "audio": "/audio/jockey/baby-again-thought.mp3",
+        "text": "Four Tet, Skrillex, and Fred jamming in a living room at 4 AM. That playful friendship is baked into every kick drum."
       }
     },
     "Turn On The Lights again..": {
       "postSeconds": 20,
+      "thoughtOffset": 62,
       "intro": {
         "id": "turn-on-the-lights-intro",
         "audio": "/audio/jockey/turn-on-the-lights-intro.mp3",
         "text": "Future, Swedish House Mafia, and Fred. Studio sound welded to the rave."
+      },
+      "thought": {
+        "id": "turn-on-the-lights-thought",
+        "audio": "/audio/jockey/turn-on-the-lights-thought.mp3",
+        "text": "Future's vocals echoing like they're coming from the back room of a warehouse rave. Unstoppable momentum."
       }
     },
     "Jungle": {
       "postSeconds": 18,
+      "thoughtOffset": 54,
       "intro": {
         "id": "jungle-intro",
         "audio": "/audio/jockey/jungle-intro.mp3",
         "text": "Dense, relentless energy. Fred wrote this to break the sound system. Here we go."
+      },
+      "thought": {
+        "id": "jungle-thought",
+        "audio": "/audio/jockey/jungle-thought.mp3",
+        "text": "Listen to the way the percussion rolls over itself. Pure London sound-system pressure."
       }
     },
     "adore u": {
       "postSeconds": 22,
+      "thoughtOffset": 66,
       "intro": {
         "id": "adore-u-intro",
         "audio": "/audio/jockey/adore-u-intro.mp3",
         "text": "Obongjayar's voice arrives and the whole track opens up. Dedicated to his sister. Beautiful feeling right here."
+      },
+      "thought": {
+        "id": "adore-u-thought",
+        "audio": "/audio/jockey/adore-u-thought.mp3",
+        "text": "Obongjayar singing to his little sister. In the middle of a massive festival, it turns into an intimate prayer."
       }
     },
     "Clara (the night is dark)": {
       "postSeconds": 18,
+      "thoughtOffset": 52,
       "intro": {
         "id": "clara-intro",
         "audio": "/audio/jockey/clara-intro.mp3",
         "text": "The final chapter of the Boiler Room. The night is dark and the name is Clara."
+      },
+      "thought": {
+        "id": "clara-thought",
+        "audio": "/audio/jockey/clara-thought.mp3",
+        "text": "The final track from the Boiler Room. Clara's voice guiding everyone through the dark and out the other side."
       }
     },
     "Strong": {
       "postSeconds": 20,
+      "thoughtOffset": 60,
       "intro": {
         "id": "strong-intro",
         "audio": "/audio/jockey/strong-intro.mp3",
         "text": "Built from something fragile. Romy and Fred letting the chords hold the entire room."
+      },
+      "thought": {
+        "id": "strong-thought",
+        "audio": "/audio/jockey/strong-thought.mp3",
+        "text": "Romy's voice is so gentle here. It takes real courage to make dance music that feels this tender."
+      }
+    },
+    "Kyle (i found you)": {
+      "postSeconds": 16,
+      "thoughtOffset": 48,
+      "thought": {
+        "id": "kyle-thought",
+        "audio": "/audio/jockey/kyle-thought.mp3",
+        "text": "That voice note at the end of Kyle... \"I found you\". It's the moment you realize you're going to be alright."
       }
     }
   },

@@ -166,9 +166,18 @@ function main() {
         fail(`jockey.json sweeper ${s.id}: audio file ${s.audio} does not exist`);
       }
     }
+    for (const l of j.listeners ?? []) {
+      if (!l.id || !l.text) fail(`jockey.json listener ${l.id ?? "?"}: missing id or text`);
+      if (l.audio && !existsSync(join("public", l.audio.replace(/^\//, "")))) {
+        fail(`jockey.json listener ${l.id}: audio file ${l.audio} does not exist`);
+      }
+    }
     for (const [title, t] of Object.entries(j.tracks ?? {})) {
       if (t.intro?.audio && !existsSync(join("public", t.intro.audio.replace(/^\//, "")))) {
         fail(`jockey.json track "${title}" intro audio ${t.intro.audio} does not exist`);
+      }
+      if (t.thought?.audio && !existsSync(join("public", t.thought.audio.replace(/^\//, "")))) {
+        fail(`jockey.json track "${title}" thought audio ${t.thought.audio} does not exist`);
       }
       if (t.outro?.audio && !existsSync(join("public", t.outro.audio.replace(/^\//, "")))) {
         fail(`jockey.json track "${title}" outro audio ${t.outro.audio} does not exist`);

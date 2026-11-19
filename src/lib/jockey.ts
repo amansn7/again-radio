@@ -3,7 +3,8 @@ import {
   RADIO_JOCKEY_SPEAK,
   RADIO_JOCKEY_END,
   type JockeyStateDetail,
-  type TrackInfo
+  type TrackInfo,
+  type TimeInfo
 } from "./events.ts";
 import { JockeyDucker } from "./jockey-ducker.ts";
 import { JockeyAudio } from "./jockey-audio.ts";
@@ -14,9 +15,16 @@ export interface JockeyClip {
   text: string;
 }
 
+export interface ListenerClip extends JockeyClip {
+  min?: number;
+  max?: number;
+}
+
 export interface TrackJockeyConfig {
   postSeconds?: number;
+  thoughtOffset?: number;
   intro?: JockeyClip;
+  thought?: JockeyClip;
   outro?: JockeyClip;
 }
 
@@ -39,6 +47,7 @@ export interface JockeyData {
     unduckFadeMs: number;
   };
   sweepers: JockeyClip[];
+  listeners?: ListenerClip[];
   tracks: Record<string, TrackJockeyConfig>;
   transitions: Record<string, JockeyClip>;
   facts: FactItem[];
@@ -62,19 +71,19 @@ export class RadioJockey {
   private _speaking = false;
   private _currentText = "";
   private lastSpokeTime = 0;
-  private spokeForTrack = new Set<string>();
+  private spokeIntro = new Set<string>();
+  private spokeThought = new Set<string>();
   private lastProgram = "";
   private hasWelcomed = false;
+  private currentListenerCount: number | null = null;
+  private lastListenerAnnounce = 0;
 
   constructor(
     private getVolume: () => number,
     private setVolume: (v: number) => void,
     private isMuted: () => boolean
   ) {
-    if (typeof localStorage !== "undefined") {
-      const stored = localStorage.getItem("again-radio:jockey");
-      if (stored !== null) this._enabled = stored === "true";
-    }
+    this._enabled = true;
     loadJockeyData().then((d) => (this.data = d)).catch((err) => {
       console.warn("[jockey] Could not load data:", err);
     });
@@ -101,6 +110,10 @@ export class RadioJockey {
 
   get currentText(): string {
     return this._currentText;
+  }
+
+  setListenerCount(count: number | null): void {
+    this.currentListenerCount = count;
   }
 
   toggle(): boolean {
@@ -137,29 +150,37 @@ export class RadioJockey {
     if (!this.data) return;
 
     const trackKey = `${info.programId}:${info.entry.title}`;
-    if (this.spokeForTrack.has(trackKey)) return;
+    if (this.spokeIntro.has(trackKey)) return;
 
     // Check for set/program transition first
     if (this.lastProgram && this.lastProgram !== info.programId) {
       this.lastProgram = info.programId;
       const trans = this.data.transitions[info.programId];
       if (trans) {
-        this.spokeForTrack.add(trackKey);
+        this.spokeIntro.add(trackKey);
         await this.speak(trans.text, trans.audio);
         return;
       }
     }
     this.lastProgram = info.programId;
 
-    // Check cooldown: avoid talking every 30 seconds if songs are short
+    // Cooldown check
     const now = Date.now();
-    const cooldownMs = 90_000; // minimum 90 seconds between non-explicit speeches
+    const cooldownMs = 80_000;
     if (now - this.lastSpokeTime < cooldownMs) return;
 
-    // Check if this track has a registered intro
+    // Periodic live listener announcement (every ~4-5 minutes)
+    if (now - this.lastListenerAnnounce > 260_000 && this.data.listeners?.length) {
+      this.lastListenerAnnounce = now;
+      this.spokeIntro.add(trackKey);
+      await this.announceListeners();
+      return;
+    }
+
+    // Check if this track has an intro
     const trackConfig = this.data.tracks[info.entry.title];
     if (trackConfig?.intro) {
-      this.spokeForTrack.add(trackKey);
+      this.spokeIntro.add(trackKey);
       await this.speak(trackConfig.intro.text, trackConfig.intro.audio);
       return;
     }
@@ -168,9 +189,48 @@ export class RadioJockey {
     if (now - this.lastSpokeTime > 240_000 && this.data.facts.length > 0) {
       const fact = this.data.facts[Math.floor(Math.random() * this.data.facts.length)];
       if (fact) {
-        this.spokeForTrack.add(trackKey);
+        this.spokeIntro.add(trackKey);
         await this.speak(fact.text, fact.audio);
       }
+    }
+  }
+
+  /** Mid-song thought triggered at the designated reflection point of the track */
+  async onTime(timeInfo: TimeInfo, info: TrackInfo): Promise<void> {
+    if (!this._enabled || this._speaking || this.isMuted()) return;
+    if (!this.data) return;
+
+    const trackConfig = this.data.tracks[info.entry.title];
+    if (!trackConfig?.thought || trackConfig.thoughtOffset === undefined) return;
+
+    const trackKey = `${info.programId}:${info.entry.title}`;
+    if (this.spokeThought.has(trackKey)) return;
+
+    // If within 3 seconds of the thought offset and cooldown has passed:
+    const elapsed = info.elapsed;
+    if (elapsed >= trackConfig.thoughtOffset && elapsed < trackConfig.thoughtOffset + 3.5) {
+      const now = Date.now();
+      if (now - this.lastSpokeTime < 45_000) return; // ensure breathing room from intro
+      this.spokeThought.add(trackKey);
+      await this.speak(trackConfig.thought.text, trackConfig.thought.audio);
+    }
+  }
+
+  /** Announces live listeners using the configured listener brackets */
+  async announceListeners(): Promise<void> {
+    if (!this.data?.listeners?.length) return;
+    const count = this.currentListenerCount;
+
+    let chosen: ListenerClip | undefined;
+    if (count !== null) {
+      chosen = this.data.listeners.find(
+        (l) => l.min !== undefined && count >= l.min && count <= (l.max ?? 9999)
+      );
+    }
+
+    chosen ??= this.data.listeners.find((l) => l.id === "listener-moment") ?? this.data.listeners[0];
+    if (chosen) {
+      await this.speak(chosen.text, chosen.audio);
     }
   }
 
@@ -181,6 +241,11 @@ export class RadioJockey {
     if (!this.data) return;
 
     const trackConfig = this.data.tracks[info.entry.title];
+    // If mid-song and thought exists, prioritize the intimate thought
+    if (info.elapsed > 30 && trackConfig?.thought) {
+      await this.speak(trackConfig.thought.text, trackConfig.thought.audio);
+      return;
+    }
     if (trackConfig?.intro) {
       await this.speak(trackConfig.intro.text, trackConfig.intro.audio);
       return;

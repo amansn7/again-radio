@@ -61,11 +61,32 @@ Targeted ahead of the December 2026 tour:
 - Reserved for unexpected new singles, unreleased premieres, or live stream drops.
 - Rolls over with the monthly refresh.
 
+### 4. Flair & Character Voice Tuning for Future Generations
+
+To ensure Rory sounds like an authentic pirate radio / late-night broadcaster rather than a corporate AI assistant:
+
+```json
+{
+  "model_id": "eleven_turbo_v2_5",
+  "voice_settings": {
+    "stability": 0.46,
+    "similarity_boost": 0.78,
+    "style": 0.38,
+    "use_speaker_boost": true
+  }
+}
+```
+
+- **Lower Stability (`0.46`)**: Introduces natural breath pauses, emotional lift, and dynamic pitch inflection.
+- **Style Boost (`0.38`)**: Amplifies British radio swagger, warmth, and intimate late-night energy.
+- **Rhetorical Cadence**: Use ellipses (`...`) for pregnant drops, em-dashes (`—`) for conversational pivots, and British club slang (*"Hold tight..."*, *"Pure euphoria"*, *"Listen to this beat drop right here"*, *"Lock in wherever you are"*).
+- **Ambient Radio Experience**: The RJ operates entirely without visible UI clutter—pure audio ducking (music automatically dips to 22% over 250ms with cubic easing and swells back to 100% over 400ms when she stops speaking).
+
 ---
 
 ## The Hybrid Architecture: Infinite Radio Without Credit Limits
 
 To make the station feel dynamic and infinite:
-1. **Tier 1 (Mastered ElevenLabs Clips)**: 85% of listening time triggers the pre-rendered ElevenLabs voice clips for iconic tracks, transitions, and historic stories.
-2. **Tier 2 (Web Speech API with British Female Voice)**: Dynamic, real-time data that changes every minute (e.g. *"Shout to the 42 listeners locked in right now from 11 countries"*, or local time-of-day greetings) is voiced on the fly via the browser's native British voice engine at **0 credit cost**.
-3. **Tier 3 (Liquid Glass Subtitle Fallback)**: Any listener on mute or without audio permissions gets the synchronized caption HUD.
+1. **Tier 1 (Mastered ElevenLabs Clips)**: Pre-rendered audio clips for iconic tracks, transitions, listener milestones, and deep Fred lore.
+2. **Tier 2 (Web Speech API with British Female Voice)**: Dynamic fallback if audio fails to fetch, keeping speech functional across all devices.
+3. **Ambient Ducking**: Automatic cubic S-curve volume ducking lowers background stream volume to 22% during voiceovers and swells back to 100% upon conclusion.
