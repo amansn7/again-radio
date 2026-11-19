@@ -64,6 +64,21 @@ console.log(`Found ${clips.length} clips to process.`);
 let totalChars = clips.reduce((acc, c) => acc + c.text.length, 0);
 console.log(`Total character count: ${totalChars}`);
 
+async function remainingCharacters() {
+  const response = await fetch("https://api.elevenlabs.io/v1/user/subscription", {
+    headers: { "xi-api-key": apiKey }
+  });
+  if (!response.ok) {
+    throw new Error(`Cannot check ElevenLabs quota before synthesis: ${response.status} ${await response.text()}`);
+  }
+  const subscription = await response.json();
+  const { character_limit: limit, character_count: used } = subscription;
+  if (!Number.isFinite(limit) || !Number.isFinite(used) || used < 0 || limit < used) {
+    throw new Error("ElevenLabs returned invalid quota data; refusing to send synthesis requests.");
+  }
+  return limit - used;
+}
+
 async function synthesize(clip) {
   const relPath = clip.audio.startsWith("/") ? clip.audio.slice(1) : clip.audio;
   const targetFile = path.join(ROOT, "public", relPath);
@@ -75,7 +90,9 @@ async function synthesize(clip) {
 
   console.log(`🎙️ Synthesizing (${clip.text.length} chars) [${clip.label}]...`);
   const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`;
-  const response = await fetch(url, {
+  let response;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    response = await fetch(url, {
     method: "POST",
     headers: {
       "xi-api-key": apiKey,
@@ -92,7 +109,16 @@ async function synthesize(clip) {
         use_speaker_boost: true
       }
     })
-  });
+    });
+    if (response.status !== 429 || attempt === 2) break;
+    const retryAfter = response.headers.get("retry-after");
+    const retrySeconds = Number(retryAfter);
+    const waitSeconds = retryAfter && Number.isFinite(retrySeconds)
+      ? Math.max(0, retrySeconds)
+      : Math.max(0, (Date.parse(retryAfter ?? "") - Date.now()) / 1000) || 60;
+    console.warn(`ElevenLabs rate limited; waiting ${waitSeconds}s before retrying ${clip.label}.`);
+    await new Promise((resolve) => setTimeout(resolve, waitSeconds * 1000));
+  }
 
   if (!response.ok) {
     const errText = await response.text();
@@ -105,6 +131,13 @@ async function synthesize(clip) {
 }
 
 async function run() {
+  const remaining = await remainingCharacters();
+  const missing = clips.filter((clip) => !fs.existsSync(path.join(ROOT, "public", clip.audio.replace(/^\//, ""))));
+  const needed = missing.reduce((sum, clip) => sum + clip.text.length, 0);
+  console.log(`ElevenLabs quota remaining: ${remaining}; missing clips need ${needed}.`);
+  if (needed > remaining) {
+    throw new Error("Insufficient ElevenLabs credits. No voice requests sent; rerun after the subscription resets or credits are added.");
+  }
   let done = 0;
   for (const clip of clips) {
     try {
@@ -114,6 +147,10 @@ async function run() {
       await new Promise((r) => setTimeout(r, 200));
     } catch (err) {
       console.error(`Error on ${clip.label}:`, err.message);
+      if (/quota|character limit|subscription|401|402|429/i.test(err.message)) {
+        console.error("Stopping synthesis to avoid further requests while the account is limited.");
+        break;
+      }
     }
   }
   console.log(`Completed synthesis: ${done}/${clips.length} processed.`);

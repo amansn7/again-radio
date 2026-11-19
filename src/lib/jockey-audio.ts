@@ -1,12 +1,16 @@
 // Audio player for Rory: plays pre-rendered ElevenLabs voice clips or falls back to Web Speech API.
 
+const SILENT_WAV =
+  "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+
 export interface AudioPlayOptions {
   volume?: number;
   onProgress?: (currentTime: number, duration: number) => void;
 }
 
 export class JockeyAudio {
-  private currentAudio: HTMLAudioElement | null = null;
+  private el: HTMLAudioElement | null = null;
+  private settle: (() => void) | null = null;
   private synth: SpeechSynthesis | null = null;
   private britishVoice: SpeechSynthesisVoice | null = null;
 
@@ -56,48 +60,52 @@ export class JockeyAudio {
     }
   }
 
+  /** Call synchronously inside the tune-in tap so iOS lets later clips play. */
+  unlock(): void {
+    if (typeof Audio === "undefined" || this.settle) return;
+    const audio = this.element();
+    audio.muted = true;
+    audio.src = SILENT_WAV;
+    audio.play().then(() => this.settle || audio.pause(), () => {});
+  }
+
   stop(): void {
-    if (this.currentAudio) {
-      this.currentAudio.pause();
-      this.currentAudio.currentTime = 0;
-      this.currentAudio = null;
-    }
+    this.settle?.();
+    if (this.el && !this.el.paused) this.el.pause();
     if (this.synth && this.synth.speaking) {
       this.synth.cancel();
     }
   }
 
-  private playFile(url: string, options: AudioPlayOptions): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const audio = new Audio(url);
-      this.currentAudio = audio;
-      audio.volume = options.volume ?? 1.0;
+  private element(): HTMLAudioElement {
+    return (this.el ??= new Audio());
+  }
 
+  private playFile(url: string, options: AudioPlayOptions): Promise<void> {
+    const audio = this.element();
+    return new Promise((resolve, reject) => {
+      let done = false;
       const timer = setInterval(() => {
         if (!audio.paused && audio.duration) {
           options.onProgress?.(audio.currentTime, audio.duration);
         }
       }, 100);
-
-      const cleanup = () => {
+      const finish = (fail: boolean, err?: unknown) => {
+        if (done) return;
+        done = true;
         clearInterval(timer);
-        this.currentAudio = null;
+        audio.onended = audio.onerror = null;
+        this.settle = null;
+        if (fail) reject(err);
+        else resolve();
       };
-
-      audio.onended = () => {
-        cleanup();
-        resolve();
-      };
-
-      audio.onerror = (e) => {
-        cleanup();
-        reject(e);
-      };
-
-      audio.play().catch((err) => {
-        cleanup();
-        reject(err);
-      });
+      this.settle = () => finish(false);
+      audio.onended = () => finish(false);
+      audio.onerror = (e) => finish(true, e);
+      audio.muted = false;
+      audio.volume = options.volume ?? 1.0;
+      audio.src = url;
+      audio.play().catch((err) => finish(true, err));
     });
   }
 
@@ -115,8 +123,14 @@ export class JockeyAudio {
       utterance.pitch = 1.0;
       utterance.volume = options.volume ?? 1.0;
 
-      utterance.onend = () => resolve();
-      utterance.onerror = () => resolve();
+      const finish = () => {
+        utterance.onend = utterance.onerror = null;
+        if (this.settle === finish) this.settle = null;
+        resolve();
+      };
+      this.settle = finish;
+      utterance.onend = finish;
+      utterance.onerror = finish;
 
       this.synth.speak(utterance);
     });

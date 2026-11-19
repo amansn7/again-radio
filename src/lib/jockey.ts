@@ -78,21 +78,22 @@ export class RadioJockey {
   private audio = new JockeyAudio();
   private _enabled = true;
   private _speaking = false;
+  private speakToken = 0;
   private _currentText = "";
   private lastSpokeTime = 0;
   private spokeIntro = new Set<string>();
   private spokeThought = new Set<string>();
+  private spokeOutro = new Set<string>();
   private lastProgram = "";
   private hasWelcomed = false;
   private currentListenerCount: number | null = null;
   private lastListenerAnnounce = 0;
 
   constructor(
-    private getVolume: () => number,
-    private setVolume: (v: number) => void,
+    private duckTo: (pct: number) => void,
     private isMuted: () => boolean
   ) {
-    this._enabled = true;
+    try { this._enabled = localStorage.getItem("again-radio:jockey") !== "false"; } catch {}
     loadJockeyData().then((d) => (this.data = d)).catch((err) => {
       console.warn("[jockey] Could not load data:", err);
     });
@@ -155,6 +156,7 @@ export class RadioJockey {
 
   async onTuneIn(): Promise<void> {
     if (!this._enabled || this.hasWelcomed || this.isMuted() || this._speaking) return;
+    this.audio.unlock();
     this.hasWelcomed = true;
     if (!this.data) this.data = await loadJockeyData().catch(() => null);
     if (!this.data) return;
@@ -163,9 +165,14 @@ export class RadioJockey {
     if (welcome) {
       await this.speak(welcome.text, welcome.audio, { isTuneIn: true });
     }
+    const current = this.currentTrack;
+    if (current && current.elapsed < 8) await this.onTrack(current);
   }
 
+  private currentTrack: TrackInfo | null = null;
+
   async onTrack(info: TrackInfo): Promise<void> {
+    this.currentTrack = info;
     if (!this._enabled || this._speaking || this.isMuted()) return;
     if (!this.data) this.data = await loadJockeyData().catch(() => null);
     if (!this.data) return;
@@ -190,19 +197,19 @@ export class RadioJockey {
     const cooldownMs = 80_000;
     if (now - this.lastSpokeTime < cooldownMs) return;
 
-    // Periodic live listener announcement (every ~4-5 minutes)
-    if (now - this.lastListenerAnnounce > 260_000 && this.data.listeners?.length) {
-      this.lastListenerAnnounce = now;
-      this.spokeIntro.add(trackKey);
-      await this.announceListeners();
-      return;
-    }
-
     // Check if this track has an intro
     const trackConfig = this.data.tracks[info.entry.title];
     if (trackConfig?.intro) {
       this.spokeIntro.add(trackKey);
-      await this.speak(trackConfig.intro.text, trackConfig.intro.audio);
+      if (info.elapsed <= 8) await this.speak(trackConfig.intro.text, trackConfig.intro.audio);
+      return;
+    }
+
+    // Periodic listener mentions fill a gap only when there is no track intro.
+    if (now - this.lastListenerAnnounce > 260_000 && this.data.listeners?.length) {
+      this.lastListenerAnnounce = now;
+      this.spokeIntro.add(trackKey);
+      await this.announceListeners();
       return;
     }
 
@@ -218,22 +225,28 @@ export class RadioJockey {
 
   /** Mid-song thought triggered at the designated reflection point of the track */
   async onTime(timeInfo: TimeInfo, info: TrackInfo): Promise<void> {
+    const elapsed = Math.max(0, timeInfo.current - info.entry.offset);
+    this.currentTrack = { ...info, elapsed, progress: info.entry.duration ? elapsed / info.entry.duration : 0 };
     if (!this._enabled || this._speaking || this.isMuted()) return;
     if (!this.data) return;
 
     const trackConfig = this.data.tracks[info.entry.title];
-    if (!trackConfig?.thought || trackConfig.thoughtOffset === undefined) return;
-
     const trackKey = `${info.programId}:${info.entry.title}`;
-    if (this.spokeThought.has(trackKey)) return;
-
-    // If within 3 seconds of the thought offset and cooldown has passed:
-    const elapsed = info.elapsed;
-    if (elapsed >= trackConfig.thoughtOffset && elapsed < trackConfig.thoughtOffset + 3.5) {
+    if (trackConfig?.thought && trackConfig.thoughtOffset !== undefined && !this.spokeThought.has(trackKey) &&
+        elapsed >= trackConfig.thoughtOffset && elapsed < trackConfig.thoughtOffset + 3.5) {
       const now = Date.now();
-      if (now - this.lastSpokeTime < 45_000) return; // ensure breathing room from intro
-      this.spokeThought.add(trackKey);
-      await this.speak(trackConfig.thought.text, trackConfig.thought.audio);
+      if (now - this.lastSpokeTime >= 45_000) {
+        this.spokeThought.add(trackKey);
+        await this.speak(trackConfig.thought.text, trackConfig.thought.audio);
+      }
+    }
+
+    const endKey = `${info.programId}:${info.entry.title}`;
+    const outroWindow = trackConfig?.outro ? Math.ceil(trackConfig.outro.text.length / 13) + 2 : 0;
+    if (!this._speaking && trackConfig?.outro && !this.spokeOutro.has(endKey) &&
+        info.entry.duration - elapsed <= outroWindow && info.entry.duration - elapsed >= 0) {
+      this.spokeOutro.add(endKey);
+      await this.speak(trackConfig.outro.text, trackConfig.outro.audio);
     }
   }
 
@@ -286,9 +299,14 @@ export class RadioJockey {
     }
   }
 
+  unlockAudio(): void {
+    this.audio.unlock();
+  }
+
   async speak(text: string, audioUrl?: string, options: { isTuneIn?: boolean } = {}): Promise<void> {
     if (this._speaking) return;
     this._speaking = true;
+    const token = ++this.speakToken;
     this._currentText = text;
     this.lastSpokeTime = Date.now();
     this.emitState();
@@ -301,22 +319,23 @@ export class RadioJockey {
       );
     }
 
-    const currentVol = this.getVolume();
     const duckVol = this.data?.station.duckVolume ?? 22;
     const duckFadeMs = this.data?.station.duckFadeMs ?? 250;
     const unduckFadeMs = this.data?.station.unduckFadeMs ?? 400;
 
     try {
       // 1. Duck YouTube volume
-      await this.ducker.duck(this.setVolume, currentVol, duckVol, duckFadeMs);
+      await this.ducker.duck(this.duckTo, 100, duckVol, duckFadeMs);
 
       // 2. Play Rory's voice
-      await this.audio.play(audioUrl, text);
+      if (token === this.speakToken) await this.audio.play(audioUrl, text);
     } catch (err) {
       console.warn("[jockey] Speech error:", err);
     } finally {
+      // stop() already restored volume and state; a newer clip may own them now.
+      if (token !== this.speakToken) return;
       // 3. Swell YouTube volume back up
-      await this.ducker.unduck(this.setVolume, duckVol, currentVol, unduckFadeMs);
+      await this.ducker.unduck(this.duckTo, duckVol, 100, unduckFadeMs);
       this._speaking = false;
       this._currentText = "";
       this.emitState();
@@ -328,12 +347,13 @@ export class RadioJockey {
   }
 
   stop(): void {
+    this.speakToken++;
     this.audio.stop();
     this.ducker.cancel();
+    this.duckTo(100);
     if (this._speaking) {
       this._speaking = false;
       this._currentText = "";
-      this.setVolume(this.getVolume());
       this.emitState();
       if (typeof document !== "undefined") {
         document.dispatchEvent(new CustomEvent(RADIO_JOCKEY_END));

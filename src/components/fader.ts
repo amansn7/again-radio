@@ -5,13 +5,25 @@ const IN_MS = 1200;
 const IN_FALLBACK_MS = 1500;
 
 export class Fader {
-  volume = 100;
+  private level = 100;
+  private gain = 1;
   private fading = false;
   private wantIn = false;
   private timer: ReturnType<typeof setInterval> | null = null;
   private change: (() => void) | null = null;
 
   constructor(private apply: (v: number) => void, private playing: () => boolean) {}
+
+  /** What YouTube should be at: the fade level times the jockey duck. */
+  get volume(): number {
+    return Math.round(this.level * this.gain);
+  }
+
+  /** Jockey duck, 0–100. A multiplier, so it never fights a fade in progress. */
+  duck(pct: number) {
+    this.gain = pct / 100;
+    this.apply(this.volume);
+  }
 
   /** Mid-fade or waiting to come back up: not the moment to make another decision. */
   get busy(): boolean {
@@ -50,13 +62,13 @@ export class Fader {
 
   private ramp(to: number, ms: number, done?: () => void) {
     this.stop();
-    const from = this.volume;
+    const from = this.level;
     const t0 = Date.now();
     // A hidden tab throttles timers to ~1s; a fade there would only stutter.
     if (document.hidden) ms = 0;
     const step = () => {
       const k = ms ? Math.min((Date.now() - t0) / ms, 1) : 1;
-      this.volume = Math.round(from + (to - from) * k * k * (3 - 2 * k));
+      this.level = from + (to - from) * k * k * (3 - 2 * k);
       this.apply(this.volume);
       if (k < 1) return;
       this.stop();

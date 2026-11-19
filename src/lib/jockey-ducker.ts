@@ -4,6 +4,7 @@ const STEP_MS = 25;
 export class JockeyDucker {
   private timer: ReturnType<typeof setInterval> | null = null;
   private _isDucked = false;
+  private settle: (() => void) | null = null;
 
   get isDucked(): boolean {
     return this._isDucked;
@@ -14,6 +15,9 @@ export class JockeyDucker {
       clearInterval(this.timer);
       this.timer = null;
     }
+    const settle = this.settle;
+    this.settle = null;
+    settle?.();
   }
 
   /** Ramps volume down from current to target (e.g. 100 -> 22) */
@@ -53,6 +57,7 @@ export class JockeyDucker {
         return;
       }
 
+      this.settle = resolve;
       const step = () => {
         const k = Math.min((Date.now() - t0) / durationMs, 1);
         // Smooth cubic ease-in-out curve

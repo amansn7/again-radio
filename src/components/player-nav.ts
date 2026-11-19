@@ -82,6 +82,7 @@ export function goLive(p: RadioPlayer, ms = FADE_USER_MS) {
 }
 
 function load(p: RadioPlayer, offset: number) {
+  p.jockey.stop();
   const same = p.loaded === p.prog.youtubeId;
   p.loaded = p.prog.youtubeId;
   p.setAnchor(offset);

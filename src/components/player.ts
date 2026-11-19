@@ -45,8 +45,7 @@ export class RadioPlayer extends HTMLElement {
   errors = 0;
   fader = new Fader((v) => this.player?.setVolume?.(v), () => this.playing);
   jockey = new RadioJockey(
-    () => this.fader.volume,
-    (v) => this.player?.setVolume?.(v),
+    (pct) => this.fader.duck(pct),
     () => this.muted
   );
   loaded = "";
@@ -135,6 +134,10 @@ export class RadioPlayer extends HTMLElement {
     signal.addEventListener("abort", () => stopListeners());
 
     document.addEventListener(RADIO_LIVE, () => goLive(this), { signal });
+    document.addEventListener("radio:jockey:ask", () => {
+      if (lastTrack) void this.jockey.askCurrent(lastTrack);
+    }, { signal });
+    document.addEventListener("radio:jockey:toggle", () => this.jockey.toggle(), { signal });
     // Mobile browsers pause embeds in the background; come back to the live moment, like a radio.
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden) this.resumeIfDropped();
