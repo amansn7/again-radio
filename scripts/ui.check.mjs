@@ -72,8 +72,8 @@ const finder = await browser.newPage({ viewport: { width: 390, height: 844 } });
 await finder.goto(url, { waitUntil: "domcontentloaded" });
 await finder.waitForSelector("radio-search", { timeout: 10_000 });
 await finder.keyboard.press("/");
-await finder.keyboard.type("marea");
-await finder.waitForSelector(".rs-row:has-text('Marea') .rs-out", { timeout: 10_000 }).catch(() => fail("search: Marea not found as a YouTube link-out"));
+await finder.keyboard.type("baxter");
+await finder.waitForSelector(".rs-row:has-text('Baxter') .rs-out", { timeout: 10_000 }).catch(() => fail("search: Baxter not found as a YouTube link-out"));
 
 // A shared moment opens on that moment, off live, still waiting for the tune-in tap.
 const linked = await browser.newPage({ viewport: { width: 390, height: 844 } });
