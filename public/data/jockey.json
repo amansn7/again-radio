@@ -309,35 +309,35 @@
     },
     "places to be": {
       "postSeconds": 16,
-      "intro": { "id": "places-to-be-intro", "text": "Oh, that's lovely. Let this one open the windows." }
+      "intro": { "id": "places-to-be-intro", "delivery": "warm", "text": "Oh—wait, that's lovely. Let this one open the windows." }
     },
     "leavemealone": {
       "postSeconds": 16,
-      "intro": { "id": "leavemealone-intro", "text": "Ooh, that bass. All that pressure, all that release." }
+      "intro": { "id": "leavemealone-intro", "delivery": "playful", "text": "Ooh, that bass... all that pressure, then it opens." }
     },
     "stayinit": {
       "postSeconds": 16,
-      "intro": { "id": "stayinit-intro", "text": "Hmm, no rush to leave this moment. Stay in it with us." }
+      "intro": { "id": "stayinit-intro", "delivery": "reflective", "text": "Um... actually, no rush to leave this moment, is there? Stay in it with us." }
     },
     "Billie (loving arms)": {
       "postSeconds": 16,
-      "intro": { "id": "billie-intro", "text": "Aw, a voice like a hand on your shoulder. Here's Billie." }
+      "intro": { "id": "billie-intro", "delivery": "warm", "text": "Aw, that voice... feels like a hand on your shoulder. Here's Billie." }
     },
     "Carlos (make it thru)": {
       "postSeconds": 16,
-      "intro": { "id": "carlos-intro", "text": "Yeah... for the ones finding their way through. This is Carlos." }
+      "intro": { "id": "carlos-intro", "delivery": "warm", "text": "Yeah... if you're finding your way through, this one's for you." }
     },
     "De Barrio": {
       "postSeconds": 16,
-      "intro": { "id": "de-barrio-intro", "text": "Wow, different streets, same shared pulse. Lock into this one." }
+      "intro": { "id": "de-barrio-intro", "delivery": "bright", "text": "Wow, hear how that opens up? Different streets, same pulse." }
     },
     "Flight FM": {
       "postSeconds": 16,
-      "intro": { "id": "flight-fm-intro", "text": "Yay, lift off from here. Flight FM, on Again Radio." }
+      "intro": { "id": "flight-fm-intro", "delivery": "bright", "text": "Yay, there it is. Flight FM, lifting off on Again Radio." }
     },
     "Nightvision": {
       "postSeconds": 16,
-      "intro": { "id": "nightvision-intro", "text": "Mm... for the late shift and the long way home. Here's Nightvision." }
+      "intro": { "id": "nightvision-intro", "delivery": "reflective", "text": "Mm... late shift? Long way home? Here's Nightvision." }
     }
   },
   "transitions": {

@@ -10,6 +10,7 @@ import { JockeyDucker } from "./jockey-ducker.ts";
 import { JockeyAudio } from "./jockey-audio.ts";
 import { pickWelcome } from "./welcome.ts";
 import { outroLeadSeconds } from "./jockey-timing.ts";
+import type { JockeyDelivery } from "./jockey-voice.ts";
 
 const LAST_WELCOME_KEY = "again-radio:last-welcome";
 
@@ -17,6 +18,7 @@ export interface JockeyClip {
   id: string;
   audio?: string;
   text: string;
+  delivery?: JockeyDelivery;
 }
 
 export interface ListenerClip extends JockeyClip {
@@ -37,11 +39,8 @@ export interface TrackJockeyConfig {
   outro?: JockeyClip & { durationSeconds?: number };
 }
 
-export interface FactItem {
-  id: string;
-  audio?: string;
+export interface FactItem extends JockeyClip {
   topic: string;
-  text: string;
   source: string;
 }
 
@@ -164,7 +163,7 @@ export class RadioJockey {
 
     const welcome = this.pickWelcome();
     if (welcome) {
-      await this.speak(welcome.text, welcome.audio, { isTuneIn: true });
+      await this.speak(welcome.text, welcome.audio, { isTuneIn: true, delivery: welcome.delivery });
     }
     const current = this.currentTrack;
     if (current && current.elapsed < 8) await this.onTrack(current);
@@ -187,7 +186,7 @@ export class RadioJockey {
       const trans = this.data.transitions[info.programId];
       if (trans) {
         this.spokeIntro.add(trackKey);
-        await this.speak(trans.text, trans.audio);
+        await this.speak(trans.text, trans.audio, { delivery: trans.delivery });
         return;
       }
     }
@@ -202,7 +201,9 @@ export class RadioJockey {
     const trackConfig = this.data.tracks[info.entry.title];
     if (trackConfig?.intro) {
       this.spokeIntro.add(trackKey);
-      if (info.elapsed <= 8) await this.speak(trackConfig.intro.text, trackConfig.intro.audio);
+      if (info.elapsed <= 8) {
+        await this.speak(trackConfig.intro.text, trackConfig.intro.audio, { delivery: trackConfig.intro.delivery });
+      }
       return;
     }
 
@@ -219,7 +220,7 @@ export class RadioJockey {
       const fact = this.data.facts[Math.floor(Math.random() * this.data.facts.length)];
       if (fact) {
         this.spokeIntro.add(trackKey);
-        await this.speak(fact.text, fact.audio);
+        await this.speak(fact.text, fact.audio, { delivery: fact.delivery });
       }
     }
   }
@@ -238,7 +239,7 @@ export class RadioJockey {
       const now = Date.now();
       if (now - this.lastSpokeTime >= 45_000) {
         this.spokeThought.add(trackKey);
-        await this.speak(trackConfig.thought.text, trackConfig.thought.audio);
+        await this.speak(trackConfig.thought.text, trackConfig.thought.audio, { delivery: trackConfig.thought.delivery });
       }
     }
 
@@ -249,7 +250,7 @@ export class RadioJockey {
     if (!this._speaking && trackConfig?.outro && !this.spokeOutro.has(endKey) &&
         info.entry.duration - elapsed <= outroWindow && info.entry.duration - elapsed >= 0) {
       this.spokeOutro.add(endKey);
-      await this.speak(trackConfig.outro.text, trackConfig.outro.audio);
+      await this.speak(trackConfig.outro.text, trackConfig.outro.audio, { delivery: trackConfig.outro.delivery });
     }
   }
 
@@ -267,7 +268,7 @@ export class RadioJockey {
 
     chosen ??= this.data.listeners.find((l) => l.id === "listener-moment") ?? this.data.listeners[0];
     if (chosen) {
-      await this.speak(chosen.text, chosen.audio);
+      await this.speak(chosen.text, chosen.audio, { delivery: chosen.delivery });
     }
   }
 
@@ -280,25 +281,25 @@ export class RadioJockey {
     const trackConfig = this.data.tracks[info.entry.title];
     // If mid-song and thought exists, prioritize the intimate thought
     if (info.elapsed > 30 && trackConfig?.thought) {
-      await this.speak(trackConfig.thought.text, trackConfig.thought.audio);
+      await this.speak(trackConfig.thought.text, trackConfig.thought.audio, { delivery: trackConfig.thought.delivery });
       return;
     }
     if (trackConfig?.intro) {
-      await this.speak(trackConfig.intro.text, trackConfig.intro.audio);
+      await this.speak(trackConfig.intro.text, trackConfig.intro.audio, { delivery: trackConfig.intro.delivery });
       return;
     }
 
     // Pick a related fact or a random fact about Fred
     const fact = this.data.facts[Math.floor(Math.random() * this.data.facts.length)];
     if (fact) {
-      await this.speak(fact.text, fact.audio);
+      await this.speak(fact.text, fact.audio, { delivery: fact.delivery });
       return;
     }
 
     // Fallback station shout
     const shout = this.data.sweepers[Math.floor(Math.random() * this.data.sweepers.length)];
     if (shout) {
-      await this.speak(shout.text, shout.audio);
+      await this.speak(shout.text, shout.audio, { delivery: shout.delivery });
     }
   }
 
@@ -306,7 +307,7 @@ export class RadioJockey {
     this.audio.unlock();
   }
 
-  async speak(text: string, audioUrl?: string, options: { isTuneIn?: boolean } = {}): Promise<void> {
+  async speak(text: string, audioUrl?: string, options: { isTuneIn?: boolean; delivery?: JockeyDelivery } = {}): Promise<void> {
     if (this._speaking) return;
     this._speaking = true;
     const token = ++this.speakToken;
@@ -317,7 +318,7 @@ export class RadioJockey {
     if (typeof document !== "undefined") {
       document.dispatchEvent(
         new CustomEvent(RADIO_JOCKEY_SPEAK, {
-          detail: { text, audioUrl, isTuneIn: Boolean(options.isTuneIn) }
+          detail: { text, audioUrl, isTuneIn: Boolean(options.isTuneIn), delivery: options.delivery }
         })
       );
     }
@@ -331,7 +332,7 @@ export class RadioJockey {
       await this.ducker.duck(this.duckTo, 100, duckVol, duckFadeMs);
 
       // 2. Play Rory's voice
-      if (token === this.speakToken) await this.audio.play(audioUrl, text);
+      if (token === this.speakToken) await this.audio.play(audioUrl, text, { delivery: options.delivery });
     } catch (err) {
       console.warn("[jockey] Speech error:", err);
     } finally {

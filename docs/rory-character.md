@@ -56,8 +56,17 @@ the thought; don't pile them together or put one at the start of every clip. Use
 Rory is noticing or thinking, “oh” / “ooh” for a small discovery, “wow” for a real lift, and
 “yay” only when the moment is genuinely joyful. Keep them conversational, not acted gasps.
 
+Allow a rare “um” or “I mean” when Rory is genuinely searching for the right thought, followed
+by a small correction or a more precise observation. Keep the hesitation short and purposeful;
+don't add filler to make a line seem human. Use contractions, fragments, and varied sentence
+lengths. A line can start with the reaction, pause, and then change direction naturally. Avoid
+making every clip a complete setup followed by a neat punchline.
+
 These are small shades inside Rory's usual voice, not separate characters. A line can be
 happy and thoughtful, or cheeky and kind; choose one leading shade and keep the rest subtle.
+Optional `delivery` cues in `jockey.json` make small rate and pitch adjustments in the browser
+speech fallback only. Pre-rendered clips keep their recorded performance until they are
+re-recorded.
 
 ## Performance examples
 

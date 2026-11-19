@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { pickWelcome } from "../src/lib/welcome.ts";
 import { outroLeadSeconds } from "../src/lib/jockey-timing.ts";
+import { speechProfile } from "../src/lib/jockey-voice.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -123,6 +124,20 @@ test("configured intros have a speakable cue and measured outros leave a finish 
         `${title} outro scheduling includes the measured clip and safety buffer`);
     }
   }
+});
+
+test("delivery cues keep browser speech changes subtle", () => {
+  const data = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data/jockey.json"), "utf-8"));
+  const allowed = new Set(["natural", "bright", "playful", "reflective", "warm"]);
+  for (const [title, track] of Object.entries(data.tracks)) {
+    if (!track.intro?.delivery) continue;
+    assert.ok(allowed.has(track.intro.delivery), `${title} uses a known delivery cue`);
+  }
+  const rates = [...allowed].map((cue) => speechProfile(cue).rate);
+  const pitches = [...allowed].map((cue) => speechProfile(cue).pitch);
+  assert.ok(rates.every((rate) => rate >= 0.97 && rate <= 1.04));
+  assert.ok(pitches.every((pitch) => pitch >= 0.99 && pitch <= 1.02));
+  assert.equal(speechProfile().rate, speechProfile("natural").rate);
 });
 
 test("listener shoutouts and mid-song thoughts stay within 2000 credit bucket", () => {

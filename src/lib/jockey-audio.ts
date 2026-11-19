@@ -1,4 +1,5 @@
 // Audio player for Rory: plays pre-rendered ElevenLabs voice clips or falls back to Web Speech API.
+import { speechProfile, type JockeyDelivery } from "./jockey-voice.ts";
 
 const SILENT_WAV =
   "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
@@ -6,6 +7,7 @@ const SILENT_WAV =
 export interface AudioPlayOptions {
   volume?: number;
   onProgress?: (currentTime: number, duration: number) => void;
+  delivery?: JockeyDelivery;
 }
 
 export class JockeyAudio {
@@ -119,8 +121,9 @@ export class JockeyAudio {
 
       const utterance = new SpeechSynthesisUtterance(text);
       if (this.britishVoice) utterance.voice = this.britishVoice;
-      utterance.rate = 1.02;
-      utterance.pitch = 1.0;
+      const profile = speechProfile(options.delivery);
+      utterance.rate = profile.rate;
+      utterance.pitch = profile.pitch;
       utterance.volume = options.volume ?? 1.0;
 
       const finish = () => {
