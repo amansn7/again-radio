@@ -1,4 +1,4 @@
-import { RADIO_TRACK } from "../lib/events.ts";
+import { RADIO_TRACK, RADIO_JOCKEY_SPEAK, RADIO_JOCKEY_END } from "../lib/events.ts";
 import type { TrackInfo } from "../lib/events.ts";
 import { onPulse } from "../lib/pulse.ts";
 import { artComplements, videoComplements } from "./orb-colour.ts";
@@ -28,12 +28,24 @@ class RadioOrb extends HTMLElement {
     orbs.add(this);
     startPulse();
     document.addEventListener(RADIO_TRACK, this.onTrack);
+    document.addEventListener(RADIO_JOCKEY_SPEAK, this.onJockeySpeak);
+    document.addEventListener(RADIO_JOCKEY_END, this.onJockeyEnd);
   }
 
   disconnectedCallback() {
     orbs.delete(this);
     document.removeEventListener(RADIO_TRACK, this.onTrack);
+    document.removeEventListener(RADIO_JOCKEY_SPEAK, this.onJockeySpeak);
+    document.removeEventListener(RADIO_JOCKEY_END, this.onJockeyEnd);
   }
+
+  private onJockeySpeak = () => {
+    this.dataset.voice = "true";
+  };
+
+  private onJockeyEnd = () => {
+    delete this.dataset.voice;
+  };
 
   private onTrack = (e: Event) => {
     const id = (e as CustomEvent<TrackInfo>).detail.youtubeId;

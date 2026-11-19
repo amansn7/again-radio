@@ -156,6 +156,32 @@ function main() {
       if (l.scheduledStartTime && Number.isNaN(Date.parse(l.scheduledStartTime))) fail(`live-stream.json: scheduledStartTime must be valid date`);
     }
   }
+  const jpath = join(DATA, "jockey.json");
+  if (existsSync(jpath)) {
+    const j = JSON.parse(readFileSync(jpath, "utf8"));
+    if (!j.station?.jockey) fail("jockey.json: missing station.jockey");
+    for (const s of j.sweepers ?? []) {
+      if (!s.id || !s.text) fail(`jockey.json sweeper ${s.id ?? "?"}: missing id or text`);
+      if (s.audio && !existsSync(join("public", s.audio.replace(/^\//, "")))) {
+        fail(`jockey.json sweeper ${s.id}: audio file ${s.audio} does not exist`);
+      }
+    }
+    for (const [title, t] of Object.entries(j.tracks ?? {})) {
+      if (t.intro?.audio && !existsSync(join("public", t.intro.audio.replace(/^\//, "")))) {
+        fail(`jockey.json track "${title}" intro audio ${t.intro.audio} does not exist`);
+      }
+      if (t.outro?.audio && !existsSync(join("public", t.outro.audio.replace(/^\//, "")))) {
+        fail(`jockey.json track "${title}" outro audio ${t.outro.audio} does not exist`);
+      }
+    }
+    for (const f of j.facts ?? []) {
+      if (!f.id || !f.text || !f.source) fail(`jockey.json fact ${f.id ?? "?"}: needs id, text, source`);
+      if (!/^https:\/\//.test(f.source)) fail(`jockey.json fact ${f.id}: source must be https URL`);
+      if (f.audio && !existsSync(join("public", f.audio.replace(/^\//, "")))) {
+        fail(`jockey.json fact ${f.id}: audio file ${f.audio} does not exist`);
+      }
+    }
+  }
   for (const w of warn) console.log(`· ${w}`);
   if (errors.length) {
     for (const e of errors) console.error(`✗ ${e}`);

@@ -153,6 +153,15 @@ Review: re-run `node scripts/og.mjs` and redeploy when sets are added, or the ne
 - [x] Full rotation: all 19 shows and 17 albums with full tracklists in radio rotation (38 slots, 36.4 h cycle)
 - [x] Allow official YouTube thumbnails (`i.ytimg.com`) for bootleg sets without commercial artwork (`src/lib/art.ts`, `src/lib/station.ts`, `scripts/verify.mjs`)
 
+## Phase 18 — AI Voice Radio Jockey: Rory
+- [x] Character definition, female UK broadcaster persona (Rory), voice profile with ElevenLabs Lily (`pFZP5JQG7iQjIQuC4Bku`)
+- [x] Knowledge base with verified facts and citation sources (`public/data/jockey.json`)
+- [x] Pre-rendered broadcast audio clips for core sweepers, track intros, transitions, and facts (`public/audio/jockey/*.mp3`, `scripts/generate-jockey-audio.mjs`)
+- [x] Real-time audio ducking engine (`src/lib/jockey-ducker.ts`) smoothly ramping YouTube volume to 22% during voice and swelling to 100% on cue
+- [x] Talk-over timing ("hitting the post") wrapping intro speeches before song vocals/drops
+- [x] Transport bar toggle button, vocal luminescence on Siri orb, and synchronized liquid glass live captions (`Player.astro`, `Orb.astro`, `orb.ts`)
+- [x] Unit test suite (`scripts/jockey.test.mjs`) and verify integration (`scripts/verify.mjs`)
+
 ## Production-credit catalogue reconciliation (snapshot 2026-11-18)
 - [x] Record scope and evidence rules in a separate `public/data/production.json` ledger; keep radio rotation and the existing 162-title MusicBrainz artist catalog separate
 - [x] Reconcile all 162 current artist-catalog entries into track-credit verified, explicit non-producer exclusion, or unresolved, with unresolved titles retained in the ledger

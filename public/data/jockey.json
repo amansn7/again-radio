@@ -1,0 +1,203 @@
+{
+  "station": {
+    "name": "AGAIN RADIO",
+    "jockey": "Rory",
+    "gender": "female",
+    "voiceId": "pFZP5JQG7iQjIQuC4Bku",
+    "duckVolume": 22,
+    "duckFadeMs": 250,
+    "unduckFadeMs": 400
+  },
+  "sweepers": [
+    {
+      "id": "welcome",
+      "audio": "/audio/jockey/welcome.mp3",
+      "text": "You're locked into Again Radio. Twenty-four hours of a life in progress. Turn the sound up."
+    },
+    {
+      "id": "worldwide-shout",
+      "audio": "/audio/jockey/worldwide-shout.mp3",
+      "text": "Shout to all the heads locked in worldwide right now. Wherever you're listening, you're in the right place."
+    },
+    {
+      "id": "late-night",
+      "audio": "/audio/jockey/late-night.mp3",
+      "text": "Late night frequencies on Again Radio. This one's for anyone still awake and thinking."
+    },
+    {
+      "id": "return-live",
+      "audio": "/audio/jockey/return-live.mp3",
+      "text": "Reconnecting to the live room. Right back on the pulse."
+    }
+  ],
+  "tracks": {
+    "Delilah (pull me out of this)": {
+      "postSeconds": 24,
+      "intro": {
+        "id": "delilah-intro",
+        "audio": "/audio/jockey/delilah-intro.mp3",
+        "text": "Delilah Montagu singing straight out of her kitchen into an iPhone memo. Fred caught the feeling while waiting on his laundry. Hold tight... here it comes."
+      },
+      "outro": {
+        "id": "delilah-outro",
+        "audio": "/audio/jockey/delilah-outro.mp3",
+        "text": "Delilah, pulling us all out of this. Unbelievable energy."
+      }
+    },
+    "Danielle (smile on my face)": {
+      "postSeconds": 20,
+      "intro": {
+        "id": "danielle-intro",
+        "audio": "/audio/jockey/danielle-intro.mp3",
+        "text": "Danielle Balbuena, 070 Shake on the vocal. That raw acoustic emotion wrapped in pure club euphoria."
+      },
+      "outro": {
+        "id": "danielle-outro",
+        "audio": "/audio/jockey/danielle-outro.mp3",
+        "text": "Danielle, smile on my face. That smile is now permanent."
+      }
+    },
+    "Nathan (still breathing)": {
+      "postSeconds": 16,
+      "intro": {
+        "id": "nathan-intro",
+        "audio": "/audio/jockey/nathan-intro.mp3",
+        "text": "The very first breath of the Actual Life journey. Nathan's words, caught in transit, reminding us all to just keep going."
+      },
+      "outro": {
+        "id": "nathan-outro",
+        "audio": "/audio/jockey/nathan-outro.mp3",
+        "text": "Nathan, still breathing. The heartbeat of the archive."
+      }
+    },
+    "Kammy (like i do)": {
+      "postSeconds": 22,
+      "intro": {
+        "id": "kammy-intro",
+        "audio": "/audio/jockey/kammy-intro.mp3",
+        "text": "Kammy Purcell on the vocal. Fred pitched down her acapella from an Instagram video while riding the Eurostar. Pure warmth."
+      }
+    },
+    "Tanya (maybe life)": {
+      "postSeconds": 18,
+      "intro": {
+        "id": "tanya-intro",
+        "audio": "/audio/jockey/tanya-intro.mp3",
+        "text": "Tanya. Only on the record does the name get a second half. Turn this one up."
+      }
+    },
+    "Rumble": {
+      "postSeconds": 28,
+      "intro": {
+        "id": "rumble-intro",
+        "audio": "/audio/jockey/rumble-intro.mp3",
+        "text": "Pangbourne crew in full effect. Skrillex, Flowdan, and Fred. Four years in the making. Watch the low end on this drop."
+      },
+      "outro": {
+        "id": "rumble-outro",
+        "audio": "/audio/jockey/rumble-outro.mp3",
+        "text": "Flowdan and Skrillex with Fred. Heavyweight pressure."
+      }
+    },
+    "Baby again..": {
+      "postSeconds": 24,
+      "intro": {
+        "id": "baby-again-intro",
+        "audio": "/audio/jockey/baby-again-intro.mp3",
+        "text": "Written during those legendary countryside sessions with Skrillex and Four Tet. Turn the lights out for this one."
+      }
+    },
+    "Turn On The Lights again..": {
+      "postSeconds": 20,
+      "intro": {
+        "id": "turn-on-the-lights-intro",
+        "audio": "/audio/jockey/turn-on-the-lights-intro.mp3",
+        "text": "Future, Swedish House Mafia, and Fred. Studio sound welded to the rave."
+      }
+    },
+    "Jungle": {
+      "postSeconds": 18,
+      "intro": {
+        "id": "jungle-intro",
+        "audio": "/audio/jockey/jungle-intro.mp3",
+        "text": "Dense, relentless energy. Fred wrote this to break the sound system. Here we go."
+      }
+    },
+    "adore u": {
+      "postSeconds": 22,
+      "intro": {
+        "id": "adore-u-intro",
+        "audio": "/audio/jockey/adore-u-intro.mp3",
+        "text": "Obongjayar's voice arrives and the whole track opens up. Dedicated to his sister. Beautiful feeling right here."
+      }
+    },
+    "Clara (the night is dark)": {
+      "postSeconds": 18,
+      "intro": {
+        "id": "clara-intro",
+        "audio": "/audio/jockey/clara-intro.mp3",
+        "text": "The final chapter of the Boiler Room. The night is dark and the name is Clara."
+      }
+    },
+    "Strong": {
+      "postSeconds": 20,
+      "intro": {
+        "id": "strong-intro",
+        "audio": "/audio/jockey/strong-intro.mp3",
+        "text": "Built from something fragile. Romy and Fred letting the chords hold the entire room."
+      }
+    }
+  },
+  "transitions": {
+    "boiler-room-london": {
+      "id": "boiler-room-transition",
+      "audio": "/audio/jockey/boiler-room-transition.mp3",
+      "text": "Stepping into the iconic London Boiler Room. Sweat on the walls, pure electricity."
+    },
+    "rooftop-naples": {
+      "id": "naples-transition",
+      "audio": "/audio/jockey/naples-transition.mp3",
+      "text": "Heading over to Naples on that sun-drenched terrace. Golden hour over the sea."
+    },
+    "times-square": {
+      "id": "times-square-transition",
+      "audio": "/audio/jockey/times-square-transition.mp3",
+      "text": "Times Square, New York City. A yellow school bus and three friends stopping traffic."
+    },
+    "tiny-desk": {
+      "id": "tiny-desk-transition",
+      "audio": "/audio/jockey/tiny-desk-transition.mp3",
+      "text": "NPR Tiny Desk. No backing tracks, just classical piano, marimba, and live MPC loops."
+    }
+  },
+  "facts": [
+    {
+      "id": "eno-mentorship",
+      "audio": "/audio/jockey/eno-mentorship.mp3",
+      "topic": "Brian Eno Mentorship",
+      "text": "Fred knocked on Brian Eno's door at sixteen and joined his acapella group. Eno mentored him for over a decade before they made Secret Life together.",
+      "source": "https://www.theguardian.com/music/2023/may/05/fred-again-and-brian-eno-secret-life-review"
+    },
+    {
+      "id": "real-names",
+      "audio": "/audio/jockey/real-names.mp3",
+      "topic": "Real Names in Titles",
+      "text": "Every name in Fred's titles is a real person he met. The voice notes on his phone become the emotional soul of the music.",
+      "source": "https://music.apple.com/us/station/fred-again-the-zane-lowe-interview/ra.1651347047"
+    },
+    {
+      "id": "hit-producer",
+      "audio": "/audio/jockey/hit-producer.mp3",
+      "topic": "Chart Producer Credits",
+      "text": "Before releasing solo records, Fred produced massive chart-toppers for Ed Sheeran, George Ezra, and Stormzy on his laptop.",
+      "source": "https://www.soundonsound.com/people/fred-again-producing-ed-sheeran"
+    },
+    {
+      "id": "boiler-room-cdj",
+      "audio": "/audio/jockey/yellow-shirt-cdj.mp3",
+      "topic": "Boiler Room Yellow Shirt",
+      "text": "During the 2022 Boiler Room, a dancer bumped the CDJ stop button. Fred just grinned, hit play, and turned it into the defining moment of the set.",
+      "source": "https://mixmag.net/feature/fred-again-boiler-room-london-cover-story"
+    }
+  ]
+}

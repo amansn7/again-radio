@@ -7,7 +7,15 @@ import { Fader } from "./fader.ts";
 import { bindSession } from "./media-session.ts";
 import type { Program } from "../lib/station.ts";
 import type { YTPlayer } from "../lib/yt.ts";
-import { RADIO_CUE, RADIO_LIVE } from "../lib/events.ts";
+import {
+  RADIO_CUE,
+  RADIO_LIVE,
+  RADIO_TRACK,
+  RADIO_JOCKEY_SPEAK,
+  RADIO_JOCKEY_END,
+  lastTrack,
+  type TrackInfo
+} from "../lib/events.ts";
 import type { CueInfo } from "../lib/events.ts";
 import { bindWake, rescueFocus } from "./player-wake.ts";
 import { emitState, fit } from "./player-emit.ts";
@@ -15,6 +23,7 @@ import { cue, goLive, setShuffle, step, tuneStart, SETTLE_MS } from "./player-na
 import { createPlayer } from "./player-yt.ts";
 import { fetchLiveStream, type LiveStreamEvent } from "../lib/live-stream.ts";
 import { bindLiveBroadcast } from "./player-live.ts";
+import { RadioJockey } from "../lib/jockey.ts";
 
 // State lives here; player-nav (what plays), player-yt (embed + clock), player-emit (events,
 // labels) and player-wake (gesture, focus) act on it.
@@ -34,6 +43,11 @@ export class RadioPlayer extends HTMLElement {
   bad = new Set<string>();
   errors = 0;
   fader = new Fader((v) => this.player?.setVolume?.(v), () => this.playing);
+  jockey = new RadioJockey(
+    () => this.fader.volume,
+    (v) => this.player?.setVolume?.(v),
+    () => this.muted
+  );
   loaded = "";
   // Browsers block sound until a gesture, so the station starts muted and the first
   // click or key anywhere turns it up. An explicit mute/unmute cancels that.
@@ -65,6 +79,7 @@ export class RadioPlayer extends HTMLElement {
     this.ac.abort();
     this.wake = new AbortController();
     if (this.ticker !== null) clearInterval(this.ticker);
+    this.jockey.stop();
     this.fader.stop();
     this.player?.destroy();
   }
@@ -102,6 +117,49 @@ export class RadioPlayer extends HTMLElement {
     on("#rp-sound", () => this.toggleMute());
     on("#rp-back", () => goLive(this));
     on("#rp-shuffle", () => setShuffle(this, !this.shuffle.on));
+    on("#rp-jockey", () => {
+      const enabled = this.jockey.toggle();
+      const btn = this.querySelector<HTMLButtonElement>("#rp-jockey");
+      if (btn) {
+        btn.setAttribute("aria-pressed", String(enabled));
+        btn.setAttribute("aria-label", `Radio Jockey (Rory): ${enabled ? "On" : "Muted"}`);
+      }
+    });
+
+    const jockeyBtn = this.querySelector<HTMLButtonElement>("#rp-jockey");
+    if (jockeyBtn) {
+      jockeyBtn.setAttribute("aria-pressed", String(this.jockey.enabled));
+      jockeyBtn.setAttribute("aria-label", `Radio Jockey (Rory): ${this.jockey.enabled ? "On" : "Muted"}`);
+    }
+
+    document.addEventListener(RADIO_TRACK, (e) => {
+      const info = (e as CustomEvent<TrackInfo>).detail;
+      void this.jockey.onTrack(info);
+    }, { signal });
+
+    document.addEventListener("radio:jockey:ask", () => {
+      if (lastTrack) void this.jockey.askCurrent(lastTrack);
+    }, { signal });
+
+    document.addEventListener(RADIO_JOCKEY_SPEAK, (e) => {
+      const detail = (e as CustomEvent<{ text: string }>).detail;
+      const wrap = this.querySelector<HTMLElement>("#rp-caption-wrap");
+      const textEl = this.querySelector<HTMLElement>(".rp-caption-text");
+      const btn = this.querySelector<HTMLElement>("#rp-jockey");
+      if (wrap && textEl) {
+        textEl.textContent = detail.text;
+        wrap.hidden = false;
+      }
+      if (btn) btn.dataset.speaking = "true";
+    }, { signal });
+
+    document.addEventListener(RADIO_JOCKEY_END, () => {
+      const wrap = this.querySelector<HTMLElement>("#rp-caption-wrap");
+      const btn = this.querySelector<HTMLElement>("#rp-jockey");
+      if (wrap) wrap.hidden = true;
+      if (btn) delete btn.dataset.speaking;
+    }, { signal });
+
     document.addEventListener(RADIO_LIVE, () => goLive(this), { signal });
     // Mobile browsers pause embeds in the background; come back to the live moment, like a radio.
     document.addEventListener("visibilitychange", () => {
@@ -142,10 +200,13 @@ export class RadioPlayer extends HTMLElement {
     const tune = this.querySelector<HTMLElement>("#rp-tune");
     if (tune) tuneIn(tune, this.querySelector("#rp-sound"), this.querySelector(".rp-screen"), this.tap);
     this.muted = muted;
-    if (muted) this.player?.mute?.();
-    else {
+    if (muted) {
+      this.jockey.stop();
+      this.player?.mute?.();
+    } else {
       this.player?.unMute?.();
       this.player?.setVolume?.(this.fader.volume);
+      void this.jockey.onTuneIn();
     }
     emitState(this);
   }
@@ -163,7 +224,10 @@ export class RadioPlayer extends HTMLElement {
 
   private toggle() {
     this.userPaused = this.playing;
-    if (this.playing) this.player?.pauseVideo?.();
+    if (this.playing) {
+      this.jockey.stop();
+      this.player?.pauseVideo?.();
+    }
     else if (this.live) goLive(this);
     else this.player?.playVideo?.();
   }

@@ -10,6 +10,16 @@ export const RADIO_LIVE_STREAM = "radio:live-stream";
 export const RADIO_TOAST = "radio:toast";
 /** Open the search sheet, optionally prefilled: detail `{ query?: string }`. */
 export const RADIO_SEARCH = "radio:search";
+export const RADIO_JOCKEY = "radio:jockey";
+export const RADIO_JOCKEY_SPEAK = "radio:jockey:speak";
+export const RADIO_JOCKEY_END = "radio:jockey:end";
+
+export interface JockeyStateDetail {
+  enabled: boolean;
+  speaking: boolean;
+  text?: string;
+  jockeyName: string;
+}
 
 export interface TrackInfo {
   programId: string;

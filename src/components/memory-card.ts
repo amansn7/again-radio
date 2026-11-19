@@ -18,6 +18,9 @@ class MemoryCardElement extends HTMLElement {
   connectedCallback() {
     this.text = this.querySelector<HTMLElement>(".mc-text")!;
     document.addEventListener(RADIO_TRACK, (e) => this.onTrack((e as CustomEvent<TrackInfo>).detail));
+    this.querySelector(".mc-orb-btn")?.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("radio:jockey:ask"));
+    });
   }
 
   private onTrack(info: TrackInfo) {
