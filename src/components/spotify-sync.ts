@@ -50,7 +50,7 @@ class SpotifySyncElement extends HTMLElement {
   }
 
   private async onTrack(info: TrackInfo) {
-    if (info.entry.type !== "track") {
+    if (info.entry.type !== "track" || !getClientId()) {
       this.style.display = "none";
       return;
     }

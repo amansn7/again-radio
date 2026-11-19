@@ -17,7 +17,11 @@ const SCOPES = [
   "playlist-modify-private"
 ].join(" ");
 
-export const getClientId = (): string => (typeof localStorage !== "undefined" ? localStorage.getItem(KEY_CLIENT_ID) || "" : "");
+// Default central client ID for Again Radio once registered in Spotify Dashboard.
+export const DEFAULT_CLIENT_ID = "";
+
+export const getClientId = (): string =>
+  (typeof localStorage !== "undefined" ? localStorage.getItem(KEY_CLIENT_ID) || DEFAULT_CLIENT_ID : DEFAULT_CLIENT_ID);
 export const setClientId = (id: string): void => { if (typeof localStorage !== "undefined") localStorage.setItem(KEY_CLIENT_ID, id.trim()); };
 export const isConnected = (): boolean => (typeof localStorage !== "undefined" ? Boolean(localStorage.getItem(KEY_ACCESS_TOKEN)) : false);
 
