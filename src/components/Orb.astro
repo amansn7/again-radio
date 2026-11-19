@@ -2,6 +2,7 @@
 ---
 <radio-orb {...Astro.props} aria-hidden="true">
   <i class="o-body"><i class="o-mesh"></i><i class="o-dots"></i><i class="o-sheen"></i></i>
+  <canvas class="o-wave" aria-hidden="true"></canvas>
 </radio-orb>
 
 <style is:global>
@@ -45,6 +46,23 @@
   radio-orb[data-voice] .o-body {
     filter: brightness(1.3) saturate(1.35) drop-shadow(0 0 16px var(--accent));
     animation: orb-breathe 2.4s ease-in-out infinite;
+  }
+  radio-orb .o-wave {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  radio-orb[data-wave] .o-body {
+    opacity: 0;
+    transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  radio-orb[data-wave] .o-wave {
+    opacity: 1;
   }
   radio-orb .o-mesh {
     background:

@@ -140,7 +140,7 @@ export class RadioJockey {
 
     const welcome = this.data.sweepers.find((s) => s.id === "welcome");
     if (welcome) {
-      await this.speak(welcome.text, welcome.audio);
+      await this.speak(welcome.text, welcome.audio, { isTuneIn: true });
     }
   }
 
@@ -265,7 +265,7 @@ export class RadioJockey {
     }
   }
 
-  async speak(text: string, audioUrl?: string): Promise<void> {
+  async speak(text: string, audioUrl?: string, options: { isTuneIn?: boolean } = {}): Promise<void> {
     if (this._speaking) {
       this.stop();
     }
@@ -275,7 +275,11 @@ export class RadioJockey {
     this.emitState();
 
     if (typeof document !== "undefined") {
-      document.dispatchEvent(new CustomEvent(RADIO_JOCKEY_SPEAK, { detail: { text, audioUrl } }));
+      document.dispatchEvent(
+        new CustomEvent(RADIO_JOCKEY_SPEAK, {
+          detail: { text, audioUrl, isTuneIn: Boolean(options.isTuneIn) }
+        })
+      );
     }
 
     const currentVol = this.getVolume();

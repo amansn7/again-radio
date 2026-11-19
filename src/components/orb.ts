@@ -2,6 +2,7 @@ import { RADIO_TRACK, RADIO_JOCKEY_SPEAK, RADIO_JOCKEY_END } from "../lib/events
 import type { TrackInfo } from "../lib/events.ts";
 import { onPulse } from "../lib/pulse.ts";
 import { artComplements, videoComplements } from "./orb-colour.ts";
+import { createWaveRenderer, type WaveRenderer } from "./orb-wave.ts";
 
 const ATTACK = 0.7;
 const RELEASE = 0.07;
@@ -22,9 +23,12 @@ class RadioOrb extends HTMLElement {
   private speed = 0.5;
   private spin: Animation | undefined;
   private vid = "";
+  private wave: WaveRenderer | null = null;
 
   connectedCallback() {
     this.paint(artComplements());
+    const canvas = this.querySelector<HTMLCanvasElement>(".o-wave");
+    if (canvas) this.wave = createWaveRenderer(canvas);
     orbs.add(this);
     startPulse();
     document.addEventListener(RADIO_TRACK, this.onTrack);
@@ -34,17 +38,25 @@ class RadioOrb extends HTMLElement {
 
   disconnectedCallback() {
     orbs.delete(this);
+    this.wave?.destroy();
+    this.wave = null;
     document.removeEventListener(RADIO_TRACK, this.onTrack);
     document.removeEventListener(RADIO_JOCKEY_SPEAK, this.onJockeySpeak);
     document.removeEventListener(RADIO_JOCKEY_END, this.onJockeyEnd);
   }
 
-  private onJockeySpeak = () => {
-    this.dataset.voice = "true";
+  private onJockeySpeak = (e: Event) => {
+    const detail = (e as CustomEvent<{ text: string; isTuneIn?: boolean }>).detail;
+    if (detail?.isTuneIn) return;
+    this.dataset.wave = "true";
+    this.wave?.start();
   };
 
   private onJockeyEnd = () => {
-    delete this.dataset.voice;
+    delete this.dataset.wave;
+    setTimeout(() => {
+      if (!this.dataset.wave) this.wave?.stop();
+    }, 400);
   };
 
   private onTrack = (e: Event) => {

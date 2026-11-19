@@ -39,6 +39,8 @@ const { ...attrs } = Astro.props;
   .mc-orb-btn[data-hover]::after, .mc-orb-btn:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
   .mc-orb-btn:active { transform: scale(0.94); transition-duration: 120ms; }
   .mc-orb-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 6px; }
+  .mc-orb-btn:has(radio-orb[data-wave]) { cursor: default; pointer-events: none; }
+  .mc-orb-btn:has(radio-orb[data-wave])::after { display: none !important; }
   html.orb-feeding, html.orb-feeding * { cursor: none !important; }
   .orb-feed { position: fixed; inset: 0; z-index: 70; width: 100vw; height: 100vh; overflow: visible; pointer-events: none; opacity: 0; transition: opacity 140ms ease-out; }
   .orb-feed.is-active { opacity: var(--feed-strength, 0); }
@@ -103,7 +105,11 @@ const { ...attrs } = Astro.props;
   import "./memory-card.ts";
   const btn = document.querySelector<HTMLElement>(".mc-orb-btn");
   if (btn) {
-    btn.addEventListener("click", () => import("./disco.ts").then((m) => m.disco(btn.querySelector("radio-orb")!)));
+    btn.addEventListener("click", () => {
+      const orb = btn.querySelector<HTMLElement>("radio-orb");
+      if (orb?.hasAttribute("data-wave")) return;
+      import("./disco.ts").then((m) => m.disco(orb!));
+    });
     const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     const orb = btn.querySelector<HTMLElement>("radio-orb");
@@ -128,6 +134,14 @@ const { ...attrs } = Astro.props;
       frame = requestAnimationFrame(() => {
         frame = 0;
         if (!pointer || !orb) return;
+        if (orb.hasAttribute("data-wave")) {
+          document.documentElement.classList.remove("orb-feeding");
+          svg.classList.remove("is-active");
+          cursor.classList.remove("is-active");
+          btn.removeAttribute("data-near");
+          btn.removeAttribute("data-hover");
+          return;
+        }
         const r = btn.getBoundingClientRect();
         const dx = pointer.clientX - (r.left + r.width / 2);
         const dy = pointer.clientY - (r.top + r.height / 2);
