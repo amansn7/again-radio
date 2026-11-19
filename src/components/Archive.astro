@@ -101,15 +101,6 @@
   .quiet .sb-rail { top: 16px; }
   .quiet .sb-rail b { opacity: 0.5; }
   .quiet .sb-needle { top: 4px; bottom: 20px; }
-  .sb-hint {
-    display: inline-block; max-width: 100%; margin: 0.375rem 0 0; padding: 0.4rem 0.7rem;
-    border: 1px solid var(--glass-edge); border-radius: 999px;
-    background: var(--glass-tint-regular);
-    -webkit-backdrop-filter: blur(16px) saturate(1.6) brightness(1.05);
-    backdrop-filter: blur(16px) saturate(1.6) brightness(1.05);
-    box-shadow: var(--glass-rim), var(--lg-shadow);
-    color: var(--fg); font-size: 0.8125rem; line-height: 1.45;
-  }
 
   @media (max-width: 520px) {
     .sb-head { grid-template-columns: minmax(0, 1fr) auto; gap: 0.35rem 0.5rem; padding: 1rem; }
@@ -119,7 +110,7 @@
     .sb-head .sb-sub { font-size: 1rem; }
   }
   @media (prefers-reduced-transparency: reduce) {
-    .sb-head, .sb-hint { background: var(--glass-solid); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .sb-head { background: var(--glass-solid); -webkit-backdrop-filter: none; backdrop-filter: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     show-band .st { transition: none; }

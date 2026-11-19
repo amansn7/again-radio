@@ -9,7 +9,6 @@ import {
 
 const DAY = 86400_000;
 const TUNE_MS = 6000;
-const HINT = `<p class="sb-hint">Tap a station to tune to it. The band drifts toward the next show in real time.</p>`;
 const rollTimers = new WeakMap<HTMLElement, number>();
 
 const dayNum = (s: Show) => new Date(s.t).toLocaleDateString("en-GB", { day: "numeric", timeZone: s.tz });
@@ -181,7 +180,7 @@ class ShowBand extends HTMLElement {
       `<section class="wrap" aria-labelledby="sb-title"><h2 class="section-title" id="sb-title">${esc(heading(up))}</h2>${head}` +
       `<div class="sb-band${up.length ? "" : " quiet"}" role="group" aria-label="Upcoming shows" style="--needle:${g.needle}%">` +
       `<div class="sb-rail">${ticks}</div><div class="sb-signal" aria-hidden="true"><i></i></div>${stns}<div class="sb-needle" aria-hidden="true">${up.length ? "<span>now</span>" : ""}</div></div>` +
-      `${up.length ? HINT : ""}</section>`;
+      `</section>`;
     this.ticks = [...this.querySelectorAll<HTMLElement>(".sb-rail b")];
     this.btns = [...this.querySelectorAll<HTMLButtonElement>(".st")];
     this.tickX = this.ticks.map((_, d) => 3 + d * 2.4);
