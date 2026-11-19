@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { pickWelcome } from "../src/lib/welcome.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -24,6 +25,14 @@ test("jockey data schema and audio files exist", () => {
       const stat = fs.statSync(audioPath);
       assert.ok(stat.size > 1000, `Audio file ${s.audio} is non-empty (${stat.size} bytes)`);
     }
+  }
+
+  for (const w of data.welcomes ?? []) {
+    assert.ok(w.id && w.text && w.audio, `Welcome ${w.id} has id, text, and audio`);
+    const audioPath = path.join(ROOT, "public", w.audio.replace(/^\//, ""));
+    assert.ok(fs.existsSync(audioPath), `Welcome audio file ${w.audio} exists on disk`);
+    const stat = fs.statSync(audioPath);
+    assert.ok(stat.size > 1000, `Welcome audio file ${w.audio} is non-empty (${stat.size} bytes)`);
   }
 
   for (const [title, track] of Object.entries(data.tracks)) {
@@ -153,4 +162,19 @@ test("single-voice mutex prevents speech overlap or interruption", () => {
   speaking = false;
   assert.equal(onTrack(), true, "Next speech accepted once lock released");
   assert.equal(speakCalls, 2);
+});
+
+test("welcome picks by hour and never repeats the last line", () => {
+  const pool = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data/jockey.json"), "utf-8")).welcomes;
+  for (let hour = 0; hour < 24; hour++) {
+    const seen = new Set();
+    for (let i = 0; i < 50; i++) {
+      const w = pickWelcome(pool, hour, "welcome-standard", () => i / 50);
+      assert.ok(!w.hours || w.hours.includes(hour), `${w.id} fits hour ${hour}`);
+      assert.notEqual(w.id, "welcome-standard");
+      seen.add(w.id);
+    }
+    assert.ok(seen.size >= 3, `hour ${hour} has ${seen.size} options`);
+  }
+  assert.equal(pickWelcome([{ id: "a" }], 3, "a").id, "a", "single line still plays");
 });

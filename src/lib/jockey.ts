@@ -8,6 +8,9 @@ import {
 } from "./events.ts";
 import { JockeyDucker } from "./jockey-ducker.ts";
 import { JockeyAudio } from "./jockey-audio.ts";
+import { pickWelcome } from "./welcome.ts";
+
+const LAST_WELCOME_KEY = "again-radio:last-welcome";
 
 export interface JockeyClip {
   id: string;
@@ -18,6 +21,11 @@ export interface JockeyClip {
 export interface ListenerClip extends JockeyClip {
   min?: number;
   max?: number;
+}
+
+export interface WelcomeClip extends JockeyClip {
+  mood?: string;
+  hours?: number[];
 }
 
 export interface TrackJockeyConfig {
@@ -46,6 +54,7 @@ export interface JockeyData {
     duckFadeMs: number;
     unduckFadeMs: number;
   };
+  welcomes?: WelcomeClip[];
   sweepers: JockeyClip[];
   listeners?: ListenerClip[];
   tracks: Record<string, TrackJockeyConfig>;
@@ -132,13 +141,25 @@ export class RadioJockey {
     document.dispatchEvent(new CustomEvent(RADIO_JOCKEY, { detail }));
   }
 
+  private pickWelcome(): WelcomeClip | undefined {
+    if (!this.data) return undefined;
+    const pool = this.data.welcomes?.length
+      ? this.data.welcomes
+      : this.data.sweepers.filter((s) => s.id === "welcome");
+    let last = "";
+    try { last = localStorage.getItem(LAST_WELCOME_KEY) ?? ""; } catch {}
+    const chosen = pickWelcome(pool, new Date().getHours(), last);
+    try { if (chosen) localStorage.setItem(LAST_WELCOME_KEY, chosen.id); } catch {}
+    return chosen;
+  }
+
   async onTuneIn(): Promise<void> {
     if (!this._enabled || this.hasWelcomed || this.isMuted() || this._speaking) return;
     this.hasWelcomed = true;
     if (!this.data) this.data = await loadJockeyData().catch(() => null);
     if (!this.data) return;
 
-    const welcome = this.data.sweepers.find((s) => s.id === "welcome");
+    const welcome = this.pickWelcome();
     if (welcome) {
       await this.speak(welcome.text, welcome.audio, { isTuneIn: true });
     }

@@ -28,6 +28,10 @@ if (!fs.existsSync(audioDir)) {
 // Collect all clips to synthesize
 const clips = [];
 
+for (const w of jockeyData.welcomes || []) {
+  clips.push({ id: w.id, audio: w.audio, text: w.text, label: `welcome:${w.id}` });
+}
+
 for (const s of jockeyData.sweepers || []) {
   clips.push({ id: s.id, audio: s.audio, text: s.text, label: `sweeper:${s.id}` });
 }

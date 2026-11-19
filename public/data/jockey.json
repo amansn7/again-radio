@@ -8,6 +8,53 @@
     "duckFadeMs": 250,
     "unduckFadeMs": 400
   },
+  "welcomes": [
+    {
+      "id": "welcome-standard",
+      "audio": "/audio/jockey/welcome.mp3",
+      "text": "You're locked into Again Radio. Twenty-four hours of a life in progress. Turn the sound up.",
+      "mood": "general"
+    },
+    {
+      "id": "welcome-late-night",
+      "audio": "/audio/jockey/late-night.mp3",
+      "text": "Late night frequencies on Again Radio. This one's for anyone still awake and thinking.",
+      "mood": "night",
+      "hours": [22, 23, 0, 1, 2, 3, 4]
+    },
+    {
+      "id": "welcome-worldwide",
+      "audio": "/audio/jockey/worldwide-shout.mp3",
+      "text": "Shout to all the heads locked in worldwide right now. Wherever you're listening, you're in the right place.",
+      "mood": "community"
+    },
+    {
+      "id": "welcome-dawn",
+      "audio": "/audio/jockey/welcome-dawn.mp3",
+      "text": "Early morning frequencies... easing into the day on Again Radio. Turn the sound up.",
+      "mood": "dawn",
+      "hours": [5, 6, 7, 8, 9, 10]
+    },
+    {
+      "id": "welcome-dusk",
+      "audio": "/audio/jockey/welcome-dusk.mp3",
+      "text": "Sun setting somewhere in the world... clocking off and locking into Again Radio.",
+      "mood": "dusk",
+      "hours": [16, 17, 18, 19, 20, 21]
+    },
+    {
+      "id": "welcome-headphones",
+      "audio": "/audio/jockey/welcome-headphones.mp3",
+      "text": "Headphones on, world off. You're locked into Again Radio. Welcome in.",
+      "mood": "intimate"
+    },
+    {
+      "id": "welcome-hype",
+      "audio": "/audio/jockey/welcome-hype.mp3",
+      "text": "Right then... volume up. You're locked into twenty-four hours of Fred again.",
+      "mood": "hype"
+    }
+  ],
   "sweepers": [
     {
       "id": "welcome",
