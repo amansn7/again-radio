@@ -53,8 +53,15 @@ function loadArt(el: HTMLElement, url: string, high: boolean): void {
   const known = tints.get(url);
   if (known) el.style.setProperty("--rim", known);
   const img = image(url, high);
+  const mirrorArt = (source: HTMLImageElement) => {
+    const i = el.dataset.i;
+    if (i === undefined) return;
+    const mirror = el.closest(".dl-track")?.querySelector<HTMLElement>(`[data-reflection="${i}"]`);
+    mirror?.querySelector(".dl-art")?.replaceChildren(source.cloneNode(true));
+  };
   const show = () => {
     el.querySelector(".dl-art")?.append(img);
+    mirrorArt(img);
     el.classList.add("has-art");
     const c = tint(img);
     if (c) el.style.setProperty("--rim", c);
@@ -64,7 +71,11 @@ function loadArt(el: HTMLElement, url: string, high: boolean): void {
   img.onerror = () => {
     const plain = new Image();
     plain.alt = "";
-    plain.onload = () => { el.querySelector(".dl-art")?.append(plain); el.classList.add("has-art"); };
+    plain.onload = () => {
+      el.querySelector(".dl-art")?.append(plain);
+      mirrorArt(plain);
+      el.classList.add("has-art");
+    };
     plain.src = url;
   };
 }

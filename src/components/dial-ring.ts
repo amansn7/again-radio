@@ -18,6 +18,7 @@ export class Ring {
   count = 0;
   suppress = false;
   private els = new Map<number, HTMLElement>();
+  private reflections = new Map<number, HTMLElement>();
   private touched = -Infinity;
   private shown = -1;
   private span = "";
@@ -45,6 +46,7 @@ export class Ring {
   reset(count: number, at = 0): void {
     this.track.replaceChildren();
     this.els.clear();
+    this.reflections.clear();
     this.count = count;
     this.shown = -1;
     this.span = "";
@@ -73,7 +75,14 @@ export class Ring {
     this.track.classList.toggle("is-still", !animate);
     const lo = this.flat ? 0 : Math.max(0, Math.floor(this.pos) - WINDOW);
     const hi = this.flat ? this.count - 1 : Math.min(this.count - 1, Math.ceil(this.pos) + WINDOW);
-    this.els.forEach((el, i) => { if (i < lo || i > hi) { el.remove(); this.els.delete(i); } });
+    this.els.forEach((el, i) => {
+      if (i < lo || i > hi) {
+        el.remove();
+        this.reflections.get(i)?.remove();
+        this.reflections.delete(i);
+        this.els.delete(i);
+      }
+    });
     if (!this.flat && this.span !== `${lo}-${hi}`) {
       this.span = `${lo}-${hi}`;
       for (let k = 1; k <= PREFETCH; k++) {
@@ -98,6 +107,7 @@ export class Ring {
       el.tabIndex = i === front ? 0 : -1;
       el.toggleAttribute("data-front", i === front);
       this.place(el, i);
+      this.reflect(el, i);
     });
     if (this.flat) {
       const el = this.els.get(front);
@@ -107,7 +117,13 @@ export class Ring {
   }
 
   private place(el: HTMLElement, i: number): void {
-    if (this.flat) { el.style.transform = el.style.opacity = ""; return; }
+    const reflection = this.reflections.get(i);
+    if (this.flat) {
+      el.style.transform = el.style.opacity = "";
+      reflection?.remove();
+      this.reflections.delete(i);
+      return;
+    }
     const narrow = this.stage.clientWidth < 640;
     const step = narrow ? 30 : 22;
     const r = ((this.w / 2) / Math.tan((step * Math.PI) / 360)) * 1.12;
@@ -116,6 +132,30 @@ export class Ring {
     // Concave: the viewer stands inside the ring, so side cards swing towards the lens and flare.
     el.style.transform = `translate3d(-50%, 0, ${r}px) rotateY(${a}deg) translateZ(${-r}px) rotateY(${-a * FLARE}deg)`;
     el.style.opacity = String(Math.max(0, 1 - Math.max(0, Math.abs(d) - 1) * 0.28));
+  }
+
+  private reflect(el: HTMLElement, i: number): void {
+    if (this.flat) return;
+    let mirror = this.reflections.get(i);
+    if (!mirror) {
+      mirror = el.cloneNode(true) as HTMLElement;
+      mirror.classList.add("dl-reflection");
+      mirror.removeAttribute("data-i");
+      mirror.removeAttribute("data-front");
+      mirror.dataset.reflection = String(i);
+      mirror.setAttribute("aria-hidden", "true");
+      mirror.inert = true;
+      this.track.append(mirror);
+      this.reflections.set(i, mirror);
+    }
+    if (mirror.innerHTML !== el.innerHTML) mirror.innerHTML = el.innerHTML;
+    mirror.classList.toggle("has-art", el.classList.contains("has-art"));
+    mirror.toggleAttribute("aria-current", el.getAttribute("aria-current") === "true");
+    mirror.dataset.shape = el.dataset.shape ?? "square";
+    mirror.style.left = el.style.left;
+    mirror.style.top = `${el.offsetTop + el.offsetHeight + 10}px`;
+    mirror.style.setProperty("--mirror-opacity", el.style.opacity);
+    mirror.style.transform = `${el.style.transform} scaleY(-1)`;
   }
 
   private click = (e: MouseEvent): void => {
