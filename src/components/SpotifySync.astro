@@ -1,0 +1,136 @@
+---
+// Spotify 1-Click Library Sync button and connection dialog
+---
+<spotify-sync class="spotify-sync">
+  <button class="sp-btn glass" type="button" aria-label="Save playing track to Spotify" title="Save to Spotify" data-glass="regular">
+    <svg class="sp-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.468-.077-.335.132-.67.467-.746 3.808-.87 7.076-.51 9.721 1.11.294.18.387.563.208.858zm1.224-2.72c-.226.367-.707.483-1.074.257-2.69-1.653-6.79-2.131-9.97-1.165-.413.125-.85-.107-.975-.52-.125-.414.107-.85.52-.976 3.632-1.102 8.147-.568 11.242 1.33.367.226.483.707.257 1.074zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.02-.128-1.17-.622-.15-.494.128-1.02.622-1.17 3.535-1.073 9.404-.863 13.138 1.354.444.263.59.837.327 1.28-.263.445-.838.59-1.28.328z"/>
+    </svg>
+    <span class="sp-state" aria-hidden="true">+</span>
+  </button>
+
+  <dialog class="sp-dialog glass" data-glass="heavy" aria-labelledby="sp-title">
+    <div class="sp-dialog-box">
+      <div class="sp-header">
+        <h3 id="sp-title" class="sp-title">Connect Spotify</h3>
+        <button class="sp-close" type="button" aria-label="Close dialog">&times;</button>
+      </div>
+      <p class="sp-desc">Save tracks heard on Again Radio directly to your Spotify Liked Songs.</p>
+
+      <form class="sp-form" method="dialog">
+        <label class="sp-field">
+          <span class="sp-label">Spotify Client ID</span>
+          <input class="sp-input" type="text" name="clientId" placeholder="e.g. 7c4a9..." autocomplete="off" spellcheck="false" />
+        </label>
+        <p class="sp-help">
+          Create a free app at <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noreferrer">developer.spotify.com</a> and add this site's URL as a Redirect URI.
+        </p>
+
+        <label class="sp-toggle-row">
+          <input class="sp-toggle-check" type="checkbox" name="autoSave" />
+          <span>Auto-add all heard tracks to an "Again Radio" playlist</span>
+        </label>
+
+        <div class="sp-actions">
+          <button class="sp-submit glass" type="submit" data-glass="regular">Connect Spotify</button>
+          <button class="sp-disconnect" type="button" hidden>Disconnect</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+</spotify-sync>
+
+<style is:global>
+  .spotify-sync {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    margin-left: 0.25rem;
+  }
+  .sp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 32px;
+    padding: 0 0.6rem;
+    border-radius: 9999px;
+    border: 1px solid var(--line);
+    background: color-mix(in oklab, var(--card) 60%, transparent);
+    color: var(--fg-dim);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: color var(--dur-1), border-color var(--dur-1), background var(--dur-1), transform var(--dur-1);
+  }
+  .sp-btn:hover {
+    color: var(--fg);
+    border-color: color-mix(in oklab, #1ed760 55%, var(--line));
+    background: color-mix(in oklab, #1ed760 12%, var(--card));
+    transform: translateY(-1px);
+  }
+  .sp-icon { width: 16px; height: 16px; fill: currentColor; }
+  .sp-state { font-weight: 600; font-size: 0.875rem; }
+  .sp-btn[data-saved] {
+    color: #1ed760;
+    border-color: color-mix(in oklab, #1ed760 65%, transparent);
+    background: color-mix(in oklab, #1ed760 16%, var(--card));
+  }
+  .sp-btn[data-loading] { opacity: 0.6; pointer-events: none; }
+
+  .sp-dialog {
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    background: color-mix(in oklab, var(--bg-2) 90%, transparent);
+    color: var(--fg);
+    max-width: min(90vw, 24rem);
+    box-shadow: 0 24px 64px var(--glass-drop);
+    overflow: hidden;
+  }
+  .sp-dialog::backdrop {
+    background: color-mix(in oklab, #000 70%, transparent);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  .sp-dialog-box { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .sp-header { display: flex; align-items: center; justify-content: space-between; }
+  .sp-title { margin: 0; font-size: 1.125rem; font-weight: 600; }
+  .sp-close { background: none; border: none; color: var(--fg-dim); font-size: 1.5rem; line-height: 1; cursor: pointer; }
+  .sp-desc { margin: 0; font-size: 0.8125rem; color: var(--fg-dim); line-height: 1.4; }
+  .sp-form { display: flex; flex-direction: column; gap: 0.85rem; }
+  .sp-field { display: flex; flex-direction: column; gap: 0.35rem; }
+  .sp-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-faint); }
+  .sp-input {
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--line);
+    background: color-mix(in oklab, var(--card) 45%, transparent);
+    color: var(--fg);
+    font-size: 0.875rem;
+    font-family: var(--font-mono, monospace);
+  }
+  .sp-input:focus { outline: none; border-color: #1ed760; }
+  .sp-help { margin: 0; font-size: 0.6875rem; color: var(--fg-faint); line-height: 1.35; }
+  .sp-help a { color: #1ed760; text-decoration: underline; }
+  .sp-toggle-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--fg-dim); cursor: pointer; }
+  .sp-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem; }
+  .sp-submit {
+    height: 2.25rem;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid color-mix(in oklab, #1ed760 50%, transparent);
+    background: color-mix(in oklab, #1ed760 20%, var(--card));
+    color: var(--fg);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    cursor: pointer;
+  }
+  .sp-submit:hover { background: color-mix(in oklab, #1ed760 30%, var(--card)); }
+  .sp-disconnect { background: none; border: none; color: var(--fg-faint); font-size: 0.75rem; text-decoration: underline; cursor: pointer; }
+  .sp-disconnect:hover { color: var(--fg); }
+</style>
+
+<script>
+  import "./spotify-sync.ts";
+</script>

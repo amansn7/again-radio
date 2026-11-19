@@ -1,4 +1,5 @@
 ---
+import SpotifySync from "./SpotifySync.astro";
 const { ...attrs } = Astro.props;
 ---
 <now-playing {...attrs}>
@@ -14,6 +15,7 @@ const { ...attrs } = Astro.props;
       <span class="np-plain num"></span>
       <span class="np-stamp" hidden></span>
     </span>
+    <SpotifySync />
   </div>
 </now-playing>
 
