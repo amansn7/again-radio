@@ -61,8 +61,15 @@ for (const f of jockeyData.facts || []) {
   addClip({ id: f.id, audio: f.audio, text: f.text, label: `fact:${f.id}` });
 }
 
-console.log(`Found ${clips.length} clips to process.`);
-let totalChars = clips.reduce((acc, c) => acc + c.text.length, 0);
+const onlyArg = process.argv.find((arg) => arg.startsWith("--only="));
+const onlyIds = new Set(onlyArg ? onlyArg.slice("--only=".length).split(",") : []);
+const clipsToProcess = onlyIds.size ? clips.filter((clip) => onlyIds.has(clip.id)) : clips;
+if (onlyIds.size && clipsToProcess.length !== onlyIds.size) {
+  throw new Error("One or more --only clip IDs were not found; no synthesis requests sent.");
+}
+
+console.log(`Found ${clipsToProcess.length} clips to process.`);
+let totalChars = clipsToProcess.reduce((acc, c) => acc + c.text.length, 0);
 console.log(`Total character count: ${totalChars}`);
 
 async function remainingCharacters() {
@@ -133,14 +140,14 @@ async function synthesize(clip) {
 
 async function run() {
   const remaining = await remainingCharacters();
-  const missing = clips.filter((clip) => !fs.existsSync(path.join(ROOT, "public", clip.audio.replace(/^\//, ""))));
+  const missing = clipsToProcess.filter((clip) => !fs.existsSync(path.join(ROOT, "public", clip.audio.replace(/^\//, ""))));
   const needed = missing.reduce((sum, clip) => sum + clip.text.length, 0);
   console.log(`ElevenLabs quota remaining: ${remaining}; missing clips need ${needed}.`);
   if (needed > remaining) {
     throw new Error("Insufficient ElevenLabs credits. No voice requests sent; rerun after the subscription resets or credits are added.");
   }
   let done = 0;
-  for (const clip of clips) {
+  for (const clip of clipsToProcess) {
     try {
       await synthesize(clip);
       done++;
@@ -154,7 +161,7 @@ async function run() {
       }
     }
   }
-  console.log(`Completed synthesis: ${done}/${clips.length} processed.`);
+  console.log(`Completed synthesis: ${done}/${clipsToProcess.length} processed.`);
 }
 
 run().catch((err) => {

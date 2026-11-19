@@ -2,9 +2,10 @@
 
 Strategy for getting maximum broadcast value out of ElevenLabs' free monthly 10,000 credit allocation for **AGAIN RADIO**'s AI radio jockey, Rory.
 
-**Current user-reported balance (20 Nov 2026):** 2,404 credits used; 7,596 remain. This is a
-snapshot, not a live balance. The synthesis script requires a successful quota preflight before
-it sends generation requests.
+**Current balance snapshot (20 Nov 2026):** user reported 2,404 credits used; the API preflight
+then showed 7,596 remaining. The eight Rory pilot intros used 347 characters, so the estimated
+balance is 2,751 used / 7,249 remaining. The synthesis script requires a successful quota
+preflight before it sends generation requests.
 
 ---
 

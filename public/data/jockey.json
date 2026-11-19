@@ -309,35 +309,35 @@
     },
     "places to be": {
       "postSeconds": 16,
-      "intro": { "id": "places-to-be-intro", "delivery": "warm", "text": "Oh—wait, that's lovely. Let this one open the windows." }
+      "intro": { "id": "places-to-be-intro", "audio": "/audio/jockey/places-to-be-intro.mp3", "delivery": "warm", "text": "Oh, wait—this one's got a bit of sunshine to it." }
     },
     "leavemealone": {
       "postSeconds": 16,
-      "intro": { "id": "leavemealone-intro", "delivery": "playful", "text": "Ooh, that bass... all that pressure, then it opens." }
+      "intro": { "id": "leavemealone-intro", "audio": "/audio/jockey/leavemealone-intro.mp3", "delivery": "playful", "text": "Ooh, that bass. There—hear how it opens up?" }
     },
     "stayinit": {
       "postSeconds": 16,
-      "intro": { "id": "stayinit-intro", "delivery": "reflective", "text": "Um... actually, no rush to leave this moment, is there? Stay in it with us." }
+      "intro": { "id": "stayinit-intro", "audio": "/audio/jockey/stayinit-intro.mp3", "delivery": "reflective", "text": "Hmm... yeah, we can stay here a minute." }
     },
     "Billie (loving arms)": {
       "postSeconds": 16,
-      "intro": { "id": "billie-intro", "delivery": "warm", "text": "Aw, that voice... feels like a hand on your shoulder. Here's Billie." }
+      "intro": { "id": "billie-intro", "audio": "/audio/jockey/billie-intro.mp3", "delivery": "warm", "text": "Aw, that voice feels so close. Here's Billie." }
     },
     "Carlos (make it thru)": {
       "postSeconds": 16,
-      "intro": { "id": "carlos-intro", "delivery": "warm", "text": "Yeah... if you're finding your way through, this one's for you." }
+      "intro": { "id": "carlos-intro", "audio": "/audio/jockey/carlos-intro.mp3", "delivery": "warm", "text": "Um... yeah, this one's for anyone just getting through it." }
     },
     "De Barrio": {
       "postSeconds": 16,
-      "intro": { "id": "de-barrio-intro", "delivery": "bright", "text": "Wow, hear how that opens up? Different streets, same pulse." }
+      "intro": { "id": "de-barrio-intro", "audio": "/audio/jockey/de-barrio-intro.mp3", "delivery": "bright", "text": "Wow, it opens right out, doesn't it?" }
     },
     "Flight FM": {
       "postSeconds": 16,
-      "intro": { "id": "flight-fm-intro", "delivery": "bright", "text": "Yay, there it is. Flight FM, lifting off on Again Radio." }
+      "intro": { "id": "flight-fm-intro", "audio": "/audio/jockey/flight-fm-intro.mp3", "delivery": "bright", "text": "Yay, there it is—what a lift. Flight FM." }
     },
     "Nightvision": {
       "postSeconds": 16,
-      "intro": { "id": "nightvision-intro", "delivery": "reflective", "text": "Mm... late shift? Long way home? Here's Nightvision." }
+      "intro": { "id": "nightvision-intro", "audio": "/audio/jockey/nightvision-intro.mp3", "delivery": "reflective", "text": "Mm. This feels like the long way home." }
     }
   },
   "transitions": {
