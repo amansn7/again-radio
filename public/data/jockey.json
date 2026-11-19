@@ -309,35 +309,35 @@
     },
     "places to be": {
       "postSeconds": 16,
-      "intro": { "id": "places-to-be-intro", "text": "A little lift in the room. Let this one open the windows." }
+      "intro": { "id": "places-to-be-intro", "text": "Oh, that's lovely. Let this one open the windows." }
     },
     "leavemealone": {
       "postSeconds": 16,
-      "intro": { "id": "leavemealone-intro", "text": "All that pressure, all that release. Keep your eyes on the low end." }
+      "intro": { "id": "leavemealone-intro", "text": "Ooh, that bass. All that pressure, all that release." }
     },
     "stayinit": {
       "postSeconds": 16,
-      "intro": { "id": "stayinit-intro", "text": "No rush to leave this moment. Stay in it with us." }
+      "intro": { "id": "stayinit-intro", "text": "Hmm, no rush to leave this moment. Stay in it with us." }
     },
     "Billie (loving arms)": {
       "postSeconds": 16,
-      "intro": { "id": "billie-intro", "text": "A voice like a hand on your shoulder. Here's Billie." }
+      "intro": { "id": "billie-intro", "text": "Aw, a voice like a hand on your shoulder. Here's Billie." }
     },
     "Carlos (make it thru)": {
       "postSeconds": 16,
-      "intro": { "id": "carlos-intro", "text": "For the ones finding their way through. This is Carlos." }
+      "intro": { "id": "carlos-intro", "text": "Yeah... for the ones finding their way through. This is Carlos." }
     },
     "De Barrio": {
       "postSeconds": 16,
-      "intro": { "id": "de-barrio-intro", "text": "Different streets, same shared pulse. Lock into this one." }
+      "intro": { "id": "de-barrio-intro", "text": "Wow, different streets, same shared pulse. Lock into this one." }
     },
     "Flight FM": {
       "postSeconds": 16,
-      "intro": { "id": "flight-fm-intro", "text": "Lift off from here. Flight FM, on Again Radio." }
+      "intro": { "id": "flight-fm-intro", "text": "Yay, lift off from here. Flight FM, on Again Radio." }
     },
     "Nightvision": {
       "postSeconds": 16,
-      "intro": { "id": "nightvision-intro", "text": "For the late shift and the long way home. Here's Nightvision." }
+      "intro": { "id": "nightvision-intro", "text": "Mm... for the late shift and the long way home. Here's Nightvision." }
     }
   },
   "transitions": {
