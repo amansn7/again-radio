@@ -148,14 +148,14 @@ export class RadioPlayer extends HTMLElement {
   private startFromGesture() {
     this.userPaused = false;
     if (this.muted) this.setMuted(false);
-    this.player?.playVideo();
+    this.player?.playVideo?.();
   }
 
   private toggle() {
     this.userPaused = this.playing;
-    if (this.playing) this.player?.pauseVideo();
+    if (this.playing) this.player?.pauseVideo?.();
     else if (this.live) goLive(this);
-    else this.player?.playVideo();
+    else this.player?.playVideo?.();
   }
 
   private resumeIfDropped() {
@@ -165,7 +165,7 @@ export class RadioPlayer extends HTMLElement {
     this.playing = false;
     emitState(this);
     if (this.live) goLive(this);
-    else this.player?.playVideo();
+    else this.player?.playVideo?.();
   }
 }
 

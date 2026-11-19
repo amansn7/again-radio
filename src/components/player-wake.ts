@@ -28,7 +28,12 @@ export function bindWake(host: HTMLElement, signal: AbortSignal, tap: (p: Point)
 export function rescueFocus(host: HTMLElement, signal: AbortSignal) {
   let last: HTMLElement | null = null;
   document.addEventListener("focusin", (e) => {
-    if (!(e.target instanceof HTMLIFrameElement)) last = e.target as HTMLElement;
+    if (e.target instanceof HTMLIFrameElement && host.contains(e.target)) {
+      (e.target as HTMLElement).blur();
+      if (last?.isConnected) last.focus({ preventScroll: true });
+    } else {
+      last = e.target as HTMLElement;
+    }
   }, { signal });
   // The embed grabs focus as it loads, which swallows the page's keyboard shortcuts.
   window.addEventListener("blur", () => setTimeout(() => {
