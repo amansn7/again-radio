@@ -22,6 +22,9 @@ export function tuneIn(tune: HTMLElement, sound: HTMLElement | null, screen: HTM
     { duration: 1100, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
   );
 
+  const orb = document.querySelector<HTMLElement>("radio-orb");
+  if (orb) import("./disco.ts").then((m) => m.disco(orb));
+
   if (!document.startViewTransition || !sound) return settle();
   // Only the button and the speaker take part; the rest of the page (and the video) stays live.
   const root = document.documentElement;
