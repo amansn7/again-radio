@@ -133,7 +133,7 @@ export class RadioJockey {
   }
 
   async onTuneIn(): Promise<void> {
-    if (!this._enabled || this.hasWelcomed || this.isMuted()) return;
+    if (!this._enabled || this.hasWelcomed || this.isMuted() || this._speaking) return;
     this.hasWelcomed = true;
     if (!this.data) this.data = await loadJockeyData().catch(() => null);
     if (!this.data) return;
@@ -145,7 +145,7 @@ export class RadioJockey {
   }
 
   async onTrack(info: TrackInfo): Promise<void> {
-    if (!this._enabled || this.isMuted()) return;
+    if (!this._enabled || this._speaking || this.isMuted()) return;
     if (!this.data) this.data = await loadJockeyData().catch(() => null);
     if (!this.data) return;
 
@@ -266,9 +266,7 @@ export class RadioJockey {
   }
 
   async speak(text: string, audioUrl?: string, options: { isTuneIn?: boolean } = {}): Promise<void> {
-    if (this._speaking) {
-      this.stop();
-    }
+    if (this._speaking) return;
     this._speaking = true;
     this._currentText = text;
     this.lastSpokeTime = Date.now();

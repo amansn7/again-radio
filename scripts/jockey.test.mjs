@@ -118,3 +118,39 @@ test("listener shoutouts and mid-song thoughts stay within 2000 credit bucket", 
   );
   assert.ok(bucketChars >= 1500, `Dynamic bucket is well utilized (${bucketChars} chars)`);
 });
+
+test("single-voice mutex prevents speech overlap or interruption", () => {
+  // Mock jockey state machine
+  let speaking = false;
+  let speakCalls = 0;
+
+  const speak = (text) => {
+    if (speaking) return false;
+    speaking = true;
+    speakCalls++;
+    return true;
+  };
+
+  const onTuneIn = () => {
+    if (speaking) return false;
+    return speak("welcome");
+  };
+
+  const onTrack = () => {
+    if (speaking) return false;
+    return speak("intro");
+  };
+
+  // 1. First caller acquires the lock
+  assert.equal(onTuneIn(), true, "Welcome speech starts");
+  assert.equal(speaking, true, "Jockey is marked speaking");
+
+  // 2. Track intro or other trigger while speaking is rejected
+  assert.equal(onTrack(), false, "Track intro rejected while welcome speech active");
+  assert.equal(speakCalls, 1, "Only one speech initiated");
+
+  // 3. Once speech finishes, lock releases
+  speaking = false;
+  assert.equal(onTrack(), true, "Next speech accepted once lock released");
+  assert.equal(speakCalls, 2);
+});
