@@ -141,6 +141,18 @@ Review: no official-video IDs yet (no keyless source); link-out is a YouTube sea
 - [x] `scripts/share.test.mjs`; ui.check covers share page forwarding (lands on Feelings at t=1592) and clipboard share
 
 Review: re-run `node scripts/og.mjs` and redeploy when sets are added, or the new set shares with the default card.
+
+## Phase 17 — Tour mode & visual polish (India launch)
+- [x] Extend shows data with countdowns, venues, and tour hints (`public/data/shows.json`)
+- [x] Frosted tour hint and dial card reflection trimming on mobile (`src/components/Archive.astro`, `src/components/Dial.astro`)
+- [x] Official USB002 cover art and polished tour card art (`public/data/albums.json`, `src/components/dial-data.ts`)
+- [x] Custom liquid glass show selector matching station aesthetic (`src/components/Dial.astro`, `src/components/dial-select.ts`)
+- [x] Disco ball animation trigger on tune in (`src/components/tune-in.ts`)
+- [x] Tabular slot layout and fixed width for countdown digits (`src/components/show-band.ts`)
+- [x] Guard player calls before ready and rescue iframe focus on focusin (`src/components/player.ts`, `src/components/player-wake.ts`)
+- [x] Full rotation: all 19 shows and 17 albums with full tracklists in radio rotation (38 slots, 36.4 h cycle)
+- [x] Allow official YouTube thumbnails (`i.ytimg.com`) for bootleg sets without commercial artwork (`src/lib/art.ts`, `src/lib/station.ts`, `scripts/verify.mjs`)
+
 ## Production-credit catalogue reconciliation (snapshot 2026-11-18)
 - [x] Record scope and evidence rules in a separate `public/data/production.json` ledger; keep radio rotation and the existing 162-title MusicBrainz artist catalog separate
 - [x] Reconcile all 162 current artist-catalog entries into track-credit verified, explicit non-producer exclusion, or unresolved, with unresolved titles retained in the ledger

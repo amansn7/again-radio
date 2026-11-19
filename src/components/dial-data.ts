@@ -85,6 +85,13 @@ export function showCards(programs: Loaded[], catalogue: CatalogueItem[], albums
 
 export function albumEntry(title: string, programs: Loaded[]): { path: string; entry: ProgramEntry } | null {
   const want = normTitle(title);
+  if (want === "usb002") {
+    const show = programs.find((p) => p.path === EVERY_SHOW);
+    if (show) {
+      const entry = show.data.entries.find((e) => e.album && normTitle(e.album) === want);
+      if (entry) return { path: show.path, entry };
+    }
+  }
   for (const { path, data } of programs) {
     const entry = data.entries.find((e) => e.album && normTitle(e.album) === want);
     if (entry) return { path, entry };

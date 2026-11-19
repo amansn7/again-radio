@@ -104,7 +104,7 @@ export function parseStation(v: unknown, where: string): StationConfig {
   };
 }
 
-const ART_URL = /^https:\/\/(is[0-9]-ssl\.mzstatic\.com|coverartarchive\.org)\//;
+const ART_URL = /^https:\/\/(is[0-9]-ssl\.mzstatic\.com|coverartarchive\.org|i\.ytimg\.com)\//;
 
 function parseEntry(v: unknown, where: string): ProgramEntry {
   if (!isRecord(v)) fail(where, "expected an object");
@@ -123,7 +123,7 @@ function parseEntry(v: unknown, where: string): ProgramEntry {
   if (album !== undefined) entry.album = album;
   const art = optString(v.art, where, "art");
   if (art !== undefined) {
-    if (!ART_URL.test(art)) fail(where, `"art" must be an https mzstatic or coverartarchive URL`);
+    if (!ART_URL.test(art)) fail(where, `"art" must be an https mzstatic, coverartarchive or ytimg URL`);
     entry.art = art;
   }
   const bpm = optInt(v.bpm, where, "bpm");

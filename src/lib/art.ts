@@ -74,9 +74,11 @@ function once(key: string, run: () => Promise<string | null>): Promise<string | 
   return p;
 }
 
-export function resolveArtUrl(entry: ProgramEntry): Promise<string | null> {
+export function resolveArtUrl(entry: ProgramEntry, youtubeId?: string): Promise<string | null> {
+  if (entry.art) return Promise.resolve(entry.art);
+  if (entry.type === "id" || entry.type === "interlude") return Promise.resolve(null);
   const artist = entry.artist?.trim() || DEFAULT_ARTIST;
-  return once(`song|${artist}|${entry.title}|${entry.album}`, async () => {
+  return once(`song|${artist}|${entry.title}|${entry.album}|${youtubeId ?? ""}`, async () => {
     if (entry.title) {
       const a = pickArtwork(await getJson(itunesUrl(`${artist} ${entry.title}`, "song")), entry.title, "trackName");
       if (a) return a;
@@ -85,7 +87,9 @@ export function resolveArtUrl(entry: ProgramEntry): Promise<string | null> {
       const a = pickArtwork(await getJson(itunesUrl(`${artist} ${entry.album}`, "album")), entry.album, "collectionName");
       if (a) return a;
     }
-    return pickArtwork(await getJson(itunesUrl(artist, "album")), "", "trackName");
+    const general = pickArtwork(await getJson(itunesUrl(artist, "album")), "", "trackName");
+    if (general) return general;
+    return youtubeId ? ytThumb(youtubeId) : null;
   });
 }
 

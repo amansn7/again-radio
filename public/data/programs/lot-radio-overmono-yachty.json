@@ -13,35 +13,40 @@
       "type": "track",
       "title": "stayinit",
       "artist": "Fred again.., Lil Yachty, Overmono",
-      "album": "USB"
+      "album": "USB",
+      "art": "https://coverartarchive.org/release-group/0d223bf8-1096-4cc5-adb5-df6123f676d1/front-500"
     },
     {
       "offset": 480,
       "duration": 520,
       "type": "track",
       "title": "Good Lies",
-      "artist": "Overmono"
+      "artist": "Overmono",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/e9/6d/1a/e96d1ab0-0176-685c-1f4d-01e73e91a925/191404901076.png/600x600bb.jpg"
     },
     {
       "offset": 1000,
       "duration": 490,
       "type": "track",
       "title": "So U Kno",
-      "artist": "Overmono"
+      "artist": "Overmono",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/e9/6d/1a/e96d1ab0-0176-685c-1f4d-01e73e91a925/191404901076.png/600x600bb.jpg"
     },
     {
       "offset": 1490,
       "duration": 560,
       "type": "track",
       "title": "Blow Out",
-      "artist": "Overmono"
+      "artist": "Overmono",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/7e/b8/64/7eb8644d-02bb-166d-d818-3b7388ef9451/191404139370.png/600x600bb.jpg"
     },
     {
       "offset": 2050,
       "duration": 620,
       "type": "track",
       "title": "Is U",
-      "artist": "Overmono"
+      "artist": "Overmono",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/e9/6d/1a/e96d1ab0-0176-685c-1f4d-01e73e91a925/191404901076.png/600x600bb.jpg"
     },
     {
       "offset": 2670,
@@ -49,14 +54,16 @@
       "type": "track",
       "title": "places to be",
       "artist": "Fred again.., Anderson .Paak, CHIKA",
-      "album": "ten days"
+      "album": "ten days",
+      "art": "https://coverartarchive.org/release-group/48282ba2-a382-45ff-81bf-670565dd65de/front-500"
     },
     {
       "offset": 3250,
       "duration": 540,
       "type": "track",
       "title": "Walkin' Re-Fidget",
-      "artist": "Overmono"
+      "artist": "Overmono",
+      "art": "https://i.ytimg.com/vi/9Stt4wq3KCE/hqdefault.jpg"
     },
     {
       "offset": 3790,
@@ -64,7 +71,8 @@
       "type": "track",
       "title": "stayinit (VIP / Outro)",
       "artist": "Fred again.., Lil Yachty, Overmono",
-      "album": "USB"
+      "album": "USB",
+      "art": "https://coverartarchive.org/release-group/0d223bf8-1096-4cc5-adb5-df6123f676d1/front-500"
     }
   ]
 }

@@ -57,7 +57,7 @@ Read first, in this order: `docs/SPEC.md` (the contract), `AGENTS.md` (conventio
    tool kills its process group on timeout, and the delegate dies with it.
    - Visual design, canvas, motion, typography, or a review pass:
      ```
-     python3 scripts/detach.py .orchestrator/logs/<unit>.log sh -c 'agy --print "Read .orchestrator/briefs/<unit>.md and execute it. Do not touch files outside your ownership list." --model claude-sonnet-4-6 --mode accept-edits --dangerously-skip-permissions; echo "EXIT:$?"'
+     python3 scripts/detach.py .orchestrator/logs/<unit>.log sh -c 'agy --print "Read .orchestrator/briefs/<unit>.md and execute it. Do not touch files outside your ownership list." --model claude-sonnet-4-6 --mode accept-edits; echo "EXIT:$?"'
      ```
    - Plumbing, data files, boilerplate, mechanical refactors:
      ```
@@ -68,25 +68,31 @@ Read first, in this order: `docs/SPEC.md` (the contract), `AGENTS.md` (conventio
    - Never delegate verification. You do that yourself.
 4. **Verify** — all three gates, no exceptions:
    - `npm run build` exits 0
-   - `node scripts/verify.mjs` exits 0
-   - `npx playwright screenshot --viewport-size=1440,900 http://localhost:4321 .verify/desktop.png`
-     and the same at `390,844` for mobile (run `npm run preview` first, kill it after).
+   - `node scripts/verify.mjs` exits 0 and test suites pass (`for t in scripts/*.test.mjs; do node "$t"; done`)
+   - Visual verification using the repo-local screenshot tool (`npx playwright` fails on macOS 12):
+     ```bash
+     node scripts/shot.mjs http://localhost:4321 .verify/desktop.png 1440 900
+     node scripts/shot.mjs http://localhost:4321 .verify/mobile.png 390 844
+     ```
+     (run `npm run preview` first on port 4321, kill it after).
      Then **read both PNGs with the Read tool and look at them.** Judge honestly:
      is the type hierarchy right, is the artwork beautiful, is anything clipped,
      is the mobile layout broken. Fix and repeat until it looks genuinely good.
 5. **Record** — tick the phase in `tasks/todo.md`, add one line of what shipped.
    If a delegate failed twice, note it in `tasks/lessons.md` with the rule to avoid it.
-6. **Commit** — `git add -A && git commit -m "phase N: <what shipped>"`. Local only.
+6. **Commit** — audit `git status` first to ensure no untracked files or rogue downloads exist,
+   then commit locally: `git add -A && git commit -m "phase N: <what shipped>"` (or scoped conventional
+   prefix for focused improvements: `data:`, `dial:`, `tune-in:`, `fix:`, `test:`). Local only.
 
 ## Hard rules
 
 - Never `git push`, never deploy, never publish. Those need a human.
 - Never touch `~/.config`, `~/.ssh`, `~/Library`, or any path outside this repo.
 - Never re-stream, download, or proxy the music. Embed official YouTube only.
-- Never store artwork locally. Hotlink it.
+- Never store artwork locally. Hotlink it (Cover Art Archive / iTunes / official YouTube thumbnails `i.ytimg.com`).
 - Never copy prose from interviews or press. Memory lines are original.
 - Never use the Fred again.. wordmark or logo as the brand.
-- No dependencies beyond astro, tailwindcss, and playwright (dev).
+- No dependencies beyond astro, tailwindcss, and playwright-core (dev).
 - No UI framework. No state library. No backend.
 - If something is ambiguous, choose the lazy option that ships, and say so in your report.
 

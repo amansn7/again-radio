@@ -19,7 +19,8 @@
       "type": "track",
       "title": "Berwyn (all that i got is you)",
       "artist": "Fred again..",
-      "album": "Actual Life 3 (January 1 - September 9 2022)"
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
     },
     {
       "offset": 512,
@@ -33,7 +34,8 @@
       "type": "track",
       "title": "Delilah (pull me out of this)",
       "artist": "Fred again..",
-      "album": "Actual Life 3 (January 1 - September 9 2022)"
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
     },
     {
       "offset": 892,
@@ -41,28 +43,32 @@
       "type": "track",
       "title": "Baby again.. (Demo)",
       "artist": "Fred again.., Skrillex, Four Tet",
-      "album": "USB"
+      "album": "USB",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/0f/b2/d5/0fb2d5e5-55f1-97e1-c6e7-1ab064e77cca/5054197600371.jpg/600x600bb.jpg"
     },
     {
       "offset": 1124,
       "duration": 325,
       "type": "track",
       "title": "BBY vs. Real As It Gets",
-      "artist": "Overmono vs. Lil Baby (Fred again.. edit)"
+      "artist": "Overmono vs. Lil Baby (Fred again.. edit)",
+      "art": "https://i.ytimg.com/vi/WiSXx_GcJ-c/hqdefault.jpg"
     },
     {
       "offset": 1449,
       "duration": 291,
       "type": "track",
       "title": "Infinitely Gentle Blows (Remix)",
-      "artist": "God Within"
+      "artist": "God Within",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/da/73/75/da737599-dd5a-b163-4bfb-18b4316476e3/192641198601_Cover.jpg/600x600bb.jpg"
     },
     {
       "offset": 1740,
       "duration": 179,
       "type": "track",
       "title": "Song To The Siren (ID Remix)",
-      "artist": "This Mortal Coil"
+      "artist": "This Mortal Coil",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ef/e1/b2/efe1b283-47f3-be10-05cc-9629d87428fb/652637300468.png/600x600bb.jpg"
     },
     {
       "offset": 1919,
@@ -76,7 +82,8 @@
       "type": "track",
       "title": "Carlos (make it thru)",
       "artist": "Fred again..",
-      "album": "Actual Life (April 14 - December 17 2020)"
+      "album": "Actual Life (April 14 - December 17 2020)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
     },
     {
       "offset": 2280,
@@ -90,7 +97,8 @@
       "type": "track",
       "title": "Tanya (maybe life)",
       "artist": "Fred again..",
-      "album": "Actual Life 2 (February 2 - October 15 2021)"
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
     },
     {
       "offset": 2640,
@@ -98,7 +106,8 @@
       "type": "track",
       "title": "Marco (and everyone)",
       "artist": "Fred again..",
-      "album": "Actual Life 2 (February 2 - October 15 2021)"
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
     },
     {
       "offset": 2790,
@@ -106,7 +115,8 @@
       "type": "track",
       "title": "Billie (loving arms)",
       "artist": "Fred again..",
-      "album": "Actual Life 2 (February 2 - October 15 2021)"
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
     }
   ]
 }

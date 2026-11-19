@@ -1,29 +1,34 @@
 # STATUS — AGAIN RADIO
 
-Updated 2026-11-18. Contract: `docs/SPEC.md`. Plan: `tasks/todo.md`. Conventions: `AGENTS.md`.
+Updated 2026-11-20. Contract: `docs/SPEC.md`. Plan: `tasks/todo.md`. Conventions: `AGENTS.md`.
 
 ## Where it stands
 
 Current goal: India launch (design `docs/superpowers/specs/2026-11-18-india-launch-design.md`).
-Phases 14 (first screen), 15 (search finds the canon) and 16 (share the moment) shipped;
-next: phase 17 (tour mode). New sets need `node scripts/og.mjs` + rebuild for their share card.
+Phases 14 (first screen), 15 (search finds the canon), 16 (share the moment), and 17 (tour mode
+& visual polish) are shipped.
 
-Recent interaction polish: the cursor feeds light toward the orb on desktop; the show band
-sweeps light from the now marker toward the next concert; the socials and support panels
-share a consistent height. These details respect reduced-motion preferences.
+Recent interaction & catalog polish:
+- **Liquid glass show selector**: custom `<dial-select>` with frosted glass textures and responsive layout.
+- **Tune-in celebration**: animated disco ball trigger on sound unmute.
+- **Full catalogue rotation**: all 19 live sets and 17 releases in continuous 24-hour broadcast rotation (38 slots, 36.4 h cycle).
+- **Tour mode (Phase 17)**: frosted tour hints, trimmed reflections on mobile, official USB002 cover art, and tabular slot layout for countdown digits.
+- **Player resilience**: guarded YouTube IFrame calls before player readiness and focus rescue on `focusin`.
 
-Phase 0–6 shipped and verified; design v3 is deployed live on Cloudflare Pages
+Phase 0–17 shipped and verified; design v3 is deployed live on Cloudflare Pages
 (https://again-radio.pages.dev) with Cloudflare Worker + Durable Object for real-time
 presence (again-radio-presence.again-radio-listeners.workers.dev).
 
 Latest commits:
 
 ```
-b86ce6b Add motion to show band and polish cursor
-3d24c8f Add orb cursor feed and align footer panels
-5b105bc Polish orb motion, text fit, and footer sizing
-c66f97a Improve startup and align footer actions
-782ffba Start dial motion immediately and cue orb interaction
+3054027 tune-in: trigger disco ball animation on tune in
+abec4b3 dial: custom liquid glass show selector matching aesthetic
+b997745 fix: guard player calls before ready and rescue iframe focus on focusin
+2971164 test: update ui check off-air search target
+e9ebcb8 data: bring all 19 shows and 17 albums into radio rotation with full tracklists
+fe8886f data: add USB002 REMIXES tracklist and fix missing collabs
+d7156cd phase 17: frost tour hint and trim card reflections
 ```
 
 ## Verify (all green at last run)

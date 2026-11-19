@@ -3,10 +3,11 @@
 Read `STATUS.md` first for current state, open work and traps. Read `docs/SPEC.md` before
 touching anything. It is the contract.
 
-Current goal: **India launch**. Phases 14–17 are live by Mon 30 Nov 2026, before Delhi on
-5 Dec. Design: `docs/superpowers/specs/2026-11-18-india-launch-design.md`. Source review:
-`docs/REVIEW-ux.md`. Work the phases in order. Anything in the design's Non-goals waits
-until after the tour.
+Current goal: **India launch**. Phases 14–17 (first screen, search, moment sharing,
+tour mode) are live before Delhi on 5 Dec. Design:
+`docs/superpowers/specs/2026-11-18-india-launch-design.md`. Source review:
+`docs/REVIEW-ux.md`. Next: tour execution and show nights (`docs/show-night.md` /
+`public/data/setlists.json`). Anything in the design's Non-goals waits until after the tour.
 
 - Phone first. 390×844 is the primary screenshot. 1440×900 must not regress.
 - Facts shown to fans (samples, setlists, show times, gates) carry a source URL in the data,
@@ -36,18 +37,19 @@ until after the tour.
 ## Rights (do not violate)
 
 - Embed official YouTube only. Never download, re-host, or proxy the audio.
-- Hotlink artwork (Cover Art Archive / iTunes). Never store or cache images.
+- Hotlink artwork (Cover Art Archive / iTunes / official YouTube thumbnails `i.ytimg.com` for bootlegs and sets). Never store or cache images.
 - Write memory copy yourself. Never copy sentences from interviews or press.
 - Keep the "fan project, not affiliated" footer.
 
 ## Commands
 
 ```
-npm run build          # must exit 0
-npm run preview        # local preview for screenshots
-node scripts/verify.mjs # data + structure checks
+npm run build                       # must exit 0
+npm run preview                     # local preview for screenshots
+node scripts/verify.mjs             # data + structure checks
 node scripts/verify.mjs --selftest  # pure-logic checks
-node scripts/schedule.test.mjs      # schedule lookup against the real tracklist
+for t in scripts/*.test.mjs; do node "$t"; done   # unit test suite
+node scripts/ui.check.mjs http://localhost:4321   # UI check (needs dev server)
 ```
 
 Screenshots — `npx playwright screenshot` **does not work here**: playwright 1.65 refuses
@@ -68,8 +70,8 @@ dies with it. Never background with `&`. Detach instead — it starts a new sess
 
 ```bash
 python3 scripts/detach.py .orchestrator/logs/<unit>.log sh -c \
-  'agy --print "Read .orchestrator/briefs/<unit>.md and execute it. \
-   --model claude-sonnet-4-6 --mode accept-edits --dangerously-skip-permissions; echo "EXIT:$?"'
+  'agy --print "Read .orchestrator/briefs/<unit>.md and execute it." \
+   --model claude-sonnet-4-6 --mode accept-edits; echo "EXIT:$?"'
 ```
 
 It prints a pid. Poll it without blocking:
@@ -79,7 +81,7 @@ ps -p <pid> > /dev/null && echo running || echo done
 ```
 
 For long synchronous commands pass a generous `timeout` to the shell tool
-(600000 ms): `npm install`, `npm run build`, `npx playwright screenshot`.
+(600000 ms): `npm install`, `npm run build`, `node scripts/shot.mjs`.
 
 If a delegate's log ends in `error: interrupted`, it was killed by a timeout —
 relaunch it with `scripts/detach.py`.
@@ -90,10 +92,14 @@ message can be checked. Tell them in the brief: "edit files, do not run git".
 **Delegates do not download assets.** No web fonts, no images, no vendored files into
 `public/`. System font stacks only; artwork is hotlinked.
 
+**Audit `git status` before committing.** Ensure untracked files and data are reviewed
+prior to phase or feature commits.
+
 ## Commit style
 
-`phase N: <what shipped>` — one commit per verified phase, local only.
-Never `git push`.
+`phase N: <what shipped>` — one commit per verified phase, or scoped conventional
+commits (`data:`, `dial:`, `tune-in:`, `fix:`, `test:`) for focused improvements.
+Local only. Never `git push`.
 
 ## Deploy
 

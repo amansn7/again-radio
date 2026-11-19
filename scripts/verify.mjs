@@ -30,14 +30,14 @@ function validateProgram(p, file) {
       fail(`${at}: runs past program duration`);
     }
     if (e.type !== "id" && !String(e.title ?? "").trim()) fail(`${at}: empty title`);
-    if (e.art !== undefined && !ART_URL.test(e.art)) fail(`${at}: art must be an https mzstatic/coverartarchive URL`);
+    if (e.art !== undefined && !ART_URL.test(e.art)) fail(`${at}: art must be an https mzstatic/coverartarchive/ytimg URL`);
     if (!e.album && e.type === "track") noAlbum++;
     prevEnd = e.offset + e.duration;
   });
   if (noAlbum) warn.push(`${file}: ${noAlbum} track(s) with no album (song-art fallback)`);
 }
 
-const ART_URL = /^https:\/\/(is[0-9]-ssl\.mzstatic\.com|coverartarchive\.org)\//;
+const ART_URL = /^https:\/\/(is[0-9]-ssl\.mzstatic\.com|coverartarchive\.org|i\.ytimg\.com)\//;
 
 function validateStation(s) {
   if (!Array.isArray(s.rotation) || !s.rotation.length) warn.push("station.json: empty rotation");

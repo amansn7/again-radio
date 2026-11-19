@@ -1,7 +1,7 @@
 import type { ProgramEntry } from "../lib/station.ts";
 import { RADIO_TRACK } from "../lib/events.ts";
 import type { TrackInfo } from "../lib/events.ts";
-import { coverArtUrl, resolveArtUrl } from "../lib/art.ts";
+import { coverArtUrl, resolveArtUrl, ytThumb } from "../lib/art.ts";
 import { dateStamp, personFromTitle } from "../lib/memories.ts";
 import { NameLight, letters } from "./hero-name.ts";
 
@@ -11,26 +11,21 @@ const RANGE = /\((\w+) (\d+)\s*[–-]\s*(\w+) (\d+) (\d{4})\)/;
 function nameOf(e: ProgramEntry): { name: string; rest: string } {
   if (e.type === "interlude") return { name: "Again Radio", rest: "station ident" };
   if (e.type === "id") return { name: "Unreleased", rest: "an ID with no title yet" };
-  const title = e.title ?? "";
-  const person = personFromTitle(title);
+  const title = e.title ?? "", person = personFromTitle(title);
   if (!person) return { name: title, rest: e.artist ?? "" };
   return { name: person, rest: title.slice(person.length).replace(/[()]/g, "").trim() };
 }
 
 function when(album: string | undefined, iso: string | undefined): { stamp: string; plain: string } {
   const m = album?.match(RANGE);
-  if (m) {
-    return {
-      stamp: dateStamp(album),
-      plain: `${m[1].slice(0, 3)} ${m[2]} to ${m[3].slice(0, 3)} ${m[4]}, ${m[5]}`,
-    };
-  }
+  if (m) return { stamp: dateStamp(album), plain: `${m[1].slice(0, 3)} ${m[2]} to ${m[3].slice(0, 3)} ${m[4]}, ${m[5]}` };
   const [y, mo, d] = (iso ?? "").split("-").map(Number);
   if (!y || !mo || !d) return { stamp: "", plain: "" };
   return { stamp: `'${String(y).slice(2)} ${mo} ${d}`, plain: `${MONTHS[mo - 1]} ${d}, ${y}` };
 }
 
-const coverFor = (entry: ProgramEntry): Promise<string> => resolveArtUrl(entry).then((u) => u ?? coverArtUrl());
+const coverFor = (entry: ProgramEntry, ytId?: string): Promise<string> =>
+  resolveArtUrl(entry, ytId).then((u) => u ?? (ytId ? ytThumb(ytId) : coverArtUrl()));
 
 class NowPlayingElement extends HTMLElement {
   private fit!: HTMLElement;
@@ -46,11 +41,8 @@ class NowPlayingElement extends HTMLElement {
 
   connectedCallback() {
     const q = (s: string) => this.querySelector<HTMLElement>(s)!;
-    this.fit = q(".np-fit");
-    this.name = q(".np-name");
-    this.rest = q(".np-rest");
-    this.meta = q(".np-meta");
-    this.cover = q(".np-cover");
+    this.fit = q(".np-fit"); this.name = q(".np-name"); this.rest = q(".np-rest");
+    this.meta = q(".np-meta"); this.cover = q(".np-cover");
     this.meta.dataset.empty = "";
     document.addEventListener(RADIO_TRACK, (e) => this.onTrack((e as CustomEvent<TrackInfo>).detail));
     this.light = new NameLight(this.name);
@@ -62,12 +54,12 @@ class NowPlayingElement extends HTMLElement {
     }, 10_000);
   }
 
-  private onTrack({ entry, programTitle, date }: TrackInfo) {
+  private onTrack({ entry, programTitle, date, youtubeId }: TrackInfo) {
     const { name, rest } = nameOf(entry);
     this.showName(name, rest);
     this.showMeta(entry, programTitle, date);
 
-    if (entry.type === "track") void this.setCover(entry);
+    if (entry.type === "track") void this.setCover(entry, youtubeId);
     else {
       ++this.seq;
       this.cover.classList.remove("skeleton");
@@ -105,17 +97,10 @@ class NowPlayingElement extends HTMLElement {
       const longest = Math.max(5, ...name.split(/\s+/).map((w) => Array.from(w).length));
       this.fit.style.setProperty("--len", String(longest));
       this.fit.style.setProperty("--total", String(Math.max(10, Array.from(name).length)));
-      const label = document.createElement("span");
-      label.className = "sr-only";
-      label.textContent = name;
-      const visual = document.createElement("span");
-      visual.className = "np-name-in";
-      visual.setAttribute("aria-hidden", "true");
-      visual.append(letters(name));
+      const label = document.createElement("span"); label.className = "sr-only"; label.textContent = name;
+      const visual = document.createElement("span"); visual.className = "np-name-in"; visual.setAttribute("aria-hidden", "true"); visual.append(letters(name));
       this.name.replaceChildren(label, visual);
-      const restIn = document.createElement("span");
-      restIn.className = "np-rest-in";
-      restIn.textContent = rest;
+      const restIn = document.createElement("span"); restIn.className = "np-rest-in"; restIn.textContent = rest;
       this.rest.replaceChildren(restIn);
       this.fit.dataset.ready = "";
       this.light.arrive();
@@ -130,11 +115,11 @@ class NowPlayingElement extends HTMLElement {
     return this.querySelector<HTMLElement>(s)!;
   }
 
-  private async setCover(entry: ProgramEntry) {
+  private async setCover(entry: ProgramEntry, youtubeId?: string) {
     const mine = ++this.seq;
     const previous = this.cover.querySelector("img");
     if (!previous) this.cover.classList.add("skeleton");
-    const src = await coverFor(entry);
+    const src = await coverFor(entry, youtubeId);
     if (mine !== this.seq) return;
     const img = new Image();
     img.alt = "";

@@ -13,7 +13,8 @@
       "type": "track",
       "title": "wya",
       "artist": "Fred again..",
-      "album": "ten days"
+      "album": "ten days",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c5/70/65/c5706509-0e44-43d2-6d75-eda79332a3b8/00016351579027_Cover.jpg/600x600bb.jpg"
     },
     {
       "offset": 655,
@@ -96,7 +97,8 @@
       "duration": 339,
       "type": "track",
       "title": "Twilight",
-      "artist": "Durham Diva"
+      "artist": "Durham Diva",
+      "art": "https://i.ytimg.com/vi/6MAzUT1YhWE/hqdefault.jpg"
     },
     {
       "offset": 5894,
@@ -104,7 +106,8 @@
       "type": "track",
       "title": "places to be",
       "artist": "Fred again.., Anderson .Paak, CHIKA",
-      "album": "ten days"
+      "album": "ten days",
+      "art": "https://coverartarchive.org/release-group/48282ba2-a382-45ff-81bf-670565dd65de/front-500"
     }
   ]
 }

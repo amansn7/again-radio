@@ -40,7 +40,8 @@
       "type": "track",
       "title": "Smoke",
       "artist": "Headie One, Fred again.., Jamie xx",
-      "album": "GANG"
+      "album": "GANG",
+      "art": "https://coverartarchive.org/release-group/48498068-6cab-43fd-93d2-f657d729bc41/front-500"
     },
     {
       "offset": 810,
@@ -74,7 +75,8 @@
       "duration": 156,
       "type": "track",
       "title": "Chanel / A New Error",
-      "artist": "Frank Ocean / Moderat (Fred again.. edit)"
+      "artist": "Frank Ocean / Moderat (Fred again.. edit)",
+      "art": "https://i.ytimg.com/vi/H2I6V0NlaHg/hqdefault.jpg"
     },
     {
       "offset": 1616,

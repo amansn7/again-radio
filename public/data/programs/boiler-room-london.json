@@ -61,28 +61,32 @@
       "duration": 263,
       "type": "track",
       "title": "BBY vs. Real As It Gets (Fred again.. Bootleg)",
-      "artist": "Overmono vs. Lil Baby"
+      "artist": "Overmono vs. Lil Baby",
+      "art": "https://i.ytimg.com/vi/c0-hvjV2A5Y/hqdefault.jpg"
     },
     {
       "offset": 1360,
       "duration": 128,
       "type": "track",
       "title": "Stay With Me",
-      "artist": "Skrillex & Fred again.."
+      "artist": "Skrillex & Fred again..",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/80/74/b6/8074b6bc-387f-6cc9-5ede-92b76396ad5f/13UAEIM58958.rgb.jpg/600x600bb.jpg"
     },
     {
       "offset": 1488,
       "duration": 104,
       "type": "track",
       "title": "Haribo vs. PTSD (Fred again.. Bootleg)",
-      "artist": "Matt Jam Lamont, Echelon & Smokey Bubblin' B vs. Headie One"
+      "artist": "Matt Jam Lamont, Echelon & Smokey Bubblin' B vs. Headie One",
+      "art": "https://i.ytimg.com/vi/c0-hvjV2A5Y/hqdefault.jpg"
     },
     {
       "offset": 1592,
       "duration": 303,
       "type": "track",
       "title": "Feelings",
-      "artist": "KH"
+      "artist": "KH",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/af/de/38/afde38a6-a5e3-45f9-2863-ac52e73b883d/18UMGIM43258.rgb.jpg/600x600bb.jpg"
     },
     {
       "offset": 1895,
@@ -91,7 +95,8 @@
       "title": "Strong",
       "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/57/a6/04/57a6042c-d2c8-0a73-0a04-f5f3e9d52191/889030031372.png/600x600bb.jpg",
       "artist": "Romy & Fred again..",
-      "bpm": 134
+      "bpm": 134,
+      "album": "Strong"
     },
     {
       "offset": 2103,
@@ -100,7 +105,8 @@
       "title": "Turn On The Lights again..",
       "art": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1c/4d/34/1c4d3479-4fe5-5c0a-ccfe-c45cbb9bf843/5054197263439.jpg/600x600bb.jpg",
       "artist": "Fred again.. & Swedish House Mafia feat. Future",
-      "bpm": 132
+      "bpm": 132,
+      "album": "USB"
     },
     {
       "offset": 2343,
@@ -128,7 +134,8 @@
       "type": "track",
       "title": "Kahan (last year)",
       "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg",
-      "artist": "Fred again.. feat. Kodak Black"
+      "artist": "Fred again.. feat. Kodak Black",
+      "album": "Actual Life 2 Piano (February 2 - October 15 2021)"
     },
     {
       "offset": 3026,
@@ -165,7 +172,8 @@
       "type": "track",
       "title": "Angie (i've been lost)",
       "artist": "Fred again..",
-      "album": "Actual Life (April 14 - December 17 2020)"
+      "album": "Actual Life (April 14 - December 17 2020)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
     },
     {
       "offset": 4023,

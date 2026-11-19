@@ -6,15 +6,27 @@ Notable changes to AGAIN RADIO are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-20
+
 ### Added
 
-- A moving show-band signal that connects the current-time marker with the next concert.
-- Cursor light that feeds into the orb as the pointer approaches.
+- Custom liquid glass show selector (`<dial-select>`) matching the station aesthetic with frosted glass textures and responsive layout.
+- Animated disco ball effect triggered on tune in.
+- Full 19 live sets and 17 albums integrated into continuous radio rotation with complete tracklists (38 rotation slots, 36.4 h cycle).
+- Expanded art hotlink support for official YouTube thumbnails (`i.ytimg.com`) for unreleased bootlegs alongside Cover Art Archive and iTunes.
+- Phase 17 tour mode refinements: frosted tour hints, trimmed card reflections on mobile, and official USB002 release art.
+- USB002 REMIXES tracklist and missing collaborations in the songs catalogue.
+- Tabular digit slots and steady width for the India tour countdown clock to eliminate layout shift.
+- Moving show-band signal connecting the current-time marker with the next concert.
+- Cursor light feeding into the orb on pointer approach.
 
 ### Changed
 
+- Guarded player API calls before YouTube IFrame readiness and added iframe focus rescue on `focusin`.
+- Replaced temporary Bandcamp artwork links with official Cover Art Archive release assets.
 - Matched the height of the social and support footer panels for a more balanced layout.
-- Refined the footer and show-band motion for reduced-motion users.
+- Refined footer and show-band motion for reduced-motion users.
+- Consolidated mobile background playback handling.
 
 ## [0.2.0] - 2026-11-18
 

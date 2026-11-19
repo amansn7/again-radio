@@ -42,7 +42,8 @@
       "duration": 410,
       "type": "track",
       "title": "Butterflies",
-      "artist": "Skrillex, Starrah, Four Tet"
+      "artist": "Skrillex, Starrah, Four Tet",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/fc/f4/6b/fcf46b95-cf27-9f04-94c2-4ad257b7a5a6/075679695239.jpg/600x600bb.jpg"
     },
     {
       "offset": 1570,
@@ -50,21 +51,24 @@
       "type": "track",
       "title": "leavemealone",
       "artist": "Fred again.., Baby Keem",
-      "album": "USB"
+      "album": "USB",
+      "art": "https://coverartarchive.org/release-group/0d223bf8-1096-4cc5-adb5-df6123f676d1/front-500"
     },
     {
       "offset": 2000,
       "duration": 370,
       "type": "track",
       "title": "Looking at Your Pager",
-      "artist": "KH / Four Tet"
+      "artist": "KH / Four Tet",
+      "art": "https://i.ytimg.com/vi/ahe9baHOWIg/hqdefault.jpg"
     },
     {
       "offset": 2370,
       "duration": 390,
       "type": "track",
       "title": "Country Riddim",
-      "artist": "HOL!"
+      "artist": "HOL!",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/ee/03/99/ee039993-4263-5ba5-3d2a-c55c65be5645/cover.jpg/600x600bb.jpg"
     },
     {
       "offset": 2760,
@@ -73,14 +77,16 @@
       "title": "Turn On the Lights again..",
       "artist": "Fred again.., Swedish House Mafia, Future",
       "album": "USB",
-      "bpm": 132
+      "bpm": 132,
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1c/4d/34/1c4d3479-4fe5-5c0a-ccfe-c45cbb9bf843/5054197263439.jpg/600x600bb.jpg"
     },
     {
       "offset": 3180,
       "duration": 451,
       "type": "track",
       "title": "RATATA",
-      "artist": "Skrillex, Missy Elliott, Mr. Oizo"
+      "artist": "Skrillex, Missy Elliott, Mr. Oizo",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/fc/f4/6b/fcf46b95-cf27-9f04-94c2-4ad257b7a5a6/075679695239.jpg/600x600bb.jpg"
     }
   ]
 }
