@@ -1,0 +1,108 @@
+{
+  "id": "studio-live-2",
+  "title": "Studio Live 2, London",
+  "venue": "Studio Live 2, London",
+  "date": "2021-10-21",
+  "youtubeId": "bZH9U1efx1c",
+  "duration": 2739,
+  "source": "TracklistFinder / setlist.id timestamps",
+  "entries": [
+    {
+      "offset": 19,
+      "duration": 229,
+      "type": "track",
+      "title": "Catrin (The City)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 248,
+      "duration": 244,
+      "type": "track",
+      "title": "Roze (Forgive)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 492,
+      "duration": 262,
+      "type": "track",
+      "title": "Tate (How I Feel)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 754,
+      "duration": 265,
+      "type": "track",
+      "title": "Billie (I'm not okay)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1019,
+      "duration": 285,
+      "type": "track",
+      "title": "Faisal (Envelops me)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1304,
+      "duration": 186,
+      "type": "track",
+      "title": "Yasminah (See Your Face)",
+      "artist": "Fred again..",
+      "album": "Actual Life (April 14 - December 17 2020)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1490,
+      "duration": 254,
+      "type": "track",
+      "title": "Turn Off the Lights",
+      "artist": "Fred again.."
+    },
+    {
+      "offset": 1744,
+      "duration": 238,
+      "type": "track",
+      "title": "Kahan (Last Year)",
+      "artist": "Fred again.., Kodak Black",
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1982,
+      "duration": 312,
+      "type": "track",
+      "title": "Tanya (Maybe Life)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 2294,
+      "duration": 149,
+      "type": "track",
+      "title": "Marco (And Everyone)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 2443,
+      "duration": 296,
+      "type": "track",
+      "title": "Billie (Loving Arms)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/63/70/336370d7-e9d8-dad9-a8ec-2e21680366c6/190296363337.jpg/600x600bb.jpg"
+    }
+  ]
+}

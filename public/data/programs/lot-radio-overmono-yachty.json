@@ -1,0 +1,70 @@
+{
+  "id": "lot-radio-overmono-yachty",
+  "title": "Overmono, Fred again.. and Lil Yachty at The Lot Radio",
+  "venue": "The Lot Radio",
+  "date": "2024-02-21",
+  "youtubeId": "9Stt4wq3KCE",
+  "duration": 4381,
+  "source": "The Lot Radio / 1001Tracklists",
+  "entries": [
+    {
+      "offset": 0,
+      "duration": 480,
+      "type": "track",
+      "title": "stayinit",
+      "artist": "Fred again.., Lil Yachty, Overmono",
+      "album": "USB"
+    },
+    {
+      "offset": 480,
+      "duration": 520,
+      "type": "track",
+      "title": "Good Lies",
+      "artist": "Overmono"
+    },
+    {
+      "offset": 1000,
+      "duration": 490,
+      "type": "track",
+      "title": "So U Kno",
+      "artist": "Overmono"
+    },
+    {
+      "offset": 1490,
+      "duration": 560,
+      "type": "track",
+      "title": "Blow Out",
+      "artist": "Overmono"
+    },
+    {
+      "offset": 2050,
+      "duration": 620,
+      "type": "track",
+      "title": "Is U",
+      "artist": "Overmono"
+    },
+    {
+      "offset": 2670,
+      "duration": 580,
+      "type": "track",
+      "title": "places to be",
+      "artist": "Fred again.., Anderson .Paak, CHIKA",
+      "album": "ten days"
+    },
+    {
+      "offset": 3250,
+      "duration": 540,
+      "type": "track",
+      "title": "Walkin' Re-Fidget",
+      "artist": "Overmono"
+    },
+    {
+      "offset": 3790,
+      "duration": 591,
+      "type": "track",
+      "title": "stayinit (VIP / Outro)",
+      "artist": "Fred again.., Lil Yachty, Overmono",
+      "album": "USB"
+    }
+  ]
+}

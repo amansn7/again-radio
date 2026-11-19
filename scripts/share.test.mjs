@@ -37,7 +37,7 @@ const ids = progs.map((p) => p.id);
 assert(ids.includes("boiler-room-london") && ids.includes("usb002-every-show"), "station programmes");
 assert(ids.includes("video-9Stt4wq3KCE") && progs.find((p) => p.id === "video-9Stt4wq3KCE").venue === "The Lot Radio", "catalogue sets, named by place");
 assert(new Set(ids).size === ids.length, "ids unique");
-assert(ids.length === 20, `one page per id (5 programmes + 15 catalogue sets), got ${ids.length}`);
+assert(ids.length === 34, `one page per id (19 programmes + 15 catalogue sets), got ${ids.length}`);
 // A catalogue copy of a station programme resolves to the programme the dial knows.
 const naples = { id: "rooftop-naples", duration: 3797, youtubeId: "2yfyPeAEV3A", title: "Naples", entries: [] };
 const dial = [...slots, { path: "programs/rooftop-naples.json", program: naples, start: 0, length: 3797 }];

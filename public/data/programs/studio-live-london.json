@@ -1,0 +1,105 @@
+{
+  "id": "studio-live-london",
+  "title": "Studio Live (London, April 2021)",
+  "venue": "Studio Live, London",
+  "date": "2021-04-23",
+  "youtubeId": "H2I6V0NlaHg",
+  "duration": 2296,
+  "source": "TracklistFinder / YouTube timestamps",
+  "entries": [
+    {
+      "offset": 10,
+      "duration": 292,
+      "type": "track",
+      "title": "Kyle (i found you)",
+      "artist": "Fred again..",
+      "album": "Kyle (i found you)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 302,
+      "duration": 181,
+      "type": "track",
+      "title": "Julia (deep diving)",
+      "artist": "Fred again..",
+      "album": "Julie (stay)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 483,
+      "duration": 180,
+      "type": "track",
+      "title": "Chika (scared)",
+      "artist": "Fred again..",
+      "album": "Actual Life (April 14 - December 17 2020)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 663,
+      "duration": 147,
+      "type": "track",
+      "title": "Smoke",
+      "artist": "Headie One, Fred again.., Jamie xx",
+      "album": "GANG"
+    },
+    {
+      "offset": 810,
+      "duration": 115,
+      "type": "track",
+      "title": "Jessie (i miss you)",
+      "artist": "Fred again..",
+      "album": "Me (sorry)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 925,
+      "duration": 140,
+      "type": "track",
+      "title": "Don't Judge Me",
+      "artist": "FKA twigs, Headie One, Fred again..",
+      "album": "Charades",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1065,
+      "duration": 395,
+      "type": "track",
+      "title": "Marea (we've lost dancing)",
+      "artist": "Fred again.., The Blessed Madonna",
+      "album": "Actual Life (April 14 - December 17 2020)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1460,
+      "duration": 156,
+      "type": "track",
+      "title": "Chanel / A New Error",
+      "artist": "Frank Ocean / Moderat (Fred again.. edit)"
+    },
+    {
+      "offset": 1616,
+      "duration": 187,
+      "type": "track",
+      "title": "Sabrina (i am a party)",
+      "artist": "Fred again..",
+      "album": "Actual Life (April 14 - December 17 2020)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1803,
+      "duration": 193,
+      "type": "interlude",
+      "title": "Angie (interlude)",
+      "album": "Actual Life (April 14 - December 17 2020)"
+    },
+    {
+      "offset": 1996,
+      "duration": 300,
+      "type": "track",
+      "title": "Angie (i've been lost)",
+      "artist": "Fred again.., Angie McMahon",
+      "album": "Actual Life (April 14 - December 17 2020)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    }
+  ]
+}

@@ -6,7 +6,21 @@
     { "program": "programs/rooftop-live.json", "weight": 1 },
     { "program": "programs/alex-palace-bangalter.json", "weight": 1 },
     { "program": "programs/rooftop-naples.json", "weight": 1 },
-    { "program": "programs/usb002-every-show.json", "weight": 1 }
+    { "program": "programs/usb002-every-show.json", "weight": 1 },
+    { "program": "programs/studio-live-london.json", "weight": 1 },
+    { "program": "programs/studio-live-2.json", "weight": 1 },
+    { "program": "programs/studio-live-3.json", "weight": 1 },
+    { "program": "programs/tiny-desk.json", "weight": 1 },
+    { "program": "programs/times-square.json", "weight": 1 },
+    { "program": "programs/secret-life.json", "weight": 1 },
+    { "program": "programs/mexico-city-playback.json", "weight": 1 },
+    { "program": "programs/green-room-rome.json", "weight": 1 },
+    { "program": "programs/lot-radio-overmono-yachty.json", "weight": 1 },
+    { "program": "programs/lot-radio-brooklyn.json", "weight": 1 },
+    { "program": "programs/glastonbury-2023.json", "weight": 1 },
+    { "program": "programs/piano-live-al2.json", "weight": 1 },
+    { "program": "programs/piano-live-al3.json", "weight": 1 },
+    { "program": "programs/mexico-city-fabric.json", "weight": 1 }
   ],
   "hourBlocks": [
     { "from": 4, "to": 10, "label": "dawn" },

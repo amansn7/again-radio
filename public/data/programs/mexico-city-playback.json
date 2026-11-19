@@ -1,0 +1,99 @@
+{
+  "id": "mexico-city-playback",
+  "title": "Mixtape playback with LATIN MAFIA, Palacio de los Deportes",
+  "venue": "Palacio de los Deportes",
+  "date": "2026-07-30",
+  "youtubeId": "mDtud5fLgFQ",
+  "duration": 4151,
+  "source": "Fred again.. & LATIN MAFIA / YouTube",
+  "entries": [
+    {
+      "offset": 0,
+      "duration": 360,
+      "type": "track",
+      "title": "Hey Hey",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 360,
+      "duration": 350,
+      "type": "track",
+      "title": "Alvafro",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 710,
+      "duration": 380,
+      "type": "track",
+      "title": "Bonita",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 1090,
+      "duration": 340,
+      "type": "track",
+      "title": "benjy chord",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 1430,
+      "duration": 390,
+      "type": "track",
+      "title": "Quiereme",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 1820,
+      "duration": 370,
+      "type": "track",
+      "title": "Film Scene Soundtrack",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 2190,
+      "duration": 380,
+      "type": "track",
+      "title": "Piensas En Mi",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 2570,
+      "duration": 410,
+      "type": "track",
+      "title": "Halo",
+      "artist": "Fred again.., LATIN MAFIA & Lil Yachty",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 2980,
+      "duration": 390,
+      "type": "track",
+      "title": "Te Estoy Correteando",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 3370,
+      "duration": 370,
+      "type": "track",
+      "title": "Mabe",
+      "artist": "Fred again.., LATIN MAFIA & Mabe Fratti",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 3740,
+      "duration": 411,
+      "type": "track",
+      "title": "I wish it wasnt",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    }
+  ]
+}

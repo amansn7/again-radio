@@ -1,0 +1,51 @@
+{
+  "id": "mexico-city-fabric",
+  "title": "Under the fabric with LATIN MAFIA, Mexico City",
+  "venue": "Mexico City",
+  "date": "2025-12-11",
+  "youtubeId": "0sZF6YzhrRU",
+  "duration": 2070,
+  "source": "Fred again.. and LATIN MAFIA / YouTube",
+  "entries": [
+    {
+      "offset": 0,
+      "duration": 420,
+      "type": "track",
+      "title": "Hey Hey (Acoustic / Jam)",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 420,
+      "duration": 450,
+      "type": "track",
+      "title": "Bonita (Studio Jam)",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 870,
+      "duration": 400,
+      "type": "track",
+      "title": "Quiereme (Live Edit)",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 1270,
+      "duration": 410,
+      "type": "track",
+      "title": "Piensas En Mi",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    },
+    {
+      "offset": 1680,
+      "duration": 390,
+      "type": "track",
+      "title": "Halo (Jam)",
+      "artist": "Fred again.. & LATIN MAFIA",
+      "album": "9 Months & 50 Hours"
+    }
+  ]
+}

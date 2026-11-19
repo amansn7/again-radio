@@ -1,0 +1,75 @@
+{
+  "id": "green-room-rome",
+  "title": "Green room set after the Rome show",
+  "venue": "Rome",
+  "date": "2025-09-26",
+  "youtubeId": "o_N5JQYHJXk",
+  "duration": 3391,
+  "source": "Fred again.. YouTube",
+  "entries": [
+    {
+      "offset": 0,
+      "duration": 340,
+      "type": "track",
+      "title": "ICEY.. (Live Edit)",
+      "artist": "Fred again.. & BIA",
+      "album": "USB002"
+    },
+    {
+      "offset": 340,
+      "duration": 360,
+      "type": "track",
+      "title": "..FEISTY (Oppidan Remix)",
+      "artist": "Fred again.. & BIA",
+      "album": "USB002 REMIXES"
+    },
+    {
+      "offset": 700,
+      "duration": 410,
+      "type": "track",
+      "title": "solo (KETTAMA Remix)",
+      "artist": "Fred again.. & Blanco",
+      "album": "USB002 REMIXES"
+    },
+    {
+      "offset": 1110,
+      "duration": 380,
+      "type": "track",
+      "title": "Winny (Lil Silva Remix)",
+      "artist": "Fred again.., Sammy Virji & Winny",
+      "album": "USB002 REMIXES"
+    },
+    {
+      "offset": 1490,
+      "duration": 440,
+      "type": "track",
+      "title": "Ambery",
+      "artist": "Fred again.. & Floating Points",
+      "album": "USB002"
+    },
+    {
+      "offset": 1930,
+      "duration": 420,
+      "type": "track",
+      "title": "HARDSTYLE 2 (Lou Nour Remix)",
+      "artist": "Fred again.., KETTAMA & Shady Nasty",
+      "album": "USB002 REMIXES"
+    },
+    {
+      "offset": 2350,
+      "duration": 450,
+      "type": "track",
+      "title": "the floor (HAAi Remix)",
+      "artist": "Fred again.. & BEAM",
+      "album": "USB002 REMIXES"
+    },
+    {
+      "offset": 2800,
+      "duration": 591,
+      "type": "track",
+      "title": "you're a star (Skream & Benga Remix)",
+      "artist": "Fred again.. & Amyl and The Sniffers",
+      "album": "USB002 REMIXES"
+    }
+  ]
+}

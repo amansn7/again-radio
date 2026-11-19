@@ -1,0 +1,27 @@
+{
+  "id": "glastonbury-2023",
+  "title": "Delilah / Billie live at Glastonbury 2023",
+  "venue": "Other Stage, Glastonbury",
+  "date": "2023-07-01",
+  "youtubeId": "2_64XAqYgJ0",
+  "duration": 603,
+  "source": "BBC Music / Glastonbury",
+  "entries": [
+    {
+      "offset": 0,
+      "duration": 310,
+      "type": "track",
+      "title": "Delilah (pull me out of this)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)"
+    },
+    {
+      "offset": 310,
+      "duration": 293,
+      "type": "track",
+      "title": "Billie (loving arms)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)"
+    }
+  ]
+}

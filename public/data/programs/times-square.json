@@ -1,0 +1,86 @@
+{
+  "id": "times-square",
+  "title": "Four Tet, Fred again.. and Skrillex, pop-up in Times Square",
+  "venue": "Times Square, New York",
+  "date": "2023-02-17",
+  "youtubeId": "ahe9baHOWIg",
+  "duration": 3631,
+  "source": "1001Tracklists / The Lot Radio",
+  "entries": [
+    {
+      "offset": 0,
+      "duration": 360,
+      "type": "track",
+      "title": "Baby again..",
+      "artist": "Fred again.., Skrillex, Four Tet",
+      "album": "USB",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/0f/b2/d5/0fb2d5e5-55f1-97e1-c6e7-1ab064e77cca/5054197600371.jpg/600x600bb.jpg",
+      "bpm": 127
+    },
+    {
+      "offset": 360,
+      "duration": 420,
+      "type": "track",
+      "title": "Rumble",
+      "artist": "Skrillex, Fred again.., Flowdan",
+      "album": "USB",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/fc/f4/6b/fcf46b95-cf27-9f04-94c2-4ad257b7a5a6/075679695239.jpg/600x600bb.jpg",
+      "bpm": 140
+    },
+    {
+      "offset": 780,
+      "duration": 380,
+      "type": "track",
+      "title": "Jungle",
+      "artist": "Fred again..",
+      "album": "USB",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/54/b0/c7/54b0c752-7959-63f9-5185-80ebc2862325/5054197195013.jpg/600x600bb.jpg",
+      "bpm": 134
+    },
+    {
+      "offset": 1160,
+      "duration": 410,
+      "type": "track",
+      "title": "Butterflies",
+      "artist": "Skrillex, Starrah, Four Tet"
+    },
+    {
+      "offset": 1570,
+      "duration": 430,
+      "type": "track",
+      "title": "leavemealone",
+      "artist": "Fred again.., Baby Keem",
+      "album": "USB"
+    },
+    {
+      "offset": 2000,
+      "duration": 370,
+      "type": "track",
+      "title": "Looking at Your Pager",
+      "artist": "KH / Four Tet"
+    },
+    {
+      "offset": 2370,
+      "duration": 390,
+      "type": "track",
+      "title": "Country Riddim",
+      "artist": "HOL!"
+    },
+    {
+      "offset": 2760,
+      "duration": 420,
+      "type": "track",
+      "title": "Turn On the Lights again..",
+      "artist": "Fred again.., Swedish House Mafia, Future",
+      "album": "USB",
+      "bpm": 132
+    },
+    {
+      "offset": 3180,
+      "duration": 451,
+      "type": "track",
+      "title": "RATATA",
+      "artist": "Skrillex, Missy Elliott, Mr. Oizo"
+    }
+  ]
+}

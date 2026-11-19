@@ -1,0 +1,112 @@
+{
+  "id": "lot-radio-brooklyn",
+  "title": "Fred again.. at The Lot Radio, Brooklyn",
+  "venue": "The Lot Radio",
+  "date": "2021-12-06",
+  "youtubeId": "WiSXx_GcJ-c",
+  "duration": 3210,
+  "source": "1001Tracklists / The Lot Radio",
+  "entries": [
+    {
+      "offset": 84,
+      "duration": 224,
+      "type": "id",
+      "title": "ID (Intro)"
+    },
+    {
+      "offset": 308,
+      "duration": 204,
+      "type": "track",
+      "title": "Berwyn (all that i got is you)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)"
+    },
+    {
+      "offset": 512,
+      "duration": 189,
+      "type": "id",
+      "title": "Unreleased ID"
+    },
+    {
+      "offset": 701,
+      "duration": 191,
+      "type": "track",
+      "title": "Delilah (pull me out of this)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)"
+    },
+    {
+      "offset": 892,
+      "duration": 232,
+      "type": "track",
+      "title": "Baby again.. (Demo)",
+      "artist": "Fred again.., Skrillex, Four Tet",
+      "album": "USB"
+    },
+    {
+      "offset": 1124,
+      "duration": 325,
+      "type": "track",
+      "title": "BBY vs. Real As It Gets",
+      "artist": "Overmono vs. Lil Baby (Fred again.. edit)"
+    },
+    {
+      "offset": 1449,
+      "duration": 291,
+      "type": "track",
+      "title": "Infinitely Gentle Blows (Remix)",
+      "artist": "God Within"
+    },
+    {
+      "offset": 1740,
+      "duration": 179,
+      "type": "track",
+      "title": "Song To The Siren (ID Remix)",
+      "artist": "This Mortal Coil"
+    },
+    {
+      "offset": 1919,
+      "duration": 141,
+      "type": "id",
+      "title": "Unreleased ID"
+    },
+    {
+      "offset": 2060,
+      "duration": 220,
+      "type": "track",
+      "title": "Carlos (make it thru)",
+      "artist": "Fred again..",
+      "album": "Actual Life (April 14 - December 17 2020)"
+    },
+    {
+      "offset": 2280,
+      "duration": 201,
+      "type": "id",
+      "title": "Unreleased ID"
+    },
+    {
+      "offset": 2481,
+      "duration": 159,
+      "type": "track",
+      "title": "Tanya (maybe life)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)"
+    },
+    {
+      "offset": 2640,
+      "duration": 150,
+      "type": "track",
+      "title": "Marco (and everyone)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)"
+    },
+    {
+      "offset": 2790,
+      "duration": 420,
+      "type": "track",
+      "title": "Billie (loving arms)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)"
+    }
+  ]
+}

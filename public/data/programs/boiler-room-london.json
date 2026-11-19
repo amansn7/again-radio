@@ -109,7 +109,8 @@
       "title": "Jungle",
       "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/54/b0/c7/54b0c752-7959-63f9-5185-80ebc2862325/5054197195013.jpg/600x600bb.jpg",
       "artist": "Fred again..",
-      "bpm": 134
+      "bpm": 134,
+      "album": "USB"
     },
     {
       "offset": 2541,
@@ -118,7 +119,8 @@
       "title": "Lights Out",
       "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/c1/c2/fc/c1c2fcbd-fda6-1f16-9fa0-c3d84594f534/190296275449.jpg/600x600bb.jpg",
       "artist": "Fred again.., Romy & HAAi",
-      "bpm": 133
+      "bpm": 133,
+      "album": "USB"
     },
     {
       "offset": 2823,
@@ -135,7 +137,8 @@
       "title": "Baby again..",
       "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/0f/b2/d5/0fb2d5e5-55f1-97e1-c6e7-1ab064e77cca/5054197600371.jpg/600x600bb.jpg",
       "artist": "Fred again.., Skrillex & Four Tet",
-      "bpm": 127
+      "bpm": 127,
+      "album": "USB"
     },
     {
       "offset": 3366,
@@ -144,7 +147,8 @@
       "title": "Rumble",
       "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/fc/f4/6b/fcf46b95-cf27-9f04-94c2-4ad257b7a5a6/075679695239.jpg/600x600bb.jpg",
       "artist": "Skrillex, Fred again.. & Flowdan",
-      "bpm": 130
+      "bpm": 130,
+      "album": "USB"
     },
     {
       "offset": 3663,

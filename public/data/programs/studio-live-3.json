@@ -1,0 +1,136 @@
+{
+  "id": "studio-live-3",
+  "title": "Studio Live 3, London",
+  "venue": "Studio Live 3, London",
+  "date": "2022-11-09",
+  "youtubeId": "O3OrcOr67sM",
+  "duration": 3550,
+  "source": "YouTube chapters / setlist.fm",
+  "entries": [
+    {
+      "offset": 0,
+      "duration": 123,
+      "type": "interlude",
+      "title": "Intro"
+    },
+    {
+      "offset": 123,
+      "duration": 143,
+      "type": "track",
+      "title": "Nathan (still breathing)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 266,
+      "duration": 191,
+      "type": "id",
+      "title": "Unreleased ID",
+      "artist": "Fred again.."
+    },
+    {
+      "offset": 457,
+      "duration": 326,
+      "type": "track",
+      "title": "Danielle (smile on my face) x Yasminah",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 783,
+      "duration": 315,
+      "type": "track",
+      "title": "Delilah (pull me out of this)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1098,
+      "duration": 184,
+      "type": "track",
+      "title": "Kammy (like i do)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1282,
+      "duration": 321,
+      "type": "track",
+      "title": "Berwyn (all that i got is you)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1603,
+      "duration": 245,
+      "type": "track",
+      "title": "Lydia (please make it better)",
+      "artist": "Fred again..",
+      "album": "Actual Life (April 14 - December 17 2020)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/a5/11/6fa51152-327e-c0ff-9841-dafd14280d30/190295213558.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 1848,
+      "duration": 290,
+      "type": "track",
+      "title": "Bleu (better with time)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 2138,
+      "duration": 240,
+      "type": "id",
+      "title": "Trippie Redd Collab ID",
+      "artist": "Fred again.. & Trippie Redd"
+    },
+    {
+      "offset": 2378,
+      "duration": 262,
+      "type": "track",
+      "title": "Kelly (nightmare)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 2640,
+      "duration": 156,
+      "type": "track",
+      "title": "Mustafa (time to move you)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 2796,
+      "duration": 296,
+      "type": "track",
+      "title": "Clara (the night is dark)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 3092,
+      "duration": 284,
+      "type": "track",
+      "title": "Winnie (end of me)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)",
+      "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/bb/bb/c9/bbbbc93e-3e44-7ba3-4044-2c88d3529726/5054197487613.jpg/600x600bb.jpg"
+    },
+    {
+      "offset": 3376,
+      "duration": 174,
+      "type": "interlude",
+      "title": "Outro"
+    }
+  ]
+}

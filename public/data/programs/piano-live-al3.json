@@ -1,0 +1,51 @@
+{
+  "id": "piano-live-al3",
+  "title": "Actual Life 3 piano live",
+  "venue": "Actual Life 3, piano",
+  "date": "2022-12-22",
+  "youtubeId": "rTbIQ5sZrDg",
+  "duration": 1468,
+  "source": "Fred again.. YouTube",
+  "entries": [
+    {
+      "offset": 0,
+      "duration": 290,
+      "type": "track",
+      "title": "Nathan (still breathing)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)"
+    },
+    {
+      "offset": 290,
+      "duration": 310,
+      "type": "track",
+      "title": "Danielle (smile on my face)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)"
+    },
+    {
+      "offset": 600,
+      "duration": 280,
+      "type": "track",
+      "title": "Bleu (better with time)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)"
+    },
+    {
+      "offset": 880,
+      "duration": 300,
+      "type": "track",
+      "title": "Delilah (pull me out of this)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)"
+    },
+    {
+      "offset": 1180,
+      "duration": 288,
+      "type": "track",
+      "title": "Clara (the night is dark)",
+      "artist": "Fred again..",
+      "album": "Actual Life 3 (January 1 - September 9 2022)"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "piano-live-al2",
+  "title": "Actual Life 2 piano live",
+  "venue": "Actual Life 2, piano",
+  "date": "2022-03-20",
+  "youtubeId": "XpBRuwK5aN4",
+  "duration": 1860,
+  "source": "Fred again.. YouTube",
+  "entries": [
+    {
+      "offset": 0,
+      "duration": 372,
+      "type": "track",
+      "title": "Catrin (The City)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)"
+    },
+    {
+      "offset": 372,
+      "duration": 368,
+      "type": "track",
+      "title": "Roze (Forgive)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)"
+    },
+    {
+      "offset": 740,
+      "duration": 380,
+      "type": "track",
+      "title": "Kahan (Last Year)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)"
+    },
+    {
+      "offset": 1120,
+      "duration": 370,
+      "type": "track",
+      "title": "Faisal (Envelops Me)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)"
+    },
+    {
+      "offset": 1490,
+      "duration": 370,
+      "type": "track",
+      "title": "Tanya (Maybe Life)",
+      "artist": "Fred again..",
+      "album": "Actual Life 2 (February 2 - October 15 2021)"
+    }
+  ]
+}
