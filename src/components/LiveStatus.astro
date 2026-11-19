@@ -42,6 +42,42 @@ const { ...attrs } = Astro.props;
   live-status .ls-n { display: inline-flex; overflow: hidden; color: var(--fg); }
   live-status .ls-d.roll { animation: ls-roll var(--dur-2) var(--ease-out); }
   @keyframes ls-roll { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }
+  live-status .ls-scheduled {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.2rem 0.625rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--accent) 14%, transparent);
+    border: 1px solid color-mix(in oklab, var(--accent) 32%, transparent);
+    color: var(--accent);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out);
+  }
+  live-status .ls-scheduled:hover {
+    background: color-mix(in oklab, var(--accent) 24%, transparent);
+    transform: translateY(-1px);
+  }
+  live-status .ls-scheduled:active {
+    transform: translateY(0);
+  }
+  live-status .ls-scheduled[hidden] {
+    display: none !important;
+  }
+  live-status .ls-sched-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: ls-sched-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes ls-sched-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.85); }
+  }
   @media (max-width: 479px) { live-status .ls-long { display: none; } live-status .ls-short { display: inline; } }
 </style>
 

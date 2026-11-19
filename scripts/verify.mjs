@@ -143,6 +143,19 @@ function main() {
       warn.push("shows.json: every show has ended — add new dates or empty the list");
     }
   }
+  const lpath = join(DATA, "live-stream.json");
+  if (existsSync(lpath)) {
+    const l = JSON.parse(readFileSync(lpath, "utf8"));
+    const validStatus = new Set(["offline", "scheduled", "live"]);
+    if (!validStatus.has(l?.status)) fail(`live-stream.json: unknown status "${l?.status}"`);
+    if (l?.status === "scheduled" || l?.status === "live") {
+      if (!l.youtubeId || !/^[A-Za-z0-9_-]{11}$/.test(l.youtubeId)) fail(`live-stream.json: youtubeId must be 11 chars`);
+      if (!l.title || typeof l.title !== "string" || !l.title.trim()) fail(`live-stream.json: title must be non-empty`);
+      if (l.thumbnail && !/^https:\/\//.test(l.thumbnail)) fail(`live-stream.json: thumbnail must be https`);
+      if (l.startTime !== undefined && (!Number.isInteger(l.startTime) || l.startTime <= 0)) fail(`live-stream.json: startTime must be positive integer`);
+      if (l.scheduledStartTime && Number.isNaN(Date.parse(l.scheduledStartTime))) fail(`live-stream.json: scheduledStartTime must be valid date`);
+    }
+  }
   for (const w of warn) console.log(`· ${w}`);
   if (errors.length) {
     for (const e of errors) console.error(`✗ ${e}`);

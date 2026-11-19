@@ -13,6 +13,8 @@ import { bindWake, rescueFocus } from "./player-wake.ts";
 import { emitState, fit } from "./player-emit.ts";
 import { cue, goLive, setShuffle, step, tuneStart, SETTLE_MS } from "./player-nav.ts";
 import { createPlayer } from "./player-yt.ts";
+import { fetchLiveStream, type LiveStreamEvent } from "../lib/live-stream.ts";
+import { bindLiveBroadcast } from "./player-live.ts";
 
 // State lives here; player-nav (what plays), player-yt (embed + clock), player-emit (events,
 // labels) and player-wake (gesture, focus) act on it.
@@ -26,6 +28,8 @@ export class RadioPlayer extends HTMLElement {
   /** Video seconds where this stretch hands over to the next. */
   end = 0;
   live = true;
+  liveStream: LiveStreamEvent | null = null;
+  isLiveBroadcast = false;
   shuffle = new SetShuffle();
   bad = new Set<string>();
   errors = 0;
@@ -75,14 +79,20 @@ export class RadioPlayer extends HTMLElement {
   }
 
   private async init() {
-    const [YT, slots] = await Promise.all([loadYT(), loadSlots()]);
+    const [YT, slots, liveStream] = await Promise.all([
+      loadYT(),
+      loadSlots(),
+      fetchLiveStream().catch(() => null),
+    ]);
     if (!slots.length) throw new Error("nothing to play");
     this.slots = slots;
+    this.liveStream = liveStream;
     const start = tuneStart(this);
     this.setAnchor(start);
     this.loaded = this.prog.youtubeId;
     void fit(this);
     const signal = this.ac.signal;
+    bindLiveBroadcast(this, signal);
     const on = (sel: string, fn: () => void) =>
       this.querySelector(sel)?.addEventListener("click", fn, { signal });
 

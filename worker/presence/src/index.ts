@@ -1,4 +1,5 @@
 import { DurableObject } from "cloudflare:workers";
+import { fetchLiveStatus } from "./live";
 
 interface Env { PRESENCE: DurableObjectNamespace<Presence>; }
 
@@ -68,6 +69,18 @@ export class Presence extends DurableObject<Env> {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const { pathname } = new URL(request.url);
+    if (pathname === "/live-stream" && (request.method === "GET" || request.method === "OPTIONS")) {
+      const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Cache-Control": "public, max-age=30",
+        "Content-Type": "application/json",
+      };
+      if (request.method === "OPTIONS") return new Response(null, { headers });
+      const liveData = await fetchLiveStatus();
+      return Response.json(liveData, { headers });
+    }
     const isCount = pathname === "/presence/count" && request.method === "GET";
     if (pathname !== "/presence" && !isCount) return new Response("Not found", { status: 404 });
     if (!isCount && request.headers.get("Upgrade") !== "websocket") {

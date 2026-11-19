@@ -3,6 +3,7 @@ import { loadProgram } from "../lib/station.ts";
 import { entryAt } from "../lib/schedule.ts";
 import { videoProgram } from "../lib/live.ts";
 import { slotAfter } from "../lib/rotation.ts";
+import { isLiveNow, liveStreamProgram, type LiveStreamEvent } from "../lib/live-stream.ts";
 import type { CueInfo } from "../lib/events.ts";
 import { emitState, emitTrack, fit, setLabels } from "./player-emit.ts";
 import type { RadioPlayer } from "./player.ts";
@@ -24,6 +25,9 @@ export function tuneStart(p: RadioPlayer): number {
     offAir(p);
     p.shuffle.reset(linked.program.entries.length, entryAt(linked.program.entries, linked.offset)?.index ?? 0);
     start = linked.offset;
+  } else if (p.liveStream && isLiveNow(p.liveStream)) {
+    useLiveStream(p, p.liveStream);
+    start = 0;
   } else {
     const at = p.liveNow();
     useSlot(p, at.index, at.cycle);
@@ -31,6 +35,14 @@ export function tuneStart(p: RadioPlayer): number {
   }
   if (link) history.replaceState(null, "", location.pathname);
   return start;
+}
+
+export function useLiveStream(p: RadioPlayer, stream: LiveStreamEvent): void {
+  p.isLiveBroadcast = true;
+  p.prog = liveStreamProgram(stream);
+  p.path = `live:${stream.youtubeId}`;
+  p.onSlot = -1;
+  p.end = 86400 * 7;
 }
 
 function useSlot(p: RadioPlayer, index: number, cycle: number) {
@@ -45,6 +57,7 @@ function useSlot(p: RadioPlayer, index: number, cycle: number) {
 /** Off the shared broadcast: this set plays to its end, then the station takes over again. */
 function offAir(p: RadioPlayer) {
   p.live = false;
+  p.isLiveBroadcast = false;
   p.onSlot = -1;
   p.end = p.prog.duration;
 }
@@ -53,6 +66,14 @@ export function goLive(p: RadioPlayer, ms = FADE_USER_MS) {
   p.userPaused = false;
   p.live = true;
   p.shuffle.set(false, 0, -1);
+  if (p.liveStream && isLiveNow(p.liveStream)) {
+    p.fader.run(ms, () => {
+      useLiveStream(p, p.liveStream!);
+      load(p, 0);
+    });
+    return;
+  }
+  p.isLiveBroadcast = false;
   const at = p.liveNow();
   p.fader.run(ms, () => {
     useSlot(p, at.index, at.cycle);

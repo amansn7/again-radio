@@ -1,5 +1,7 @@
 import { onPulse } from "../lib/pulse.ts";
 import { esc } from "./archive-rail.ts";
+import { fetchLiveStream, type LiveStreamEvent } from "../lib/live-stream.ts";
+import { RADIO_LIVE_STREAM } from "../lib/events.ts";
 import {
   NARROW, WIDE, dayLabel, glow, heading, onAir, parseShows, readout, sameZone, stations, upcoming, xOf,
   type Geom, type Show, type Station,
@@ -64,6 +66,7 @@ function rollText(el: HTMLElement, value: string): void {
 }
 
 class ShowBand extends HTMLElement {
+  private rawShows: Show[] = [];
   private shows: Show[] = [];
   private up: Show[] = [];
   private sts: Station[] = [];
@@ -81,12 +84,33 @@ class ShowBand extends HTMLElement {
   private ac: AbortController | null = null;
   private pulsing = false;
 
+  private mergeLive(live: LiveStreamEvent): void {
+    const list = this.rawShows.slice();
+    if ((live.status === "scheduled" || live.status === "live") && live.startTime && live.scheduledStartTime) {
+      list.push({
+        city: "Live Stream",
+        country: "YouTube",
+        venue: live.title ?? "Fred again.. Official Stream",
+        start: live.scheduledStartTime,
+        tz: "UTC",
+        t: live.startTime * 1000,
+      });
+      list.sort((a, b) => a.t - b.t);
+    }
+    this.shows = list;
+  }
+
   async connectedCallback(): Promise<void> {
     const ac = (this.ac = new AbortController());
     try {
-      const r = await fetch("/data/shows.json");
+      const [r, live] = await Promise.all([
+        fetch("/data/shows.json"),
+        fetchLiveStream().catch(() => null),
+      ]);
       if (!r.ok) throw new Error(String(r.status));
-      this.shows = parseShows(await r.json()).shows;
+      this.rawShows = parseShows(await r.json()).shows;
+      this.shows = this.rawShows.slice();
+      if (live) this.mergeLive(live);
     } catch {
       this.innerHTML = `<section class="wrap" aria-labelledby="sb-title"><h2 class="section-title" id="sb-title">Upcoming shows</h2>` +
         `<p class="meta" role="alert">The show dates could not be loaded. Check your connection and reload the page.</p></section>`;
@@ -96,6 +120,10 @@ class ShowBand extends HTMLElement {
     const { signal } = ac;
     addEventListener("resize", () => this.update(), { passive: true, signal });
     document.addEventListener("visibilitychange", () => this.update(), { signal });
+    document.addEventListener(RADIO_LIVE_STREAM, (e) => {
+      this.mergeLive((e as CustomEvent<LiveStreamEvent>).detail);
+      this.update();
+    }, { signal });
     this.addEventListener("click", (e) => {
       const i = this.btns.indexOf((e.target as Element).closest<HTMLButtonElement>(".st")!);
       if (i >= 0) this.tune(this.sts[i].shows[0]);

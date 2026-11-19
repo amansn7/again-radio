@@ -1,8 +1,10 @@
 import { entryAt } from "../lib/schedule.ts";
+import { isLiveNow } from "../lib/live-stream.ts";
 import { RADIO_TIME } from "../lib/events.ts";
 import type { YTPlayer } from "../lib/yt.ts";
 import { emitState, emitTrack, setLabels } from "./player-emit.ts";
 import { advance, goLive, nextShuffled, FADE_AUTO_MS, SETTLE_MS } from "./player-nav.ts";
+import { endLiveBroadcast, startLiveBroadcast } from "./player-live.ts";
 import type { RadioPlayer } from "./player.ts";
 
 const DRIFT = 8;
@@ -40,7 +42,10 @@ export function createPlayer(YT: Window["YT"], p: RadioPlayer, start: number): Y
           p.playing = playing;
           emitState(p);
         }
-        if (e.data === 0 && Date.now() - p.anchorAt > SETTLE_MS) advance(p);
+        if (e.data === 0 && Date.now() - p.anchorAt > SETTLE_MS) {
+          if (p.isLiveBroadcast) endLiveBroadcast(p);
+          else advance(p);
+        }
         // Retry a browser-imposed pause while hidden; the browser may still suspend us.
         if (e.data === 2 && document.hidden && !p.userPaused) p.player?.playVideo();
       },
@@ -50,6 +55,10 @@ export function createPlayer(YT: Window["YT"], p: RadioPlayer, start: number): Y
         p.bad.add(p.prog.youtubeId);
         // A seek on the broken player never errors again, so the next load must be a real one.
         p.loaded = "";
+        if (p.isLiveBroadcast) {
+          endLiveBroadcast(p);
+          return;
+        }
         if (++p.errors >= 3) {
           p.setHidden(".rp-tuning", true);
           p.setHidden(".rp-error", false);
@@ -72,9 +81,19 @@ function tick(p: RadioPlayer) {
     );
   }
   if (Date.now() - p.anchorAt < SETTLE_MS || p.fader.busy) return;
+  if (p.live && !p.isLiveBroadcast && isLiveNow(p.liveStream)) {
+    return startLiveBroadcast(p, p.liveStream!);
+  }
   // ENDED inside the settle window is ignored as possibly stale; if it was real, the state still says so.
-  if (p.player.getPlayerState?.() === 0) return advance(p);
+  if (p.player.getPlayerState?.() === 0) {
+    if (p.isLiveBroadcast) return endLiveBroadcast(p);
+    return advance(p);
+  }
   if (p.playing) {
+    if (p.isLiveBroadcast) {
+      emitTrack(p);
+      return;
+    }
     const lead = document.hidden ? 0 : FADE_AUTO_MS / 1000;
     if (p.shuffle.on) {
       const info = entryAt(p.prog.entries, exact);

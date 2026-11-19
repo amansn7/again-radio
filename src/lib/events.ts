@@ -6,6 +6,8 @@ export const RADIO_TIME = "radio:time";
 export const RADIO_STATE = "radio:state";
 export const RADIO_CUE = "radio:cue";
 export const RADIO_LIVE = "radio:live";
+export const RADIO_LIVE_STREAM = "radio:live-stream";
+export const RADIO_TOAST = "radio:toast";
 /** Open the search sheet, optionally prefilled: detail `{ query?: string }`. */
 export const RADIO_SEARCH = "radio:search";
 
@@ -49,4 +51,10 @@ export type CueInfo =
 export let lastTrack: TrackInfo | null = null;
 if (typeof document !== "undefined") {
   document.addEventListener(RADIO_TRACK, (e) => (lastTrack = (e as CustomEvent<TrackInfo>).detail));
+}
+
+export function toast(message: string): void {
+  if (typeof document !== "undefined") {
+    document.dispatchEvent(new CustomEvent(RADIO_TOAST, { detail: { message } }));
+  }
 }

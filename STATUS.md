@@ -14,6 +14,7 @@ Recent interaction & catalog polish:
 - **Full catalogue rotation**: all 19 live sets and 17 releases in continuous 24-hour broadcast rotation (38 slots, 36.4 h cycle).
 - **Tour mode (Phase 17)**: frosted tour hints, trimmed reflections on mobile, official USB002 cover art, and tabular slot layout for countdown digits.
 - **Player resilience**: guarded YouTube IFrame calls before player readiness and focus rescue on `focusin`.
+- **YouTube Live Tracker & Auto-Start**: tracks Fred again..'s official channel (`UCXF6DMVLIVRr2OQAqyfEGeg`) for scheduled premieres/live streams via `worker/presence` `/live-stream` and `scripts/live-tracker.mjs`. Shows scheduled countdown pill in `<live-status>` and timeline pin in `<show-band>`, and automatically starts the live stream via YouTube IFrame with smooth crossfade when the broadcast begins.
 
 Phase 0–17 shipped and verified; design v3 is deployed live on Cloudflare Pages
 (https://again-radio.pages.dev) with Cloudflare Worker + Durable Object for real-time
