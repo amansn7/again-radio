@@ -18,6 +18,10 @@ concurrency:
 jobs:
   find:
     runs-on: ubuntu-latest
+    # Explicit bash brings pipefail: a crash before `| tee` must fail the step.
+    defaults:
+      run:
+        shell: bash
     env:
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
     steps:
