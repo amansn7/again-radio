@@ -2,9 +2,11 @@
 
 Strategy for getting maximum broadcast value out of ElevenLabs' free monthly 10,000 credit allocation for **AGAIN RADIO**'s AI radio jockey, Rory.
 
-**Accounts (20 Nov 2026):** two free accounts, both with Rory's premade voice (Lily) and identical
-untouched voice defaults; every request sends the same model and settings, so either account gives
-the same voice. Account 1: 1,421 remaining (resets 19 Dec). Account 2: 10,000 (resets 20 Dec).
+**Accounts (20 Nov 2026, end of day):** two free accounts, both with Rory's premade voice (Lily)
+and identical untouched voice defaults; every request sends the same model and settings, so either
+account gives the same voice. Account 1: 1,320 remaining (resets 19 Dec). Account 2: 1,962
+(resets 20 Dec). Both are now at their dynamic-dialogue reserve. Observed billing: 0.4–0.7
+credits per spoken character, and the API balance lags a run by minutes.
 The generator plans every clip across both accounts before sending anything, charges each clip
 to the account with the most spare credit, moves to the other on a quota error, and keeps
 `--reserve` credits (default 1,500) per account for dynamic dialogue. Billing ran about 0.7

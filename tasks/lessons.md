@@ -44,3 +44,7 @@ Rules learned from corrections. Append one line per mistake — specific, action
 - A new feature attached a second click handler to an existing control (the orb "make it dance" button dispatched `radio:jockey:ask`). Before wiring a feature to a control, grep every existing handler on that element and keep its one job.
 - Unit tests that re-implement logic prove nothing. For timing/audio features, drive the real page (`scripts/jockey.e2e.mjs`) and assert on recorded state over time.
 - A stuck `fader.fading` silently froze all navigation for ages; any ramp that can be replaced must not own the only completion callback.
+
+## 2026-11-20 — credit budgets
+- The ElevenLabs balance lags by minutes and the per-character rate varied 0.4–0.7. Size a spend from text length at the worst observed rate, record in batches, and read the settled balance before topping up.
+- `--reserve` applies to every account. Lowering it to squeeze one account let the generator bill the other account too. To spend from one account only, keep the reserve and pass a smaller batch instead.
