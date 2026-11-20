@@ -5,7 +5,7 @@ import { videoProgram } from "../lib/live.ts";
 import { slotAfter } from "../lib/rotation.ts";
 import { isLiveNow, liveStreamProgram, type LiveStreamEvent } from "../lib/live-stream.ts";
 import type { CueInfo } from "../lib/events.ts";
-import { emitState, emitTrack, fit, setLabels } from "./player-emit.ts";
+import { emitState, fit, setLabels } from "./player-emit.ts";
 import type { RadioPlayer } from "./player.ts";
 
 export const SETTLE_MS = 1500;
@@ -82,6 +82,7 @@ export function goLive(p: RadioPlayer, ms = FADE_USER_MS) {
 }
 
 function load(p: RadioPlayer, offset: number) {
+  p.awaitingPlay = true;
   const same = p.loaded === p.prog.youtubeId;
   p.loaded = p.prog.youtubeId;
   p.setAnchor(offset);
@@ -96,7 +97,6 @@ function load(p: RadioPlayer, offset: number) {
   else p.player?.unMute?.();
   setLabels(p);
   emitState(p);
-  emitTrack(p);
 }
 
 export async function cue(p: RadioPlayer, d: CueInfo) {

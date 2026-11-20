@@ -6,7 +6,17 @@ import { RADIO_STATE, RADIO_TRACK } from "../lib/events.ts";
 import type { StateInfo, TrackInfo } from "../lib/events.ts";
 import type { RadioPlayer } from "./player.ts";
 
+/** YouTube is playing: release a held track announcement and let Rory pick up what waited. */
+export function playbackArrived(p: RadioPlayer) {
+  if (p.awaitingPlay) {
+    p.awaitingPlay = false;
+    emitTrack(p);
+  }
+  p.jockey.onPlaying();
+}
+
 export function emitTrack(p: RadioPlayer) {
+  if (p.awaitingPlay) return;
   const t = Math.floor(p.position());
   const info = entryAt(p.prog.entries, t);
   if (!info) return;

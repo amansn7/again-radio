@@ -92,10 +92,12 @@ export class RadioJockey {
   private lastFactId = "";
   private currentTrack: TrackInfo | null = null;
   private currentTrackAt = 0;
+  private welcomePending = false;
 
   constructor(
     private duckTo: (pct: number) => void,
-    private isMuted: () => boolean
+    private isMuted: () => boolean,
+    private isPlaying: () => boolean
   ) {
     try { this._enabled = localStorage.getItem("again-radio:jockey") !== "false"; } catch {}
     loadJockeyData().then((d) => (this.data = d)).catch((err) => {
@@ -156,10 +158,33 @@ export class RadioJockey {
     return chosen;
   }
 
+  /** Rory only talks over sound the listener can already hear. */
+  private ready(): boolean {
+    return this.isPlaying();
+  }
+
+  /** YouTube reports PLAYING: pick up whatever waited for the sound. */
+  onPlaying(): void {
+    // The track clock did not run while the video was loading.
+    this.currentTrackAt = Date.now();
+    if (this._speaking) return;
+    if (this.welcomePending) void this.welcome();
+    else {
+      const live = this.liveTrack();
+      if (live) void this.onTrack(live);
+    }
+  }
+
   async onTuneIn(): Promise<void> {
     if (!this._enabled || this.hasWelcomed || this.isMuted() || this._speaking) return;
     this.audio.unlock();
     this.hasWelcomed = true;
+    this.welcomePending = true;
+    if (this.ready()) await this.welcome();
+  }
+
+  private async welcome(): Promise<void> {
+    this.welcomePending = false;
     if (!this.data) this.data = await loadJockeyData().catch(() => null);
     if (!this.data) return;
 
@@ -185,7 +210,7 @@ export class RadioJockey {
 
   async onTrack(info: TrackInfo): Promise<void> {
     this.setCurrent(info);
-    if (!this._enabled || this._speaking || this.isMuted()) return;
+    if (!this._enabled || this._speaking || this.isMuted() || !this.ready()) return;
     if (!this.data) this.data = await loadJockeyData().catch(() => null);
     if (!this.data) return;
 
@@ -242,7 +267,7 @@ export class RadioJockey {
   async onTime(timeInfo: TimeInfo, info: TrackInfo): Promise<void> {
     const elapsed = Math.max(0, timeInfo.current - info.entry.offset);
     this.setCurrent({ ...info, elapsed, progress: info.entry.duration ? elapsed / info.entry.duration : 0 });
-    if (!this._enabled || this._speaking || this.isMuted()) return;
+    if (!this._enabled || this._speaking || this.isMuted() || !this.ready()) return;
     if (!this.data) return;
 
     const trackConfig = this.data.tracks[info.entry.title ?? ""];

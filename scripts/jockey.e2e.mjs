@@ -58,6 +58,14 @@ await page.addInitScript(() => {
 await page.goto(url, { waitUntil: "networkidle" });
 await page.waitForSelector("#rp-tune", { state: "visible", timeout: 15_000 });
 await page.waitForFunction(() => document.querySelector("radio-player")?.jockey);
+// Headless Chromium cannot play YouTube (it asks automated browsers to sign in), so the test plays
+// YouTube's part: window.__yt is the player state the station reads (1 = playing, 3 = buffering).
+await page.evaluate(() => {
+  window.__yt = 1;
+  const p = document.querySelector("radio-player");
+  p.player.getPlayerState = () => window.__yt;
+  p.player.getCurrentTime = () => p.anchor + (window.__yt === 1 ? (Date.now() - p.anchorAt) / 1000 : 0);
+});
 await page.click("#rp-tune");
 
 const rj = () => page.evaluate(() => window.__rj);
@@ -93,14 +101,11 @@ await speak("auto change test", CLIP);
 await waitFor(() => document.querySelector("radio-player").jockey.speaking);
 let from = await mark();
 let tracksBefore = (await rj()).events.filter((e) => e[0] === "track").length;
-await page.evaluate(() => {
-  const yt = document.querySelector("radio-player").player;
-  window.__state = yt.getPlayerState;
-  yt.getPlayerState = () => 0; // the player tick sees ENDED and advances, exactly as at the end of a set
-});
-const advanced = await waitFor(`window.__rj.events.filter((e) => e[0] === "track").length > ${tracksBefore}`, 8000);
-await page.evaluate(() => (document.querySelector("radio-player").player.getPlayerState = window.__state));
-check(advanced, "station advanced on its own");
+await page.evaluate(() => (window.__yt = 0)); // the player tick sees ENDED and advances, as at the end of a set
+check(await waitFor(() => document.querySelector("radio-player").awaitingPlay, 8000), "station advanced on its own");
+await page.evaluate(() => (window.__yt = 1)); // the next video starts playing
+const advanced = await waitFor(`window.__rj.events.filter((e) => e[0] === "track").length > ${tracksBefore}`, 6000);
+check(advanced, "next track announced once it plays");
 log = await rj();
 check(log.samples.slice(from).every((s) => s.speaking), "automatic change lets Rory keep talking");
 check(await waitFor(() => !document.querySelector("radio-player").jockey.speaking, 20_000), "clip ends on its own");
@@ -113,9 +118,12 @@ await page.waitForTimeout(500);
 await page.evaluate(() => document.activeElement?.blur());
 await page.keyboard.press("ArrowRight");
 check(await waitFor(() => !document.querySelector("radio-player").jockey.speaking, 1500), "skip key stops Rory at once");
-check(await waitFor(() => !document.querySelector("radio-player").fader.busy && document.querySelector("radio-player").fader.volume === 100, 6000), "music full after skip");
+await page.waitForTimeout(200);
 log = await rj();
 check(log.samples.at(-1).voices === 0, "skip leaves no voice playing");
+// The next track may get its own intro once audible; either way the music ends at full.
+await waitFor(() => !document.querySelector("radio-player").jockey.speaking && !document.querySelector("radio-player").fader.busy && document.querySelector("radio-player").fader.volume === 100, 20_000);
+check(await page.evaluate(() => document.querySelector("radio-player").fader.volume) === 100, "music full after skip");
 
 // 4. A stale clip's cleanup never unlocks the next clip.
 await speak("stale A", CLIP);
@@ -142,6 +150,22 @@ await page.waitForTimeout(1500);
 log = await rj();
 check(log.events.filter((e) => e[0] === "speak").length === speaksBefore, "unmute does not replay the welcome");
 check(log.samples.at(-1).vol === 100, `music full after mute/unmute (${log.samples.at(-1).vol})`);
+
+// 5b. A search jump while YouTube is still buffering: no track announced, Rory silent, until sound arrives.
+await waitFor(() => !document.querySelector("radio-player").jockey.speaking, 20_000);
+let n0 = (await rj()).events.length;
+await page.evaluate(() => {
+  window.__yt = 3;
+  document.dispatchEvent(new CustomEvent("radio:cue", { detail: { program: "programs/boiler-room-london.json", offset: 382 } }));
+});
+await page.waitForTimeout(3500);
+log = await rj();
+check(log.events.slice(n0).every((e) => e[0] !== "speak"), "Rory stays silent while the video is buffering");
+check(log.events.slice(n0).every((e) => e[0] !== "track"), "the new track is not announced before it plays");
+await page.evaluate(() => (window.__yt = 1));
+check(await waitFor(`window.__rj.events.slice(${n0}).some((e) => e[0] === "track")`, 4000), "track announced once playback starts");
+check(await waitFor(`window.__rj.events.slice(${n0}).some((e) => e[0] === "speak")`, 4000), "Rory introduces it once it is audible");
+await waitFor(() => !document.querySelector("radio-player").jockey.speaking, 20_000);
 
 // 6. A real jump into a set: Rory speaks the set transition or the track intro, music lands at full
 //    (the old silent-station bug). Headless Chromium cannot play YouTube, so the clock does not run here.

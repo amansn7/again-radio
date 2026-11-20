@@ -2,7 +2,7 @@ import { entryAt } from "../lib/schedule.ts";
 import { isLiveNow } from "../lib/live-stream.ts";
 import { RADIO_TIME } from "../lib/events.ts";
 import type { YTPlayer } from "../lib/yt.ts";
-import { emitState, emitTrack, setLabels } from "./player-emit.ts";
+import { emitState, emitTrack, playbackArrived, setLabels } from "./player-emit.ts";
 import { advance, goLive, nextShuffled, FADE_AUTO_MS, SETTLE_MS } from "./player-nav.ts";
 import { endLiveBroadcast, startLiveBroadcast } from "./player-live.ts";
 import type { RadioPlayer } from "./player.ts";
@@ -37,6 +37,7 @@ export function createPlayer(YT: Window["YT"], p: RadioPlayer, start: number): Y
           p.setHidden(".rp-error", true);
           delete p.dataset.novideo;
           p.fader.onPlaying();
+          playbackArrived(p);
         }
         if (playing !== p.playing) {
           p.playing = playing;
@@ -80,6 +81,8 @@ function tick(p: RadioPlayer) {
       new CustomEvent(RADIO_TIME, { detail: { current, exact, duration: p.prog.duration } }),
     );
   }
+  // A seek inside a playing video may never report PLAYING again: trust the player after the settle window.
+  if (p.awaitingPlay && Date.now() - p.anchorAt > SETTLE_MS && p.player.getPlayerState?.() === 1) playbackArrived(p);
   if (Date.now() - p.anchorAt < SETTLE_MS || p.fader.busy) return;
   if (p.live && !p.isLiveBroadcast && isLiveNow(p.liveStream)) {
     return startLiveBroadcast(p, p.liveStream!);

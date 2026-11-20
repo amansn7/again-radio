@@ -1,6 +1,6 @@
 import { isLiveNow, liveStreamProgram, watchLiveStream, type LiveStreamEvent } from "../lib/live-stream.ts";
 import { RADIO_LIVE_STREAM, RADIO_TOAST } from "../lib/events.ts";
-import { emitState, emitTrack, fit, setLabels } from "./player-emit.ts";
+import { emitState, fit, setLabels } from "./player-emit.ts";
 import { goLive, FADE_AUTO_MS } from "./player-nav.ts";
 import type { RadioPlayer } from "./player.ts";
 
@@ -33,13 +33,13 @@ export function startLiveBroadcast(p: RadioPlayer, stream: LiveStreamEvent, fade
     p.end = 86400 * 7;
     p.loaded = stream.youtubeId!;
     p.setAnchor(0);
+    p.awaitingPlay = true;
     p.player?.loadVideoById({ videoId: stream.youtubeId!, startSeconds: 0 });
     p.player?.playVideo();
     if (p.muted) p.player?.mute?.();
     else p.player?.unMute?.();
     setLabels(p);
     emitState(p);
-    emitTrack(p);
     void fit(p);
     showToast(p, `🔴 Fred again.. is now live: ${stream.title ?? "Live Stream"}`);
   };

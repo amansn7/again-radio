@@ -46,7 +46,8 @@ export class RadioPlayer extends HTMLElement {
   fader = new Fader((v) => this.player?.setVolume?.(v), () => this.playing);
   jockey = new RadioJockey(
     (pct) => this.fader.duck(pct),
-    () => this.muted
+    () => this.muted,
+    () => !this.awaitingPlay && this.player?.getPlayerState?.() === 1
   );
   loaded = "";
   // Browsers block sound until a gesture, so the station starts muted and the first
@@ -59,6 +60,8 @@ export class RadioPlayer extends HTMLElement {
   lastKey = "";
   private anchor = 0;
   anchorAt = 0;
+  // After a jump, the track is announced (UI, Rory, media session) only once YouTube is audibly playing it.
+  awaitingPlay = false;
   ticker: ReturnType<typeof setInterval> | null = null;
   private ac = new AbortController();
 
