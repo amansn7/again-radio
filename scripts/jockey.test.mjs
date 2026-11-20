@@ -7,6 +7,7 @@ import { pickWelcome } from "../src/lib/welcome.ts";
 import { chooseFiller } from "../src/lib/fillers.ts";
 import { introFits, outroLeadSeconds } from "../src/lib/jockey-timing.ts";
 import { speechProfile } from "../src/lib/jockey-voice.ts";
+import { parseKinds, RORY_KINDS } from "../src/lib/rory-kinds.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -261,4 +262,14 @@ test("fillers take turns, match the listener count, fit before vocals, never rep
   assert.equal(chooseFiller(pools, 2, 5, "", fits, first).id, "id1", "turn 2: station ID");
   assert.equal(chooseFiller(pools, 2, 5, "id1", fits, first).id, "few", "the last line is never repeated; the next kind steps in");
   assert.equal(chooseFiller(pools, 0, 5, "", () => false, first), undefined, "nothing fits: no filler");
+});
+
+test("Rory kinds: stored choice wins, old off switch carries over, new listeners get everything", () => {
+  const list = (s) => [...s].sort();
+  assert.deepEqual(list(parseKinds(null, null)), list(RORY_KINDS), "new listener: every kind");
+  assert.deepEqual(list(parseKinds(null, "false")), [], "Rory switched off before kinds existed stays off");
+  assert.deepEqual(list(parseKinds(null, "true")), list(RORY_KINDS));
+  assert.deepEqual(list(parseKinds('["intros","outros","bogus"]', "false")), ["intros", "outros"], "stored kinds win; unknown names dropped");
+  assert.deepEqual(list(parseKinds("[]", null)), [], "music only");
+  assert.deepEqual(list(parseKinds("{oops", null)), list(RORY_KINDS), "corrupt value falls back to every kind");
 });

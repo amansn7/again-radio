@@ -25,6 +25,7 @@ import { fetchLiveStream, type LiveStreamEvent } from "../lib/live-stream.ts";
 import { bindLiveBroadcast } from "./player-live.ts";
 import { RadioJockey } from "../lib/jockey.ts";
 import { watchListeners } from "./listeners.ts";
+import { bindRoryPanel } from "./rory-panel.ts";
 
 // State lives here; player-nav (what plays), player-yt (embed + clock), player-emit (events,
 // labels) and player-wake (gesture, focus) act on it.
@@ -141,7 +142,7 @@ export class RadioPlayer extends HTMLElement {
     signal.addEventListener("abort", () => stopListeners());
 
     document.addEventListener(RADIO_LIVE, jumpLive, { signal });
-    document.addEventListener("radio:jockey:toggle", () => this.jockey.toggle(), { signal });
+    bindRoryPanel(this, this.jockey, signal);
     // Mobile browsers pause embeds in the background; come back to the live moment, like a radio.
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden) this.resumeIfDropped();

@@ -12,6 +12,7 @@ import { pickWelcome } from "./welcome.ts";
 import { chooseFiller } from "./fillers.ts";
 import { introFits, outroLeadSeconds } from "./jockey-timing.ts";
 import type { JockeyDelivery } from "./jockey-voice.ts";
+import { RORY_KINDS, loadKinds, saveKinds, type RoryKind } from "./rory-kinds.ts";
 
 const LAST_WELCOME_KEY = "again-radio:last-welcome";
 
@@ -82,7 +83,8 @@ export class RadioJockey {
   private data: JockeyData | null = null;
   private ducker = new JockeyDucker();
   private audio = new JockeyAudio();
-  private _enabled = true;
+  private kinds = new Set<RoryKind>(RORY_KINDS);
+  private speakingKind: RoryKind | null = null;
   private _speaking = false;
   private speakToken = 0;
   private _currentText = "";
@@ -106,22 +108,31 @@ export class RadioJockey {
     private isMuted: () => boolean,
     private isPlaying: () => boolean
   ) {
-    try { this._enabled = localStorage.getItem("again-radio:jockey") !== "false"; } catch {}
+    this.kinds = loadKinds();
     loadJockeyData().then((d) => (this.data = d)).catch((err) => {
       console.warn("[jockey] Could not load data:", err);
     });
   }
 
   get enabled(): boolean {
-    return this._enabled;
+    return this.kinds.size > 0;
   }
 
   set enabled(val: boolean) {
-    this._enabled = val;
-    try { localStorage.setItem("again-radio:jockey", String(val)); } catch {}
-    if (!val && this._speaking) {
-      this.stop();
-    }
+    this.setKinds(val ? RORY_KINDS : []);
+  }
+
+  has(kind: RoryKind): boolean {
+    return this.kinds.has(kind);
+  }
+
+  /** Call from the click that changed it: switching Rory back on unlocks audio on iOS. */
+  setKinds(list: readonly RoryKind[]): void {
+    const wasOn = this.enabled;
+    this.kinds = new Set(list);
+    saveKinds(this.kinds);
+    if (!wasOn && this.enabled && !this._speaking) this.audio.unlock();
+    if (this._speaking && this.speakingKind && !this.kinds.has(this.speakingKind)) this.stop();
     this.emitState();
   }
 
@@ -137,15 +148,11 @@ export class RadioJockey {
     this.currentListenerCount = count;
   }
 
-  toggle(): boolean {
-    this.enabled = !this.enabled;
-    return this.enabled;
-  }
-
   emitState(): void {
     if (typeof document === "undefined") return;
     const detail: JockeyStateDetail = {
-      enabled: this._enabled,
+      enabled: this.enabled,
+      kinds: [...this.kinds],
       speaking: this._speaking,
       text: this._currentText,
       jockeyName: this.data?.station.jockey ?? "Rory"
@@ -175,17 +182,19 @@ export class RadioJockey {
     // The track clock did not run while the video was loading.
     this.currentTrackAt = Date.now();
     if (this._speaking) return;
-    if (this.welcomePending) void this.welcome();
+    if (this.welcomePending && this.has("welcome")) void this.welcome();
     else {
+      this.welcomePending = false;
       const live = this.liveTrack();
       if (live) void this.onTrack(live);
     }
   }
 
   async onTuneIn(): Promise<void> {
-    if (!this._enabled || this.hasWelcomed || this.isMuted() || this._speaking) return;
+    if (!this.enabled || this.hasWelcomed || this.isMuted() || this._speaking) return;
     this.audio.unlock();
     this.hasWelcomed = true;
+    if (!this.has("welcome")) return;
     this.welcomePending = true;
     if (this.ready()) await this.welcome();
   }
@@ -197,7 +206,7 @@ export class RadioJockey {
 
     const welcome = this.pickWelcome();
     if (welcome) {
-      await this.speak(welcome.text, welcome.audio, { isTuneIn: true, delivery: welcome.delivery });
+      await this.speak(welcome.text, welcome.audio, { isTuneIn: true, kind: "welcome", delivery: welcome.delivery });
     } else {
       const live = this.liveTrack();
       if (live) await this.onTrack(live);
@@ -226,7 +235,7 @@ export class RadioJockey {
 
   async onTrack(info: TrackInfo): Promise<void> {
     this.setCurrent(info);
-    if (!this._enabled || this._speaking || this.isMuted() || !this.ready()) return;
+    if (!this.enabled || this._speaking || this.isMuted() || !this.ready()) return;
     if (!this.data) this.data = await loadJockeyData().catch(() => null);
     if (!this.data) return;
 
@@ -234,12 +243,12 @@ export class RadioJockey {
     if (this.spokeIntro.has(trackKey)) return;
 
     // Check for set/program transition first
-    if (this.lastProgram && this.lastProgram !== info.programId) {
+    if (this.has("intros") && this.lastProgram && this.lastProgram !== info.programId) {
       this.lastProgram = info.programId;
       const trans = this.data.transitions[info.programId];
       if (trans && introFits(info.elapsed, trans, this.trackConfig(info.entry.title)?.postSeconds)) {
         this.spokeIntro.add(trackKey);
-        await this.speak(trans.text, trans.audio, { delivery: trans.delivery });
+        await this.speak(trans.text, trans.audio, { kind: "intros", delivery: trans.delivery });
         return;
       }
     }
@@ -249,7 +258,7 @@ export class RadioJockey {
     const now = Date.now();
     // Every few minutes a shout-out, fact or station ID takes a song's slot, as on a real show.
     const fillerDue = now - this.lastFillerAt > 300_000;
-    if (fillerDue || (!trackConfig?.intro && now - this.lastSpokeTime >= 80_000)) {
+    if (this.has("fillers") && (fillerDue || (!trackConfig?.intro && now - this.lastSpokeTime >= 80_000))) {
       const filler = chooseFiller(
         { listeners: this.data.listeners ?? [], facts: this.data.facts ?? [], ids: this.data.stationIds ?? [] },
         this.fillerTurn,
@@ -262,13 +271,13 @@ export class RadioJockey {
         this.lastFillerAt = now;
         this.lastFillerId = filler.id;
         this.spokeIntro.add(trackKey);
-        await this.speak(filler.text, filler.audio, { delivery: filler.delivery });
+        await this.speak(filler.text, filler.audio, { kind: "fillers", delivery: filler.delivery });
         return;
       }
     }
 
     // Intros skip the chatter cooldown, but only play if they end before the vocals.
-    if (trackConfig?.intro) {
+    if (this.has("intros") && trackConfig?.intro) {
       this.spokeIntro.add(trackKey);
       const options = [trackConfig.intro, trackConfig.introAlt].filter(
         (c): c is JockeyClip => !!c && introFits(info.elapsed, c, trackConfig.postSeconds),
@@ -278,7 +287,7 @@ export class RadioJockey {
       if (intro) {
         this.lastIntroIds.add(intro.id);
         for (const other of options) if (other !== intro) this.lastIntroIds.delete(other.id);
-        await this.speak(intro.text, intro.audio, { delivery: intro.delivery });
+        await this.speak(intro.text, intro.audio, { kind: "intros", delivery: intro.delivery });
       }
     }
   }
@@ -287,17 +296,17 @@ export class RadioJockey {
   async onTime(timeInfo: TimeInfo, info: TrackInfo): Promise<void> {
     const elapsed = Math.max(0, timeInfo.current - info.entry.offset);
     this.setCurrent({ ...info, elapsed, progress: info.entry.duration ? elapsed / info.entry.duration : 0 });
-    if (!this._enabled || this._speaking || this.isMuted() || !this.ready()) return;
+    if (!this.enabled || this._speaking || this.isMuted() || !this.ready()) return;
     if (!this.data) return;
 
     const trackConfig = this.trackConfig(info.entry.title);
     const trackKey = `${info.programId}:${info.entry.title}`;
-    if (trackConfig?.thought && trackConfig.thoughtOffset !== undefined && !this.spokeThought.has(trackKey) &&
+    if (this.has("thoughts") && trackConfig?.thought && trackConfig.thoughtOffset !== undefined && !this.spokeThought.has(trackKey) &&
         elapsed >= trackConfig.thoughtOffset && elapsed < trackConfig.thoughtOffset + 3.5) {
       const now = Date.now();
       if (now - this.lastSpokeTime >= 45_000) {
         this.spokeThought.add(trackKey);
-        await this.speak(trackConfig.thought.text, trackConfig.thought.audio, { delivery: trackConfig.thought.delivery });
+        await this.speak(trackConfig.thought.text, trackConfig.thought.audio, { kind: "thoughts", delivery: trackConfig.thought.delivery });
       }
     }
 
@@ -305,16 +314,17 @@ export class RadioJockey {
     const outroWindow = trackConfig?.outro
       ? outroLeadSeconds(trackConfig.outro.text, trackConfig.outro.durationSeconds)
       : 0;
-    if (!this._speaking && trackConfig?.outro && !this.spokeOutro.has(endKey) &&
+    if (this.has("outros") && !this._speaking && trackConfig?.outro && !this.spokeOutro.has(endKey) &&
         info.entry.duration - elapsed <= outroWindow && info.entry.duration - elapsed >= 0) {
       this.spokeOutro.add(endKey);
-      await this.speak(trackConfig.outro.text, trackConfig.outro.audio, { delivery: trackConfig.outro.delivery });
+      await this.speak(trackConfig.outro.text, trackConfig.outro.audio, { kind: "outros", delivery: trackConfig.outro.delivery });
     }
   }
 
-  async speak(text: string, audioUrl?: string, options: { isTuneIn?: boolean; delivery?: JockeyDelivery } = {}): Promise<void> {
+  async speak(text: string, audioUrl?: string, options: { isTuneIn?: boolean; kind?: RoryKind; delivery?: JockeyDelivery } = {}): Promise<void> {
     if (this._speaking) return;
     this._speaking = true;
+    this.speakingKind = options.kind ?? null;
     const token = ++this.speakToken;
     this._currentText = text;
     this.lastSpokeTime = Date.now();

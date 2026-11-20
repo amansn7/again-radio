@@ -86,6 +86,12 @@ const welcomed = await waitFor(() => window.__rj.events.some((e) => e[0] === "sp
 check(welcomed, "welcome starts after tune-in");
 if (!welcomed) console.log("  player:", await page.evaluate(() => { const p = document.querySelector("radio-player"); return JSON.stringify({ yt: p.player?.getPlayerState?.(), t: p.player?.getCurrentTime?.(), error: p.player?.getVideoData?.()?.errorCode, awaiting: p.awaitingPlay, muted: p.muted, playing: p.playing }); }));
 check(await waitFor(() => document.querySelector("radio-player").jockey.speaking === false && window.__rj.events.some((e) => e[0] === "end"), 30_000), "welcome finishes");
+check(await waitFor(() => !document.querySelector("#rp-rory-panel").hidden, 2000), "after the first welcome, Rory's choices open");
+check(await page.evaluate(() => {
+  const welcome = window.__rj.events.find((e) => e[0] === "speak")[2];
+  const panel = document.querySelector("#rp-rory-panel");
+  return panel.querySelector(".rp-rory-quote").textContent.includes(welcome) && !panel.contains(document.activeElement);
+}), "the panel quotes the welcome just heard and does not take focus");
 await page.waitForTimeout(600);
 let log = await rj();
 const during = log.samples.filter((s) => s.speaking);
@@ -242,6 +248,44 @@ await page.evaluate(() => document.querySelector(".mc-orb-btn").click());
 check(await waitFor(() => document.querySelector(".disco-stage"), 4000), "orb tap starts the disco ball");
 await page.waitForTimeout(800);
 check((await rj()).events.slice(n).every((e) => e[0] !== "speak"), "orb tap does not make Rory speak");
+
+// 10. Choosing what Rory does.
+await page.keyboard.press("Escape");
+check(await waitFor(() => document.querySelector("#rp-rory-panel").hidden, 1500), "Escape closes the panel");
+check(await page.evaluate(() => localStorage.getItem("again-radio:jockey-asked") === "1"), "the first-launch question is asked only once");
+await page.click("#rp-rory");
+check(await waitFor(() => !document.querySelector("#rp-rory-panel").hidden && document.activeElement?.value === "welcome", 1500), "mic button opens the panel with focus on the first choice");
+await page.evaluate(() => {
+  const j = document.querySelector("radio-player").jockey;
+  j.stop();
+  void j.speak("thought test", "/audio/jockey/welcome.mp3", { kind: "thoughts" });
+});
+await waitFor(() => document.querySelector("radio-player").jockey.speaking);
+await page.click('#rp-rory-panel label:has(input[value="thoughts"])');
+check(await waitFor(() => !document.querySelector("radio-player").jockey.speaking, 1500), "unticking a kind silences that line at once");
+check(await page.evaluate(() => {
+  const j = document.querySelector("radio-player").jockey;
+  return !j.has("thoughts") && j.has("intros") && JSON.parse(localStorage.getItem("again-radio:jockey-kinds")).length === 4
+    && document.querySelector(".rp-rory-done").textContent === "Keep these";
+}), "one kind off: saved, the rest stay on, button says Keep these");
+await page.click(".rp-rory-all");
+check(await page.evaluate(() => document.querySelector("radio-player").jockey.enabled), "Select all turns everything back on");
+await page.click(".rp-rory-all");
+check(await page.evaluate(() => {
+  const j = document.querySelector("radio-player").jockey;
+  return !j.enabled && document.querySelector(".rp-rory-done").textContent === "Music only"
+    && document.querySelector("#rp-rory").dataset.on === "false";
+}), "Clear all: music only, mic shows off");
+await page.click(".rp-rory-done");
+check(await waitFor(() => document.querySelector("#rp-rory-panel").hidden && document.activeElement?.id === "rp-rory", 1500), "Done closes the panel and focus returns to the mic");
+n = (await rj()).events.length;
+await page.keyboard.press("ArrowRight");
+await page.waitForTimeout(4000);
+check((await rj()).events.slice(n).every((e) => e[0] !== "speak"), "with every kind off, Rory stays quiet across a song change");
+await page.click("#rp-rory");
+await page.click(".rp-rory-all");
+await page.mouse.click(5, 5);
+check(await waitFor(() => document.querySelector("#rp-rory-panel").hidden, 1500), "tapping outside closes the panel");
 
 await browser.close();
 if (failures.length) {

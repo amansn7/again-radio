@@ -10,6 +10,23 @@
   </div>
 
   <div class="rp-bar">
+    <section class="rp-rory-panel glass" id="rp-rory-panel" aria-labelledby="rp-rory-title" hidden>
+      <p class="rp-rory-quote" hidden></p>
+      <h2 class="rp-rory-title" id="rp-rory-title">That's Rory, your host between songs.</h2>
+      <fieldset class="rp-rory-kinds">
+        <legend>What Rory does</legend>
+        <label><input type="checkbox" value="welcome" checked /><span>Says hello</span></label>
+        <label><input type="checkbox" value="intros" checked /><span>Introduces songs</span></label>
+        <label><input type="checkbox" value="outros" checked /><span>Names what just played</span></label>
+        <label><input type="checkbox" value="thoughts" checked /><span>Shares thoughts mid-song</span></label>
+        <label><input type="checkbox" value="fillers" checked /><span>Gives shout-outs and facts</span></label>
+      </fieldset>
+      <p class="rp-rory-hint">Change this any time with the mic button.</p>
+      <div class="rp-rory-actions">
+        <button class="btn-primary rp-rory-done" type="button">Keep Rory</button>
+        <button class="btn rp-rory-all" type="button">Clear all</button>
+      </div>
+    </section>
     <button class="btn-primary rp-tune" id="rp-tune" type="button" aria-label="Tune in with sound">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9a4.5 4.5 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>
       Tune in
@@ -22,6 +39,9 @@
       <button class="icon-btn" id="rp-sound" type="button" aria-label="Unmute">
         <svg class="rp-ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9a4.5 4.5 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>
         <svg class="rp-ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM16 9.5l5 5M21 9.5l-5 5"/></svg>
+      </button>
+      <button class="icon-btn rp-rory" id="rp-rory" type="button" aria-label="Rory, the host: on" aria-expanded="false" aria-controls="rp-rory-panel" data-on="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a2.75 2.75 0 012.75 2.75v5a2.75 2.75 0 01-5.5 0v-5A2.75 2.75 0 0112 3.5zM6.5 11a5.5 5.5 0 0011 0M12 16.5v4"/><path class="rp-rory-off" d="M4.5 4.5l15 15"/></svg>
       </button>
       <button class="icon-btn rp-shuffle" id="rp-shuffle" type="button" aria-label="Shuffle this set" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3.5c2.5 0 4 1.5 5 5s2.5 5 5 5H20M4 17h3.5c1.3 0 2.3-.4 3-1.2M13.5 8.2c.7-.8 1.7-1.2 3-1.2H20M17 4l3 3-3 3M17 14l3 3-3 3"/></svg>
@@ -219,7 +239,118 @@
   @keyframes rp-fade { from { opacity: 0; } to { opacity: 1; } }
   @media (max-width: 639px) { .rp-tune { flex-basis: 100%; } }
   .rp-back { margin-left: 0.25rem; height: 2.5rem; }
-  .rp-shuffle svg, .rp-share svg { fill: none; }
+  .rp-shuffle svg, .rp-share svg, .rp-rory svg { fill: none; }
+  .rp-rory[data-on="true"] {
+    color: var(--accent);
+    border-color: color-mix(in oklab, var(--accent) 70%, transparent);
+  }
+  .rp-rory[data-on="true"] .rp-rory-off { display: none; }
+  .rp-rory[data-on="false"] { color: var(--fg-dim); }
+  .rp-rory[aria-expanded="true"] { background: color-mix(in oklab, var(--fg) 14%, transparent); }
+
+  /* Rory's settings. Opens by itself once, after the first welcome (the line just heard is the
+     example), then from the mic button. Sits over the page so nothing below it moves. */
+  .rp-bar { position: relative; }
+  .rp-rory-panel {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 0.75rem);
+    z-index: 4;
+    width: min(23rem, 100%);
+    margin: 0;
+    padding: 1.125rem 1.125rem 1rem;
+    border-radius: calc(var(--radius) * 1.6);
+    animation: rp-rise var(--dur-2) var(--ease-out);
+  }
+  /* Denser than the controls' clear glass: this one is read, over a busy picture. */
+  .rp-bar .rp-rory-panel.glass {
+    background: color-mix(in oklab, var(--bg-2) 80%, transparent);
+    -webkit-backdrop-filter: blur(28px) saturate(1.4);
+    backdrop-filter: blur(28px) saturate(1.4);
+  }
+  .rp-rory-panel[hidden] { display: none; }
+  .rp-rory-panel p { margin: 0; }
+  .rp-rory-quote {
+    margin-bottom: 0.5rem !important;
+    font-size: 1.125rem;
+    line-height: 1.4;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+  .rp-rory-title {
+    margin: 0;
+    font: 600 1rem/1.35 var(--font-body);
+    color: var(--fg);
+  }
+  .rp-rory-quote:not([hidden]) + .rp-rory-title { font-weight: 400; font-size: 0.9375rem; color: color-mix(in oklab, var(--fg) 80%, transparent); }
+  .rp-rory-kinds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.875rem 0 0;
+    padding: 0;
+    border: 0;
+  }
+  .rp-rory-kinds legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .rp-rory-kinds label { position: relative; display: inline-flex; cursor: pointer; }
+  .rp-rory-kinds input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .rp-rory-kinds span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.25rem;
+    padding: 0 0.875rem 0 0.75rem;
+    border: 1px solid color-mix(in oklab, var(--fg) 24%, transparent);
+    border-radius: 999px;
+    font-size: 0.875rem;
+    color: color-mix(in oklab, var(--fg) 72%, transparent);
+    transition: color var(--dur-1, 160ms) ease, background-color var(--dur-1, 160ms) ease, border-color var(--dur-1, 160ms) ease;
+  }
+  /* The tick is drawn, so an unticked chip keeps its width. */
+  .rp-rory-kinds span::before {
+    content: "";
+    width: 0.75rem;
+    height: 0.4rem;
+    margin-top: -0.2rem;
+    border: solid currentColor;
+    border-width: 0 0 2px 2px;
+    transform: rotate(-45deg) scale(0.6);
+    opacity: 0;
+    transition: opacity var(--dur-1, 160ms) ease, transform var(--dur-1, 160ms) ease;
+  }
+  .rp-rory-kinds input:checked + span {
+    color: var(--fg);
+    background: color-mix(in oklab, var(--accent) 22%, transparent);
+    border-color: color-mix(in oklab, var(--accent) 70%, transparent);
+  }
+  .rp-rory-kinds input:checked + span::before { opacity: 1; transform: rotate(-45deg) scale(1); }
+  .rp-rory-kinds label:hover span { border-color: color-mix(in oklab, var(--fg) 35%, transparent); }
+  .rp-rory-kinds input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .rp-rory-hint { margin-top: 0.75rem !important; font-size: 0.8125rem; color: color-mix(in oklab, var(--fg) 66%, transparent); }
+  .rp-rory-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.875rem; }
+  @media (max-width: 767px) {
+    .rp-rory-kinds span { min-height: 44px; }
+  }
+  @keyframes rp-rise { from { opacity: 0; transform: translateY(0.5rem); } }
+  @media (prefers-reduced-motion: reduce) {
+    .rp-rory-panel { animation: none; }
+    .rp-rory-kinds span, .rp-rory-kinds span::before { transition: none; }
+  }
+  ::view-transition-group(rp-rory) { animation-duration: 440ms; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  ::view-transition-old(rp-rory) { animation: rp-fade 160ms ease-out reverse both; }
+  ::view-transition-new(rp-rory) { animation: rp-fade 200ms ease-out 240ms both; }
   .rp-toast {
     position: fixed;
     left: 50%;

@@ -16,6 +16,8 @@ export const RADIO_JOCKEY_END = "radio:jockey:end";
 
 export interface JockeyStateDetail {
   enabled: boolean;
+  /** RoryKind names switched on. */
+  kinds: string[];
   speaking: boolean;
   text?: string;
   jockeyName: string;
