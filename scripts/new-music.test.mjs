@@ -191,3 +191,28 @@ test("daily runs ignore old uploads still listed in the feed", async () => {
   const fetchText = fakeFetch({ feed, iiiiiiiiiii: watch(200, "2026-11-19"), jjjjjjjjjjj: watch(200, "2026-07-31") });
   assert.deepEqual(await run({ fetchText, today: "2026-11-20", dataDir: d, known: new Set() }), ["Fred again.. - new"]);
 });
+
+test("with an API key, video details come from the YouTube Data API, not the watch page", async () => {
+  const d = dir({ checked: "2026-11-19", items: [] });
+  const feed = feedOf([["kkkkkkkkkkk", "Fred again.. - api song", "2026-11-19"], ["lllllllllll", "Fred again.. - premiere", "2026-11-19"],
+    ["mmmmmmmmmmm", "Fred again.. - gone private", "2026-11-19"]]);
+  const api = (id, duration, live = "none") => ({ id, snippet: { channelId: CH, publishedAt: "2026-11-19T16:00:14Z", liveBroadcastContent: live },
+    contentDetails: { duration } });
+  const urls = [];
+  const fetchText = async (url) => {
+    urls.push(url);
+    if (url.includes("feeds/videos.xml")) return { status: 200, text: feed };
+    if (url.includes("/shorts/")) return { status: 303, text: "" };
+    const id = url.match(/[?&]id=([\w-]{11})/)?.[1];
+    if (url.startsWith("https://www.googleapis.com/youtube/v3/videos?") && url.includes("key=K")) {
+      const items = { kkkkkkkkkkk: [api(id, "PT3M2S")], lllllllllll: [api(id, "P0D", "upcoming")], mmmmmmmmmmm: [] }[id];
+      return { status: 200, text: JSON.stringify({ items }) };
+    }
+    throw new Error(`unexpected ${url}`);
+  };
+  assert.deepEqual(await run({ fetchText, today: "2026-11-20", dataDir: d, known: new Set(), apiKey: "K" }), ["Fred again.. - api song"]);
+  assert.equal(JSON.parse(read(d)).items[0].duration, 182);
+  assert.ok(!urls.some((u) => u.includes("/watch?v=")), "never asks for a watch page");
+  const bad = async (url) => (url.includes("googleapis") ? { status: 403, text: "{}" } : fetchText(url));
+  await assert.rejects(run({ fetchText: bad, today: "2026-11-20", dataDir: dir({ checked: "2026-11-19", items: [] }), known: new Set(), apiKey: "K" }), /API/);
+});

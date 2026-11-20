@@ -36,6 +36,9 @@ jobs:
 
       - name: Look for new music
         id: find
+        env:
+          # Watch pages are bot-checked on GitHub's runners; the Data API is not.
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: node scripts/new-music.mjs | tee added.txt
 
       - name: Check and build
