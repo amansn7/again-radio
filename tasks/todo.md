@@ -160,6 +160,7 @@ Review: re-run `node scripts/og.mjs` and redeploy when sets are added, or the ne
 - [x] Real-time audio ducking engine (`src/lib/jockey-ducker.ts`) smoothly ramping YouTube volume to 22% during voice and swelling to 100% on cue
 - [x] Talk-over timing ("hitting the post") wrapping intro speeches before song vocals/drops
 - [x] Transport bar toggle button, vocal luminescence on Siri orb, and synchronized liquid glass live captions (`Player.astro`, `Orb.astro`, `orb.ts`)
+- [x] High-fidelity motion graphics orb morphing state machine between resting orb and Siri speech waveform (`Orb.astro`, `orb-wave.ts`, `orb.ts`, `scripts/orb-transition.test.mjs`)
 - [x] Unit test suite (`scripts/jockey.test.mjs`) and verify integration (`scripts/verify.mjs`)
 
 ## Production-credit catalogue reconciliation (snapshot 2026-11-18)

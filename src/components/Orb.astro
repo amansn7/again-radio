@@ -1,6 +1,8 @@
 ---
 ---
-<radio-orb {...Astro.props} aria-hidden="true">
+<radio-orb {...Astro.props} aria-hidden="true" data-state="idle">
+  <i class="o-aura" aria-hidden="true"></i>
+  <i class="o-morph-ring" aria-hidden="true"></i>
   <i class="o-body"><i class="o-mesh"></i><i class="o-dots"></i><i class="o-sheen"></i></i>
   <canvas class="o-wave" aria-hidden="true"></canvas>
 </radio-orb>
@@ -43,27 +45,79 @@
     filter: brightness(calc(1 + var(--orb-kick) * 0.3 + var(--orb-hat) * 0.08)) saturate(calc(0.8 + var(--orb-swell) * 0.4));
     animation: orb-breathe 5.5s ease-in-out infinite;
   }
-  radio-orb[data-voice] .o-body {
-    filter: brightness(1.3) saturate(1.35) drop-shadow(0 0 16px var(--accent));
-    animation: orb-breathe 2.4s ease-in-out infinite;
+  radio-orb .o-aura {
+    position: absolute; inset: -24%; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle at center, color-mix(in oklab, var(--accent) 70%, var(--orb-c1)) 0%, color-mix(in oklab, var(--orb-c2) 45%, transparent) 50%, transparent 76%);
+    filter: blur(14px); opacity: 0; transform: scale(0.8);
+    transition: opacity 400ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+  radio-orb[data-state="morph-to-speech"] .o-aura,
+  radio-orb[data-state="speech"] .o-aura {
+    opacity: 0.8; transform: scale(1.08);
+    animation: o-aura-breathe 2.8s ease-in-out infinite alternate;
+  }
+  radio-orb[data-state="morph-to-orb"] .o-aura {
+    opacity: 0; transform: scale(0.75);
+    transition: opacity 380ms ease, transform 420ms cubic-bezier(0.2, 0, 0.3, 1);
+  }
+  @keyframes o-aura-breathe {
+    0% { transform: scale(1.04); opacity: 0.7; }
+    100% { transform: scale(1.14); opacity: 0.92; filter: blur(18px); }
+  }
+
+  radio-orb .o-morph-ring {
+    position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: 0; box-sizing: border-box;
+  }
+  radio-orb[data-state="morph-to-speech"] .o-morph-ring { animation: o-shockwave-out 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  radio-orb[data-state="morph-to-orb"] .o-morph-ring { animation: o-shockwave-in 520ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  @keyframes o-shockwave-out {
+    0% { opacity: 0.95; transform: scale(0.85); border: 2px solid var(--accent); box-shadow: 0 0 16px var(--accent), inset 0 0 12px color-mix(in oklab, var(--orb-c1) 80%, transparent); }
+    45% { opacity: 0.7; border-width: 1.5px; }
+    100% { opacity: 0; transform: scale(1.7); border: 0.5px solid color-mix(in oklab, var(--orb-c2) 50%, transparent); box-shadow: 0 0 24px transparent; }
+  }
+  @keyframes o-shockwave-in {
+    0% { opacity: 0; transform: scale(1.6); border: 1px solid color-mix(in oklab, var(--orb-c1) 70%, transparent); }
+    35% { opacity: 0.85; border-width: 2px; border-color: var(--accent); box-shadow: 0 0 16px var(--accent); }
+    100% { opacity: 0; transform: scale(0.35); border-width: 0.5px; box-shadow: 0 0 4px transparent; }
+  }
+
+  radio-orb[data-state="morph-to-speech"] .o-body { animation: o-body-to-wave 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+  radio-orb[data-state="speech"] .o-body {
+    transform: scale(1.02, 0.95); border-radius: 46% 54% 45% 55% / 55% 45% 55% 45%;
+    opacity: 0.28; filter: blur(7px) brightness(1.2) saturate(1.2);
+  }
+  radio-orb[data-state="morph-to-orb"] .o-body { animation: o-body-to-orb 520ms cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
+  @keyframes o-body-to-wave {
+    0% { transform: scale(1); border-radius: 50%; opacity: 1; filter: brightness(1) saturate(1); }
+    25% { transform: scale(0.92, 0.94); border-radius: 48% 52% 49% 51%; opacity: 1; filter: brightness(1.6) saturate(1.4) drop-shadow(0 0 16px var(--accent)); }
+    65% { transform: scale(1.18, 0.84); border-radius: 44% 56% 42% 58% / 56% 44% 56% 44%; opacity: 0.5; filter: blur(2px) brightness(1.3); }
+    100% { transform: scale(1.05, 0.92); border-radius: 42% 58% 40% 60% / 58% 42% 58% 42%; opacity: 0.14; filter: blur(6px) brightness(1.1); }
+  }
+  @keyframes o-body-to-orb {
+    0% { transform: scale(1.02, 0.95); border-radius: 46% 54% 45% 55%; opacity: 0.14; filter: blur(6px); }
+    35% { transform: scale(0.86); border-radius: 50%; opacity: 0.9; filter: brightness(1.7) saturate(1.35) drop-shadow(0 0 16px var(--accent)); }
+    75% { transform: scale(1.07); border-radius: 50%; opacity: 1; filter: brightness(1.15); }
+    100% { transform: scale(1); border-radius: 50%; opacity: 1; filter: brightness(1); }
+  }
+
   radio-orb .o-wave {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
+    position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%;
+    opacity: 0; pointer-events: none; transform: scale(0.65); filter: blur(4px);
   }
-  radio-orb[data-wave] .o-body {
-    opacity: 0;
-    transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  radio-orb[data-state="morph-to-speech"] .o-wave { animation: o-wave-emerge 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  radio-orb[data-state="speech"] .o-wave { opacity: 1; transform: scale(1); filter: blur(0px); }
+  radio-orb[data-state="morph-to-orb"] .o-wave { animation: o-wave-collapse 520ms cubic-bezier(0.2, 0, 0.3, 1) forwards; }
+  @keyframes o-wave-emerge {
+    0% { opacity: 0; transform: scale(0.4); filter: blur(6px); }
+    35% { opacity: 0.85; transform: scale(0.85, 0.88); filter: blur(2px); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0px); }
   }
-  radio-orb[data-wave] .o-wave {
-    opacity: 1;
+  @keyframes o-wave-collapse {
+    0% { opacity: 1; transform: scale(1); filter: blur(0px); }
+    50% { opacity: 0.75; transform: scale(0.65, 0.3); filter: blur(1.5px); }
+    100% { opacity: 0; transform: scale(0.25, 0.1); filter: blur(5px); }
   }
+
   radio-orb .o-mesh {
     background:
       conic-gradient(from calc(var(--orb-angle) * 2) at 25% 70%, var(--orb-c3), transparent 20% 80%, var(--orb-c3)),
@@ -104,8 +158,18 @@
   @keyframes orb-breathe { 50% { scale: 1.04; } }
   @media (prefers-reduced-motion: reduce) {
     radio-orb { transition: none; }
-    radio-orb .o-body, radio-orb .o-mesh { animation: none; }
-    radio-orb .o-mesh::after { transition: none; }
+    radio-orb .o-body, radio-orb .o-mesh, radio-orb .o-aura, radio-orb .o-morph-ring, radio-orb .o-wave {
+      animation: none !important;
+      transition: opacity 160ms ease !important;
+    }
+    radio-orb[data-state="morph-to-speech"] .o-body,
+    radio-orb[data-state="speech"] .o-body { opacity: 0; }
+    radio-orb[data-state="morph-to-speech"] .o-wave,
+    radio-orb[data-state="speech"] .o-wave { opacity: 1; transform: none; filter: none; }
+    radio-orb[data-state="morph-to-orb"] .o-body,
+    radio-orb[data-state="idle"] .o-body { opacity: 1; transform: none; filter: none; }
+    radio-orb[data-state="morph-to-orb"] .o-wave,
+    radio-orb[data-state="idle"] .o-wave { opacity: 0; transform: none; filter: none; }
   }
 </style>
 

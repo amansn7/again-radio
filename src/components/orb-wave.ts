@@ -1,33 +1,37 @@
-// WebGL Siri Wave shader engine for radio-orb voice state.
+// WebGL Siri Wave shader engine with smooth morph transition between orb core and speech waveform.
 const VERTEX_SHADER = `attribute vec2 aPos; void main(){ gl_Position=vec4(aPos,0.0,1.0); }`;
 
 const WAVE_SHADER = `precision highp float;
-uniform vec2 iResolution; uniform float iTime;
+uniform vec2 iResolution;
+uniform float iTime;
+uniform float uProgress;
+uniform float uVoice;
+uniform vec3 uAccent;
+
 const float PI = 3.14159265359;
-const float AMPLITUDE   = 0.32;
-const float FREQ        = 1.1;
-const float ABER_FREQ   = 1.0;
+const float AMPLITUDE   = 0.46;
+const float FREQ        = 1.15;
+const float ABER_FREQ   = 1.05;
 const float SPEED       = 2.4;
-const float WAVE_SCALE  = 0.6;
-const float ABERRATION  = 2.6;
-const float THICKNESS   = 3.0;
-const float INTENSITY   = 2.0;
-const float FALLOFF     = 1.7;
+const float WAVE_SCALE  = 0.95;
+const float ABERRATION  = 2.8;
+const float THICKNESS   = 4.2;
+const float INTENSITY   = 2.2;
+const float FALLOFF     = 1.6;
 const float EDGE_MASK   = 0.4;
 const float EDGE_INSET  = 0.0;
-const float BAND_FILL   = 30000.0;
+const float BAND_FILL   = 32000.0;
 const float BAND_THICK  = 0.08;
-const float SOFTNESS    = 2.5;
-const float LOW_AMP     = 6.0;
-const float LOW_INT     = 1.5;
+const float SOFTNESS    = 2.6;
+const float LOW_AMP     = 6.5;
+const float LOW_INT     = 1.6;
 const float MID_ABER    = 0.8;
-const float MID_ABAMP   = 0.05;
-const float MID_BAND    = 20.0;
+const float MID_ABAMP   = 0.06;
+const float MID_BAND    = 22.0;
 const float MID_SOFT    = 0.4;
-const float HIGH_ABER   = 0.5;
-const float HIGH_ABAMP  = 0.06;
-const float RESOLVED    = 1.0;
-const float UNRES_SCALE = 0.14;
+const float HIGH_ABER   = 0.55;
+const float HIGH_ABAMP  = 0.07;
+const float UNRES_SCALE = 0.16;
 
 vec3 spectral4(int s){
     float x = float(s);
@@ -47,18 +51,19 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord){
     float mid  = clamp(0.40 + 0.40*sin(t*1.7+2.0)*sin(t*0.53), 0.0, 1.0);
     float high = clamp(0.30 + 0.30*sin(t*2.9+4.0)*sin(t*0.71+2.0), 0.0, 1.0);
 
-    float res   = clamp(RESOLVED, 0.0, 1.0);
+    float res   = clamp(uProgress, 0.0, 1.0);
     float drift = mod(t, 20.0*PI) * SPEED;
 
     float xN  = p.x / max(aspect, 1.0);
     float env = cos(PI*0.5 * min(abs(0.9*xN), 1.0));
     env *= env;
 
-    float A1    = AMPLITUDE + 0.01*low*LOW_AMP;
+    float vMod = 1.0 + 0.4 * uVoice;
+    float A1    = (AMPLITUDE + 0.01*low*LOW_AMP) * vMod;
     float A2    = A1 + mid*MID_ABAMP + high*HIGH_ABAMP;
     float AB    = (ABERRATION + mid*MID_ABER + high*HIGH_ABER)*res;
     float th    = mix(0.1, 0.01*THICKNESS, res);
-    float inten = mix(0.1, 0.01*(INTENSITY + low*LOW_INT), res);
+    float inten = mix(0.12, 0.01*(INTENSITY + low*LOW_INT), res) * vMod;
     float soft  = 0.01*res*max(0.0, SOFTNESS + mid*MID_SOFT);
 
     float dUnres = max(length(p) - mix(0.14, UNRES_SCALE, res), 0.0);
@@ -68,7 +73,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord){
     float bandAmt    = 1e-4 * BAND_FILL * inten;
     vec3 num = vec3(0.0), den = vec3(0.0);
     for(int s = 0; s < 4; s++){
-        vec3 hue = mix(vec3(1.0), spectral4(s), res);
+        vec3 hue = mix(vec3(1.0), mix(spectral4(s), uAccent, 0.22), res);
         den += hue;
         float ab = mix(-AB, AB, float(s)/3.0);
         float yL = A2 * env * res * sin(p.x*ABER_FREQ + drift + ab);
@@ -87,17 +92,23 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord){
     float boost = (1.0 - res) * (14.0*low + 4.0);
     col += 0.5 * inten * (lorM + boost) / (sqrt(dM*dM + soft*soft) + th);
 
+    // Motion graphics morphing burst: chromatic energy core flash during transition
+    float morphBurst = sin(res * PI);
+    col += morphBurst * 0.45 * mix(vec3(1.0), uAccent, 0.35) * exp(-length(p) * 2.4);
+
     col = pow(max(col, 0.0), vec3(1.5));
     float emT = clamp((abs(yScreen) - 1.0 + EDGE_INSET) / (-max(EDGE_MASK, 1e-4)), 0.0, 1.0);
     float em  = emT*emT*(3.0 - 2.0*emT);
     float gauss = exp(-pow(xN*FALLOFF, 2.0));
     col *= mix(1.0, em*gauss, res);
-    col *= res;
+
+    float coreFade = smoothstep(0.0, 0.05, res);
+    col *= coreFade;
 
     // Soft circular aperture vignette so it blends cleanly into the orb container
-    float rCirc = length(p * 0.48);
-    float circMask = smoothstep(0.98, 0.65, rCirc);
-    float alpha = clamp(max(col.r, max(col.g, col.b)) * 3.5, 0.0, 1.0) * circMask;
+    float rCirc = length(p * 0.65);
+    float circMask = smoothstep(1.0, 0.68, rCirc);
+    float alpha = clamp(max(col.r, max(col.g, col.b)) * 3.5, 0.0, 1.0) * circMask * coreFade;
     fragColor = vec4(col, alpha);
 }
 void main(){ mainImage(gl_FragColor, gl_FragCoord.xy); }`;
@@ -105,6 +116,9 @@ void main(){ mainImage(gl_FragColor, gl_FragCoord.xy); }`;
 export interface WaveRenderer {
   start(): void;
   stop(): void;
+  morphTo(target: number, durationMs?: number, onComplete?: () => void): void;
+  setVoiceIntensity(intensity: number): void;
+  setAccent(r: number, g: number, b: number): void;
   destroy(): void;
 }
 
@@ -146,6 +160,9 @@ export function createWaveRenderer(canvas: HTMLCanvasElement): WaveRenderer | nu
 
   const uResolution = gl.getUniformLocation(program, "iResolution");
   const uTime = gl.getUniformLocation(program, "iTime");
+  const uProgress = gl.getUniformLocation(program, "uProgress");
+  const uVoice = gl.getUniformLocation(program, "uVoice");
+  const uAccent = gl.getUniformLocation(program, "uAccent");
 
   const dim = 160;
   canvas.width = dim;
@@ -154,13 +171,46 @@ export function createWaveRenderer(canvas: HTMLCanvasElement): WaveRenderer | nu
 
   let raf = 0;
   let running = false;
+  let morphProgress = 0.0;
+  let morphTarget = 0.0;
+  let morphStart = 0.0;
+  let morphStartTime = 0;
+  let morphDuration = 600;
+  let morphOnComplete: (() => void) | null = null;
+  let voiceIntensity = 0.0;
+  let accentR = 1.0, accentG = 0.5, accentB = 0.2;
   const startT = performance.now();
 
   const frame = () => {
     if (!running || document.hidden) return;
-    const t = (performance.now() - startT) / 1000;
+    const now = performance.now();
+    const t = (now - startT) / 1000;
+
+    if (morphStartTime > 0) {
+      const elapsed = now - morphStartTime;
+      const p = Math.min(1, elapsed / morphDuration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      morphProgress = morphStart + (morphTarget - morphStart) * eased;
+      if (p >= 1) {
+        morphProgress = morphTarget;
+        morphStartTime = 0;
+        const cb = morphOnComplete;
+        morphOnComplete = null;
+        cb?.();
+        if (morphTarget === 0) {
+          running = false;
+          cancelAnimationFrame(raf);
+          raf = 0;
+          return;
+        }
+      }
+    }
+
     gl.uniform2f(uResolution, dim, dim);
     gl.uniform1f(uTime, t);
+    gl.uniform1f(uProgress, morphProgress);
+    gl.uniform1f(uVoice, voiceIntensity);
+    gl.uniform3f(uAccent, accentR, accentG, accentB);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     raf = requestAnimationFrame(frame);
   };
@@ -183,6 +233,30 @@ export function createWaveRenderer(canvas: HTMLCanvasElement): WaveRenderer | nu
       running = false;
       cancelAnimationFrame(raf);
       raf = 0;
+      morphProgress = 0.0;
+      morphTarget = 0.0;
+      morphStartTime = 0;
+    },
+    morphTo(target: number, durationMs = 600, onComplete?: () => void) {
+      target = Math.max(0, Math.min(1, target));
+      morphTarget = target;
+      morphStart = morphProgress;
+      morphStartTime = performance.now();
+      morphDuration = durationMs;
+      morphOnComplete = onComplete ?? null;
+      if (!running) {
+        running = true;
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(frame);
+      }
+    },
+    setVoiceIntensity(intensity: number) {
+      voiceIntensity = Math.max(0, Math.min(1, intensity));
+    },
+    setAccent(r: number, g: number, b: number) {
+      accentR = r;
+      accentG = g;
+      accentB = b;
     },
     destroy() {
       running = false;

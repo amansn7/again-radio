@@ -17,6 +17,8 @@ function startPulse() {
   onPulse((b) => orbs.forEach((o) => o.beat(b.kick * b.env, b.hat * b.env, b.swell, b.env)));
 }
 
+export type OrbState = "idle" | "morph-to-speech" | "speech" | "morph-to-orb";
+
 class RadioOrb extends HTMLElement {
   private kick = 0;
   private hat = 0;
@@ -24,11 +26,17 @@ class RadioOrb extends HTMLElement {
   private spin: Animation | undefined;
   private vid = "";
   private wave: WaveRenderer | null = null;
+  private state: OrbState = "idle";
+  private transitionTimer: ReturnType<typeof setTimeout> | null = null;
 
   connectedCallback() {
+    this.dataset.state = "idle";
     this.paint(artComplements());
     const canvas = this.querySelector<HTMLCanvasElement>(".o-wave");
-    if (canvas) this.wave = createWaveRenderer(canvas);
+    if (canvas) {
+      this.wave = createWaveRenderer(canvas);
+      this.updateAccentFromTheme();
+    }
     orbs.add(this);
     startPulse();
     document.addEventListener(RADIO_TRACK, this.onTrack);
@@ -38,6 +46,7 @@ class RadioOrb extends HTMLElement {
 
   disconnectedCallback() {
     orbs.delete(this);
+    if (this.transitionTimer) clearTimeout(this.transitionTimer);
     this.wave?.destroy();
     this.wave = null;
     document.removeEventListener(RADIO_TRACK, this.onTrack);
@@ -45,19 +54,68 @@ class RadioOrb extends HTMLElement {
     document.removeEventListener(RADIO_JOCKEY_END, this.onJockeyEnd);
   }
 
+  private updateAccentFromTheme() {
+    const cs = getComputedStyle(document.documentElement);
+    const accent = cs.getPropertyValue("--accent").trim();
+    if (accent.startsWith("#")) {
+      const hex = accent.replace("#", "");
+      const num = parseInt(hex.length === 3 ? hex.split("").map((c) => c + c).join("") : hex, 16);
+      this.wave?.setAccent(((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255);
+    }
+  }
+
   private onJockeySpeak = (e: Event) => {
     const detail = (e as CustomEvent<{ text: string; isTuneIn?: boolean }>).detail;
     if (detail?.isTuneIn || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    this.dataset.wave = "true";
-    this.wave?.start();
+    this.transitionTo("morph-to-speech");
   };
 
   private onJockeyEnd = () => {
-    delete this.dataset.wave;
-    setTimeout(() => {
-      if (!this.dataset.wave) this.wave?.stop();
-    }, 400);
+    this.transitionTo("morph-to-orb");
   };
+
+  private transitionTo(next: OrbState) {
+    if (this.state === next) return;
+    if (this.transitionTimer) {
+      clearTimeout(this.transitionTimer);
+      this.transitionTimer = null;
+    }
+
+    if (next === "morph-to-speech") {
+      this.state = "morph-to-speech";
+      this.dataset.state = "morph-to-speech";
+      this.dataset.wave = "true";
+      this.wave?.morphTo(1.0, 600, () => {
+        if (this.state === "morph-to-speech") {
+          this.state = "speech";
+          this.dataset.state = "speech";
+        }
+      });
+      this.transitionTimer = setTimeout(() => {
+        if (this.state === "morph-to-speech") {
+          this.state = "speech";
+          this.dataset.state = "speech";
+        }
+      }, 620);
+    } else if (next === "morph-to-orb") {
+      this.state = "morph-to-orb";
+      this.dataset.state = "morph-to-orb";
+      this.wave?.morphTo(0.0, 520, () => {
+        if (this.state === "morph-to-orb") {
+          this.state = "idle";
+          this.dataset.state = "idle";
+          delete this.dataset.wave;
+        }
+      });
+      this.transitionTimer = setTimeout(() => {
+        if (this.state === "morph-to-orb") {
+          this.state = "idle";
+          this.dataset.state = "idle";
+          delete this.dataset.wave;
+        }
+      }, 540);
+    }
+  }
 
   private onTrack = (e: Event) => {
     const id = (e as CustomEvent<TrackInfo>).detail.youtubeId;
@@ -68,6 +126,7 @@ class RadioOrb extends HTMLElement {
 
   private paint(colours: string[]) {
     colours.forEach((c, i) => this.style.setProperty(`--orb-c${i + 1}`, c));
+    this.updateAccentFromTheme();
   }
 
   beat(kick: number, hat: number, swell: number, env: number) {
@@ -81,6 +140,9 @@ class RadioOrb extends HTMLElement {
     if (this.spin) {
       this.speed += (0.5 + env * (0.4 + swell * 1.6) - this.speed) * 0.05;
       this.spin.playbackRate = this.speed;
+    }
+    if (this.state === "speech" || this.state === "morph-to-speech") {
+      this.wave?.setVoiceIntensity(this.kick * 0.65 + swell * 0.35);
     }
   }
 }
