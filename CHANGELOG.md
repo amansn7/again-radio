@@ -8,6 +8,7 @@ Notable changes to AGAIN RADIO are recorded here. The format follows
 
 ### Added
 
+- New on the channel: a daily GitHub workflow finds new official music uploads and opens a pull request; once merged, the 20 newest play as one block in the rotation, older ones as their own slots, versions picked per week. First songs: five Official Indian Lyric Visualisers, including "ten".
 - Rory's choices: after the first welcome a panel asks what Rory does (says hello, introduces songs, names what just played, shares thoughts mid-song, gives shout-outs and facts), with select/clear all; a mic button in the controls reopens it. Before this, Rory could not be turned off from the UI.
 - Rory intros for every song in the catalogue, a second alternate intro for 153 songs, back-announces for every song and mid-song thoughts for 154.
 - Listener shout-outs matched to the live listener count, station IDs and sourced facts between songs, about every five minutes.

@@ -61,6 +61,13 @@ A pre-recorded radio jockey (`src/lib/jockey.ts`, lines in `public/data/jockey.j
 - **Listener's choice**: after the first welcome a panel asks what Rory should do (hello, intros, back-announces, thoughts, shout-outs and facts), with select/clear all. The mic button in the controls reopens it any time (`src/components/rory-panel.ts`).
 - **Recording new lines**: `node scripts/generate-jockey-audio.mjs` spreads synthesis across two ElevenLabs accounts and keeps a credit reserve on each; see `docs/elevenlabs-strategy.md`.
 
+### 📡 New on the Channel
+New official music on Fred again..'s YouTube channel joins the station on its own.
+- **Daily check**: `.github/workflows/new-music.yml` runs `scripts/new-music.mjs`, which reads the channel's upload feed and keeps music only (no Shorts, premieres, trailers, interviews or sets; 1–10 minutes). New uploads go into `public/data/new-music.json`.
+- **You approve**: the workflow checks the data, runs the tests and builds, then opens a pull request listing each song with its YouTube link. It never deploys or pushes to `main`; merge and deploy as usual.
+- **On air**: the 20 newest songs play back to back as "New on the channel", newest first, rest shuffled each cycle. Older songs move into the general rotation as their own short slots ("From the channel"). Several uploads of one song are one slot, with the version picked per week. All of them are in search.
+- **By hand**: `node scripts/new-music.mjs` (the first run, with no data file, takes the last 90 days).
+
 ### 🌌 The Aesthetic: Rave (The Room)
 
 The interface is built around a single, cohesive aesthetic &mdash; **Rave** (`data-theme="sleek"`):

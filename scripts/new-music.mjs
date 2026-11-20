@@ -24,11 +24,12 @@ export function parseFeed(xml) {
 
 /** Duration, upload date and channel from the watch page; throws if YouTube served something else. */
 function watchInfo(page, id) {
-  const duration = Number(page.match(/"lengthSeconds":"(\d+)"/)?.[1]);
+  const length = page.match(/"lengthSeconds":"(\d+)"/)?.[1];
   const published = page.match(/"uploadDate":"(\d{4}-\d\d-\d\d)/)?.[1] ?? page.match(/"publishDate":"(\d{4}-\d\d-\d\d)/)?.[1];
   const channel = page.match(/"channelId":"(UC[\w-]{22})"/)?.[1];
-  if (!duration || !published || !channel) throw new Error(`${id}: watch page is missing length, date or channel`);
-  return { duration, published, channel };
+  if (length === undefined || !published || !channel) throw new Error(`${id}: watch page is missing length, date or channel`);
+  // Length 0: an upcoming premiere or stream. Not playable yet; a later run picks it up.
+  return { duration: Number(length), published, channel };
 }
 
 const daysBefore = (date, days) => new Date(Date.parse(`${date}T00:00:00Z`) - days * 86400_000).toISOString().slice(0, 10);
@@ -53,6 +54,7 @@ export async function run({ fetchText, today, dataDir, known, listVideos = () =>
     if (short.status === 200) continue;
     const info = watchInfo((await fetchText(`https://www.youtube.com/watch?v=${c.youtubeId}`)).text, c.youtubeId);
     // The Videos tab runs newest first: past the window, the rest is older still.
+    if (info.duration === 0) continue;
     if (firstRun && info.published < since) break;
     if (info.channel !== CHANNEL || !isMusic({ title: c.title, duration: info.duration })) continue;
     added.push({ youtubeId: c.youtubeId, title: c.title, ...splitTitle(c.title), duration: info.duration, published: info.published, addedAt: today });
