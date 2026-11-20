@@ -82,7 +82,9 @@ const waitFor = (fn, ms = 20_000) => page.waitForFunction(fn, null, { timeout: m
 const mark = () => page.evaluate(() => window.__rj.samples.length);
 
 // 1. Welcome on tune-in: ducks, never mutes, swells back to full.
-check(await waitFor(() => window.__rj.events.some((e) => e[0] === "speak")), "welcome starts after tune-in");
+const welcomed = await waitFor(() => window.__rj.events.some((e) => e[0] === "speak"));
+check(welcomed, "welcome starts after tune-in");
+if (!welcomed) console.log("  player:", await page.evaluate(() => { const p = document.querySelector("radio-player"); return JSON.stringify({ yt: p.player?.getPlayerState?.(), t: p.player?.getCurrentTime?.(), error: p.player?.getVideoData?.()?.errorCode, awaiting: p.awaitingPlay, muted: p.muted, playing: p.playing }); }));
 check(await waitFor(() => document.querySelector("radio-player").jockey.speaking === false && window.__rj.events.some((e) => e[0] === "end"), 30_000), "welcome finishes");
 await page.waitForTimeout(600);
 let log = await rj();
