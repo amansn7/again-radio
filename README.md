@@ -50,6 +50,7 @@ Every song is anchored to the human fragment it was born from:
 - **Reflected Dial Cards**: The active card casts a soft, art-tinted reflection beneath the dial on desktop, with the reflection removed on mobile for a cleaner layout.
 - **Dynamic Artwork Palette**: Colors are sampled in real time from album artwork using `OffscreenCanvas` (`src/lib/palette.ts`) and injected into registered CSS `@property` tokens (`--art-1`, `--art-2`, `--art-3`, `--art-accent`) for smooth 2.4-second crossfades.
 - **Tempo Beat Clock & Reactive Orb**: Because YouTube audio cannot be directly analyzed across origins, a rAF tempo clock (`src/lib/pulse.ts`) locks onto the track's BPM grid, pulsing the kinetic hero typography and the floating Siri-style orb (`src/components/Orb.astro`) on every kick and offbeat.
+- **Rory Voice & Motion Graphics Morphing**: When Rory speaks, the conic-mesh orb dynamically morphs into Siri-style multi-ribbon speech waves and back across a continuous 4-stage state machine (`idle` ↔ `morph-to-speech` ↔ `speech` ↔ `morph-to-orb`). Powered by raw WebGL (`src/components/orb-wave.ts`), it features optical screen-blended wavefront expansion and implosion (`.o-morph-ring`), celestial vocal luminescence (`.o-aura`), an ambient chromatic capsule underglow (`.o-body`), and artwork-derived palette absorption (`uC1`..`uC4`) while preserving calibrated shader intensity and respecting `prefers-reduced-motion`.
 - **Pointer-Fed Orb & Show Radar**: On desktop, cursor light bends toward the orb as it approaches; the concert timeline carries a subtle moving signal from “now” toward the next show. Both cues honor reduced-motion preferences.
 - **Unified Footer Actions**: Social links and the support panel use a shared footprint, keeping the bottom actions balanced across screen sizes.
 
@@ -149,6 +150,10 @@ again-radio/
 │   └── fonts/              # Self-hosted Instrument Sans & Serif (subset)
 ├── src/
 │   ├── components/         # Astro components + dedicated TypeScript islands
+│   │   ├── Orb.astro       # Reactive conic-mesh orb + Siri speech morpher
+│   │   ├── orb.ts          # Rory voice 4-state transition machine
+│   │   ├── orb-wave.ts     # Raw WebGL Siri Wave dynamic distance field engine
+│   │   └── orb-colour.ts   # Dynamic artwork palette extraction & complements
 │   ├── lib/
 │   │   ├── events.ts       # Central event bus contract
 │   │   ├── schedule.ts     # Global epoch sync & binary search scheduler
@@ -165,6 +170,7 @@ again-radio/
 └── scripts/
     ├── verify.mjs          # Data integrity, schema, and layout verification
     ├── schedule.test.mjs   # Time sync and schedule unit test suite
+    ├── orb-transition.test.mjs # Rory voice animation transition state tests
     └── shot.mjs            # Local headless screenshot runner
 ```
 

@@ -24,13 +24,14 @@ presence (again-radio-presence.again-radio-listeners.workers.dev).
 Latest commits:
 
 ```
-3054027 tune-in: trigger disco ball animation on tune in
-abec4b3 dial: custom liquid glass show selector matching aesthetic
-b997745 fix: guard player calls before ready and rescue iframe focus on focusin
-2971164 test: update ui check off-air search target
-e9ebcb8 data: bring all 19 shows and 17 albums into radio rotation with full tracklists
-fe8886f data: add USB002 REMIXES tracklist and fix missing collabs
-d7156cd phase 17: frost tour hint and trim card reflections
+a79b7f9 orb: keep voice wave intensity at original shader configuration
+8ea820a orb: refine motion graphics with optical light wavefronts and artwork palette harmonization
+7b9b506 orb: high-fidelity motion graphics morphing between orb and speech states
+68ce6cd docs: lessons from the jockey hardening pass
+fff75d8 rj: re-record welcomes with paced delivery
+2d1c476 rj: never cut, never collide, never leave the music low
+3448db9 fix: stop a pending fade-in from stranding the fader mid-change
+0c155bc rj: add synthesis-only cadence breaks and targeted clip replacement
 ```
 
 ## Verify (all green at last run)

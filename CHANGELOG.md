@@ -6,6 +6,17 @@ Notable changes to AGAIN RADIO are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- High-fidelity 4-state motion graphics morphing engine for Rory voice transitions (`idle` ↔ `morph-to-speech` ↔ `speech` ↔ `morph-to-orb`) in `<radio-orb>`.
+- Real-time WebGL distance field morphing between resting orb singularity core and undulating sinusoidal Siri speech waveforms with optical wavefront expansion and implosion (`.o-morph-ring`).
+- Dynamic track artwork palette absorption (`uC1`..`uC4`) for vocal ribbon hues, accompanied by a breathing celestial luminescence aura (`.o-aura`) and an elongated acoustic capsule underglow (`.o-body`).
+- Dedicated test suite for Rory voice transition states in `scripts/orb-transition.test.mjs`.
+
+### Changed
+
+- Calibrated voice wave intensity to maintain original shader baseline while respecting `prefers-reduced-motion`.
+
 ## [0.3.0] - 2026-11-20
 
 ### Added
