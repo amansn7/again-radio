@@ -151,3 +151,18 @@ test("newMusicCatalogue makes songs searchable", () => {
   assert.equal(c.song, "ten");
   assert.equal(c.youtubeId, ten1.youtubeId);
 });
+
+test("an upcoming premiere is skipped, not an error, and is picked up once it airs", async () => {
+  const d = dir({ checked: "2026-11-01", items: [] });
+  const feed = feedOf([["ggggggggggg", "Fred again.. - premiere", "2026-11-18"]]);
+  assert.deepEqual(await run({ fetchText: fakeFetch({ feed, ggggggggggg: watch(0, "2026-11-18") }), today: "2026-11-20", dataDir: d, known: new Set() }), []);
+  assert.deepEqual(await run({ fetchText: fakeFetch({ feed, ggggggggggg: watch(200, "2026-11-18") }), today: "2026-11-21", dataDir: d, known: new Set() }),
+    ["Fred again.. - premiere"]);
+});
+
+test("channel uploads say where they came from, not a live room", () => {
+  const { fresh } = newMusicPrograms([ten1], LIVE_EPOCH);
+  assert.equal(fresh[0].entries[0].memory, "New on the official channel, posted 20 Nov 2026.");
+  const items = Array.from({ length: 21 }, (_, i) => item(`song${String(i).padStart(7, "0")}`, `s${i}`, `2026-10-${String(i + 1).padStart(2, "0")}`));
+  assert.equal(newMusicPrograms(items, LIVE_EPOCH).graduated[0].entries[0].memory, "From the official channel, posted 1 Oct 2026.");
+});

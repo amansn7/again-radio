@@ -1,0 +1,66 @@
+# Daily: look for new official music on Fred again..'s channel and propose it as a pull request.
+# It never deploys and never pushes to main; the owner merges and deploys.
+name: New on the channel
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: new-music
+  cancel-in-progress: false
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Look for new music
+        id: find
+        run: node scripts/new-music.mjs | tee added.txt
+
+      - name: Check and build
+        if: steps.find.outputs.added != '0'
+        run: |
+          node scripts/verify.mjs
+          for t in scripts/*.test.mjs; do node "$t"; done
+          npm run build
+
+      - name: Open or update the pull request
+        if: steps.find.outputs.added != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C bot/new-music
+          git add public/data/new-music.json
+          git commit -m "data: new on the channel" -m "$(cat added.txt)"
+          git push -f origin bot/new-music
+          titles=$(paste -sd ',' added.txt | sed 's/,/, /g')
+          body=$(node -e '
+            const d = require("./public/data/new-music.json");
+            const added = require("fs").readFileSync("added.txt", "utf8").trim().split("\n");
+            const rows = d.items.filter((i) => added.includes(i.title)).map((i) => `- [${i.title}](https://youtu.be/${i.youtubeId}) (${i.duration} s, ${i.published})`);
+            console.log(["New official uploads found on the channel. Check each is real music, then merge and deploy.", "", ...rows].join("\n"));
+          ')
+          if gh pr view bot/new-music --json state -q .state 2>/dev/null | grep -q OPEN; then
+            gh pr edit bot/new-music --title "New on the channel: ${titles:0:200}" --body "$body"
+          else
+            gh pr create --base main --head bot/new-music --title "New on the channel: ${titles:0:200}" --body "$body"
+          fi

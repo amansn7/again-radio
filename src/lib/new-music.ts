@@ -66,7 +66,11 @@ export function pickVersion(group: NewMusicItem[], week: number): NewMusicItem {
   return sorted[hash(`${key(sorted[0])}:${week}`) % sorted.length];
 }
 
-function program(i: NewMusicItem, label: string): Program {
+const posted = (date: string) =>
+  new Date(`${date}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+
+/** `memory` keeps the memory card from its live-set fallbacks ("Heard live at …"): this is an upload. */
+function program(i: NewMusicItem, label: string, memory: string): Program {
   return {
     id: `new-${i.youtubeId}`,
     title: label,
@@ -76,7 +80,7 @@ function program(i: NewMusicItem, label: string): Program {
     duration: i.duration,
     source: "Fred again.. / YouTube",
     entries: [{ offset: 0, duration: i.duration, type: "track", title: i.song, artist: i.artist,
-      art: `https://i.ytimg.com/vi/${i.youtubeId}/hqdefault.jpg` }],
+      art: `https://i.ytimg.com/vi/${i.youtubeId}/hqdefault.jpg`, memory: `${memory}, posted ${posted(i.published)}.` }],
   };
 }
 
@@ -84,8 +88,8 @@ export function newMusicPrograms(items: NewMusicItem[], nowSec: number): { fresh
   const week = Math.floor(Math.max(nowSec - LIVE_EPOCH, 0) / WEEK);
   const picked = songGroups(items).map((g) => pickVersion(g, week));
   return {
-    fresh: picked.slice(0, BLOCK_SIZE).map((i) => program(i, "New on the channel")),
-    graduated: picked.slice(BLOCK_SIZE).map((i) => program(i, "From the channel")),
+    fresh: picked.slice(0, BLOCK_SIZE).map((i) => program(i, "New on the channel", "New on the official channel")),
+    graduated: picked.slice(BLOCK_SIZE).map((i) => program(i, "From the channel", "From the official channel")),
   };
 }
 

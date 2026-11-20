@@ -76,8 +76,9 @@ up by itself and plays it on air, without anyone running a script or rebuilding 
 - Labels: program title "New on the channel", each entry titled with the cleaned song name.
 - **Versions (owner's call):** several uploads of one song (e.g. a lyric visualiser, later the
   official video) keep every version in `new-music.json`, grouped by cleaned song name. The block
-  has one slot per song; which version plays is picked by the cycle's seeded random, so every
-  listener hears the same version in a given cycle and it varies from cycle to cycle. A song's
+  has one slot per song; which version plays is a seeded pick per week (not per cycle:
+  versions differ in length, the clock needs fixed slot lengths, and the player re-seeks on
+  more than 8 s of drift), so every listener hears the same version and it changes weekly. A song's
   place in "newest first" uses its newest upload.
 
 ### 3. Schedule — `.github/workflows/new-music.yml`
