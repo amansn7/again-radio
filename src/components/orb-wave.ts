@@ -20,7 +20,7 @@ const float SPEED       = 2.2;
 const float WAVE_SCALE  = 0.95;
 const float ABERRATION  = 2.8;
 const float THICKNESS   = 3.8;
-const float INTENSITY   = 2.2;
+const float INTENSITY   = 2.0;
 const float FALLOFF     = 1.6;
 const float EDGE_MASK   = 0.38;
 const float EDGE_INSET  = 0.0;
@@ -70,12 +70,11 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord){
     float env = cos(PI*0.5 * min(abs(0.85*xN), 1.0));
     env *= env;
 
-    float vMod = 1.0 + 0.4 * uVoice;
-    float A1    = (AMPLITUDE + 0.01*low*LOW_AMP) * vMod;
+    float A1    = AMPLITUDE + 0.01*low*LOW_AMP;
     float A2    = A1 + mid*MID_ABAMP + high*HIGH_ABAMP;
     float AB    = (ABERRATION + mid*MID_ABER + high*HIGH_ABER)*res;
     float th    = mix(0.1, 0.01*THICKNESS, res);
-    float inten = mix(0.12, 0.01*(INTENSITY + low*LOW_INT), res) * vMod;
+    float inten = mix(0.1, 0.01*(INTENSITY + low*LOW_INT), res);
     float soft  = 0.01*res*max(0.0, SOFTNESS + mid*MID_SOFT);
 
     float dUnres = max(length(p) - mix(0.14, UNRES_SCALE, res), 0.0);

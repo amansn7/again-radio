@@ -143,9 +143,7 @@ class RadioOrb extends HTMLElement {
       this.speed += (0.5 + env * (0.4 + swell * 1.6) - this.speed) * 0.05;
       this.spin.playbackRate = this.speed;
     }
-    if (this.state === "speech" || this.state === "morph-to-speech") {
-      this.wave?.setVoiceIntensity(this.kick * 0.65 + swell * 0.35);
-    }
+
   }
 }
 
