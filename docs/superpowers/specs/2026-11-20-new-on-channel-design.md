@@ -14,7 +14,8 @@ up by itself and plays it on air, without anyone running a script or rebuilding 
 - Every addition is a pull request that passed `verify.mjs` and a build before the owner sees it.
 
 ## Non-goals
-- Squeezing new songs in between sets (rejected option B), or search-only (option C).
+- Squeezing *new* songs in between sets (rejected option B), or search-only (option C). Older
+  songs do end up between sets, by design (see Graduation).
 - Re-hosting or downloading anything: official embeds only (Rights in `AGENTS.md`).
 - Rory intros for new songs (no credits until 19–20 Dec); Rory simply doesn't introduce them.
 - Tracking other channels (labels, Boiler Room, NPR).
@@ -66,8 +67,12 @@ up by itself and plays it on air, without anyone running a script or rebuilding 
 - In `buildSlots`/`cycleOrder`, the new-music slots form **one unit** in the per-cycle shuffle,
   so they air back to back as a block. Inside the block: newest first, then a seeded shuffle by
   cycle. No player change is needed: slot-to-slot advance already loads the next video.
-- The block holds the 20 newest songs (≈ an hour). Older songs leave the air but stay in
-  `new-music.json`, so search can still find them. (Claude's call; owner can change the number.)
+- The block holds the 20 newest songs (≈ an hour; Claude's call, owner can change the number).
+- **Graduation (owner's call):** a song pushed out of the block by newer ones moves into the
+  general rotation as its own short slot (all its versions, one picked per cycle as above),
+  shuffled between sets like any other slot. Its venue label becomes "From the channel".
+  Nothing ever leaves the air. As songs graduate the clock grows by a few minutes each;
+  `cycleOrder`'s seam rule still applies.
 - Labels: program title "New on the channel", each entry titled with the cleaned song name.
 - **Versions (owner's call):** several uploads of one song (e.g. a lyric visualiser, later the
   official video) keep every version in `new-music.json`, grouped by cleaned song name. The block
@@ -90,7 +95,8 @@ up by itself and plays it on air, without anyone running a script or rebuilding 
 ### 4. Checks
 - `verify.mjs` validates `new-music.json` (ids, durations, channel, no duplicates with programs).
 - Unit tests: music filter on real titles (ten visualiser kept; a Short, a trailer, a 2-hour
-  set dropped); block ordering (block contiguous, newest first, same order for a given cycle).
+  set dropped); block ordering (block contiguous, newest first, same order for a given cycle);
+  the 21st-newest song is a standalone slot outside the block; version pick is stable per cycle.
 - Feed parsing tested on a saved feed fixture, not the network.
 
 ## Left to the builder
