@@ -91,6 +91,23 @@ function main() {
       ids.add(it?.youtubeId);
     });
   }
+  const newPath = join(DATA, "new-music.json");
+  if (existsSync(newPath)) {
+    const taken = new Set((JSON.parse(readFileSync(cpath, "utf8")).items ?? []).map((it) => it.youtubeId));
+    for (const f of readdirSync(pdir).filter((n) => n.endsWith(".json"))) taken.add(JSON.parse(readFileSync(join(pdir, f), "utf8")).youtubeId);
+    const seenIds = new Set();
+    const day = /^\d{4}-\d\d-\d\d$/;
+    (JSON.parse(readFileSync(newPath, "utf8")).items ?? []).forEach((it, i) => {
+      const at = `new-music.json item ${i} (${it?.title ?? "?"})`;
+      if (!/^[\w-]{11}$/.test(it?.youtubeId ?? "")) fail(`${at}: bad youtubeId`);
+      if (seenIds.has(it.youtubeId)) fail(`${at}: duplicate id`);
+      if (taken.has(it.youtubeId)) fail(`${at}: already on air in a program or the catalogue`);
+      seenIds.add(it.youtubeId);
+      for (const k of ["title", "artist", "song"]) if (!String(it?.[k] ?? "").trim()) fail(`${at}: empty ${k}`);
+      if (!Number.isInteger(it?.duration) || it.duration < 60 || it.duration > 600) fail(`${at}: duration must be 60–600 s`);
+      if (!day.test(it?.published ?? "") || !day.test(it?.addedAt ?? "")) fail(`${at}: published and addedAt must be YYYY-MM-DD`);
+    });
+  }
   const songsPath = join(DATA, "songs.json");
   if (existsSync(songsPath)) {
     const titles = new Set();
