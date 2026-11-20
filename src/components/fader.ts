@@ -11,6 +11,7 @@ export class Fader {
   private wantIn = false;
   private timer: ReturnType<typeof setInterval> | null = null;
   private change: (() => void) | null = null;
+  private fallback: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private apply: (v: number) => void, private playing: () => boolean) {}
 
@@ -35,13 +36,16 @@ export class Fader {
     this.change = change;
     if (this.fading) return;
     this.fading = true;
+    // A pending fade-in from the last change must not interrupt this fade-out and strand `fading`.
+    this.wantIn = false;
+    if (this.fallback !== null) clearTimeout(this.fallback);
     this.ramp(0, this.playing() ? ms : 0, () => {
       this.fading = false;
       this.wantIn = true;
       const run = this.change;
       this.change = null;
       run?.();
-      setTimeout(() => this.wantIn && this.fadeIn(), IN_FALLBACK_MS);
+      this.fallback = setTimeout(() => this.wantIn && this.fadeIn(), IN_FALLBACK_MS);
     });
   }
 
@@ -56,6 +60,7 @@ export class Fader {
   }
 
   private fadeIn() {
+    if (this.fading) return;
     this.wantIn = false;
     this.ramp(100, IN_MS);
   }
