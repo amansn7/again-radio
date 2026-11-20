@@ -1,4 +1,5 @@
 import { loadCatalogue } from "../lib/catalogue.ts";
+import { loadNewMusic, newMusicCatalogue } from "../lib/new-music.ts";
 import { RADIO_CUE, RADIO_SEARCH } from "../lib/events.ts";
 import { fetchJson, loadProgram, loadStation } from "../lib/station.ts";
 import "../lib/glass.ts";
@@ -21,15 +22,18 @@ function parseSongs(v: unknown): Song[] {
 }
 
 async function loadSources(): Promise<Sources> {
-  const [cat, station, shows, albums, tour, songs] = await Promise.allSettled([
+  const [cat, station, shows, albums, tour, songs, fresh] = await Promise.allSettled([
     loadCatalogue(), loadStation(), loadProgram(SHOWS), fetchJson("/data/albums.json"), fetchJson("/data/shows.json"),
-    fetchJson("/data/songs.json"),
+    fetchJson("/data/songs.json"), loadNewMusic(),
   ]);
   const paths = station.status === "fulfilled" ? station.value.rotation.map((r) => r.program) : [];
   const progs = await Promise.allSettled(paths.map((p) => loadProgram(p)));
   const a = albums.status === "fulfilled" ? rec(albums.value) : {};
   return {
-    catalogue: cat.status === "fulfilled" ? cat.value : [],
+    catalogue: [
+      ...(cat.status === "fulfilled" ? cat.value : []),
+      ...(fresh.status === "fulfilled" ? newMusicCatalogue(fresh.value) : []),
+    ],
     programs: progs.flatMap((r, i) => (r.status === "fulfilled" ? [{ path: paths[i], program: r.value }] : [])),
     shows: shows.status === "fulfilled" ? { path: SHOWS, program: shows.value } : null,
     albums: Array.isArray(a.albums) ? (a.albums as Album[]) : [],

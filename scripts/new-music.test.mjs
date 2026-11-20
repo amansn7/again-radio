@@ -100,3 +100,54 @@ test("first run takes music from the last 90 days of the Videos tab", async () =
   assert.deepEqual(added, ["Fred again.. - new one", "Fred again.. - older one"]);
   assert.ok(existsSync(join(d, "new-music.json")));
 });
+
+import { parseNewMusic, songGroups, pickVersion, newMusicPrograms, newMusicCatalogue, BLOCK_SIZE } from "../src/lib/new-music.ts";
+import { LIVE_EPOCH } from "../src/lib/schedule.ts";
+
+const item = (id, song, published, extra = {}) => ({ youtubeId: id, title: `Fred again.. - ${song}`, artist: "Fred again..", song,
+  duration: 200, published, addedAt: "2026-11-20", ...extra });
+const ten1 = item("tentententen".slice(0, 11), "ten", "2026-11-20", { title: "Fred again.., Jozzy & Jim Legxacy - ten (Official Indian Lyric Visualiser)", artist: "Fred again.., Jozzy & Jim Legxacy" });
+const ten2 = item("ten2ten2ten", "Ten", "2026-11-01", { title: "Fred again.. & Jozzy - ten (Official Video)", artist: "Fred again.. & Jozzy", duration: 230 });
+
+test("parseNewMusic keeps valid items and never throws", () => {
+  assert.equal(parseNewMusic({ items: [ten1, { youtubeId: "x" }] }).length, 1);
+  assert.deepEqual(parseNewMusic(null), []);
+  assert.deepEqual(parseNewMusic({ items: "nope" }), []);
+});
+
+test("versions of one song form one group; groups run newest first", () => {
+  const groups = songGroups([item("aaaaaaaaaaa", "older", "2026-10-01"), ten2, ten1]);
+  assert.equal(groups.length, 2);
+  assert.deepEqual(groups[0].map((i) => i.youtubeId).sort(), [ten1.youtubeId, ten2.youtubeId].sort());
+  assert.equal(groups[1][0].song, "older");
+});
+
+test("pickVersion is stable within a week and varies across weeks", () => {
+  const group = [ten1, ten2];
+  assert.equal(pickVersion(group, 5), pickVersion(group, 5));
+  const seen = new Set(Array.from({ length: 21 }, (_, w) => pickVersion(group, w).youtubeId));
+  assert.equal(seen.size, 2);
+});
+
+test("20 newest songs are the block; the rest graduate", () => {
+  const items = Array.from({ length: 22 }, (_, i) =>
+    item(`song${String(i).padStart(7, "0")}`, `song ${i}`, `2026-${String(1 + Math.floor(i / 28)).padStart(2, "0")}-${String(1 + (i % 28)).padStart(2, "0")}`));
+  const { fresh, graduated } = newMusicPrograms(items, LIVE_EPOCH + 100);
+  assert.equal(BLOCK_SIZE, 20);
+  assert.equal(fresh.length, 20);
+  assert.equal(graduated.length, 2);
+  assert.equal(fresh[0].entries[0].title, "song 21", "newest first");
+  assert.equal(fresh[0].title, "New on the channel");
+  assert.equal(graduated[0].title, "From the channel");
+  const p = fresh[0];
+  assert.equal(p.id, `new-${p.youtubeId}`);
+  assert.equal(p.entries[0].art, `https://i.ytimg.com/vi/${p.youtubeId}/hqdefault.jpg`);
+  assert.equal(p.entries[0].duration, p.duration);
+});
+
+test("newMusicCatalogue makes songs searchable", () => {
+  const [c] = newMusicCatalogue([ten1]);
+  assert.equal(c.kind, "song");
+  assert.equal(c.song, "ten");
+  assert.equal(c.youtubeId, ten1.youtubeId);
+});
