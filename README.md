@@ -54,6 +54,13 @@ Every song is anchored to the human fragment it was born from:
 - **Pointer-Fed Orb & Show Radar**: On desktop, cursor light bends toward the orb as it approaches; the concert timeline carries a subtle moving signal from “now” toward the next show. Both cues honor reduced-motion preferences.
 - **Unified Footer Actions**: Social links and the support panel use a shared footprint, keeping the bottom actions balanced across screen sizes.
 
+### 🎙️ Rory, the Host
+A pre-recorded radio jockey (`src/lib/jockey.ts`, lines in `public/data/jockey.json`, voice by ElevenLabs).
+- **What Rory says**: a time-of-day welcome on tune-in, two intros per song, back-announces, mid-song thoughts, set handovers, and every few minutes a listener shout-out, sourced fact or station ID.
+- **Only over audible music**: nothing is announced until YouTube is actually playing, intros only run if they end before the vocals, and the music is ducked under Rory, never muted.
+- **Listener's choice**: after the first welcome a panel asks what Rory should do (hello, intros, back-announces, thoughts, shout-outs and facts), with select/clear all. The mic button in the controls reopens it any time (`src/components/rory-panel.ts`).
+- **Recording new lines**: `node scripts/generate-jockey-audio.mjs` spreads synthesis across two ElevenLabs accounts and keeps a credit reserve on each; see `docs/elevenlabs-strategy.md`.
+
 ### 🌌 The Aesthetic: Rave (The Room)
 
 The interface is built around a single, cohesive aesthetic &mdash; **Rave** (`data-theme="sleek"`):
