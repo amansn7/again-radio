@@ -2,10 +2,16 @@
 
 Strategy for getting maximum broadcast value out of ElevenLabs' free monthly 10,000 credit allocation for **AGAIN RADIO**'s AI radio jockey, Rory.
 
-**Current balance snapshot (20 Nov 2026):** user initially reported 2,404 credits used. After
-the eight Rory pilot intros and the Flight FM cadence revision, the API preflight reports 7,403
-credits remaining (2,597 used of 10,000). The synthesis script requires a successful quota
-preflight before it sends generation requests.
+**Current balance snapshot (20 Nov 2026):** after the eight pilot intros, the Flight FM cadence
+revision and the seven paced welcomes (913 characters), the API preflight reports 7,373 credits
+remaining (it may lag a recent run). The allowance resets on 19 Dec 2026. The synthesis script
+checks the quota before any request, refuses a run that would exceed it, waits out `429`
+rate limits, and stops at the first quota error until the reset.
+
+**Pacing and emphasis:** a clip's `synthesisText` adds `<break time="0.3s" />` pauses to the
+same words as its caption (a test enforces this), and its `delivery` shade maps to ElevenLabs
+stability/style in the generator. Re-record with
+`node scripts/generate-jockey-audio.mjs --only=<ids> --replace=<ids>`.
 
 ---
 

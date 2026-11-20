@@ -13,12 +13,16 @@
       "id": "welcome-standard",
       "audio": "/audio/jockey/welcome.mp3",
       "text": "You're locked into Again Radio. Twenty-four hours of a life in progress. Turn the sound up.",
+      "delivery": "warm",
+      "synthesisText": "You're locked into Again Radio.<break time=\"0.4s\" /> Twenty-four hours of a life in progress.<break time=\"0.35s\" /> Turn the sound up.",
       "mood": "general"
     },
     {
       "id": "welcome-late-night",
       "audio": "/audio/jockey/late-night.mp3",
       "text": "Late night frequencies on Again Radio. This one's for anyone still awake and thinking.",
+      "delivery": "reflective",
+      "synthesisText": "Late night frequencies on Again Radio.<break time=\"0.5s\" /> This one's for anyone still awake<break time=\"0.2s\" /> and thinking.",
       "mood": "night",
       "hours": [22, 23, 0, 1, 2, 3, 4]
     },
@@ -26,12 +30,16 @@
       "id": "welcome-worldwide",
       "audio": "/audio/jockey/worldwide-shout.mp3",
       "text": "Shout to all the heads locked in worldwide right now. Wherever you're listening, you're in the right place.",
+      "delivery": "bright",
+      "synthesisText": "Shout to all the heads locked in worldwide right now.<break time=\"0.4s\" /> Wherever you're listening,<break time=\"0.2s\" /> you're in the right place.",
       "mood": "community"
     },
     {
       "id": "welcome-dawn",
       "audio": "/audio/jockey/welcome-dawn.mp3",
       "text": "Early morning frequencies... easing into the day on Again Radio. Turn the sound up.",
+      "delivery": "warm",
+      "synthesisText": "Early morning frequencies...<break time=\"0.4s\" /> easing into the day on Again Radio.<break time=\"0.3s\" /> Turn the sound up.",
       "mood": "dawn",
       "hours": [5, 6, 7, 8, 9, 10]
     },
@@ -39,6 +47,8 @@
       "id": "welcome-dusk",
       "audio": "/audio/jockey/welcome-dusk.mp3",
       "text": "Sun setting somewhere in the world... clocking off and locking into Again Radio.",
+      "delivery": "reflective",
+      "synthesisText": "Sun setting somewhere in the world...<break time=\"0.45s\" /> clocking off<break time=\"0.15s\" /> and locking into Again Radio.",
       "mood": "dusk",
       "hours": [16, 17, 18, 19, 20, 21]
     },
@@ -46,12 +56,16 @@
       "id": "welcome-headphones",
       "audio": "/audio/jockey/welcome-headphones.mp3",
       "text": "Headphones on, world off. You're locked into Again Radio. Welcome in.",
+      "delivery": "warm",
+      "synthesisText": "Headphones on,<break time=\"0.25s\" /> world off.<break time=\"0.45s\" /> You're locked into Again Radio.<break time=\"0.3s\" /> Welcome in.",
       "mood": "intimate"
     },
     {
       "id": "welcome-hype",
       "audio": "/audio/jockey/welcome-hype.mp3",
       "text": "Right then... volume up. You're locked into twenty-four hours of Fred again.",
+      "delivery": "playful",
+      "synthesisText": "Right then...<break time=\"0.3s\" /> volume up.<break time=\"0.35s\" /> You're locked into twenty-four hours of Fred again.",
       "mood": "hype"
     }
   ],

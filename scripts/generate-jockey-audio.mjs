@@ -25,55 +25,32 @@ if (!fs.existsSync(audioDir)) {
   fs.mkdirSync(audioDir, { recursive: true });
 }
 
-// Collect all clips to synthesize
+// Collect all clips to synthesize. synthesisText carries pause marks the caption text should not show.
 const clips = [];
-const addClip = (clip) => {
-  if (clip.audio) clips.push({ ...clip, text: clip.synthesisText ?? clip.text });
+const addClip = (clip, label) => {
+  if (!clip?.audio) return;
+  clips.push({ id: clip.id, audio: clip.audio, text: clip.synthesisText ?? clip.text, delivery: clip.delivery, label });
 };
 
-for (const w of jockeyData.welcomes || []) {
-  addClip({ id: w.id, audio: w.audio, text: w.text, label: `welcome:${w.id}` });
+for (const w of jockeyData.welcomes || []) addClip(w, `welcome:${w.id}`);
+for (const s of jockeyData.sweepers || []) addClip(s, `sweeper:${s.id}`);
+for (const l of jockeyData.listeners || []) addClip(l, `listener:${l.id}`);
+for (const [title, t] of Object.entries(jockeyData.tracks || {})) {
+  addClip(t.intro, `intro:${title}`);
+  addClip(t.thought, `thought:${title}`);
+  addClip(t.outro, `outro:${title}`);
 }
+for (const [key, t] of Object.entries(jockeyData.transitions || {})) addClip(t, `transition:${key}`);
+for (const f of jockeyData.facts || []) addClip(f, `fact:${f.id}`);
 
-for (const s of jockeyData.sweepers || []) {
-  addClip({ id: s.id, audio: s.audio, text: s.text, label: `sweeper:${s.id}` });
-}
-
-for (const l of jockeyData.listeners || []) {
-  addClip({ id: l.id, audio: l.audio, text: l.text, label: `listener:${l.id}` });
-}
-
-for (const [title, trackData] of Object.entries(jockeyData.tracks || {})) {
-  if (trackData.intro) {
-    addClip({
-      id: trackData.intro.id, audio: trackData.intro.audio, text: trackData.intro.text,
-      synthesisText: trackData.intro.synthesisText, delivery: trackData.intro.delivery,
-      label: `intro:${title}`
-    });
-  }
-  if (trackData.thought) {
-    addClip({
-      id: trackData.thought.id, audio: trackData.thought.audio, text: trackData.thought.text,
-      synthesisText: trackData.thought.synthesisText, delivery: trackData.thought.delivery,
-      label: `thought:${title}`
-    });
-  }
-  if (trackData.outro) {
-    addClip({
-      id: trackData.outro.id, audio: trackData.outro.audio, text: trackData.outro.text,
-      synthesisText: trackData.outro.synthesisText, delivery: trackData.outro.delivery,
-      label: `outro:${title}`
-    });
-  }
-}
-
-for (const [key, t] of Object.entries(jockeyData.transitions || {})) {
-  addClip({ id: t.id, audio: t.audio, text: t.text, label: `transition:${key}` });
-}
-
-for (const f of jockeyData.facts || []) {
-  addClip({ id: f.id, audio: f.audio, text: f.text, label: `fact:${f.id}` });
-}
+// Lower stability = more movement in the read; higher style = more emphasis. One voice, small shades.
+const VOICE = {
+  natural: { stability: 0.46, style: 0.38 },
+  warm: { stability: 0.5, style: 0.34 },
+  reflective: { stability: 0.56, style: 0.28 },
+  playful: { stability: 0.4, style: 0.46 },
+  bright: { stability: 0.38, style: 0.48 },
+};
 
 const onlyArg = process.argv.find((arg) => arg.startsWith("--only="));
 const onlyIds = new Set(onlyArg ? onlyArg.slice("--only=".length).split(",") : []);
@@ -104,7 +81,8 @@ async function remainingCharacters() {
   if (!Number.isFinite(limit) || !Number.isFinite(used) || used < 0 || limit < used) {
     throw new Error("ElevenLabs returned invalid quota data; refusing to send synthesis requests.");
   }
-  return limit - used;
+  const reset = subscription.next_character_count_reset_unix;
+  return { remaining: limit - used, resetAt: Number.isFinite(reset) ? new Date(reset * 1000).toISOString() : "unknown" };
 }
 
 async function synthesize(clip) {
@@ -131,9 +109,8 @@ async function synthesize(clip) {
       text: clip.text,
       model_id: "eleven_turbo_v2_5",
       voice_settings: {
-        stability: clip.delivery === "bright" ? 0.38 : 0.46,
+        ...(VOICE[clip.delivery] ?? VOICE.natural),
         similarity_boost: 0.78,
-        style: clip.delivery === "bright" ? 0.48 : 0.38,
         use_speaker_boost: true
       }
     })
@@ -159,13 +136,13 @@ async function synthesize(clip) {
 }
 
 async function run() {
-  const remaining = await remainingCharacters();
+  const { remaining, resetAt } = await remainingCharacters();
   const missing = clipsToProcess.filter((clip) => replaceIds.has(clip.id) ||
     !fs.existsSync(path.join(ROOT, "public", clip.audio.replace(/^\//, ""))));
   const needed = missing.reduce((sum, clip) => sum + clip.text.length, 0);
-  console.log(`ElevenLabs quota remaining: ${remaining}; missing clips need ${needed}.`);
+  console.log(`ElevenLabs quota remaining: ${remaining}; missing clips need ${needed}; resets ${resetAt}.`);
   if (needed > remaining) {
-    throw new Error("Insufficient ElevenLabs credits. No voice requests sent; rerun after the subscription resets or credits are added.");
+    throw new Error(`Insufficient ElevenLabs credits. No voice requests sent; rerun after the reset (${resetAt}) or once credits are added.`);
   }
   let done = 0;
   for (const clip of clipsToProcess) {
@@ -177,7 +154,7 @@ async function run() {
     } catch (err) {
       console.error(`Error on ${clip.label}:`, err.message);
       if (/quota|character limit|subscription|401|402|429/i.test(err.message)) {
-        console.error("Stopping synthesis to avoid further requests while the account is limited.");
+        console.error(`Stopping synthesis; no further requests until the quota resets (${resetAt}).`);
         break;
       }
     }
