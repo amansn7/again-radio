@@ -28,7 +28,12 @@ function watchInfo(page, id) {
   const length = page.match(/"lengthSeconds":"(\d+)"/)?.[1];
   const published = page.match(/"uploadDate":"(\d{4}-\d\d-\d\d)/)?.[1] ?? page.match(/"publishDate":"(\d{4}-\d\d-\d\d)/)?.[1];
   const channel = page.match(/"channelId":"(UC[\w-]{22})"/)?.[1];
-  if (length === undefined || !published || !channel) throw new Error(`${id}: watch page is missing length, date or channel`);
+  if (length === undefined || !published || !channel) {
+    const title = page.match(/<title>([^<]*)/)?.[1] ?? "no title";
+    const status = page.match(/"playabilityStatus":\{"status":"(\w+)"(?:,"reason":"([^"]*)")?/);
+    throw new Error(`${id}: watch page is missing length, date or channel (${page.length} bytes, "${title}", ` +
+      `playability ${status?.[1] ?? "?"}${status?.[2] ? `: ${status[2]}` : ""})`);
+  }
   // Length 0: an upcoming premiere or stream. Not playable yet; a later run picks it up.
   return { duration: Number(length), published, channel };
 }
