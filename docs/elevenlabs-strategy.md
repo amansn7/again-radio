@@ -2,10 +2,11 @@
 
 Strategy for getting maximum broadcast value out of ElevenLabs' free monthly 10,000 credit allocation for **AGAIN RADIO**'s AI radio jockey, Rory.
 
-**Current balance snapshot (20 Nov 2026):** after the pilot intros, the seven paced welcomes and
-27 paced intros, thoughts and transitions, the API preflight reports 5,440 credits remaining. The
-last run billed about 1,560 credits for 3,529 counted characters, so the preflight (which counts
-`<break>` markup) over-estimates. The allowance resets on 19 Dec 2026. The synthesis script
+**Current balance snapshot (20 Nov 2026):** after recording intros for every song in the
+catalogue (167 intros, 146 new), the API preflight reports 1,421 credits remaining, kept for dynamic
+dialogue. Billing ran about 0.7 credits per spoken character (break markup appears free), and the
+balance the API reports lags a run by several minutes, so budget from text length, not the live
+number. The allowance resets on 19 Dec 2026. The synthesis script
 checks the quota before any request, refuses a run that would exceed it, waits out `429`
 rate limits, and stops at the first quota error until the reset.
 

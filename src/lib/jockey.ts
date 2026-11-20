@@ -197,6 +197,15 @@ export class RadioJockey {
     }
   }
 
+  private trackIndex: Map<string, TrackJockeyConfig> | null = null;
+
+  /** Programs spell the same song with different casing ("Tanya (Maybe Life)" / "Tanya (maybe life)"). */
+  private trackConfig(title?: string): TrackJockeyConfig | undefined {
+    if (!this.data || !title) return undefined;
+    this.trackIndex ??= new Map(Object.entries(this.data.tracks).map(([k, v]) => [k.toLowerCase(), v]));
+    return this.trackIndex.get(title.toLowerCase());
+  }
+
   private setCurrent(info: TrackInfo): void {
     this.currentTrack = info;
     this.currentTrackAt = Date.now();
@@ -221,7 +230,7 @@ export class RadioJockey {
     if (this.lastProgram && this.lastProgram !== info.programId) {
       this.lastProgram = info.programId;
       const trans = this.data.transitions[info.programId];
-      if (trans && introFits(info.elapsed, trans, this.data.tracks[info.entry.title ?? ""]?.postSeconds)) {
+      if (trans && introFits(info.elapsed, trans, this.trackConfig(info.entry.title)?.postSeconds)) {
         this.spokeIntro.add(trackKey);
         await this.speak(trans.text, trans.audio, { delivery: trans.delivery });
         return;
@@ -230,7 +239,7 @@ export class RadioJockey {
     this.lastProgram = info.programId;
 
     // Intros are the core of the show, so they skip the chatter cooldown, but only if they end before the vocals.
-    const trackConfig = this.data.tracks[info.entry.title ?? ""];
+    const trackConfig = this.trackConfig(info.entry.title);
     if (trackConfig?.intro) {
       this.spokeIntro.add(trackKey);
       if (introFits(info.elapsed, trackConfig.intro, trackConfig.postSeconds)) {
@@ -270,7 +279,7 @@ export class RadioJockey {
     if (!this._enabled || this._speaking || this.isMuted() || !this.ready()) return;
     if (!this.data) return;
 
-    const trackConfig = this.data.tracks[info.entry.title ?? ""];
+    const trackConfig = this.trackConfig(info.entry.title);
     const trackKey = `${info.programId}:${info.entry.title}`;
     if (trackConfig?.thought && trackConfig.thoughtOffset !== undefined && !this.spokeThought.has(trackKey) &&
         elapsed >= trackConfig.thoughtOffset && elapsed < trackConfig.thoughtOffset + 3.5) {

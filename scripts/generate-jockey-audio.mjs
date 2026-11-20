@@ -28,7 +28,8 @@ if (!fs.existsSync(audioDir)) {
 // Collect all clips to synthesize. synthesisText carries pause marks the caption text should not show.
 const clips = [];
 const addClip = (clip, label) => {
-  if (!clip?.audio) return;
+  // One recording can serve several spellings of the same song.
+  if (!clip?.audio || clips.some((c) => c.id === clip.id)) return;
   clips.push({ id: clip.id, audio: clip.audio, text: clip.synthesisText ?? clip.text, delivery: clip.delivery, label });
 };
 
