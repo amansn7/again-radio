@@ -9,6 +9,7 @@ import {
 import { JockeyDucker } from "./jockey-ducker.ts";
 import { JockeyAudio } from "./jockey-audio.ts";
 import { pickWelcome } from "./welcome.ts";
+import { chooseFiller } from "./fillers.ts";
 import { introFits, outroLeadSeconds } from "./jockey-timing.ts";
 import type { JockeyDelivery } from "./jockey-voice.ts";
 
@@ -18,13 +19,14 @@ export interface JockeyClip {
   id: string;
   audio?: string;
   text: string;
+  durationSeconds?: number;
   synthesisText?: string;
   delivery?: JockeyDelivery;
 }
 
 export interface ListenerClip extends JockeyClip {
-  min?: number;
-  max?: number;
+  min?: number | null;
+  max?: number | null;
 }
 
 export interface WelcomeClip extends JockeyClip {
@@ -57,6 +59,7 @@ export interface JockeyData {
   };
   welcomes?: WelcomeClip[];
   sweepers: JockeyClip[];
+  stationIds?: JockeyClip[];
   listeners?: ListenerClip[];
   tracks: Record<string, TrackJockeyConfig>;
   transitions: Record<string, JockeyClip>;
@@ -88,8 +91,9 @@ export class RadioJockey {
   private lastProgram = "";
   private hasWelcomed = false;
   private currentListenerCount: number | null = null;
-  private lastListenerAnnounce = 0;
-  private lastFactId = "";
+  private lastFillerAt = Date.now();
+  private lastFillerId = "";
+  private fillerTurn = 0;
   private currentTrack: TrackInfo | null = null;
   private currentTrackAt = 0;
   private welcomePending = false;
@@ -238,36 +242,33 @@ export class RadioJockey {
     }
     this.lastProgram = info.programId;
 
-    // Intros are the core of the show, so they skip the chatter cooldown, but only if they end before the vocals.
     const trackConfig = this.trackConfig(info.entry.title);
+    const now = Date.now();
+    // Every few minutes a shout-out, fact or station ID takes a song's slot, as on a real show.
+    const fillerDue = now - this.lastFillerAt > 300_000;
+    if (fillerDue || (!trackConfig?.intro && now - this.lastSpokeTime >= 80_000)) {
+      const filler = chooseFiller(
+        { listeners: this.data.listeners ?? [], facts: this.data.facts ?? [], ids: this.data.stationIds ?? [] },
+        this.fillerTurn,
+        this.currentListenerCount,
+        this.lastFillerId,
+        (c) => introFits(info.elapsed, c, trackConfig?.postSeconds),
+      );
+      if (filler) {
+        this.fillerTurn++;
+        this.lastFillerAt = now;
+        this.lastFillerId = filler.id;
+        this.spokeIntro.add(trackKey);
+        await this.speak(filler.text, filler.audio, { delivery: filler.delivery });
+        return;
+      }
+    }
+
+    // Intros skip the chatter cooldown, but only play if they end before the vocals.
     if (trackConfig?.intro) {
       this.spokeIntro.add(trackKey);
       if (introFits(info.elapsed, trackConfig.intro, trackConfig.postSeconds)) {
         await this.speak(trackConfig.intro.text, trackConfig.intro.audio, { delivery: trackConfig.intro.delivery });
-      }
-      return;
-    }
-
-    const now = Date.now();
-    if (now - this.lastSpokeTime < 80_000) return;
-
-    // Periodic listener mentions fill a gap only when there is no track intro.
-    if (now - this.lastListenerAnnounce > 260_000 && this.data.listeners?.length) {
-      this.lastListenerAnnounce = now;
-      this.spokeIntro.add(trackKey);
-      await this.announceListeners();
-      return;
-    }
-
-    // Occasional trivia/fact (every ~4-5 minutes)
-    if (now - this.lastSpokeTime > 240_000 && this.data.facts.length > 0) {
-      const fresh = this.data.facts.filter((f) => f.id !== this.lastFactId);
-      const pool = fresh.length ? fresh : this.data.facts;
-      const fact = pool[Math.floor(Math.random() * pool.length)];
-      if (fact) {
-        this.lastFactId = fact.id;
-        this.spokeIntro.add(trackKey);
-        await this.speak(fact.text, fact.audio, { delivery: fact.delivery });
       }
     }
   }
@@ -298,24 +299,6 @@ export class RadioJockey {
         info.entry.duration - elapsed <= outroWindow && info.entry.duration - elapsed >= 0) {
       this.spokeOutro.add(endKey);
       await this.speak(trackConfig.outro.text, trackConfig.outro.audio, { delivery: trackConfig.outro.delivery });
-    }
-  }
-
-  /** Announces live listeners using the configured listener brackets */
-  async announceListeners(): Promise<void> {
-    if (!this.data?.listeners?.length) return;
-    const count = this.currentListenerCount;
-
-    let chosen: ListenerClip | undefined;
-    if (count !== null) {
-      chosen = this.data.listeners.find(
-        (l) => l.min !== undefined && count >= l.min && count <= (l.max ?? 9999)
-      );
-    }
-
-    chosen ??= this.data.listeners.find((l) => l.id === "listener-moment") ?? this.data.listeners[0];
-    if (chosen) {
-      await this.speak(chosen.text, chosen.audio, { delivery: chosen.delivery });
     }
   }
 

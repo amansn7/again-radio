@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { pickWelcome } from "../src/lib/welcome.ts";
+import { chooseFiller } from "../src/lib/fillers.ts";
 import { introFits, outroLeadSeconds } from "../src/lib/jockey-timing.ts";
 import { speechProfile } from "../src/lib/jockey-voice.ts";
 
@@ -146,25 +147,28 @@ test("Flight FM keeps its transcript clean and gives ElevenLabs explicit cadence
   assert.match(intro.synthesisText, /Flight FM\.$/);
 });
 
-test("listener shoutouts and mid-song thoughts stay within 2000 credit bucket", () => {
-  const dataPath = path.join(ROOT, "public/data/jockey.json");
-  const data = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
-
-  let bucketChars = 0;
-  for (const l of data.listeners ?? []) {
-    bucketChars += l.text.length;
-  }
-  for (const track of Object.values(data.tracks)) {
-    if (track.thought) {
-      bucketChars += track.thought.text.length;
+test("mid-song thoughts finish well before the song's back-announce, in every version of the song", () => {
+  const data = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data/jockey.json"), "utf-8"));
+  const shortest = new Map();
+  for (const f of fs.readdirSync(path.join(ROOT, "public/data/programs"))) {
+    const prog = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data/programs", f), "utf-8"));
+    for (const e of prog.entries) {
+      if (!e.title) continue;
+      const k = e.title.toLowerCase();
+      shortest.set(k, Math.min(shortest.get(k) ?? Infinity, e.duration));
     }
   }
-
-  assert.ok(
-    bucketChars <= 2000,
-    `Dynamic listener & thought bucket characters (${bucketChars}) is within 2000 credits`
-  );
-  assert.ok(bucketChars >= 1500, `Dynamic bucket is well utilized (${bucketChars} chars)`);
+  let thoughts = 0;
+  for (const [title, t] of Object.entries(data.tracks)) {
+    if (!t.thought) continue;
+    thoughts++;
+    const dur = shortest.get(title.toLowerCase());
+    if (dur === undefined) continue;
+    const ends = t.thoughtOffset + 3.5 + (t.thought.durationSeconds ?? t.thought.text.length / 10);
+    const outroAt = dur - (t.outro ? outroLeadSeconds(t.outro.text, t.outro.durationSeconds) : 0);
+    assert.ok(ends + 5 <= outroAt, `${title}: thought ends at ${ends.toFixed(1)}s, back-announce at ${outroAt.toFixed(1)}s`);
+  }
+  assert.ok(thoughts >= 100, `mid-song thoughts across the catalogue (${thoughts})`);
 });
 
 test("single-voice mutex prevents speech overlap or interruption", () => {
@@ -239,4 +243,21 @@ test("written pauses count toward whether an intro fits", () => {
   const paced = { ...plain, synthesisText: `${"x".repeat(40)}<break time="1s" />${"x".repeat(40)}` };
   assert.equal(introFits(4, plain, 13), true);
   assert.equal(introFits(4, paced, 13), false, "the 1s pause pushes it into the vocals");
+});
+
+test("fillers take turns, match the listener count, fit before vocals, never repeat", () => {
+  const pools = {
+    listeners: [{ id: "few", text: "a", min: 1, max: 15 }, { id: "many", text: "b", min: 16, max: null }, { id: "any", text: "c", min: null }],
+    facts: [{ id: "f1", text: "long fact", durationSeconds: 11 }, { id: "f2", text: "short fact", durationSeconds: 4 }],
+    ids: [{ id: "id1", text: "station" }],
+  };
+  const fits = (c) => (c.durationSeconds ?? 2) < 8;
+  const first = () => 0;
+  assert.equal(chooseFiller(pools, 0, 5, "", fits, first).id, "few", "turn 0: shout-out for a small room");
+  assert.equal(chooseFiller(pools, 0, 40, "", fits, first).id, "many");
+  assert.equal(chooseFiller(pools, 0, null, "", fits, first).id, "any", "unknown count uses the count-free line");
+  assert.equal(chooseFiller(pools, 1, 5, "", fits, first).id, "f2", "turn 1: facts, skipping one that would hit the vocals");
+  assert.equal(chooseFiller(pools, 2, 5, "", fits, first).id, "id1", "turn 2: station ID");
+  assert.equal(chooseFiller(pools, 2, 5, "id1", fits, first).id, "few", "the last line is never repeated; the next kind steps in");
+  assert.equal(chooseFiller(pools, 0, 5, "", () => false, first), undefined, "nothing fits: no filler");
 });

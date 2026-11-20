@@ -15,7 +15,8 @@
       "text": "You're locked into Again Radio. Twenty-four hours of a life in progress. Turn the sound up.",
       "delivery": "warm",
       "synthesisText": "You're locked into Again Radio.<break time=\"0.4s\" /> Twenty-four hours of a life in progress.<break time=\"0.35s\" /> Turn the sound up.",
-      "mood": "general"
+      "mood": "general",
+      "durationSeconds": 6.16
     },
     {
       "id": "welcome-late-night",
@@ -32,7 +33,8 @@
         2,
         3,
         4
-      ]
+      ],
+      "durationSeconds": 6.27
     },
     {
       "id": "welcome-worldwide",
@@ -40,7 +42,8 @@
       "text": "Shout to all the heads locked in worldwide right now. Wherever you're listening, you're in the right place.",
       "delivery": "bright",
       "synthesisText": "Shout to all the heads locked in worldwide right now.<break time=\"0.4s\" /> Wherever you're listening,<break time=\"0.2s\" /> you're in the right place.",
-      "mood": "community"
+      "mood": "community",
+      "durationSeconds": 6.11
     },
     {
       "id": "welcome-dawn",
@@ -56,7 +59,8 @@
         8,
         9,
         10
-      ]
+      ],
+      "durationSeconds": 5.8
     },
     {
       "id": "welcome-dusk",
@@ -72,7 +76,8 @@
         19,
         20,
         21
-      ]
+      ],
+      "durationSeconds": 5.67
     },
     {
       "id": "welcome-headphones",
@@ -80,7 +85,8 @@
       "text": "Headphones on, world off. You're locked into Again Radio. Welcome in.",
       "delivery": "warm",
       "synthesisText": "Headphones on,<break time=\"0.25s\" /> world off.<break time=\"0.45s\" /> You're locked into Again Radio.<break time=\"0.3s\" /> Welcome in.",
-      "mood": "intimate"
+      "mood": "intimate",
+      "durationSeconds": 5.38
     },
     {
       "id": "welcome-hype",
@@ -88,29 +94,144 @@
       "text": "Right then... volume up. You're locked into twenty-four hours of Fred again.",
       "delivery": "playful",
       "synthesisText": "Right then...<break time=\"0.3s\" /> volume up.<break time=\"0.35s\" /> You're locked into twenty-four hours of Fred again.",
-      "mood": "hype"
+      "mood": "hype",
+      "durationSeconds": 4.96
+    },
+    {
+      "id": "welcome-noon",
+      "audio": "/audio/jockey/welcome-noon.mp3",
+      "delivery": "warm",
+      "text": "Midday on Again Radio. Take a minute, the music's got you.",
+      "synthesisText": "Midday on Again Radio.<break time=\"0.35s\" /> Take a minute, the music's got you.",
+      "hours": [
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "durationSeconds": 3.94
+    },
+    {
+      "id": "welcome-commute",
+      "audio": "/audio/jockey/welcome-commute.mp3",
+      "delivery": "bright",
+      "text": "On the move? Good. Again Radio rides with you.",
+      "synthesisText": "On the move?<break time=\"0.35s\" /> Good.<break time=\"0.35s\" /> Again Radio rides with you.",
+      "hours": [
+        7,
+        8,
+        9,
+        17,
+        18,
+        19
+      ],
+      "durationSeconds": 3.66
+    },
+    {
+      "id": "welcome-small-hours",
+      "audio": "/audio/jockey/welcome-small-hours.mp3",
+      "delivery": "reflective",
+      "text": "Small hours on Again Radio. Keep it low, keep it close.",
+      "synthesisText": "Small hours on Again Radio.<break time=\"0.35s\" /> Keep it low, keep it close.",
+      "hours": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "durationSeconds": 3.76
+    },
+    {
+      "id": "welcome-friday",
+      "audio": "/audio/jockey/welcome-friday.mp3",
+      "delivery": "playful",
+      "text": "Whatever day it is, it feels like Friday on Again Radio.",
+      "durationSeconds": 3.24
+    },
+    {
+      "id": "welcome-back",
+      "audio": "/audio/jockey/welcome-back.mp3",
+      "delivery": "warm",
+      "text": "Oh, you came back. Good. Again Radio, right where you left it.",
+      "synthesisText": "Oh, you came back.<break time=\"0.35s\" /> Good.<break time=\"0.35s\" /> Again Radio, right where you left it.",
+      "durationSeconds": 4.44
+    },
+    {
+      "id": "welcome-first-time",
+      "audio": "/audio/jockey/welcome-first-time.mp3",
+      "delivery": "warm",
+      "text": "First time here? Welcome. This is Again Radio. Just listen.",
+      "synthesisText": "First time here?<break time=\"0.35s\" /> Welcome.<break time=\"0.35s\" /> This is Again Radio.<break time=\"0.35s\" /> Just listen.",
+      "durationSeconds": 5.09
+    },
+    {
+      "id": "welcome-kitchen",
+      "audio": "/audio/jockey/welcome-kitchen.mp3",
+      "delivery": "playful",
+      "text": "Kitchen speaker, laptop, phone, whatever. You're on Again Radio.",
+      "synthesisText": "Kitchen speaker, laptop, phone, whatever.<break time=\"0.35s\" /> You're on Again Radio.",
+      "durationSeconds": 4.26
+    },
+    {
+      "id": "welcome-rain",
+      "audio": "/audio/jockey/welcome-rain.mp3",
+      "delivery": "reflective",
+      "text": "Window seat energy. You're tuned to Again Radio.",
+      "synthesisText": "Window seat energy.<break time=\"0.35s\" /> You're tuned to Again Radio.",
+      "durationSeconds": 3.42
+    },
+    {
+      "id": "welcome-sunrise",
+      "audio": "/audio/jockey/welcome-sunrise.mp3",
+      "delivery": "bright",
+      "text": "Morning. Again Radio's been up all night waiting for you.",
+      "synthesisText": "Morning.<break time=\"0.35s\" /> Again Radio's been up all night waiting for you.",
+      "hours": [
+        5,
+        6,
+        7
+      ],
+      "durationSeconds": 3.42
+    },
+    {
+      "id": "welcome-late",
+      "audio": "/audio/jockey/welcome-late.mp3",
+      "delivery": "reflective",
+      "text": "Late again. Same. Settle in, this is Again Radio.",
+      "synthesisText": "Late again.<break time=\"0.35s\" /> Same.<break time=\"0.35s\" /> Settle in, this is Again Radio.",
+      "hours": [
+        22,
+        23,
+        0
+      ],
+      "durationSeconds": 3.6
     }
   ],
   "sweepers": [
     {
       "id": "welcome",
       "audio": "/audio/jockey/welcome.mp3",
-      "text": "You're locked into Again Radio. Twenty-four hours of a life in progress. Turn the sound up."
+      "text": "You're locked into Again Radio. Twenty-four hours of a life in progress. Turn the sound up.",
+      "durationSeconds": 6.16
     },
     {
       "id": "worldwide-shout",
       "audio": "/audio/jockey/worldwide-shout.mp3",
-      "text": "Shout to all the heads locked in worldwide right now. Wherever you're listening, you're in the right place."
+      "text": "Shout to all the heads locked in worldwide right now. Wherever you're listening, you're in the right place.",
+      "durationSeconds": 6.11
     },
     {
       "id": "late-night",
       "audio": "/audio/jockey/late-night.mp3",
-      "text": "Late night frequencies on Again Radio. This one's for anyone still awake and thinking."
+      "text": "Late night frequencies on Again Radio. This one's for anyone still awake and thinking.",
+      "durationSeconds": 6.27
     },
     {
       "id": "return-live",
       "audio": "/audio/jockey/return-live.mp3",
-      "text": "Reconnecting to the live room. Right back on the pulse."
+      "text": "Reconnecting to the live room. Right back on the pulse.",
+      "durationSeconds": 3.66
     }
   ],
   "listeners": [
@@ -121,14 +242,16 @@
       "max": 15,
       "text": "Late night shift... just a handful of us locked in right now. Pure focus.",
       "delivery": "bright",
-      "synthesisText": "Late night shift... just a handful of us locked in right now.<break time=\"0.35s\" /> Pure focus."
+      "synthesisText": "Late night shift... just a handful of us locked in right now.<break time=\"0.35s\" /> Pure focus.",
+      "durationSeconds": 4.96
     },
     {
       "id": "listener-gathering",
       "audio": "/audio/jockey/listener-gathering.mp3",
       "min": 16,
       "max": 40,
-      "text": "Room's filling up nicely... shout to the crew locking in from across the globe."
+      "text": "Room's filling up nicely... shout to the crew locking in from across the globe.",
+      "durationSeconds": 4.68
     },
     {
       "id": "listener-busy",
@@ -137,12 +260,93 @@
       "max": 9999,
       "text": "Dozens of heads in the room right now sharing this frequency. Big love to every single one of you.",
       "delivery": "bright",
-      "synthesisText": "Dozens of heads in the room right now sharing this frequency.<break time=\"0.35s\" /> Big love to every single one of you."
+      "synthesisText": "Dozens of heads in the room right now sharing this frequency.<break time=\"0.35s\" /> Big love to every single one of you.",
+      "durationSeconds": 6.3
     },
     {
       "id": "listener-moment",
       "audio": "/audio/jockey/listener-moment.mp3",
-      "text": "Wherever you're listening from tonight—headphones, car speakers, bedroom—we're all in this room together."
+      "text": "Wherever you're listening from tonight—headphones, car speakers, bedroom—we're all in this room together.",
+      "durationSeconds": 7.52
+    },
+    {
+      "id": "listener-two-of-us",
+      "audio": "/audio/jockey/listener-two-of-us.mp3",
+      "delivery": "warm",
+      "text": "Just a couple of us here right now. That's my favourite kind of room.",
+      "synthesisText": "Just a couple of us here right now.<break time=\"0.35s\" /> That's my favourite kind of room.",
+      "min": 1,
+      "max": 3,
+      "durationSeconds": 4.49
+    },
+    {
+      "id": "listener-few-friends",
+      "audio": "/audio/jockey/listener-few-friends.mp3",
+      "delivery": "warm",
+      "text": "Small crowd tonight. Feels like friends round a speaker.",
+      "synthesisText": "Small crowd tonight.<break time=\"0.35s\" /> Feels like friends round a speaker.",
+      "min": 4,
+      "max": 10,
+      "durationSeconds": 3.53
+    },
+    {
+      "id": "listener-growing",
+      "audio": "/audio/jockey/listener-growing.mp3",
+      "delivery": "bright",
+      "text": "The room keeps growing. Hello to everyone just arriving.",
+      "synthesisText": "The room keeps growing.<break time=\"0.35s\" /> Hello to everyone just arriving.",
+      "min": 11,
+      "max": 25,
+      "durationSeconds": 3.58
+    },
+    {
+      "id": "listener-proper-crowd",
+      "audio": "/audio/jockey/listener-proper-crowd.mp3",
+      "delivery": "bright",
+      "text": "Proper crowd in here now. Hello, all of you.",
+      "synthesisText": "Proper crowd in here now.<break time=\"0.35s\" /> Hello, all of you.",
+      "min": 26,
+      "max": 60,
+      "durationSeconds": 2.77
+    },
+    {
+      "id": "listener-packed",
+      "audio": "/audio/jockey/listener-packed.mp3",
+      "delivery": "bright",
+      "text": "It's packed in here. Thank you for sharing the frequency.",
+      "synthesisText": "It's packed in here.<break time=\"0.35s\" /> Thank you for sharing the frequency.",
+      "min": 61,
+      "max": null,
+      "durationSeconds": 3.66
+    },
+    {
+      "id": "listener-anywhere",
+      "audio": "/audio/jockey/listener-anywhere.mp3",
+      "delivery": "warm",
+      "text": "Wherever you're tuning in from, you're part of the room.",
+      "min": null,
+      "max": null,
+      "durationSeconds": 3.06
+    },
+    {
+      "id": "listener-alone-together",
+      "audio": "/audio/jockey/listener-alone-together.mp3",
+      "delivery": "reflective",
+      "text": "Alone together. That's what this is, isn't it?",
+      "synthesisText": "Alone together.<break time=\"0.35s\" /> That's what this is, isn't it?",
+      "min": null,
+      "max": null,
+      "durationSeconds": 3.0
+    },
+    {
+      "id": "listener-hello",
+      "audio": "/audio/jockey/listener-hello.mp3",
+      "delivery": "warm",
+      "text": "Hello to everyone listening right now. Yes, you.",
+      "synthesisText": "Hello to everyone listening right now.<break time=\"0.35s\" /> Yes, you.",
+      "min": null,
+      "max": null,
+      "durationSeconds": 3.29
     }
   ],
   "tracks": {
@@ -161,7 +365,8 @@
         "audio": "/audio/jockey/delilah-thought.mp3",
         "text": "Fred kept the actual phone hiss on Delilah's vocal. Most producers would scrub it clean. That imperfection is the magic.",
         "delivery": "reflective",
-        "synthesisText": "Fred kept the actual phone hiss on Delilah's vocal.<break time=\"0.45s\" /> Most producers would scrub it clean.<break time=\"0.45s\" /> That imperfection is the magic."
+        "synthesisText": "Fred kept the actual phone hiss on Delilah's vocal.<break time=\"0.45s\" /> Most producers would scrub it clean.<break time=\"0.45s\" /> That imperfection is the magic.",
+        "durationSeconds": 8.18
       },
       "outro": {
         "id": "delilah-outro",
@@ -185,7 +390,8 @@
       "thought": {
         "id": "danielle-thought",
         "audio": "/audio/jockey/danielle-thought.mp3",
-        "text": "You can hear the raw ache in 070 Shake's voice... but Fred wraps it in chords that make you want to dance through it."
+        "text": "You can hear the raw ache in 070 Shake's voice... but Fred wraps it in chords that make you want to dance through it.",
+        "durationSeconds": 6.95
       },
       "outro": {
         "id": "danielle-outro",
@@ -211,7 +417,8 @@
         "audio": "/audio/jockey/nathan-thought.mp3",
         "text": "Nathan's voice note was recorded on a curb in Atlanta. That simple reminder to keep breathing carries the whole album.",
         "delivery": "reflective",
-        "synthesisText": "Nathan's voice note was recorded on a curb in Atlanta.<break time=\"0.45s\" /> That simple reminder to keep breathing carries the whole album."
+        "synthesisText": "Nathan's voice note was recorded on a curb in Atlanta.<break time=\"0.45s\" /> That simple reminder to keep breathing carries the whole album.",
+        "durationSeconds": 8.36
       },
       "outro": {
         "id": "nathan-outro",
@@ -237,7 +444,16 @@
         "audio": "/audio/jockey/kammy-thought.mp3",
         "text": "Kammy's vocal was an offhand Instagram freestyle. Fred slowed it down on a train and built a sanctuary around it.",
         "delivery": "reflective",
-        "synthesisText": "Kammy's vocal was an offhand Instagram freestyle.<break time=\"0.45s\" /> Fred slowed it down on a train and built a sanctuary around it."
+        "synthesisText": "Kammy's vocal was an offhand Instagram freestyle.<break time=\"0.45s\" /> Fred slowed it down on a train and built a sanctuary around it.",
+        "durationSeconds": 7.24
+      },
+      "outro": {
+        "id": "kammy-like-i-do-outro",
+        "audio": "/audio/jockey/kammy-like-i-do-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Kammy.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Kammy.",
+        "durationSeconds": 1.93
       }
     },
     "Tanya (maybe life)": {
@@ -253,7 +469,15 @@
       "thought": {
         "id": "tanya-thought",
         "audio": "/audio/jockey/tanya-thought.mp3",
-        "text": "Tanya's words \"maybe life\"... it's that feeling when you're not sure where things are going, but you let the beat carry you anyway."
+        "text": "Tanya's words \"maybe life\"... it's that feeling when you're not sure where things are going, but you let the beat carry you anyway.",
+        "durationSeconds": 8.31
+      },
+      "outro": {
+        "id": "tanya-maybe-life-outro",
+        "audio": "/audio/jockey/tanya-maybe-life-outro.mp3",
+        "delivery": "warm",
+        "text": "Tanya, there.",
+        "durationSeconds": 1.28
       }
     },
     "Rumble": {
@@ -271,7 +495,8 @@
         "audio": "/audio/jockey/rumble-thought.mp3",
         "text": "Three days in the countryside tweaking that one modular sub-bass. You don't just hear this track, you feel it in your ribs.",
         "delivery": "reflective",
-        "synthesisText": "Three days in the countryside tweaking that one modular sub-bass.<break time=\"0.45s\" /> You don't just hear this track, you feel it in your ribs."
+        "synthesisText": "Three days in the countryside tweaking that one modular sub-bass.<break time=\"0.45s\" /> You don't just hear this track, you feel it in your ribs.",
+        "durationSeconds": 7.94
       },
       "outro": {
         "id": "rumble-outro",
@@ -297,7 +522,16 @@
         "audio": "/audio/jockey/baby-again-thought.mp3",
         "text": "Four Tet, Skrillex, and Fred jamming in a living room at 4 AM. That playful friendship is baked into every kick drum.",
         "delivery": "reflective",
-        "synthesisText": "Four Tet, Skrillex, and Fred jamming in a living room at 4 AM.<break time=\"0.45s\" /> That playful friendship is baked into every kick drum."
+        "synthesisText": "Four Tet, Skrillex, and Fred jamming in a living room at 4 AM.<break time=\"0.45s\" /> That playful friendship is baked into every kick drum.",
+        "durationSeconds": 7.71
+      },
+      "outro": {
+        "id": "baby-again-outro",
+        "audio": "/audio/jockey/baby-again-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Baby again.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Baby again.",
+        "durationSeconds": 1.91
       }
     },
     "Turn On The Lights again..": {
@@ -315,7 +549,16 @@
         "audio": "/audio/jockey/turn-on-the-lights-thought.mp3",
         "text": "Future's vocals echoing like they're coming from the back room of a warehouse rave. Unstoppable momentum.",
         "delivery": "reflective",
-        "synthesisText": "Future's vocals echoing like they're coming from the back room of a warehouse rave.<break time=\"0.45s\" /> Unstoppable momentum."
+        "synthesisText": "Future's vocals echoing like they're coming from the back room of a warehouse rave.<break time=\"0.45s\" /> Unstoppable momentum.",
+        "durationSeconds": 7.97
+      },
+      "outro": {
+        "id": "turn-on-the-lights-again-outro",
+        "audio": "/audio/jockey/turn-on-the-lights-again-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Turn On The Lights again.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Turn On The Lights again.",
+        "durationSeconds": 2.51
       }
     },
     "Jungle": {
@@ -333,7 +576,15 @@
         "audio": "/audio/jockey/jungle-thought.mp3",
         "text": "Listen to the way the percussion rolls over itself. Pure London sound-system pressure.",
         "delivery": "reflective",
-        "synthesisText": "Listen to the way the percussion rolls over itself.<break time=\"0.45s\" /> Pure London sound-system pressure."
+        "synthesisText": "Listen to the way the percussion rolls over itself.<break time=\"0.45s\" /> Pure London sound-system pressure.",
+        "durationSeconds": 6.16
+      },
+      "outro": {
+        "id": "jungle-outro",
+        "audio": "/audio/jockey/jungle-outro.mp3",
+        "delivery": "warm",
+        "text": "Jungle, there.",
+        "durationSeconds": 1.2
       }
     },
     "adore u": {
@@ -351,7 +602,16 @@
         "audio": "/audio/jockey/adore-u-thought.mp3",
         "text": "Obongjayar singing to his little sister. In the middle of a massive festival, it turns into an intimate prayer.",
         "delivery": "reflective",
-        "synthesisText": "Obongjayar singing to his little sister.<break time=\"0.45s\" /> In the middle of a massive festival, it turns into an intimate prayer."
+        "synthesisText": "Obongjayar singing to his little sister.<break time=\"0.45s\" /> In the middle of a massive festival, it turns into an intimate prayer.",
+        "durationSeconds": 7.52
+      },
+      "outro": {
+        "id": "adore-u-outro",
+        "audio": "/audio/jockey/adore-u-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again, Obongjayar. adore u.",
+        "synthesisText": "That was Fred again, Obongjayar.<break time=\"0.3s\" /> adore u.",
+        "durationSeconds": 3.42
       }
     },
     "Clara (the night is dark)": {
@@ -369,7 +629,16 @@
         "audio": "/audio/jockey/clara-thought.mp3",
         "text": "The final track from the Boiler Room. Clara's voice guiding everyone through the dark and out the other side.",
         "delivery": "reflective",
-        "synthesisText": "The final track from the Boiler Room.<break time=\"0.45s\" /> Clara's voice guiding everyone through the dark and out the other side."
+        "synthesisText": "The final track from the Boiler Room.<break time=\"0.45s\" /> Clara's voice guiding everyone through the dark and out the other side.",
+        "durationSeconds": 6.71
+      },
+      "outro": {
+        "id": "clara-the-night-is-dark-outro",
+        "audio": "/audio/jockey/clara-the-night-is-dark-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Clara.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Clara.",
+        "durationSeconds": 1.62
       }
     },
     "Strong": {
@@ -387,7 +656,16 @@
         "audio": "/audio/jockey/strong-thought.mp3",
         "text": "Romy's voice is so gentle here. It takes real courage to make dance music that feels this tender.",
         "delivery": "reflective",
-        "synthesisText": "Romy's voice is so gentle here.<break time=\"0.45s\" /> It takes real courage to make dance music that feels this tender."
+        "synthesisText": "Romy's voice is so gentle here.<break time=\"0.45s\" /> It takes real courage to make dance music that feels this tender.",
+        "durationSeconds": 6.45
+      },
+      "outro": {
+        "id": "strong-outro",
+        "audio": "/audio/jockey/strong-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Romy & Fred again. Strong.",
+        "synthesisText": "That was Romy & Fred again.<break time=\"0.3s\" /> Strong.",
+        "durationSeconds": 3.6
       }
     },
     "Kyle (i found you)": {
@@ -398,7 +676,8 @@
         "audio": "/audio/jockey/kyle-thought.mp3",
         "text": "That voice note at the end of Kyle... \"I found you\". It's the moment you realize you're going to be alright.",
         "delivery": "reflective",
-        "synthesisText": "That voice note at the end of Kyle... \"I found you\".<break time=\"0.45s\" /> It's the moment you realize you're going to be alright."
+        "synthesisText": "That voice note at the end of Kyle... \"I found you\".<break time=\"0.45s\" /> It's the moment you realize you're going to be alright.",
+        "durationSeconds": 7.78
       },
       "intro": {
         "id": "kyle-i-found-you-intro",
@@ -407,6 +686,13 @@
         "text": "Kyle. I found you.",
         "synthesisText": "Kyle.<break time=\"0.3s\" /> I found you.",
         "durationSeconds": 1.93
+      },
+      "outro": {
+        "id": "kyle-i-found-you-outro",
+        "audio": "/audio/jockey/kyle-i-found-you-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Kyle.",
+        "durationSeconds": 1.15
       }
     },
     "places to be": {
@@ -417,6 +703,21 @@
         "delivery": "warm",
         "text": "Oh, wait—this one's got a bit of sunshine to it.",
         "durationSeconds": 2.74
+      },
+      "thought": {
+        "id": "places-to-be-thought",
+        "audio": "/audio/jockey/places-to-be-thought.mp3",
+        "delivery": "reflective",
+        "text": "This is the part I wait for.",
+        "durationSeconds": 1.62
+      },
+      "thoughtOffset": 105,
+      "outro": {
+        "id": "places-to-be-outro",
+        "audio": "/audio/jockey/places-to-be-outro.mp3",
+        "delivery": "warm",
+        "text": "That was places to be.",
+        "durationSeconds": 1.49
       }
     },
     "leavemealone": {
@@ -427,6 +728,21 @@
         "delivery": "playful",
         "text": "Ooh, that bass. There—hear how it opens up?",
         "durationSeconds": 2.69
+      },
+      "thought": {
+        "id": "leavemealone-thought",
+        "audio": "/audio/jockey/leavemealone-thought.mp3",
+        "delivery": "reflective",
+        "text": "Whoever you're thinking of right now, send it to them.",
+        "durationSeconds": 3.06
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "leavemealone-outro",
+        "audio": "/audio/jockey/leavemealone-outro.mp3",
+        "delivery": "warm",
+        "text": "leavemealone, there.",
+        "durationSeconds": 1.44
       }
     },
     "stayinit": {
@@ -437,6 +753,13 @@
         "delivery": "reflective",
         "text": "Hmm... yeah, we can stay here a minute.",
         "durationSeconds": 2.53
+      },
+      "outro": {
+        "id": "stayinit-outro",
+        "audio": "/audio/jockey/stayinit-outro.mp3",
+        "delivery": "warm",
+        "text": "That was stayinit.",
+        "durationSeconds": 1.33
       }
     },
     "Billie (loving arms)": {
@@ -447,6 +770,23 @@
         "delivery": "warm",
         "text": "Aw, that voice feels so close. Here's Billie.",
         "durationSeconds": 2.93
+      },
+      "thought": {
+        "id": "billie-loving-arms-thought",
+        "audio": "/audio/jockey/billie-loving-arms-thought.mp3",
+        "delivery": "playful",
+        "text": "Turn it up a notch. Go on.",
+        "synthesisText": "Turn it up a notch.<break time=\"0.4s\" /> Go on.",
+        "durationSeconds": 1.85
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "billie-loving-arms-outro",
+        "audio": "/audio/jockey/billie-loving-arms-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Billie.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Billie.",
+        "durationSeconds": 1.33
       }
     },
     "Carlos (make it thru)": {
@@ -457,6 +797,23 @@
         "delivery": "warm",
         "text": "Um... yeah, this one's for anyone just getting through it.",
         "durationSeconds": 3.19
+      },
+      "thought": {
+        "id": "carlos-make-it-thru-thought",
+        "audio": "/audio/jockey/carlos-make-it-thru-thought.mp3",
+        "delivery": "playful",
+        "text": "Dance like nobody's checking. Nobody is.",
+        "synthesisText": "Dance like nobody's checking.<break time=\"0.4s\" /> Nobody is.",
+        "durationSeconds": 2.82
+      },
+      "thoughtOffset": 99,
+      "outro": {
+        "id": "carlos-make-it-thru-outro",
+        "audio": "/audio/jockey/carlos-make-it-thru-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Carlos.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Carlos.",
+        "durationSeconds": 1.44
       }
     },
     "De Barrio": {
@@ -467,7 +824,23 @@
         "delivery": "bright",
         "text": "Wow, it opens right out, doesn't it?",
         "durationSeconds": 2.17
-      }
+      },
+      "outro": {
+        "id": "de-barrio-outro",
+        "audio": "/audio/jockey/de-barrio-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Torres De Lara. De Barrio.",
+        "synthesisText": "That was Torres De Lara.<break time=\"0.3s\" /> De Barrio.",
+        "durationSeconds": 2.51
+      },
+      "thought": {
+        "id": "de-barrio-thought",
+        "audio": "/audio/jockey/de-barrio-thought.mp3",
+        "delivery": "reflective",
+        "text": "Every loop pulls you a little further in.",
+        "durationSeconds": 2.4
+      },
+      "thoughtOffset": 86
     },
     "Flight FM": {
       "postSeconds": 16,
@@ -478,7 +851,24 @@
         "text": "Yay! There it is—what a lift. Flight FM.",
         "synthesisText": "Yay!<break time=\"0.35s\" /> There it is—what a lift.<break time=\"0.45s\" /> Flight FM.",
         "durationSeconds": 3.84
-      }
+      },
+      "outro": {
+        "id": "flight-fm-outro",
+        "audio": "/audio/jockey/flight-fm-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Joy Orbison. Flight FM.",
+        "synthesisText": "That was Joy Orbison.<break time=\"0.3s\" /> Flight FM.",
+        "durationSeconds": 3.71
+      },
+      "thought": {
+        "id": "flight-fm-thought",
+        "audio": "/audio/jockey/flight-fm-thought.mp3",
+        "delivery": "reflective",
+        "text": "Hmm. I'd put this one on a long train ride.",
+        "synthesisText": "Hmm.<break time=\"0.4s\" /> I'd put this one on a long train ride.",
+        "durationSeconds": 7.47
+      },
+      "thoughtOffset": 110
     },
     "Nightvision": {
       "postSeconds": 16,
@@ -488,6 +878,14 @@
         "delivery": "reflective",
         "text": "Mm. This feels like the long way home.",
         "durationSeconds": 2.82
+      },
+      "outro": {
+        "id": "nightvision-outro",
+        "audio": "/audio/jockey/nightvision-outro.mp3",
+        "delivery": "warm",
+        "text": "That was The Twelves. Nightvision.",
+        "synthesisText": "That was The Twelves.<break time=\"0.3s\" /> Nightvision.",
+        "durationSeconds": 2.46
       }
     },
     "Can You Feel It": {
@@ -498,7 +896,23 @@
         "text": "Mr. Fingers. Can You Feel It. Of course you can.",
         "synthesisText": "Mr.<break time=\"0.3s\" /> Fingers.<break time=\"0.3s\" /> Can You Feel It.<break time=\"0.3s\" /> Of course you can.",
         "durationSeconds": 4.21
-      }
+      },
+      "outro": {
+        "id": "can-you-feel-it-outro",
+        "audio": "/audio/jockey/can-you-feel-it-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Can You Feel It.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Can You Feel It.",
+        "durationSeconds": 2.59
+      },
+      "thought": {
+        "id": "can-you-feel-it-thought",
+        "audio": "/audio/jockey/can-you-feel-it-thought.mp3",
+        "delivery": "reflective",
+        "text": "Some songs make the night feel kinder.",
+        "durationSeconds": 2.4
+      },
+      "thoughtOffset": 65
     },
     "One More Time": {
       "intro": {
@@ -508,7 +922,22 @@
         "text": "Daft Punk. One More Time. Hands up for this one.",
         "synthesisText": "Daft Punk.<break time=\"0.3s\" /> One More Time.<break time=\"0.3s\" /> Hands up for this one.",
         "durationSeconds": 4.31
-      }
+      },
+      "outro": {
+        "id": "one-more-time-outro",
+        "audio": "/audio/jockey/one-more-time-outro.mp3",
+        "delivery": "warm",
+        "text": "One More Time, there.",
+        "durationSeconds": 1.33
+      },
+      "thought": {
+        "id": "one-more-time-thought",
+        "audio": "/audio/jockey/one-more-time-thought.mp3",
+        "delivery": "reflective",
+        "text": "Imagine this in a field at golden hour.",
+        "durationSeconds": 2.27
+      },
+      "thoughtOffset": 97
     },
     "LFO (Leeds Warehouse Mix)": {
       "intro": {
@@ -518,7 +947,22 @@
         "text": "LFO, the Leeds Warehouse Mix. Bass check.",
         "synthesisText": "LFO, the Leeds Warehouse Mix.<break time=\"0.3s\" /> Bass check.",
         "durationSeconds": 3.42
-      }
+      },
+      "outro": {
+        "id": "lfo-leeds-warehouse-mix-outro",
+        "audio": "/audio/jockey/lfo-leeds-warehouse-mix-outro.mp3",
+        "delivery": "warm",
+        "text": "LFO, there.",
+        "durationSeconds": 1.25
+      },
+      "thought": {
+        "id": "lfo-leeds-warehouse-mix-thought",
+        "audio": "/audio/jockey/lfo-leeds-warehouse-mix-thought.mp3",
+        "delivery": "reflective",
+        "text": "The best bits are always the ones you almost miss.",
+        "durationSeconds": 2.87
+      },
+      "thoughtOffset": 110
     },
     "Needle Guy": {
       "intro": {
@@ -528,6 +972,14 @@
         "text": "Dylan Brady. Needle Guy. Something strange coming.",
         "synthesisText": "Dylan Brady.<break time=\"0.3s\" /> Needle Guy.<break time=\"0.3s\" /> Something strange coming.",
         "durationSeconds": 3.79
+      },
+      "outro": {
+        "id": "needle-guy-outro",
+        "audio": "/audio/jockey/needle-guy-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Dylan Brady. Needle Guy.",
+        "synthesisText": "That was Dylan Brady.<break time=\"0.3s\" /> Needle Guy.",
+        "durationSeconds": 2.35
       }
     },
     "My Girls": {
@@ -538,6 +990,14 @@
         "text": "Animal Collective. My Girls. Let it bloom.",
         "synthesisText": "Animal Collective.<break time=\"0.3s\" /> My Girls.<break time=\"0.3s\" /> Let it bloom.",
         "durationSeconds": 3.47
+      },
+      "outro": {
+        "id": "my-girls-outro",
+        "audio": "/audio/jockey/my-girls-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. My Girls.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> My Girls.",
+        "durationSeconds": 2.22
       }
     },
     "Doin' It Right": {
@@ -548,6 +1008,14 @@
         "text": "Daft Punk and Panda Bear. Doin' It Right.",
         "synthesisText": "Daft Punk and Panda Bear.<break time=\"0.3s\" /> Doin' It Right.",
         "durationSeconds": 3.11
+      },
+      "outro": {
+        "id": "doin-it-right-outro",
+        "audio": "/audio/jockey/doin-it-right-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Daft Punk, Panda Bear. Doin' It Right.",
+        "synthesisText": "That was Daft Punk, Panda Bear.<break time=\"0.3s\" /> Doin' It Right.",
+        "durationSeconds": 3.16
       }
     },
     "Clubbed to Death": {
@@ -558,6 +1026,13 @@
         "text": "Rob Dougan. Clubbed to Death. Lights low for this.",
         "synthesisText": "Rob Dougan.<break time=\"0.3s\" /> Clubbed to Death.<break time=\"0.3s\" /> Lights low for this.",
         "durationSeconds": 4.62
+      },
+      "outro": {
+        "id": "clubbed-to-death-outro",
+        "audio": "/audio/jockey/clubbed-to-death-outro.mp3",
+        "delivery": "warm",
+        "text": "Clubbed to Death, there.",
+        "durationSeconds": 1.44
       }
     },
     "The Revolution Will Not Be Televised": {
@@ -568,6 +1043,14 @@
         "text": "Gil Scott-Heron. The Revolution Will Not Be Televised.",
         "synthesisText": "Gil Scott-Heron.<break time=\"0.3s\" /> The Revolution Will Not Be Televised.",
         "durationSeconds": 3.71
+      },
+      "outro": {
+        "id": "the-revolution-will-not-be-televised-outro",
+        "audio": "/audio/jockey/the-revolution-will-not-be-televised-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Gil Scott-Heron. The Revolution Will Not Be Televised.",
+        "synthesisText": "That was Gil Scott-Heron.<break time=\"0.3s\" /> The Revolution Will Not Be Televised.",
+        "durationSeconds": 4.0
       }
     },
     "Yeah!": {
@@ -578,6 +1061,14 @@
         "text": "Usher, Lil Jon, Ludacris. Yeah. You know the words.",
         "synthesisText": "Usher, Lil Jon, Ludacris.<break time=\"0.3s\" /> Yeah.<break time=\"0.3s\" /> You know the words.",
         "durationSeconds": 3.71
+      },
+      "outro": {
+        "id": "yeah-outro",
+        "audio": "/audio/jockey/yeah-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Yeah!.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Yeah!.",
+        "durationSeconds": 1.52
       }
     },
     "Touch": {
@@ -588,7 +1079,23 @@
         "text": "Daft Punk and Paul Williams. Touch. Stay close.",
         "synthesisText": "Daft Punk and Paul Williams.<break time=\"0.3s\" /> Touch.<break time=\"0.3s\" /> Stay close.",
         "durationSeconds": 3.76
-      }
+      },
+      "outro": {
+        "id": "touch-outro",
+        "audio": "/audio/jockey/touch-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Daft Punk, Paul Williams. Touch.",
+        "synthesisText": "That was Daft Punk, Paul Williams.<break time=\"0.3s\" /> Touch.",
+        "durationSeconds": 2.93
+      },
+      "thought": {
+        "id": "touch-thought",
+        "audio": "/audio/jockey/touch-thought.mp3",
+        "delivery": "reflective",
+        "text": "I could listen to just this part on repeat.",
+        "durationSeconds": 2.35
+      },
+      "thoughtOffset": 59
     },
     "Giorgio by Moroder": {
       "intro": {
@@ -598,7 +1105,23 @@
         "text": "Daft Punk. Giorgio by Moroder. Listen to him talk first.",
         "synthesisText": "Daft Punk.<break time=\"0.3s\" /> Giorgio by Moroder.<break time=\"0.3s\" /> Listen to him talk first.",
         "durationSeconds": 3.89
-      }
+      },
+      "outro": {
+        "id": "giorgio-by-moroder-outro",
+        "audio": "/audio/jockey/giorgio-by-moroder-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Daft Punk. Giorgio by Moroder.",
+        "synthesisText": "That was Daft Punk.<break time=\"0.3s\" /> Giorgio by Moroder.",
+        "durationSeconds": 2.93
+      },
+      "thought": {
+        "id": "giorgio-by-moroder-thought",
+        "audio": "/audio/jockey/giorgio-by-moroder-thought.mp3",
+        "delivery": "reflective",
+        "text": "Turn the lights down if you can.",
+        "durationSeconds": 1.91
+      },
+      "thoughtOffset": 76
     },
     "Digital Love": {
       "intro": {
@@ -608,6 +1131,14 @@
         "text": "Daft Punk. Digital Love. Sweet one.",
         "synthesisText": "Daft Punk.<break time=\"0.3s\" /> Digital Love.<break time=\"0.3s\" /> Sweet one.",
         "durationSeconds": 3.6
+      },
+      "outro": {
+        "id": "digital-love-outro",
+        "audio": "/audio/jockey/digital-love-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Daft Punk. Digital Love.",
+        "synthesisText": "That was Daft Punk.<break time=\"0.3s\" /> Digital Love.",
+        "durationSeconds": 2.69
       }
     },
     "Raspberry Beret": {
@@ -618,7 +1149,22 @@
         "text": "Prince and The Revolution. Raspberry Beret.",
         "synthesisText": "Prince and The Revolution.<break time=\"0.3s\" /> Raspberry Beret.",
         "durationSeconds": 3.11
-      }
+      },
+      "outro": {
+        "id": "raspberry-beret-outro",
+        "audio": "/audio/jockey/raspberry-beret-outro.mp3",
+        "delivery": "warm",
+        "text": "Raspberry Beret, there.",
+        "durationSeconds": 1.57
+      },
+      "thought": {
+        "id": "raspberry-beret-thought",
+        "audio": "/audio/jockey/raspberry-beret-thought.mp3",
+        "delivery": "reflective",
+        "text": "This is what a deep breath sounds like.",
+        "durationSeconds": 2.09
+      },
+      "thoughtOffset": 49
     },
     "Pharaoh Dynamic": {
       "intro": {
@@ -628,6 +1174,14 @@
         "text": "DJ Pharaoh. Pharaoh Dynamic. Hold tight.",
         "synthesisText": "DJ Pharaoh.<break time=\"0.3s\" /> Pharaoh Dynamic.<break time=\"0.3s\" /> Hold tight.",
         "durationSeconds": 3.34
+      },
+      "outro": {
+        "id": "pharaoh-dynamic-outro",
+        "audio": "/audio/jockey/pharaoh-dynamic-outro.mp3",
+        "delivery": "warm",
+        "text": "That was DJ Pharaoh. Pharaoh Dynamic.",
+        "synthesisText": "That was DJ Pharaoh.<break time=\"0.3s\" /> Pharaoh Dynamic.",
+        "durationSeconds": 2.27
       }
     },
     "Victory Lap Five": {
@@ -638,7 +1192,23 @@
         "text": "Victory Lap Five. Fred and a whole crew on the mic.",
         "synthesisText": "Victory Lap Five.<break time=\"0.3s\" /> Fred and a whole crew on the mic.",
         "durationSeconds": 3.34
-      }
+      },
+      "outro": {
+        "id": "victory-lap-five-outro",
+        "audio": "/audio/jockey/victory-lap-five-outro.mp3",
+        "delivery": "warm",
+        "text": "Victory Lap Five, there.",
+        "durationSeconds": 1.62
+      },
+      "thought": {
+        "id": "victory-lap-five-thought",
+        "audio": "/audio/jockey/victory-lap-five-thought.mp3",
+        "delivery": "reflective",
+        "text": "And breathe. Here it comes again.",
+        "synthesisText": "And breathe.<break time=\"0.4s\" /> Here it comes again.",
+        "durationSeconds": 2.4
+      },
+      "thoughtOffset": 49
     },
     "Starboy": {
       "intro": {
@@ -648,6 +1218,14 @@
         "text": "The Weeknd. Starboy. Here it comes.",
         "synthesisText": "The Weeknd.<break time=\"0.3s\" /> Starboy.<break time=\"0.3s\" /> Here it comes.",
         "durationSeconds": 2.95
+      },
+      "outro": {
+        "id": "starboy-outro",
+        "audio": "/audio/jockey/starboy-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Starboy.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Starboy.",
+        "durationSeconds": 1.93
       }
     },
     "Mythologies: V. Les Amazones": {
@@ -658,7 +1236,23 @@
         "text": "Thomas Bangalter. Les Amazones. Something cinematic.",
         "synthesisText": "Thomas Bangalter.<break time=\"0.3s\" /> Les Amazones.<break time=\"0.3s\" /> Something cinematic.",
         "durationSeconds": 4.13
-      }
+      },
+      "outro": {
+        "id": "mythologies-v-les-amazones-outro",
+        "audio": "/audio/jockey/mythologies-v-les-amazones-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Mythologies: V. Les Amazones.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Mythologies: V.<break time=\"0.3s\" /> Les Amazones.",
+        "durationSeconds": 4.49
+      },
+      "thought": {
+        "id": "mythologies-v-les-amazones-thought",
+        "audio": "/audio/jockey/mythologies-v-les-amazones-thought.mp3",
+        "delivery": "reflective",
+        "text": "Okay, this is a nod-your-head-slowly moment.",
+        "durationSeconds": 2.77
+      },
+      "thoughtOffset": 86
     },
     "Music Sounds Better With You": {
       "intro": {
@@ -668,6 +1262,14 @@
         "text": "Stardust. Music Sounds Better With You. It really does.",
         "synthesisText": "Stardust.<break time=\"0.3s\" /> Music Sounds Better With You.<break time=\"0.3s\" /> It really does.",
         "durationSeconds": 4.86
+      },
+      "outro": {
+        "id": "music-sounds-better-with-you-outro",
+        "audio": "/audio/jockey/music-sounds-better-with-you-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Music Sounds Better With You.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Music Sounds Better With You.",
+        "durationSeconds": 3.16
       }
     },
     "2009": {
@@ -678,6 +1280,14 @@
         "text": "Tony Romera. 2009. Locked in.",
         "synthesisText": "Tony Romera.<break time=\"0.3s\" /> 2009.<break time=\"0.3s\" /> Locked in.",
         "durationSeconds": 3.06
+      },
+      "outro": {
+        "id": "2009-outro",
+        "audio": "/audio/jockey/2009-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. 2009.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> 2009.",
+        "durationSeconds": 2.46
       }
     },
     "Can't Do Without You": {
@@ -688,7 +1298,24 @@
         "text": "Caribou. Can't Do Without You. Mm, this one.",
         "synthesisText": "Caribou.<break time=\"0.3s\" /> Can't Do Without You.<break time=\"0.3s\" /> Mm, this one.",
         "durationSeconds": 4.13
-      }
+      },
+      "outro": {
+        "id": "can-t-do-without-you-outro",
+        "audio": "/audio/jockey/can-t-do-without-you-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Caribou. Can't Do Without You.",
+        "synthesisText": "That was Caribou.<break time=\"0.3s\" /> Can't Do Without You.",
+        "durationSeconds": 2.69
+      },
+      "thought": {
+        "id": "can-t-do-without-you-thought",
+        "audio": "/audio/jockey/can-t-do-without-you-thought.mp3",
+        "delivery": "reflective",
+        "text": "Someone in the room just closed their eyes. I can tell.",
+        "synthesisText": "Someone in the room just closed their eyes.<break time=\"0.4s\" /> I can tell.",
+        "durationSeconds": 3.34
+      },
+      "thoughtOffset": 92
     },
     "Signatune": {
       "intro": {
@@ -698,6 +1325,14 @@
         "text": "DJ Mehdi. Signatune. Respect.",
         "synthesisText": "DJ Mehdi.<break time=\"0.3s\" /> Signatune.<break time=\"0.3s\" /> Respect.",
         "durationSeconds": 3.6
+      },
+      "outro": {
+        "id": "signatune-outro",
+        "audio": "/audio/jockey/signatune-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Signatune.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Signatune.",
+        "durationSeconds": 2.12
       }
     },
     "Around the World": {
@@ -708,7 +1343,23 @@
         "text": "Daft Punk. Around the World. Round and round we go.",
         "synthesisText": "Daft Punk.<break time=\"0.3s\" /> Around the World.<break time=\"0.3s\" /> Round and round we go.",
         "durationSeconds": 4.0
-      }
+      },
+      "outro": {
+        "id": "around-the-world-outro",
+        "audio": "/audio/jockey/around-the-world-outro.mp3",
+        "delivery": "warm",
+        "text": "Around the World, there.",
+        "durationSeconds": 1.44
+      },
+      "thought": {
+        "id": "around-the-world-thought",
+        "audio": "/audio/jockey/around-the-world-thought.mp3",
+        "delivery": "reflective",
+        "text": "Hold this feeling. Bottle it.",
+        "synthesisText": "Hold this feeling.<break time=\"0.4s\" /> Bottle it.",
+        "durationSeconds": 2.32
+      },
+      "thoughtOffset": 70
     },
     "just stand there": {
       "intro": {
@@ -718,6 +1369,22 @@
         "text": "Fred again and SOAK. just stand there. Breathe.",
         "synthesisText": "Fred again and SOAK.<break time=\"0.3s\" /> just stand there.<break time=\"0.3s\" /> Breathe.",
         "durationSeconds": 3.94
+      },
+      "thought": {
+        "id": "just-stand-there-thought",
+        "audio": "/audio/jockey/just-stand-there-thought.mp3",
+        "delivery": "reflective",
+        "text": "Lean into the low end. Feel it in the floor.",
+        "synthesisText": "Lean into the low end.<break time=\"0.4s\" /> Feel it in the floor.",
+        "durationSeconds": 3.0
+      },
+      "thoughtOffset": 49,
+      "outro": {
+        "id": "just-stand-there-outro",
+        "audio": "/audio/jockey/just-stand-there-outro.mp3",
+        "delivery": "warm",
+        "text": "just stand there, there.",
+        "durationSeconds": 1.33
       }
     },
     "BBY vs. Real As It Gets (Fred again.. Bootleg)": {
@@ -728,6 +1395,14 @@
         "text": "Overmono versus Lil Baby. A Fred bootleg. Watch this.",
         "synthesisText": "Overmono versus Lil Baby.<break time=\"0.3s\" /> A Fred bootleg.<break time=\"0.3s\" /> Watch this.",
         "durationSeconds": 4.31
+      },
+      "outro": {
+        "id": "bby-vs-real-as-it-gets-fred-again-bootle-outro",
+        "audio": "/audio/jockey/bby-vs-real-as-it-gets-fred-again-bootle-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Overmono vs. Lil Baby. BBY versus Real As It Gets.",
+        "synthesisText": "That was Overmono vs.<break time=\"0.3s\" /> Lil Baby.<break time=\"0.3s\" /> BBY versus Real As It Gets.",
+        "durationSeconds": 4.68
       }
     },
     "Stay With Me": {
@@ -738,6 +1413,22 @@
         "text": "Skrillex and Fred again. Stay With Me.",
         "synthesisText": "Skrillex and Fred again.<break time=\"0.3s\" /> Stay With Me.",
         "durationSeconds": 2.59
+      },
+      "thought": {
+        "id": "stay-with-me-thought",
+        "audio": "/audio/jockey/stay-with-me-thought.mp3",
+        "delivery": "reflective",
+        "text": "The room always changes when this one lands.",
+        "durationSeconds": 2.46
+      },
+      "thoughtOffset": 58,
+      "outro": {
+        "id": "stay-with-me-outro",
+        "audio": "/audio/jockey/stay-with-me-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Skrillex & Fred again. Stay With Me.",
+        "synthesisText": "That was Skrillex & Fred again.<break time=\"0.3s\" /> Stay With Me.",
+        "durationSeconds": 3.37
       }
     },
     "Haribo vs. PTSD (Fred again.. Bootleg)": {
@@ -748,7 +1439,22 @@
         "text": "Haribo versus PTSD. A Fred bootleg. Pressure.",
         "synthesisText": "Haribo versus PTSD.<break time=\"0.3s\" /> A Fred bootleg.<break time=\"0.3s\" /> Pressure.",
         "durationSeconds": 4.26
-      }
+      },
+      "outro": {
+        "id": "haribo-vs-ptsd-fred-again-bootleg-outro",
+        "audio": "/audio/jockey/haribo-vs-ptsd-fred-again-bootleg-outro.mp3",
+        "delivery": "warm",
+        "text": "Haribo versus PTSD, there.",
+        "durationSeconds": 1.93
+      },
+      "thought": {
+        "id": "haribo-vs-ptsd-fred-again-bootleg-thought",
+        "audio": "/audio/jockey/haribo-vs-ptsd-fred-again-bootleg-thought.mp3",
+        "delivery": "reflective",
+        "text": "This one's for anyone starting over.",
+        "durationSeconds": 2.12
+      },
+      "thoughtOffset": 47
     },
     "Feelings": {
       "intro": {
@@ -758,7 +1464,22 @@
         "text": "KH. Feelings. Let it wash in.",
         "synthesisText": "KH.<break time=\"0.3s\" /> Feelings.<break time=\"0.3s\" /> Let it wash in.",
         "durationSeconds": 3.11
-      }
+      },
+      "outro": {
+        "id": "feelings-outro",
+        "audio": "/audio/jockey/feelings-outro.mp3",
+        "delivery": "warm",
+        "text": "Feelings, there.",
+        "durationSeconds": 1.1
+      },
+      "thought": {
+        "id": "feelings-thought",
+        "audio": "/audio/jockey/feelings-thought.mp3",
+        "delivery": "reflective",
+        "text": "Listen to how it breathes in and out.",
+        "durationSeconds": 2.22
+      },
+      "thoughtOffset": 110
     },
     "Lights Out": {
       "intro": {
@@ -768,7 +1489,23 @@
         "text": "Fred again, Romy and HAAi. Lights Out.",
         "synthesisText": "Fred again, Romy and HAAi.<break time=\"0.3s\" /> Lights Out.",
         "durationSeconds": 4.68
-      }
+      },
+      "outro": {
+        "id": "lights-out-outro",
+        "audio": "/audio/jockey/lights-out-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Lights Out.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Lights Out.",
+        "durationSeconds": 1.99
+      },
+      "thought": {
+        "id": "lights-out-thought",
+        "audio": "/audio/jockey/lights-out-thought.mp3",
+        "delivery": "reflective",
+        "text": "Kind of music that makes you text an old friend.",
+        "durationSeconds": 2.69
+      },
+      "thoughtOffset": 110
     },
     "Kahan (last year)": {
       "intro": {
@@ -778,6 +1515,23 @@
         "text": "Fred again and Kodak Black. Kahan. Last year.",
         "synthesisText": "Fred again and Kodak Black.<break time=\"0.3s\" /> Kahan.<break time=\"0.3s\" /> Last year.",
         "durationSeconds": 3.34
+      },
+      "thought": {
+        "id": "kahan-last-year-thought",
+        "audio": "/audio/jockey/kahan-last-year-thought.mp3",
+        "delivery": "reflective",
+        "text": "Somebody, somewhere, is hearing this for the first time. Lucky.",
+        "synthesisText": "Somebody, somewhere, is hearing this for the first time.<break time=\"0.4s\" /> Lucky.",
+        "durationSeconds": 4.55
+      },
+      "thoughtOffset": 91,
+      "outro": {
+        "id": "kahan-last-year-outro",
+        "audio": "/audio/jockey/kahan-last-year-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Kahan.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Kahan.",
+        "durationSeconds": 1.8
       }
     },
     "Marnie (wish i had u)": {
@@ -788,6 +1542,14 @@
         "text": "Marnie. Wish I had you. Gentle now.",
         "synthesisText": "Marnie.<break time=\"0.3s\" /> Wish I had you.<break time=\"0.3s\" /> Gentle now.",
         "durationSeconds": 3.06
+      },
+      "outro": {
+        "id": "marnie-wish-i-had-u-outro",
+        "audio": "/audio/jockey/marnie-wish-i-had-u-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Marnie.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Marnie.",
+        "durationSeconds": 1.49
       }
     },
     "Angie (i've been lost)": {
@@ -798,6 +1560,14 @@
         "text": "Angie. I've been lost. Stay with it.",
         "synthesisText": "Angie.<break time=\"0.3s\" /> I've been lost.<break time=\"0.3s\" /> Stay with it.",
         "durationSeconds": 2.95
+      },
+      "outro": {
+        "id": "angie-i-ve-been-lost-outro",
+        "audio": "/audio/jockey/angie-i-ve-been-lost-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Angie.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Angie.",
+        "durationSeconds": 1.91
       }
     },
     "ICEY.. (Live Edit)": {
@@ -808,6 +1578,22 @@
         "text": "Fred again and BIA. Icey. Live edit.",
         "synthesisText": "Fred again and BIA.<break time=\"0.3s\" /> Icey.<break time=\"0.3s\" /> Live edit.",
         "durationSeconds": 2.77
+      },
+      "thought": {
+        "id": "icey-live-edit-thought",
+        "audio": "/audio/jockey/icey-live-edit-thought.mp3",
+        "delivery": "reflective",
+        "text": "Let the rhythm carry the weight for a while.",
+        "durationSeconds": 2.53
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "icey-live-edit-outro",
+        "audio": "/audio/jockey/icey-live-edit-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Icey.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Icey.",
+        "durationSeconds": 1.67
       }
     },
     "..FEISTY (Oppidan Remix)": {
@@ -818,6 +1604,23 @@
         "text": "Feisty. The Oppidan remix. Here we go.",
         "synthesisText": "Feisty.<break time=\"0.3s\" /> The Oppidan remix.<break time=\"0.3s\" /> Here we go.",
         "durationSeconds": 3.34
+      },
+      "thought": {
+        "id": "feisty-oppidan-remix-thought",
+        "audio": "/audio/jockey/feisty-oppidan-remix-thought.mp3",
+        "delivery": "reflective",
+        "text": "Notice how it holds back. That's the trick.",
+        "synthesisText": "Notice how it holds back.<break time=\"0.4s\" /> That's the trick.",
+        "durationSeconds": 2.87
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "feisty-oppidan-remix-outro",
+        "audio": "/audio/jockey/feisty-oppidan-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & BIA. Feisty.",
+        "synthesisText": "That was Fred again & BIA.<break time=\"0.3s\" /> Feisty.",
+        "durationSeconds": 2.69
       }
     },
     "solo (KETTAMA Remix)": {
@@ -828,6 +1631,23 @@
         "text": "Solo, the KETTAMA remix. Faster now.",
         "synthesisText": "Solo, the KETTAMA remix.<break time=\"0.3s\" /> Faster now.",
         "durationSeconds": 2.95
+      },
+      "thought": {
+        "id": "solo-kettama-remix-thought",
+        "audio": "/audio/jockey/solo-kettama-remix-thought.mp3",
+        "delivery": "reflective",
+        "text": "Ooh. That texture.",
+        "synthesisText": "Ooh.<break time=\"0.4s\" /> That texture.",
+        "durationSeconds": 1.99
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "solo-kettama-remix-outro",
+        "audio": "/audio/jockey/solo-kettama-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & Blanco. solo.",
+        "synthesisText": "That was Fred again & Blanco.<break time=\"0.3s\" /> solo.",
+        "durationSeconds": 2.4
       }
     },
     "Winny (Lil Silva Remix)": {
@@ -838,6 +1658,13 @@
         "text": "Winny, the Lil Silva remix. Bounce.",
         "synthesisText": "Winny, the Lil Silva remix.<break time=\"0.3s\" /> Bounce.",
         "durationSeconds": 2.87
+      },
+      "outro": {
+        "id": "winny-lil-silva-remix-outro",
+        "audio": "/audio/jockey/winny-lil-silva-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "Winny, there.",
+        "durationSeconds": 0.91
       }
     },
     "Ambery": {
@@ -848,6 +1675,22 @@
         "text": "Fred again and Floating Points. Ambery. Drift.",
         "synthesisText": "Fred again and Floating Points.<break time=\"0.3s\" /> Ambery.<break time=\"0.3s\" /> Drift.",
         "durationSeconds": 3.89
+      },
+      "thought": {
+        "id": "ambery-thought",
+        "audio": "/audio/jockey/ambery-thought.mp3",
+        "delivery": "playful",
+        "text": "The drop's coming. Or maybe not. That's the fun.",
+        "synthesisText": "The drop's coming.<break time=\"0.4s\" /> Or maybe not.<break time=\"0.4s\" /> That's the fun.",
+        "durationSeconds": 4.02
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "ambery-outro",
+        "audio": "/audio/jockey/ambery-outro.mp3",
+        "delivery": "warm",
+        "text": "Ambery, there.",
+        "durationSeconds": 2.51
       }
     },
     "HARDSTYLE 2 (Lou Nour Remix)": {
@@ -858,7 +1701,23 @@
         "text": "Hardstyle 2, the Lou Nour remix. Brace yourself.",
         "synthesisText": "Hardstyle 2, the Lou Nour remix.<break time=\"0.3s\" /> Brace yourself.",
         "durationSeconds": 4.08
-      }
+      },
+      "outro": {
+        "id": "hardstyle-2-lou-nour-remix-outro",
+        "audio": "/audio/jockey/hardstyle-2-lou-nour-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Hardstyle 2.",
+        "durationSeconds": 1.75
+      },
+      "thought": {
+        "id": "hardstyle-2-lou-nour-remix-thought",
+        "audio": "/audio/jockey/hardstyle-2-lou-nour-remix-thought.mp3",
+        "delivery": "reflective",
+        "text": "Let it wash over you. No hurry.",
+        "synthesisText": "Let it wash over you.<break time=\"0.4s\" /> No hurry.",
+        "durationSeconds": 2.46
+      },
+      "thoughtOffset": 110
     },
     "the floor (HAAi Remix)": {
       "intro": {
@@ -868,6 +1727,14 @@
         "text": "The floor, the HAAi remix. Take it.",
         "synthesisText": "The floor, the HAAi remix.<break time=\"0.3s\" /> Take it.",
         "durationSeconds": 2.95
+      },
+      "outro": {
+        "id": "the-floor-haai-remix-outro",
+        "audio": "/audio/jockey/the-floor-haai-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. the floor.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> the floor.",
+        "durationSeconds": 1.91
       }
     },
     "you're a star (Skream & Benga Remix)": {
@@ -877,6 +1744,23 @@
         "delivery": "bright",
         "text": "You're a star, the Skream and Benga remix.",
         "durationSeconds": 2.53
+      },
+      "thought": {
+        "id": "you-re-a-star-skream-benga-remix-thought",
+        "audio": "/audio/jockey/you-re-a-star-skream-benga-remix-thought.mp3",
+        "delivery": "reflective",
+        "text": "Feel that lift? Ride it.",
+        "synthesisText": "Feel that lift?<break time=\"0.4s\" /> Ride it.",
+        "durationSeconds": 2.35
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "you-re-a-star-skream-benga-remix-outro",
+        "audio": "/audio/jockey/you-re-a-star-skream-benga-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & Amyl and The Sniffers. you're a star.",
+        "synthesisText": "That was Fred again & Amyl and The Sniffers.<break time=\"0.3s\" /> you're a star.",
+        "durationSeconds": 4.41
       }
     },
     "Berwyn (all that i got is you)": {
@@ -887,6 +1771,22 @@
         "text": "Berwyn. All that I got is you.",
         "synthesisText": "Berwyn.<break time=\"0.3s\" /> All that I got is you.",
         "durationSeconds": 2.4
+      },
+      "thought": {
+        "id": "berwyn-all-that-i-got-is-you-thought",
+        "audio": "/audio/jockey/berwyn-all-that-i-got-is-you-thought.mp3",
+        "delivery": "reflective",
+        "text": "If you're driving, this is your sign to take the long way.",
+        "durationSeconds": 3.53
+      },
+      "thoughtOffset": 92,
+      "outro": {
+        "id": "berwyn-all-that-i-got-is-you-outro",
+        "audio": "/audio/jockey/berwyn-all-that-i-got-is-you-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Berwyn.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Berwyn.",
+        "durationSeconds": 1.52
       }
     },
     "Baby again.. (Demo)": {
@@ -897,6 +1797,23 @@
         "text": "Baby again. The demo. Rough edges and all.",
         "synthesisText": "Baby again.<break time=\"0.3s\" /> The demo.<break time=\"0.3s\" /> Rough edges and all.",
         "durationSeconds": 2.95
+      },
+      "thought": {
+        "id": "baby-again-demo-thought",
+        "audio": "/audio/jockey/baby-again-demo-thought.mp3",
+        "delivery": "reflective",
+        "text": "Big room, small feeling. Both at once.",
+        "synthesisText": "Big room, small feeling.<break time=\"0.4s\" /> Both at once.",
+        "durationSeconds": 2.87
+      },
+      "thoughtOffset": 104,
+      "outro": {
+        "id": "baby-again-demo-outro",
+        "audio": "/audio/jockey/baby-again-demo-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again, Skrillex, Four Tet. Baby again.",
+        "synthesisText": "That was Fred again, Skrillex, Four Tet.<break time=\"0.3s\" /> Baby again.",
+        "durationSeconds": 4.13
       }
     },
     "Infinitely Gentle Blows (Remix)": {
@@ -907,7 +1824,23 @@
         "text": "God Within. Infinitely Gentle Blows. Soft landing.",
         "synthesisText": "God Within.<break time=\"0.3s\" /> Infinitely Gentle Blows.<break time=\"0.3s\" /> Soft landing.",
         "durationSeconds": 4.44
-      }
+      },
+      "outro": {
+        "id": "infinitely-gentle-blows-remix-outro",
+        "audio": "/audio/jockey/infinitely-gentle-blows-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "That was God Within. Infinitely Gentle Blows.",
+        "synthesisText": "That was God Within.<break time=\"0.3s\" /> Infinitely Gentle Blows.",
+        "durationSeconds": 3.71
+      },
+      "thought": {
+        "id": "infinitely-gentle-blows-remix-thought",
+        "audio": "/audio/jockey/infinitely-gentle-blows-remix-thought.mp3",
+        "delivery": "reflective",
+        "text": "Swap the screen for the window for a minute.",
+        "durationSeconds": 2.27
+      },
+      "thoughtOffset": 110
     },
     "Song To The Siren (ID Remix)": {
       "intro": {
@@ -917,7 +1850,24 @@
         "text": "This Mortal Coil. Song To The Siren. Hush now.",
         "synthesisText": "This Mortal Coil.<break time=\"0.3s\" /> Song To The Siren.<break time=\"0.3s\" /> Hush now.",
         "durationSeconds": 4.21
-      }
+      },
+      "outro": {
+        "id": "song-to-the-siren-id-remix-outro",
+        "audio": "/audio/jockey/song-to-the-siren-id-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "That was This Mortal Coil. Song To The Siren.",
+        "synthesisText": "That was This Mortal Coil.<break time=\"0.3s\" /> Song To The Siren.",
+        "durationSeconds": 3.58
+      },
+      "thought": {
+        "id": "song-to-the-siren-id-remix-thought",
+        "audio": "/audio/jockey/song-to-the-siren-id-remix-thought.mp3",
+        "delivery": "reflective",
+        "text": "Let your shoulders drop. There you go.",
+        "synthesisText": "Let your shoulders drop.<break time=\"0.4s\" /> There you go.",
+        "durationSeconds": 2.46
+      },
+      "thoughtOffset": 81
     },
     "Marco (and everyone)": {
       "intro": {
@@ -927,6 +1877,23 @@
         "text": "Marco. And everyone. This one's for the room.",
         "synthesisText": "Marco.<break time=\"0.3s\" /> And everyone.<break time=\"0.3s\" /> This one's for the room.",
         "durationSeconds": 3.58
+      },
+      "thought": {
+        "id": "marco-and-everyone-thought",
+        "audio": "/audio/jockey/marco-and-everyone-thought.mp3",
+        "delivery": "reflective",
+        "text": "Little things in the background. Listen past the front.",
+        "synthesisText": "Little things in the background.<break time=\"0.4s\" /> Listen past the front.",
+        "durationSeconds": 3.37
+      },
+      "thoughtOffset": 67,
+      "outro": {
+        "id": "marco-and-everyone-outro",
+        "audio": "/audio/jockey/marco-and-everyone-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Marco.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Marco.",
+        "durationSeconds": 2.04
       }
     },
     "Good Lies": {
@@ -937,7 +1904,23 @@
         "text": "Overmono. Good Lies. Locked in.",
         "synthesisText": "Overmono.<break time=\"0.3s\" /> Good Lies.<break time=\"0.3s\" /> Locked in.",
         "durationSeconds": 2.95
-      }
+      },
+      "outro": {
+        "id": "good-lies-outro",
+        "audio": "/audio/jockey/good-lies-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Overmono. Good Lies.",
+        "synthesisText": "That was Overmono.<break time=\"0.3s\" /> Good Lies.",
+        "durationSeconds": 2.12
+      },
+      "thought": {
+        "id": "good-lies-thought",
+        "audio": "/audio/jockey/good-lies-thought.mp3",
+        "delivery": "reflective",
+        "text": "Just you and the beat for a bit.",
+        "durationSeconds": 1.7
+      },
+      "thoughtOffset": 110
     },
     "So U Kno": {
       "intro": {
@@ -947,7 +1930,23 @@
         "text": "Overmono. So U Kno.",
         "synthesisText": "Overmono.<break time=\"0.3s\" /> So U Kno.",
         "durationSeconds": 2.46
-      }
+      },
+      "outro": {
+        "id": "so-u-kno-outro",
+        "audio": "/audio/jockey/so-u-kno-outro.mp3",
+        "delivery": "warm",
+        "text": "So U Kno, there.",
+        "durationSeconds": 1.33
+      },
+      "thought": {
+        "id": "so-u-kno-thought",
+        "audio": "/audio/jockey/so-u-kno-thought.mp3",
+        "delivery": "reflective",
+        "text": "Hmm. This one stays with you after.",
+        "synthesisText": "Hmm.<break time=\"0.4s\" /> This one stays with you after.",
+        "durationSeconds": 4.41
+      },
+      "thoughtOffset": 110
     },
     "Blow Out": {
       "intro": {
@@ -957,7 +1956,23 @@
         "text": "Overmono. Blow Out. Here it goes.",
         "synthesisText": "Overmono.<break time=\"0.3s\" /> Blow Out.<break time=\"0.3s\" /> Here it goes.",
         "durationSeconds": 3.19
-      }
+      },
+      "outro": {
+        "id": "blow-out-outro",
+        "audio": "/audio/jockey/blow-out-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Blow Out.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Blow Out.",
+        "durationSeconds": 1.91
+      },
+      "thought": {
+        "id": "blow-out-thought",
+        "audio": "/audio/jockey/blow-out-thought.mp3",
+        "delivery": "reflective",
+        "text": "This is a good one to walk to.",
+        "durationSeconds": 1.85
+      },
+      "thoughtOffset": 110
     },
     "Is U": {
       "intro": {
@@ -967,7 +1982,23 @@
         "text": "Overmono. Is U. Feel that swing.",
         "synthesisText": "Overmono.<break time=\"0.3s\" /> Is U.<break time=\"0.3s\" /> Feel that swing.",
         "durationSeconds": 3.19
-      }
+      },
+      "outro": {
+        "id": "is-u-outro",
+        "audio": "/audio/jockey/is-u-outro.mp3",
+        "delivery": "warm",
+        "text": "Is U, there.",
+        "durationSeconds": 0.97
+      },
+      "thought": {
+        "id": "is-u-thought",
+        "audio": "/audio/jockey/is-u-thought.mp3",
+        "delivery": "reflective",
+        "text": "Feel the swing in it? Lovely.",
+        "synthesisText": "Feel the swing in it?<break time=\"0.4s\" /> Lovely.",
+        "durationSeconds": 2.17
+      },
+      "thoughtOffset": 110
     },
     "Walkin' Re-Fidget": {
       "intro": {
@@ -977,7 +2008,23 @@
         "text": "Overmono. Walkin' Re-Fidget.",
         "synthesisText": "Overmono.<break time=\"0.3s\" /> Walkin' Re-Fidget.",
         "durationSeconds": 2.4
-      }
+      },
+      "outro": {
+        "id": "walkin-re-fidget-outro",
+        "audio": "/audio/jockey/walkin-re-fidget-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Overmono. Walkin' Re-Fidget.",
+        "synthesisText": "That was Overmono.<break time=\"0.3s\" /> Walkin' Re-Fidget.",
+        "durationSeconds": 2.59
+      },
+      "thought": {
+        "id": "walkin-re-fidget-thought",
+        "audio": "/audio/jockey/walkin-re-fidget-thought.mp3",
+        "delivery": "reflective",
+        "text": "I like it best right here, in the middle.",
+        "durationSeconds": 2.35
+      },
+      "thoughtOffset": 110
     },
     "stayinit (VIP / Outro)": {
       "intro": {
@@ -987,7 +2034,24 @@
         "text": "Stayinit, the VIP. Hold on to something.",
         "synthesisText": "Stayinit, the VIP.<break time=\"0.3s\" /> Hold on to something.",
         "durationSeconds": 3.24
-      }
+      },
+      "outro": {
+        "id": "stayinit-vip-outro-outro",
+        "audio": "/audio/jockey/stayinit-vip-outro-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. stayinit.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> stayinit.",
+        "durationSeconds": 1.91
+      },
+      "thought": {
+        "id": "stayinit-vip-outro-thought",
+        "audio": "/audio/jockey/stayinit-vip-outro-thought.mp3",
+        "delivery": "playful",
+        "text": "Okay. Volume up. Trust me.",
+        "synthesisText": "Okay.<break time=\"0.4s\" /> Volume up.<break time=\"0.4s\" /> Trust me.",
+        "durationSeconds": 4.0
+      },
+      "thoughtOffset": 110
     },
     "Hey Hey (Acoustic / Jam)": {
       "intro": {
@@ -997,6 +2061,14 @@
         "text": "Hey Hey. An acoustic jam with LATIN MAFIA.",
         "synthesisText": "Hey Hey.<break time=\"0.3s\" /> An acoustic jam with LATIN MAFIA.",
         "durationSeconds": 3.19
+      },
+      "outro": {
+        "id": "hey-hey-acoustic-jam-outro",
+        "audio": "/audio/jockey/hey-hey-acoustic-jam-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Hey Hey.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Hey Hey.",
+        "durationSeconds": 1.62
       }
     },
     "Bonita (Studio Jam)": {
@@ -1007,6 +2079,14 @@
         "text": "Bonita. A studio jam. Hear the room.",
         "synthesisText": "Bonita.<break time=\"0.3s\" /> A studio jam.<break time=\"0.3s\" /> Hear the room.",
         "durationSeconds": 3.16
+      },
+      "outro": {
+        "id": "bonita-studio-jam-outro",
+        "audio": "/audio/jockey/bonita-studio-jam-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Bonita.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Bonita.",
+        "durationSeconds": 1.91
       }
     },
     "Quiereme (Live Edit)": {
@@ -1017,7 +2097,23 @@
         "text": "Quiereme. The live edit.",
         "synthesisText": "Quiereme.<break time=\"0.3s\" /> The live edit.",
         "durationSeconds": 2.17
-      }
+      },
+      "outro": {
+        "id": "quiereme-live-edit-outro",
+        "audio": "/audio/jockey/quiereme-live-edit-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Quiereme.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Quiereme.",
+        "durationSeconds": 1.91
+      },
+      "thought": {
+        "id": "quiereme-live-edit-thought",
+        "audio": "/audio/jockey/quiereme-live-edit-thought.mp3",
+        "delivery": "reflective",
+        "text": "If the week's been heavy, let this lift a bit of it.",
+        "durationSeconds": 2.82
+      },
+      "thoughtOffset": 110
     },
     "Piensas En Mi": {
       "intro": {
@@ -1027,6 +2123,23 @@
         "text": "Fred again and LATIN MAFIA. Piensas En Mi.",
         "synthesisText": "Fred again and LATIN MAFIA.<break time=\"0.3s\" /> Piensas En Mi.",
         "durationSeconds": 3.24
+      },
+      "thought": {
+        "id": "piensas-en-mi-thought",
+        "audio": "/audio/jockey/piensas-en-mi-thought.mp3",
+        "delivery": "reflective",
+        "text": "Hmm. Some songs just sound like a memory.",
+        "synthesisText": "Hmm.<break time=\"0.4s\" /> Some songs just sound like a memory.",
+        "durationSeconds": 2.74
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "piensas-en-mi-outro",
+        "audio": "/audio/jockey/piensas-en-mi-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & LATIN MAFIA. Piensas En Mi.",
+        "synthesisText": "That was Fred again & LATIN MAFIA.<break time=\"0.3s\" /> Piensas En Mi.",
+        "durationSeconds": 3.47
       }
     },
     "Halo (Jam)": {
@@ -1037,6 +2150,23 @@
         "text": "Halo. A jam. Let it hang in the air.",
         "synthesisText": "Halo.<break time=\"0.3s\" /> A jam.<break time=\"0.3s\" /> Let it hang in the air.",
         "durationSeconds": 3.11
+      },
+      "thought": {
+        "id": "halo-jam-thought",
+        "audio": "/audio/jockey/halo-jam-thought.mp3",
+        "delivery": "reflective",
+        "text": "Okay, that bit got me. Again.",
+        "synthesisText": "Okay, that bit got me.<break time=\"0.4s\" /> Again.",
+        "durationSeconds": 2.32
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "halo-jam-outro",
+        "audio": "/audio/jockey/halo-jam-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & LATIN MAFIA. Halo.",
+        "synthesisText": "That was Fred again & LATIN MAFIA.<break time=\"0.3s\" /> Halo.",
+        "durationSeconds": 3.71
       }
     },
     "Hey Hey": {
@@ -1047,6 +2177,22 @@
         "text": "Fred again and LATIN MAFIA. Hey Hey.",
         "synthesisText": "Fred again and LATIN MAFIA.<break time=\"0.3s\" /> Hey Hey.",
         "durationSeconds": 3.06
+      },
+      "thought": {
+        "id": "hey-hey-thought",
+        "audio": "/audio/jockey/hey-hey-thought.mp3",
+        "delivery": "reflective",
+        "text": "There's a whole crowd in this one, even when it's quiet.",
+        "durationSeconds": 3.53
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "hey-hey-outro",
+        "audio": "/audio/jockey/hey-hey-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & LATIN MAFIA. Hey Hey.",
+        "synthesisText": "That was Fred again & LATIN MAFIA.<break time=\"0.3s\" /> Hey Hey.",
+        "durationSeconds": 3.6
       }
     },
     "Alvafro": {
@@ -1057,6 +2203,22 @@
         "text": "Alvafro. Fred again and LATIN MAFIA.",
         "synthesisText": "Alvafro.<break time=\"0.3s\" /> Fred again and LATIN MAFIA.",
         "durationSeconds": 3.34
+      },
+      "thought": {
+        "id": "alvafro-thought",
+        "audio": "/audio/jockey/alvafro-thought.mp3",
+        "delivery": "reflective",
+        "text": "Ride it out. No skipping.",
+        "synthesisText": "Ride it out.<break time=\"0.4s\" /> No skipping.",
+        "durationSeconds": 2.12
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "alvafro-outro",
+        "audio": "/audio/jockey/alvafro-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Alvafro.",
+        "durationSeconds": 1.25
       }
     },
     "Bonita": {
@@ -1067,7 +2229,23 @@
         "text": "Bonita. Fred again and LATIN MAFIA.",
         "synthesisText": "Bonita.<break time=\"0.3s\" /> Fred again and LATIN MAFIA.",
         "durationSeconds": 2.53
-      }
+      },
+      "outro": {
+        "id": "bonita-outro",
+        "audio": "/audio/jockey/bonita-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & LATIN MAFIA. Bonita.",
+        "synthesisText": "That was Fred again & LATIN MAFIA.<break time=\"0.3s\" /> Bonita.",
+        "durationSeconds": 3.66
+      },
+      "thought": {
+        "id": "bonita-thought",
+        "audio": "/audio/jockey/bonita-thought.mp3",
+        "delivery": "reflective",
+        "text": "Feels like the first warm day of the year.",
+        "durationSeconds": 2.35
+      },
+      "thoughtOffset": 110
     },
     "benjy chord": {
       "intro": {
@@ -1077,6 +2255,23 @@
         "text": "Benjy chord. Just listen to that chord.",
         "synthesisText": "Benjy chord.<break time=\"0.3s\" /> Just listen to that chord.",
         "durationSeconds": 2.64
+      },
+      "thought": {
+        "id": "benjy-chord-thought",
+        "audio": "/audio/jockey/benjy-chord-thought.mp3",
+        "delivery": "reflective",
+        "text": "Some tracks are a conversation. This one listens back.",
+        "synthesisText": "Some tracks are a conversation.<break time=\"0.4s\" /> This one listens back.",
+        "durationSeconds": 3.76
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "benjy-chord-outro",
+        "audio": "/audio/jockey/benjy-chord-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. benjy chord.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> benjy chord.",
+        "durationSeconds": 2.09
       }
     },
     "Quiereme": {
@@ -1087,7 +2282,24 @@
         "text": "Quiereme. Fred again and LATIN MAFIA.",
         "synthesisText": "Quiereme.<break time=\"0.3s\" /> Fred again and LATIN MAFIA.",
         "durationSeconds": 3.19
-      }
+      },
+      "outro": {
+        "id": "quiereme-outro",
+        "audio": "/audio/jockey/quiereme-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Quiereme.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Quiereme.",
+        "durationSeconds": 1.99
+      },
+      "thought": {
+        "id": "quiereme-thought",
+        "audio": "/audio/jockey/quiereme-thought.mp3",
+        "delivery": "playful",
+        "text": "Sing along if you want. No one's judging.",
+        "synthesisText": "Sing along if you want.<break time=\"0.4s\" /> No one's judging.",
+        "durationSeconds": 2.69
+      },
+      "thoughtOffset": 110
     },
     "Film Scene Soundtrack": {
       "intro": {
@@ -1097,7 +2309,24 @@
         "text": "Film Scene Soundtrack. Picture it.",
         "synthesisText": "Film Scene Soundtrack.<break time=\"0.3s\" /> Picture it.",
         "durationSeconds": 2.69
-      }
+      },
+      "outro": {
+        "id": "film-scene-soundtrack-outro",
+        "audio": "/audio/jockey/film-scene-soundtrack-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Film Scene Soundtrack.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Film Scene Soundtrack.",
+        "durationSeconds": 2.82
+      },
+      "thought": {
+        "id": "film-scene-soundtrack-thought",
+        "audio": "/audio/jockey/film-scene-soundtrack-thought.mp3",
+        "delivery": "reflective",
+        "text": "Let it repeat. Repetition is the point.",
+        "synthesisText": "Let it repeat.<break time=\"0.4s\" /> Repetition is the point.",
+        "durationSeconds": 2.82
+      },
+      "thoughtOffset": 110
     },
     "Halo": {
       "intro": {
@@ -1107,6 +2336,22 @@
         "text": "Halo. LATIN MAFIA and Lil Yachty with Fred.",
         "synthesisText": "Halo.<break time=\"0.3s\" /> LATIN MAFIA and Lil Yachty with Fred.",
         "durationSeconds": 3.19
+      },
+      "thought": {
+        "id": "halo-thought",
+        "audio": "/audio/jockey/halo-thought.mp3",
+        "delivery": "reflective",
+        "text": "Hear the room breathing in the gaps.",
+        "durationSeconds": 2.17
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "halo-outro",
+        "audio": "/audio/jockey/halo-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again, LATIN MAFIA & Lil Yachty. Halo.",
+        "synthesisText": "That was Fred again, LATIN MAFIA & Lil Yachty.<break time=\"0.3s\" /> Halo.",
+        "durationSeconds": 3.89
       }
     },
     "Te Estoy Correteando": {
@@ -1117,7 +2362,22 @@
         "text": "Te Estoy Correteando. Catch up if you can.",
         "synthesisText": "Te Estoy Correteando.<break time=\"0.3s\" /> Catch up if you can.",
         "durationSeconds": 3.06
-      }
+      },
+      "outro": {
+        "id": "te-estoy-correteando-outro",
+        "audio": "/audio/jockey/te-estoy-correteando-outro.mp3",
+        "delivery": "warm",
+        "text": "Te Estoy Correteando, there.",
+        "durationSeconds": 1.85
+      },
+      "thought": {
+        "id": "te-estoy-correteando-thought",
+        "audio": "/audio/jockey/te-estoy-correteando-thought.mp3",
+        "delivery": "playful",
+        "text": "There's no wrong way to move to this.",
+        "durationSeconds": 1.99
+      },
+      "thoughtOffset": 110
     },
     "Mabe": {
       "intro": {
@@ -1127,6 +2387,22 @@
         "text": "Mabe. With Mabe Fratti. Ooh, those strings.",
         "synthesisText": "Mabe.<break time=\"0.3s\" /> With Mabe Fratti.<break time=\"0.3s\" /> Ooh, those strings.",
         "durationSeconds": 3.84
+      },
+      "thought": {
+        "id": "mabe-thought",
+        "audio": "/audio/jockey/mabe-thought.mp3",
+        "delivery": "reflective",
+        "text": "Every time I hear this, I find something new.",
+        "durationSeconds": 2.35
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "mabe-outro",
+        "audio": "/audio/jockey/mabe-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again, LATIN MAFIA & Mabe Fratti. Mabe.",
+        "synthesisText": "That was Fred again, LATIN MAFIA & Mabe Fratti.<break time=\"0.3s\" /> Mabe.",
+        "durationSeconds": 4.91
       }
     },
     "I wish it wasnt": {
@@ -1137,6 +2413,14 @@
         "text": "I wish it wasn't. Fred again and LATIN MAFIA.",
         "synthesisText": "I wish it wasn't.<break time=\"0.3s\" /> Fred again and LATIN MAFIA.",
         "durationSeconds": 3.24
+      },
+      "outro": {
+        "id": "i-wish-it-wasnt-outro",
+        "audio": "/audio/jockey/i-wish-it-wasnt-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. I wish it wasnt.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> I wish it wasnt.",
+        "durationSeconds": 2.27
       }
     },
     "Catrin (The City)": {
@@ -1147,6 +2431,21 @@
         "text": "Catrin. The city. Lights coming on.",
         "synthesisText": "Catrin.<break time=\"0.3s\" /> The city.<break time=\"0.3s\" /> Lights coming on.",
         "durationSeconds": 3.11
+      },
+      "thought": {
+        "id": "catrin-the-city-thought",
+        "audio": "/audio/jockey/catrin-the-city-thought.mp3",
+        "delivery": "reflective",
+        "text": "Funny how a song can find you right on time.",
+        "durationSeconds": 2.87
+      },
+      "thoughtOffset": 103,
+      "outro": {
+        "id": "catrin-the-city-outro",
+        "audio": "/audio/jockey/catrin-the-city-outro.mp3",
+        "delivery": "warm",
+        "text": "Catrin, there.",
+        "durationSeconds": 1.25
       }
     },
     "Roze (Forgive)": {
@@ -1157,6 +2456,23 @@
         "text": "Roze. Forgive. Go easy.",
         "synthesisText": "Roze.<break time=\"0.3s\" /> Forgive.<break time=\"0.3s\" /> Go easy.",
         "durationSeconds": 2.51
+      },
+      "thought": {
+        "id": "roze-forgive-thought",
+        "audio": "/audio/jockey/roze-forgive-thought.mp3",
+        "delivery": "reflective",
+        "text": "Mm. Close your eyes for this bit, if you can.",
+        "synthesisText": "Mm.<break time=\"0.4s\" /> Close your eyes for this bit, if you can.",
+        "durationSeconds": 2.87
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "roze-forgive-outro",
+        "audio": "/audio/jockey/roze-forgive-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Roze.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Roze.",
+        "durationSeconds": 1.67
       }
     },
     "Faisal (Envelops Me)": {
@@ -1167,6 +2483,22 @@
         "text": "Faisal. Envelops me. Let it.",
         "synthesisText": "Faisal.<break time=\"0.3s\" /> Envelops me.<break time=\"0.3s\" /> Let it.",
         "durationSeconds": 3.11
+      },
+      "thought": {
+        "id": "faisal-envelops-me-thought",
+        "audio": "/audio/jockey/faisal-envelops-me-thought.mp3",
+        "delivery": "reflective",
+        "text": "Hear how much space is left in it. That's a choice.",
+        "synthesisText": "Hear how much space is left in it.<break time=\"0.4s\" /> That's a choice.",
+        "durationSeconds": 3.58
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "faisal-envelops-me-outro",
+        "audio": "/audio/jockey/faisal-envelops-me-outro.mp3",
+        "delivery": "warm",
+        "text": "Faisal, there.",
+        "durationSeconds": 1.1
       }
     },
     "Bleu (better with time)": {
@@ -1177,6 +2509,21 @@
         "text": "Bleu. Better with time.",
         "synthesisText": "Bleu.<break time=\"0.3s\" /> Better with time.",
         "durationSeconds": 1.99
+      },
+      "thought": {
+        "id": "bleu-better-with-time-thought",
+        "audio": "/audio/jockey/bleu-better-with-time-thought.mp3",
+        "delivery": "reflective",
+        "text": "I could loop this bit all night.",
+        "durationSeconds": 1.8
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "bleu-better-with-time-outro",
+        "audio": "/audio/jockey/bleu-better-with-time-outro.mp3",
+        "delivery": "warm",
+        "text": "Bleu, there.",
+        "durationSeconds": 1.07
       }
     },
     "wya": {
@@ -1187,6 +2534,14 @@
         "text": "Fred again. W, Y, A. Where you at?",
         "synthesisText": "Fred again.<break time=\"0.3s\" /> W, Y, A.<break time=\"0.3s\" /> Where you at?",
         "durationSeconds": 3.58
+      },
+      "outro": {
+        "id": "wya-outro",
+        "audio": "/audio/jockey/wya-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. W, Y, A.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> W, Y, A.",
+        "durationSeconds": 2.64
       }
     },
     ".one": {
@@ -1197,6 +2552,14 @@
         "text": "Dot one. Fred again. Breathe in.",
         "synthesisText": "Dot one.<break time=\"0.3s\" /> Fred again.<break time=\"0.3s\" /> Breathe in.",
         "durationSeconds": 2.93
+      },
+      "outro": {
+        "id": "one-outro",
+        "audio": "/audio/jockey/one-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Dot one.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Dot one.",
+        "durationSeconds": 1.75
       }
     },
     "No Love": {
@@ -1207,6 +2570,14 @@
         "text": "Summer Walker and SZA. No Love.",
         "synthesisText": "Summer Walker and SZA.<break time=\"0.3s\" /> No Love.",
         "durationSeconds": 2.4
+      },
+      "outro": {
+        "id": "no-love-outro",
+        "audio": "/audio/jockey/no-love-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Summer Walker, SZA. No Love.",
+        "synthesisText": "That was Summer Walker, SZA.<break time=\"0.3s\" /> No Love.",
+        "durationSeconds": 2.93
       }
     },
     "little mystery": {
@@ -1217,6 +2588,22 @@
         "text": "Little mystery. Fred again and John Martyn.",
         "synthesisText": "Little mystery.<break time=\"0.3s\" /> Fred again and John Martyn.",
         "durationSeconds": 3.06
+      },
+      "thought": {
+        "id": "little-mystery-thought",
+        "audio": "/audio/jockey/little-mystery-thought.mp3",
+        "delivery": "reflective",
+        "text": "Feels like walking home with good news.",
+        "durationSeconds": 2.22
+      },
+      "thoughtOffset": 85,
+      "outro": {
+        "id": "little-mystery-outro",
+        "audio": "/audio/jockey/little-mystery-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again, John Martyn. little mystery.",
+        "synthesisText": "That was Fred again, John Martyn.<break time=\"0.3s\" /> little mystery.",
+        "durationSeconds": 3.24
       }
     },
     "Hannah (the sun)": {
@@ -1227,6 +2614,22 @@
         "text": "Hannah. The sun. Here it comes up.",
         "synthesisText": "Hannah.<break time=\"0.3s\" /> The sun.<break time=\"0.3s\" /> Here it comes up.",
         "durationSeconds": 2.69
+      },
+      "thought": {
+        "id": "hannah-the-sun-thought",
+        "audio": "/audio/jockey/hannah-the-sun-thought.mp3",
+        "delivery": "reflective",
+        "text": "If this were a film, this is where the camera pulls back.",
+        "durationSeconds": 3.6
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "hannah-the-sun-outro",
+        "audio": "/audio/jockey/hannah-the-sun-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Hannah.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Hannah.",
+        "durationSeconds": 1.44
       }
     },
     "fear less": {
@@ -1237,7 +2640,24 @@
         "text": "Fear less. Fred again and Sampha.",
         "synthesisText": "Fear less.<break time=\"0.3s\" /> Fred again and Sampha.",
         "durationSeconds": 2.64
-      }
+      },
+      "outro": {
+        "id": "fear-less-outro",
+        "audio": "/audio/jockey/fear-less-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again, Sampha. fear less.",
+        "synthesisText": "That was Fred again, Sampha.<break time=\"0.3s\" /> fear less.",
+        "durationSeconds": 3.06
+      },
+      "thought": {
+        "id": "fear-less-thought",
+        "audio": "/audio/jockey/fear-less-thought.mp3",
+        "delivery": "reflective",
+        "text": "Wow. The patience in this.",
+        "synthesisText": "Wow.<break time=\"0.4s\" /> The patience in this.",
+        "durationSeconds": 2.51
+      },
+      "thoughtOffset": 110
     },
     "Weak Become Heroes": {
       "intro": {
@@ -1247,7 +2667,23 @@
         "text": "The Streets. Weak Become Heroes.",
         "synthesisText": "The Streets.<break time=\"0.3s\" /> Weak Become Heroes.",
         "durationSeconds": 2.46
-      }
+      },
+      "outro": {
+        "id": "weak-become-heroes-outro",
+        "audio": "/audio/jockey/weak-become-heroes-outro.mp3",
+        "delivery": "warm",
+        "text": "That was The Streets. Weak Become Heroes.",
+        "synthesisText": "That was The Streets.<break time=\"0.3s\" /> Weak Become Heroes.",
+        "durationSeconds": 3.19
+      },
+      "thought": {
+        "id": "weak-become-heroes-thought",
+        "audio": "/audio/jockey/weak-become-heroes-thought.mp3",
+        "delivery": "reflective",
+        "text": "You can hear the care in every layer.",
+        "durationSeconds": 2.46
+      },
+      "thoughtOffset": 110
     },
     "Twilight": {
       "intro": {
@@ -1257,6 +2693,13 @@
         "text": "Durham Diva. Twilight.",
         "synthesisText": "Durham Diva.<break time=\"0.3s\" /> Twilight.",
         "durationSeconds": 2.27
+      },
+      "outro": {
+        "id": "twilight-outro",
+        "audio": "/audio/jockey/twilight-outro.mp3",
+        "delivery": "warm",
+        "text": "Twilight, there.",
+        "durationSeconds": 1.33
       }
     },
     "you're a star": {
@@ -1267,6 +2710,22 @@
         "text": "You're a star. Fred again and Amyl and The Sniffers.",
         "synthesisText": "You're a star.<break time=\"0.3s\" /> Fred again and Amyl and The Sniffers.",
         "durationSeconds": 3.79
+      },
+      "thought": {
+        "id": "you-re-a-star-thought",
+        "audio": "/audio/jockey/you-re-a-star-thought.mp3",
+        "delivery": "reflective",
+        "text": "Some songs ask nothing of you. This is one.",
+        "synthesisText": "Some songs ask nothing of you.<break time=\"0.4s\" /> This is one.",
+        "durationSeconds": 3.19
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "you-re-a-star-outro",
+        "audio": "/audio/jockey/you-re-a-star-outro.mp3",
+        "delivery": "warm",
+        "text": "you're a star, there.",
+        "durationSeconds": 1.38
       }
     },
     "ICEY..": {
@@ -1277,6 +2736,13 @@
         "text": "Fred again and BIA. Icey.",
         "synthesisText": "Fred again and BIA.<break time=\"0.3s\" /> Icey.",
         "durationSeconds": 2.51
+      },
+      "outro": {
+        "id": "icey-outro",
+        "audio": "/audio/jockey/icey-outro.mp3",
+        "delivery": "warm",
+        "text": "Icey, there.",
+        "durationSeconds": 1.1
       }
     },
     "Last 1s Left": {
@@ -1287,7 +2753,23 @@
         "text": "Fred again and Skepta. Last ones left.",
         "synthesisText": "Fred again and Skepta.<break time=\"0.3s\" /> Last ones left.",
         "durationSeconds": 2.53
-      }
+      },
+      "outro": {
+        "id": "last-1s-left-outro",
+        "audio": "/audio/jockey/last-1s-left-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & Skepta. Last 1s Left.",
+        "synthesisText": "That was Fred again & Skepta.<break time=\"0.3s\" /> Last 1s Left.",
+        "durationSeconds": 3.16
+      },
+      "thought": {
+        "id": "last-1s-left-thought",
+        "audio": "/audio/jockey/last-1s-left-thought.mp3",
+        "delivery": "reflective",
+        "text": "The quiet parts matter just as much.",
+        "durationSeconds": 2.32
+      },
+      "thoughtOffset": 110
     },
     "I Think Of Angels (Fred again.. Remix)": {
       "intro": {
@@ -1297,7 +2779,23 @@
         "text": "Cat Power. I Think Of Angels. Fred's remix.",
         "synthesisText": "Cat Power.<break time=\"0.3s\" /> I Think Of Angels.<break time=\"0.3s\" /> Fred's remix.",
         "durationSeconds": 4.62
-      }
+      },
+      "outro": {
+        "id": "i-think-of-angels-fred-again-remix-outro",
+        "audio": "/audio/jockey/i-think-of-angels-fred-again-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. I Think Of Angels.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> I Think Of Angels.",
+        "durationSeconds": 2.46
+      },
+      "thought": {
+        "id": "i-think-of-angels-fred-again-remix-thought",
+        "audio": "/audio/jockey/i-think-of-angels-fred-again-remix-thought.mp3",
+        "delivery": "reflective",
+        "text": "Somewhere, a crowd is losing it to this.",
+        "durationSeconds": 2.27
+      },
+      "thoughtOffset": 110
     },
     "Lights Burn Dimmer": {
       "intro": {
@@ -1307,6 +2805,14 @@
         "text": "Fred again and Jamie T. Lights Burn Dimmer.",
         "synthesisText": "Fred again and Jamie T.<break time=\"0.3s\" /> Lights Burn Dimmer.",
         "durationSeconds": 3.76
+      },
+      "outro": {
+        "id": "lights-burn-dimmer-outro",
+        "audio": "/audio/jockey/lights-burn-dimmer-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Lights Burn Dimmer.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Lights Burn Dimmer.",
+        "durationSeconds": 2.4
       }
     },
     "Hippodrome (Fred again.. Remix)": {
@@ -1317,7 +2823,24 @@
         "text": "Jamie T. Hippodrome. Fred's remix.",
         "synthesisText": "Jamie T.<break time=\"0.3s\" /> Hippodrome.<break time=\"0.3s\" /> Fred's remix.",
         "durationSeconds": 3.84
-      }
+      },
+      "outro": {
+        "id": "hippodrome-fred-again-remix-outro",
+        "audio": "/audio/jockey/hippodrome-fred-again-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Hippodrome.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Hippodrome.",
+        "durationSeconds": 1.93
+      },
+      "thought": {
+        "id": "hippodrome-fred-again-remix-thought",
+        "audio": "/audio/jockey/hippodrome-fred-again-remix-thought.mp3",
+        "delivery": "reflective",
+        "text": "Hmm. Bittersweet, in the best way.",
+        "synthesisText": "Hmm.<break time=\"0.4s\" /> Bittersweet, in the best way.",
+        "durationSeconds": 2.32
+      },
+      "thoughtOffset": 72
     },
     "..FEISTY": {
       "intro": {
@@ -1326,6 +2849,23 @@
         "delivery": "playful",
         "text": "Fred again and BIA. Feisty.",
         "synthesisText": "Fred again and BIA.<break time=\"0.3s\" /> Feisty.",
+        "durationSeconds": 1.85
+      },
+      "thought": {
+        "id": "feisty-thought",
+        "audio": "/audio/jockey/feisty-thought.mp3",
+        "delivery": "reflective",
+        "text": "You know when a song feels like a friend? Yeah.",
+        "synthesisText": "You know when a song feels like a friend?<break time=\"0.4s\" /> Yeah.",
+        "durationSeconds": 2.95
+      },
+      "thoughtOffset": 96,
+      "outro": {
+        "id": "feisty-outro",
+        "audio": "/audio/jockey/feisty-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Feisty.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Feisty.",
         "durationSeconds": 1.85
       }
     },
@@ -1337,7 +2877,24 @@
         "text": "SNAR SNAR. Trippie. Trust it.",
         "synthesisText": "SNAR SNAR.<break time=\"0.3s\" /> Trippie.<break time=\"0.3s\" /> Trust it.",
         "durationSeconds": 3.0
-      }
+      },
+      "outro": {
+        "id": "trippie-trust-outro",
+        "audio": "/audio/jockey/trippie-trust-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Trippie.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Trippie.",
+        "durationSeconds": 1.85
+      },
+      "thought": {
+        "id": "trippie-trust-thought",
+        "audio": "/audio/jockey/trippie-trust-thought.mp3",
+        "delivery": "reflective",
+        "text": "Mm. This one's a slow burn. Let it.",
+        "synthesisText": "Mm.<break time=\"0.4s\" /> This one's a slow burn.<break time=\"0.4s\" /> Let it.",
+        "durationSeconds": 3.29
+      },
+      "thoughtOffset": 96
     },
     "21 Years": {
       "intro": {
@@ -1347,6 +2904,23 @@
         "text": "Skepta and Fred again. 21 Years.",
         "synthesisText": "Skepta and Fred again.<break time=\"0.3s\" /> 21 Years.",
         "durationSeconds": 3.47
+      },
+      "thought": {
+        "id": "21-years-thought",
+        "audio": "/audio/jockey/21-years-thought.mp3",
+        "delivery": "reflective",
+        "text": "Yes. This is the bit.",
+        "synthesisText": "Yes.<break time=\"0.4s\" /> This is the bit.",
+        "durationSeconds": 2.04
+      },
+      "thoughtOffset": 99,
+      "outro": {
+        "id": "21-years-outro",
+        "audio": "/audio/jockey/21-years-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. 21 Years.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> 21 Years.",
+        "durationSeconds": 2.04
       }
     },
     "HARDSTYLE 2": {
@@ -1357,6 +2931,14 @@
         "text": "KETTAMA, Fred again, Shady Nasty. Hardstyle 2.",
         "synthesisText": "KETTAMA, Fred again, Shady Nasty.<break time=\"0.3s\" /> Hardstyle 2.",
         "durationSeconds": 3.58
+      },
+      "outro": {
+        "id": "hardstyle-2-outro",
+        "audio": "/audio/jockey/hardstyle-2-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Hardstyle 2.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Hardstyle 2.",
+        "durationSeconds": 2.04
       }
     },
     "Winny": {
@@ -1367,6 +2949,23 @@
         "text": "Winny, Fred again, Sammy Virji. Winny.",
         "synthesisText": "Winny, Fred again, Sammy Virji.<break time=\"0.3s\" /> Winny.",
         "durationSeconds": 2.95
+      },
+      "thought": {
+        "id": "winny-thought",
+        "audio": "/audio/jockey/winny-thought.mp3",
+        "delivery": "reflective",
+        "text": "Wow. Okay. I'll be quiet.",
+        "synthesisText": "Wow.<break time=\"0.4s\" /> Okay.<break time=\"0.4s\" /> I'll be quiet.",
+        "durationSeconds": 4.6
+      },
+      "thoughtOffset": 100,
+      "outro": {
+        "id": "winny-outro",
+        "audio": "/audio/jockey/winny-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Winny.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Winny.",
+        "durationSeconds": 1.62
       }
     },
     "Chill Bae (Fred again.. Remix)": {
@@ -1377,7 +2976,24 @@
         "text": "Lil Uzi Vert. Chill Bae. Fred's remix.",
         "synthesisText": "Lil Uzi Vert.<break time=\"0.3s\" /> Chill Bae.<break time=\"0.3s\" /> Fred's remix.",
         "durationSeconds": 4.44
-      }
+      },
+      "outro": {
+        "id": "chill-bae-fred-again-remix-outro",
+        "audio": "/audio/jockey/chill-bae-fred-again-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Chill Bae.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Chill Bae.",
+        "durationSeconds": 1.85
+      },
+      "thought": {
+        "id": "chill-bae-fred-again-remix-thought",
+        "audio": "/audio/jockey/chill-bae-fred-again-remix-thought.mp3",
+        "delivery": "reflective",
+        "text": "There's joy hiding in this. Go find it.",
+        "synthesisText": "There's joy hiding in this.<break time=\"0.4s\" /> Go find it.",
+        "durationSeconds": 3.24
+      },
+      "thoughtOffset": 73
     },
     "Berry Patch (Halogenix Remix)": {
       "intro": {
@@ -1387,6 +3003,14 @@
         "text": "Machinedrum and Holly. Berry Patch. Halogenix remix.",
         "synthesisText": "Machinedrum and Holly.<break time=\"0.3s\" /> Berry Patch.<break time=\"0.3s\" /> Halogenix remix.",
         "durationSeconds": 4.08
+      },
+      "outro": {
+        "id": "berry-patch-halogenix-remix-outro",
+        "audio": "/audio/jockey/berry-patch-halogenix-remix-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Berry Patch.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Berry Patch.",
+        "durationSeconds": 1.75
       }
     },
     "solo": {
@@ -1397,6 +3021,23 @@
         "text": "Fred again and Blanco. Solo.",
         "synthesisText": "Fred again and Blanco.<break time=\"0.3s\" /> Solo.",
         "durationSeconds": 2.69
+      },
+      "thought": {
+        "id": "solo-thought",
+        "audio": "/audio/jockey/solo-thought.mp3",
+        "delivery": "reflective",
+        "text": "Keep this one for a bad day. It helps.",
+        "synthesisText": "Keep this one for a bad day.<break time=\"0.4s\" /> It helps.",
+        "durationSeconds": 2.82
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "solo-outro",
+        "audio": "/audio/jockey/solo-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & Blanco. solo.",
+        "synthesisText": "That was Fred again & Blanco.<break time=\"0.3s\" /> solo.",
+        "durationSeconds": 2.51
       }
     },
     "scared": {
@@ -1407,6 +3048,13 @@
         "text": "Fred again and Young Thug. Scared.",
         "synthesisText": "Fred again and Young Thug.<break time=\"0.3s\" /> Scared.",
         "durationSeconds": 2.74
+      },
+      "outro": {
+        "id": "scared-outro",
+        "audio": "/audio/jockey/scared-outro.mp3",
+        "delivery": "warm",
+        "text": "scared, there.",
+        "durationSeconds": 1.07
       }
     },
     "I Saw You": {
@@ -1417,6 +3065,23 @@
         "text": "Fred again and Brian Eno. I Saw You.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> I Saw You.",
         "durationSeconds": 2.74
+      },
+      "thought": {
+        "id": "i-saw-you-thought",
+        "audio": "/audio/jockey/i-saw-you-thought.mp3",
+        "delivery": "reflective",
+        "text": "Let it build. Don't rush it.",
+        "synthesisText": "Let it build.<break time=\"0.4s\" /> Don't rush it.",
+        "durationSeconds": 2.09
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "i-saw-you-outro",
+        "audio": "/audio/jockey/i-saw-you-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. I Saw You.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> I Saw You.",
+        "durationSeconds": 2.09
       }
     },
     "Secret": {
@@ -1427,6 +3092,22 @@
         "text": "Fred again and Brian Eno. Secret.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> Secret.",
         "durationSeconds": 2.64
+      },
+      "thought": {
+        "id": "secret-thought",
+        "audio": "/audio/jockey/secret-thought.mp3",
+        "delivery": "reflective",
+        "text": "Hmm. Gentle and huge, somehow.",
+        "synthesisText": "Hmm.<break time=\"0.4s\" /> Gentle and huge, somehow.",
+        "durationSeconds": 2.93
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "secret-outro",
+        "audio": "/audio/jockey/secret-outro.mp3",
+        "delivery": "warm",
+        "text": "Secret, there.",
+        "durationSeconds": 1.25
       }
     },
     "Radio": {
@@ -1437,7 +3118,23 @@
         "text": "Fred again and Brian Eno. Radio.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> Radio.",
         "durationSeconds": 2.46
-      }
+      },
+      "outro": {
+        "id": "radio-outro",
+        "audio": "/audio/jockey/radio-outro.mp3",
+        "delivery": "warm",
+        "text": "Radio, there.",
+        "durationSeconds": 1.1
+      },
+      "thought": {
+        "id": "radio-thought",
+        "audio": "/audio/jockey/radio-thought.mp3",
+        "delivery": "reflective",
+        "text": "Mm. Let the edges blur.",
+        "synthesisText": "Mm.<break time=\"0.4s\" /> Let the edges blur.",
+        "durationSeconds": 2.22
+      },
+      "thoughtOffset": 110
     },
     "Follow": {
       "intro": {
@@ -1447,6 +3144,14 @@
         "text": "Fred again and Brian Eno. Follow.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> Follow.",
         "durationSeconds": 3.16
+      },
+      "outro": {
+        "id": "follow-outro",
+        "audio": "/audio/jockey/follow-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & Brian Eno. Follow.",
+        "synthesisText": "That was Fred again & Brian Eno.<break time=\"0.3s\" /> Follow.",
+        "durationSeconds": 2.64
       }
     },
     "Enough": {
@@ -1457,6 +3162,14 @@
         "text": "Fred again and Brian Eno. Enough.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> Enough.",
         "durationSeconds": 2.51
+      },
+      "outro": {
+        "id": "enough-outro",
+        "audio": "/audio/jockey/enough-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & Brian Eno. Enough.",
+        "synthesisText": "That was Fred again & Brian Eno.<break time=\"0.3s\" /> Enough.",
+        "durationSeconds": 2.93
       }
     },
     "Pause": {
@@ -1467,6 +3180,13 @@
         "text": "Fred again and Brian Eno. Pause. Take one.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> Pause.<break time=\"0.3s\" /> Take one.",
         "durationSeconds": 3.6
+      },
+      "outro": {
+        "id": "pause-outro",
+        "audio": "/audio/jockey/pause-outro.mp3",
+        "delivery": "warm",
+        "text": "Pause, there.",
+        "durationSeconds": 1.15
       }
     },
     "Safety": {
@@ -1477,6 +3197,23 @@
         "text": "Fred again and Brian Eno. Safety.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> Safety.",
         "durationSeconds": 2.51
+      },
+      "thought": {
+        "id": "safety-thought",
+        "audio": "/audio/jockey/safety-thought.mp3",
+        "delivery": "reflective",
+        "text": "Hmm. Makes the whole city feel smaller.",
+        "synthesisText": "Hmm.<break time=\"0.4s\" /> Makes the whole city feel smaller.",
+        "durationSeconds": 2.69
+      },
+      "thoughtOffset": 73,
+      "outro": {
+        "id": "safety-outro",
+        "audio": "/audio/jockey/safety-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Safety.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Safety.",
+        "durationSeconds": 1.7
       }
     },
     "Cmon": {
@@ -1487,7 +3224,23 @@
         "text": "Fred again and Brian Eno. C'mon.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> C'mon.",
         "durationSeconds": 2.69
-      }
+      },
+      "outro": {
+        "id": "cmon-outro",
+        "audio": "/audio/jockey/cmon-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & Brian Eno. C'mon.",
+        "synthesisText": "That was Fred again & Brian Eno.<break time=\"0.3s\" /> C'mon.",
+        "durationSeconds": 3.34
+      },
+      "thought": {
+        "id": "cmon-thought",
+        "audio": "/audio/jockey/cmon-thought.mp3",
+        "delivery": "reflective",
+        "text": "Leave the phone face down for this.",
+        "durationSeconds": 2.17
+      },
+      "thoughtOffset": 110
     },
     "Trying": {
       "intro": {
@@ -1497,7 +3250,24 @@
         "text": "Fred again and Brian Eno. Trying.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> Trying.",
         "durationSeconds": 2.82
-      }
+      },
+      "outro": {
+        "id": "trying-outro",
+        "audio": "/audio/jockey/trying-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & Brian Eno. Trying.",
+        "synthesisText": "That was Fred again & Brian Eno.<break time=\"0.3s\" /> Trying.",
+        "durationSeconds": 3.24
+      },
+      "thought": {
+        "id": "trying-thought",
+        "audio": "/audio/jockey/trying-thought.mp3",
+        "delivery": "reflective",
+        "text": "Somewhere between happy and sad. Right where Fred lives.",
+        "synthesisText": "Somewhere between happy and sad.<break time=\"0.4s\" /> Right where Fred lives.",
+        "durationSeconds": 3.71
+      },
+      "thoughtOffset": 99
     },
     "Chest": {
       "intro": {
@@ -1507,6 +3277,21 @@
         "text": "Fred again and Brian Eno. Chest.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> Chest.",
         "durationSeconds": 2.77
+      },
+      "thought": {
+        "id": "chest-thought",
+        "audio": "/audio/jockey/chest-thought.mp3",
+        "delivery": "reflective",
+        "text": "I love how unfinished it lets itself be.",
+        "durationSeconds": 2.59
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "chest-outro",
+        "audio": "/audio/jockey/chest-outro.mp3",
+        "delivery": "warm",
+        "text": "Chest, there.",
+        "durationSeconds": 1.1
       }
     },
     "Come On Home": {
@@ -1517,6 +3302,23 @@
         "text": "Fred again and Brian Eno. Come On Home.",
         "synthesisText": "Fred again and Brian Eno.<break time=\"0.3s\" /> Come On Home.",
         "durationSeconds": 2.82
+      },
+      "thought": {
+        "id": "come-on-home-thought",
+        "audio": "/audio/jockey/come-on-home-thought.mp3",
+        "delivery": "reflective",
+        "text": "Quiet confidence, this one. No shouting needed.",
+        "synthesisText": "Quiet confidence, this one.<break time=\"0.4s\" /> No shouting needed.",
+        "durationSeconds": 3.29
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "come-on-home-outro",
+        "audio": "/audio/jockey/come-on-home-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Fred again & Brian Eno. Come On Home.",
+        "synthesisText": "That was Fred again & Brian Eno.<break time=\"0.3s\" /> Come On Home.",
+        "durationSeconds": 3.24
       }
     },
     "Tate (How I Feel)": {
@@ -1527,7 +3329,22 @@
         "text": "Tate. How I feel.",
         "synthesisText": "Tate.<break time=\"0.3s\" /> How I feel.",
         "durationSeconds": 1.62
-      }
+      },
+      "outro": {
+        "id": "tate-how-i-feel-outro",
+        "audio": "/audio/jockey/tate-how-i-feel-outro.mp3",
+        "delivery": "warm",
+        "text": "Tate, there.",
+        "durationSeconds": 1.15
+      },
+      "thought": {
+        "id": "tate-how-i-feel-thought",
+        "audio": "/audio/jockey/tate-how-i-feel-thought.mp3",
+        "delivery": "reflective",
+        "text": "This bit feels like coming home late.",
+        "durationSeconds": 2.17
+      },
+      "thoughtOffset": 110
     },
     "Billie (I'm not okay)": {
       "intro": {
@@ -1537,7 +3354,23 @@
         "text": "Billie. I'm not okay. That's allowed.",
         "synthesisText": "Billie.<break time=\"0.3s\" /> I'm not okay.<break time=\"0.3s\" /> That's allowed.",
         "durationSeconds": 3.0
-      }
+      },
+      "outro": {
+        "id": "billie-i-m-not-okay-outro",
+        "audio": "/audio/jockey/billie-i-m-not-okay-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Billie.",
+        "durationSeconds": 1.1
+      },
+      "thought": {
+        "id": "billie-i-m-not-okay-thought",
+        "audio": "/audio/jockey/billie-i-m-not-okay-thought.mp3",
+        "delivery": "reflective",
+        "text": "You don't need to understand it. Just feel it.",
+        "synthesisText": "You don't need to understand it.<break time=\"0.4s\" /> Just feel it.",
+        "durationSeconds": 2.95
+      },
+      "thoughtOffset": 110
     },
     "Yasminah (See Your Face)": {
       "intro": {
@@ -1547,6 +3380,22 @@
         "text": "Yasminah. See your face.",
         "synthesisText": "Yasminah.<break time=\"0.3s\" /> See your face.",
         "durationSeconds": 1.93
+      },
+      "thought": {
+        "id": "yasminah-see-your-face-thought",
+        "audio": "/audio/jockey/yasminah-see-your-face-thought.mp3",
+        "delivery": "reflective",
+        "text": "Listen to the voices sitting under everything.",
+        "durationSeconds": 2.82
+      },
+      "thoughtOffset": 84,
+      "outro": {
+        "id": "yasminah-see-your-face-outro",
+        "audio": "/audio/jockey/yasminah-see-your-face-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Yasminah.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Yasminah.",
+        "durationSeconds": 2.17
       }
     },
     "Turn Off the Lights": {
@@ -1557,6 +3406,22 @@
         "text": "Turn Off the Lights. Fred again.",
         "synthesisText": "Turn Off the Lights.<break time=\"0.3s\" /> Fred again.",
         "durationSeconds": 2.27
+      },
+      "thought": {
+        "id": "turn-off-the-lights-thought",
+        "audio": "/audio/jockey/turn-off-the-lights-thought.mp3",
+        "delivery": "reflective",
+        "text": "A little bit of rain in this. In the best way.",
+        "synthesisText": "A little bit of rain in this.<break time=\"0.4s\" /> In the best way.",
+        "durationSeconds": 3.0
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "turn-off-the-lights-outro",
+        "audio": "/audio/jockey/turn-off-the-lights-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Turn Off the Lights.",
+        "durationSeconds": 1.52
       }
     },
     "Danielle (smile on my face) x Yasminah": {
@@ -1567,6 +3432,13 @@
         "text": "Danielle into Yasminah. Here we go.",
         "synthesisText": "Danielle into Yasminah.<break time=\"0.3s\" /> Here we go.",
         "durationSeconds": 2.4
+      },
+      "outro": {
+        "id": "danielle-smile-on-my-face-x-yasminah-outro",
+        "audio": "/audio/jockey/danielle-smile-on-my-face-x-yasminah-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Danielle.",
+        "durationSeconds": 1.28
       }
     },
     "Lydia (please make it better)": {
@@ -1577,6 +3449,21 @@
         "text": "Lydia. Please make it better.",
         "synthesisText": "Lydia.<break time=\"0.3s\" /> Please make it better.",
         "durationSeconds": 2.4
+      },
+      "thought": {
+        "id": "lydia-please-make-it-better-thought",
+        "audio": "/audio/jockey/lydia-please-make-it-better-thought.mp3",
+        "delivery": "playful",
+        "text": "This is for the ones still up.",
+        "durationSeconds": 1.75
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "lydia-please-make-it-better-outro",
+        "audio": "/audio/jockey/lydia-please-make-it-better-outro.mp3",
+        "delivery": "warm",
+        "text": "Lydia, there.",
+        "durationSeconds": 1.02
       }
     },
     "Kelly (nightmare)": {
@@ -1587,6 +3474,21 @@
         "text": "Kelly. Nightmare.",
         "synthesisText": "Kelly.<break time=\"0.3s\" /> Nightmare.",
         "durationSeconds": 1.57
+      },
+      "thought": {
+        "id": "kelly-nightmare-thought",
+        "audio": "/audio/jockey/kelly-nightmare-thought.mp3",
+        "delivery": "reflective",
+        "text": "This bit always makes me smile.",
+        "durationSeconds": 1.85
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "kelly-nightmare-outro",
+        "audio": "/audio/jockey/kelly-nightmare-outro.mp3",
+        "delivery": "warm",
+        "text": "Kelly, there.",
+        "durationSeconds": 0.97
       }
     },
     "Mustafa (time to move you)": {
@@ -1597,6 +3499,21 @@
         "text": "Mustafa. Time to move you.",
         "synthesisText": "Mustafa.<break time=\"0.3s\" /> Time to move you.",
         "durationSeconds": 1.85
+      },
+      "thought": {
+        "id": "mustafa-time-to-move-you-thought",
+        "audio": "/audio/jockey/mustafa-time-to-move-you-thought.mp3",
+        "delivery": "reflective",
+        "text": "A tiny pause, and then everything moves.",
+        "durationSeconds": 2.46
+      },
+      "thoughtOffset": 70,
+      "outro": {
+        "id": "mustafa-time-to-move-you-outro",
+        "audio": "/audio/jockey/mustafa-time-to-move-you-outro.mp3",
+        "delivery": "warm",
+        "text": "Mustafa, there.",
+        "durationSeconds": 1.15
       }
     },
     "Winnie (end of me)": {
@@ -1607,7 +3524,24 @@
         "text": "Winnie. End of me.",
         "synthesisText": "Winnie.<break time=\"0.3s\" /> End of me.",
         "durationSeconds": 1.8
-      }
+      },
+      "outro": {
+        "id": "winnie-end-of-me-outro",
+        "audio": "/audio/jockey/winnie-end-of-me-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Winnie.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Winnie.",
+        "durationSeconds": 1.44
+      },
+      "thought": {
+        "id": "winnie-end-of-me-thought",
+        "audio": "/audio/jockey/winnie-end-of-me-thought.mp3",
+        "delivery": "reflective",
+        "text": "Close your laptop. Just for this one.",
+        "synthesisText": "Close your laptop.<break time=\"0.4s\" /> Just for this one.",
+        "durationSeconds": 2.59
+      },
+      "thoughtOffset": 110
     },
     "Julia (deep diving)": {
       "intro": {
@@ -1617,6 +3551,13 @@
         "text": "Julia. Deep diving. Down we go.",
         "synthesisText": "Julia.<break time=\"0.3s\" /> Deep diving.<break time=\"0.3s\" /> Down we go.",
         "durationSeconds": 2.95
+      },
+      "outro": {
+        "id": "julia-deep-diving-outro",
+        "audio": "/audio/jockey/julia-deep-diving-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Julia.",
+        "durationSeconds": 1.2
       }
     },
     "Chika (scared)": {
@@ -1627,6 +3568,23 @@
         "text": "Chika. Scared.",
         "synthesisText": "Chika.<break time=\"0.3s\" /> Scared.",
         "durationSeconds": 1.8
+      },
+      "thought": {
+        "id": "chika-scared-thought",
+        "audio": "/audio/jockey/chika-scared-thought.mp3",
+        "delivery": "reflective",
+        "text": "Mm. Warm, this one. Like a hand on the shoulder.",
+        "synthesisText": "Mm.<break time=\"0.4s\" /> Warm, this one.<break time=\"0.4s\" /> Like a hand on the shoulder.",
+        "durationSeconds": 3.66
+      },
+      "thoughtOffset": 81,
+      "outro": {
+        "id": "chika-scared-outro",
+        "audio": "/audio/jockey/chika-scared-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Chika.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Chika.",
+        "durationSeconds": 1.75
       }
     },
     "Smoke": {
@@ -1637,6 +3595,14 @@
         "text": "Headie One, Fred again, Jamie xx. Smoke.",
         "synthesisText": "Headie One, Fred again, Jamie xx.<break time=\"0.3s\" /> Smoke.",
         "durationSeconds": 3.47
+      },
+      "outro": {
+        "id": "smoke-outro",
+        "audio": "/audio/jockey/smoke-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Headie One, Fred again, Jamie xx. Smoke.",
+        "synthesisText": "That was Headie One, Fred again, Jamie xx.<break time=\"0.3s\" /> Smoke.",
+        "durationSeconds": 3.6
       }
     },
     "Jessie (i miss you)": {
@@ -1647,6 +3613,23 @@
         "text": "Jessie. I miss you.",
         "synthesisText": "Jessie.<break time=\"0.3s\" /> I miss you.",
         "durationSeconds": 1.91
+      },
+      "thought": {
+        "id": "jessie-i-miss-you-thought",
+        "audio": "/audio/jockey/jessie-i-miss-you-thought.mp3",
+        "delivery": "reflective",
+        "text": "Okay, I'm not talking over this for long. Promise.",
+        "synthesisText": "Okay, I'm not talking over this for long.<break time=\"0.4s\" /> Promise.",
+        "durationSeconds": 3.58
+      },
+      "thoughtOffset": 52,
+      "outro": {
+        "id": "jessie-i-miss-you-outro",
+        "audio": "/audio/jockey/jessie-i-miss-you-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Jessie.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Jessie.",
+        "durationSeconds": 1.44
       }
     },
     "Don't Judge Me": {
@@ -1657,6 +3640,14 @@
         "text": "FKA twigs, Headie One, Fred again. Don't Judge Me.",
         "synthesisText": "FKA twigs, Headie One, Fred again.<break time=\"0.3s\" /> Don't Judge Me.",
         "durationSeconds": 4.08
+      },
+      "outro": {
+        "id": "don-t-judge-me-outro",
+        "audio": "/audio/jockey/don-t-judge-me-outro.mp3",
+        "delivery": "warm",
+        "text": "That was FKA twigs, Headie One, Fred again. Don't Judge Me.",
+        "synthesisText": "That was FKA twigs, Headie One, Fred again.<break time=\"0.3s\" /> Don't Judge Me.",
+        "durationSeconds": 4.73
       }
     },
     "Marea (we've lost dancing)": {
@@ -1667,6 +3658,21 @@
         "text": "Marea. We've lost dancing. Let's find it.",
         "synthesisText": "Marea.<break time=\"0.3s\" /> We've lost dancing.<break time=\"0.3s\" /> Let's find it.",
         "durationSeconds": 3.37
+      },
+      "thought": {
+        "id": "marea-we-ve-lost-dancing-thought",
+        "audio": "/audio/jockey/marea-we-ve-lost-dancing-thought.mp3",
+        "delivery": "reflective",
+        "text": "The kind of track you remember where you were.",
+        "durationSeconds": 2.27
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "marea-we-ve-lost-dancing-outro",
+        "audio": "/audio/jockey/marea-we-ve-lost-dancing-outro.mp3",
+        "delivery": "warm",
+        "text": "Marea, there.",
+        "durationSeconds": 1.1
       }
     },
     "Chanel / A New Error": {
@@ -1677,6 +3683,22 @@
         "text": "Frank Ocean into Moderat. A Fred edit.",
         "synthesisText": "Frank Ocean into Moderat.<break time=\"0.3s\" /> A Fred edit.",
         "durationSeconds": 2.69
+      },
+      "thought": {
+        "id": "chanel-a-new-error-thought",
+        "audio": "/audio/jockey/chanel-a-new-error-thought.mp3",
+        "delivery": "reflective",
+        "text": "This is a headphones moment, honestly.",
+        "durationSeconds": 2.22
+      },
+      "thoughtOffset": 70,
+      "outro": {
+        "id": "chanel-a-new-error-outro",
+        "audio": "/audio/jockey/chanel-a-new-error-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Frank Ocean / Moderat. Chanel / A New Error.",
+        "synthesisText": "That was Frank Ocean / Moderat.<break time=\"0.3s\" /> Chanel / A New Error.",
+        "durationSeconds": 4.78
       }
     },
     "Sabrina (i am a party)": {
@@ -1687,7 +3709,23 @@
         "text": "Sabrina. I am a party. Yes, you are.",
         "synthesisText": "Sabrina.<break time=\"0.3s\" /> I am a party.<break time=\"0.3s\" /> Yes, you are.",
         "durationSeconds": 3.0
-      }
+      },
+      "outro": {
+        "id": "sabrina-i-am-a-party-outro",
+        "audio": "/audio/jockey/sabrina-i-am-a-party-outro.mp3",
+        "delivery": "warm",
+        "text": "Sabrina, there.",
+        "durationSeconds": 1.02
+      },
+      "thought": {
+        "id": "sabrina-i-am-a-party-thought",
+        "audio": "/audio/jockey/sabrina-i-am-a-party-thought.mp3",
+        "delivery": "reflective",
+        "text": "Stay with the bass. It knows the way.",
+        "synthesisText": "Stay with the bass.<break time=\"0.4s\" /> It knows the way.",
+        "durationSeconds": 2.53
+      },
+      "thoughtOffset": 84
     },
     "Butterflies": {
       "intro": {
@@ -1697,7 +3735,23 @@
         "text": "Skrillex, Starrah, Four Tet. Butterflies.",
         "synthesisText": "Skrillex, Starrah, Four Tet.<break time=\"0.3s\" /> Butterflies.",
         "durationSeconds": 3.24
-      }
+      },
+      "outro": {
+        "id": "butterflies-outro",
+        "audio": "/audio/jockey/butterflies-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Skrillex, Starrah, Four Tet. Butterflies.",
+        "synthesisText": "That was Skrillex, Starrah, Four Tet.<break time=\"0.3s\" /> Butterflies.",
+        "durationSeconds": 3.37
+      },
+      "thought": {
+        "id": "butterflies-thought",
+        "audio": "/audio/jockey/butterflies-thought.mp3",
+        "delivery": "reflective",
+        "text": "The groove just settles in, doesn't it?",
+        "durationSeconds": 2.17
+      },
+      "thoughtOffset": 110
     },
     "Looking at Your Pager": {
       "intro": {
@@ -1707,7 +3761,23 @@
         "text": "KH into Four Tet. Looking at Your Pager.",
         "synthesisText": "KH into Four Tet.<break time=\"0.3s\" /> Looking at Your Pager.",
         "durationSeconds": 3.42
-      }
+      },
+      "outro": {
+        "id": "looking-at-your-pager-outro",
+        "audio": "/audio/jockey/looking-at-your-pager-outro.mp3",
+        "delivery": "warm",
+        "text": "That was KH / Four Tet. Looking at Your Pager.",
+        "synthesisText": "That was KH / Four Tet.<break time=\"0.3s\" /> Looking at Your Pager.",
+        "durationSeconds": 3.16
+      },
+      "thought": {
+        "id": "looking-at-your-pager-thought",
+        "audio": "/audio/jockey/looking-at-your-pager-thought.mp3",
+        "delivery": "playful",
+        "text": "Picture the lights going up right about now.",
+        "durationSeconds": 2.17
+      },
+      "thoughtOffset": 110
     },
     "Country Riddim": {
       "intro": {
@@ -1717,7 +3787,23 @@
         "text": "HOL. Country Riddim.",
         "synthesisText": "HOL.<break time=\"0.3s\" /> Country Riddim.",
         "durationSeconds": 2.04
-      }
+      },
+      "outro": {
+        "id": "country-riddim-outro",
+        "audio": "/audio/jockey/country-riddim-outro.mp3",
+        "delivery": "warm",
+        "text": "That was HOL!. Country Riddim.",
+        "synthesisText": "That was HOL!.<break time=\"0.3s\" /> Country Riddim.",
+        "durationSeconds": 2.51
+      },
+      "thought": {
+        "id": "country-riddim-thought",
+        "audio": "/audio/jockey/country-riddim-thought.mp3",
+        "delivery": "reflective",
+        "text": "There's a heartbeat under all of it.",
+        "durationSeconds": 1.99
+      },
+      "thoughtOffset": 110
     },
     "RATATA": {
       "intro": {
@@ -1727,7 +3813,23 @@
         "text": "Skrillex, Missy Elliott, Mr. Oizo. Ratata.",
         "synthesisText": "Skrillex, Missy Elliott, Mr.<break time=\"0.3s\" /> Oizo.<break time=\"0.3s\" /> Ratata.",
         "durationSeconds": 6.71
-      }
+      },
+      "outro": {
+        "id": "ratata-outro",
+        "audio": "/audio/jockey/ratata-outro.mp3",
+        "delivery": "warm",
+        "text": "Ratata, there.",
+        "durationSeconds": 1.07
+      },
+      "thought": {
+        "id": "ratata-thought",
+        "audio": "/audio/jockey/ratata-thought.mp3",
+        "delivery": "playful",
+        "text": "Ooh, and it opens up. Here we go.",
+        "synthesisText": "Ooh, and it opens up.<break time=\"0.4s\" /> Here we go.",
+        "durationSeconds": 3.0
+      },
+      "thoughtOffset": 110
     },
     "Me (heavy)": {
       "intro": {
@@ -1737,6 +3839,23 @@
         "text": "Me. Heavy.",
         "synthesisText": "Me.<break time=\"0.3s\" /> Heavy.",
         "durationSeconds": 1.38
+      },
+      "thought": {
+        "id": "me-heavy-thought",
+        "audio": "/audio/jockey/me-heavy-thought.mp3",
+        "delivery": "reflective",
+        "text": "That pulse. It doesn't let you go.",
+        "synthesisText": "That pulse.<break time=\"0.4s\" /> It doesn't let you go.",
+        "durationSeconds": 2.53
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "me-heavy-outro",
+        "audio": "/audio/jockey/me-heavy-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Me.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Me.",
+        "durationSeconds": 1.52
       }
     },
     "GLASGOW": {
@@ -1747,6 +3866,23 @@
         "text": "Glasgow. One night, one room.",
         "synthesisText": "Glasgow.<break time=\"0.3s\" /> One night, one room.",
         "durationSeconds": 2.74
+      },
+      "thought": {
+        "id": "glasgow-thought",
+        "audio": "/audio/jockey/glasgow-thought.mp3",
+        "delivery": "reflective",
+        "text": "Breathe out. That's it.",
+        "synthesisText": "Breathe out.<break time=\"0.4s\" /> That's it.",
+        "durationSeconds": 2.09
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "glasgow-outro",
+        "audio": "/audio/jockey/glasgow-outro.mp3",
+        "delivery": "warm",
+        "text": "Mm. Glasgow.",
+        "synthesisText": "Mm.<break time=\"0.3s\" /> Glasgow.",
+        "durationSeconds": 1.52
       }
     },
     "BRUSSELS": {
@@ -1757,7 +3893,22 @@
         "text": "Brussels. Here's the room.",
         "synthesisText": "Brussels.<break time=\"0.3s\" /> Here's the room.",
         "durationSeconds": 1.99
-      }
+      },
+      "outro": {
+        "id": "brussels-outro",
+        "audio": "/audio/jockey/brussels-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Brussels.",
+        "durationSeconds": 1.15
+      },
+      "thought": {
+        "id": "brussels-thought",
+        "audio": "/audio/jockey/brussels-thought.mp3",
+        "delivery": "reflective",
+        "text": "It's the little imperfections that make it.",
+        "durationSeconds": 2.53
+      },
+      "thoughtOffset": 110
     },
     "MADRID": {
       "intro": {
@@ -1767,6 +3918,13 @@
         "text": "Madrid. Every show is its own night.",
         "synthesisText": "Madrid.<break time=\"0.3s\" /> Every show is its own night.",
         "durationSeconds": 2.74
+      },
+      "outro": {
+        "id": "madrid-outro",
+        "audio": "/audio/jockey/madrid-outro.mp3",
+        "delivery": "warm",
+        "text": "Madrid, there.",
+        "durationSeconds": 1.1
       }
     },
     "LYON": {
@@ -1777,6 +3935,21 @@
         "text": "Lyon. Lock in.",
         "synthesisText": "Lyon.<break time=\"0.3s\" /> Lock in.",
         "durationSeconds": 1.62
+      },
+      "thought": {
+        "id": "lyon-thought",
+        "audio": "/audio/jockey/lyon-thought.mp3",
+        "delivery": "reflective",
+        "text": "Some nights need exactly this.",
+        "durationSeconds": 1.85
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "lyon-outro",
+        "audio": "/audio/jockey/lyon-outro.mp3",
+        "delivery": "warm",
+        "text": "Lyon, there.",
+        "durationSeconds": 1.15
       }
     },
     "DUBLIN": {
@@ -1787,6 +3960,22 @@
         "text": "Dublin. Here's the room.",
         "synthesisText": "Dublin.<break time=\"0.3s\" /> Here's the room.",
         "durationSeconds": 1.8
+      },
+      "thought": {
+        "id": "dublin-thought",
+        "audio": "/audio/jockey/dublin-thought.mp3",
+        "delivery": "reflective",
+        "text": "Still here? Good. So am I.",
+        "synthesisText": "Still here?<break time=\"0.4s\" /> Good.<break time=\"0.4s\" /> So am I.",
+        "durationSeconds": 2.51
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "dublin-outro",
+        "audio": "/audio/jockey/dublin-outro.mp3",
+        "delivery": "warm",
+        "text": "Dublin, there.",
+        "durationSeconds": 1.07
       }
     },
     "TORONTO 1": {
@@ -1797,6 +3986,22 @@
         "text": "Toronto. Night one.",
         "synthesisText": "Toronto.<break time=\"0.3s\" /> Night one.",
         "durationSeconds": 2.22
+      },
+      "thought": {
+        "id": "toronto-1-thought",
+        "audio": "/audio/jockey/toronto-1-thought.mp3",
+        "delivery": "playful",
+        "text": "Hands up if this one's yours. I see you.",
+        "synthesisText": "Hands up if this one's yours.<break time=\"0.4s\" /> I see you.",
+        "durationSeconds": 2.87
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "toronto-1-outro",
+        "audio": "/audio/jockey/toronto-1-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Toronto, night one.",
+        "durationSeconds": 1.85
       }
     },
     "TORONTO 2": {
@@ -1807,6 +4012,13 @@
         "text": "Toronto. Night two.",
         "synthesisText": "Toronto.<break time=\"0.3s\" /> Night two.",
         "durationSeconds": 2.09
+      },
+      "outro": {
+        "id": "toronto-2-outro",
+        "audio": "/audio/jockey/toronto-2-outro.mp3",
+        "delivery": "warm",
+        "text": "That was Toronto, night two.",
+        "durationSeconds": 1.75
       }
     },
     "CHICAGO": {
@@ -1817,6 +4029,22 @@
         "text": "Chicago. One night, one room.",
         "synthesisText": "Chicago.<break time=\"0.3s\" /> One night, one room.",
         "durationSeconds": 2.74
+      },
+      "thought": {
+        "id": "chicago-thought",
+        "audio": "/audio/jockey/chicago-thought.mp3",
+        "delivery": "reflective",
+        "text": "Soft now. Then it comes back. Wait for it.",
+        "synthesisText": "Soft now.<break time=\"0.4s\" /> Then it comes back.<break time=\"0.4s\" /> Wait for it.",
+        "durationSeconds": 3.66
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "chicago-outro",
+        "audio": "/audio/jockey/chicago-outro.mp3",
+        "delivery": "warm",
+        "text": "Chicago, there.",
+        "durationSeconds": 1.1
       }
     },
     "VANCOUVER": {
@@ -1827,6 +4055,22 @@
         "text": "Vancouver. Here we go.",
         "synthesisText": "Vancouver.<break time=\"0.3s\" /> Here we go.",
         "durationSeconds": 1.91
+      },
+      "thought": {
+        "id": "vancouver-thought",
+        "audio": "/audio/jockey/vancouver-thought.mp3",
+        "delivery": "reflective",
+        "text": "Let's just stay right here for a minute.",
+        "durationSeconds": 2.27
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "vancouver-outro",
+        "audio": "/audio/jockey/vancouver-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. Vancouver.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> Vancouver.",
+        "durationSeconds": 1.67
       }
     },
     "SAN FRAN": {
@@ -1837,6 +4081,13 @@
         "text": "San Francisco. Here's the room.",
         "synthesisText": "San Francisco.<break time=\"0.3s\" /> Here's the room.",
         "durationSeconds": 2.32
+      },
+      "outro": {
+        "id": "san-fran-outro",
+        "audio": "/audio/jockey/san-fran-outro.mp3",
+        "delivery": "warm",
+        "text": "San Francisco, there.",
+        "durationSeconds": 1.28
       }
     },
     "NY1": {
@@ -1847,6 +4098,22 @@
         "text": "New York. Night one.",
         "synthesisText": "New York.<break time=\"0.3s\" /> Night one.",
         "durationSeconds": 1.85
+      },
+      "thought": {
+        "id": "ny1-thought",
+        "audio": "/audio/jockey/ny1-thought.mp3",
+        "delivery": "reflective",
+        "text": "Call someone after this one. Just because.",
+        "synthesisText": "Call someone after this one.<break time=\"0.4s\" /> Just because.",
+        "durationSeconds": 2.74
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "ny1-outro",
+        "audio": "/audio/jockey/ny1-outro.mp3",
+        "delivery": "warm",
+        "text": "That was New York, night one.",
+        "durationSeconds": 2.17
       }
     },
     "NY2": {
@@ -1857,6 +4124,14 @@
         "text": "New York. Night two.",
         "synthesisText": "New York.<break time=\"0.3s\" /> Night two.",
         "durationSeconds": 1.67
+      },
+      "outro": {
+        "id": "ny2-outro",
+        "audio": "/audio/jockey/ny2-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. New York, night two.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> New York, night two.",
+        "durationSeconds": 2.4
       }
     },
     "NY3": {
@@ -1867,6 +4142,21 @@
         "text": "New York. Night three.",
         "synthesisText": "New York.<break time=\"0.3s\" /> Night three.",
         "durationSeconds": 1.99
+      },
+      "thought": {
+        "id": "ny3-thought",
+        "audio": "/audio/jockey/ny3-thought.mp3",
+        "delivery": "reflective",
+        "text": "Somewhere a sunrise is matching this exactly.",
+        "durationSeconds": 2.64
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "ny3-outro",
+        "audio": "/audio/jockey/ny3-outro.mp3",
+        "delivery": "warm",
+        "text": "New York, night three, there.",
+        "durationSeconds": 1.62
       }
     },
     "NY4": {
@@ -1877,6 +4167,22 @@
         "text": "New York. Night four.",
         "synthesisText": "New York.<break time=\"0.3s\" /> Night four.",
         "durationSeconds": 1.85
+      },
+      "thought": {
+        "id": "ny4-thought",
+        "audio": "/audio/jockey/ny4-thought.mp3",
+        "delivery": "playful",
+        "text": "If you're dancing alone in a kitchen, respect.",
+        "durationSeconds": 2.69
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "ny4-outro",
+        "audio": "/audio/jockey/ny4-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. New York, night four.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> New York, night four.",
+        "durationSeconds": 2.35
       }
     },
     "NY5": {
@@ -1887,6 +4193,22 @@
         "text": "New York. Night five.",
         "synthesisText": "New York.<break time=\"0.3s\" /> Night five.",
         "durationSeconds": 1.75
+      },
+      "thought": {
+        "id": "ny5-thought",
+        "audio": "/audio/jockey/ny5-thought.mp3",
+        "delivery": "reflective",
+        "text": "Wherever you are, I hope there's a bit of light.",
+        "durationSeconds": 2.51
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "ny5-outro",
+        "audio": "/audio/jockey/ny5-outro.mp3",
+        "delivery": "warm",
+        "text": "There it was. New York, night five.",
+        "synthesisText": "There it was.<break time=\"0.3s\" /> New York, night five.",
+        "durationSeconds": 2.93
       }
     },
     "NY6": {
@@ -1897,6 +4219,13 @@
         "text": "New York. Night six. Last one.",
         "synthesisText": "New York.<break time=\"0.3s\" /> Night six.<break time=\"0.3s\" /> Last one.",
         "durationSeconds": 2.74
+      },
+      "outro": {
+        "id": "ny6-outro",
+        "audio": "/audio/jockey/ny6-outro.mp3",
+        "delivery": "warm",
+        "text": "That was New York, night six.",
+        "durationSeconds": 2.27
       }
     },
     "LDN 1": {
@@ -1907,7 +4236,23 @@
         "text": "London. Night one. Home.",
         "synthesisText": "London.<break time=\"0.3s\" /> Night one.<break time=\"0.3s\" /> Home.",
         "durationSeconds": 2.74
-      }
+      },
+      "outro": {
+        "id": "ldn-1-outro",
+        "audio": "/audio/jockey/ldn-1-outro.mp3",
+        "delivery": "warm",
+        "text": "London, night one, there.",
+        "durationSeconds": 1.99
+      },
+      "thought": {
+        "id": "ldn-1-thought",
+        "audio": "/audio/jockey/ldn-1-thought.mp3",
+        "delivery": "reflective",
+        "text": "Lovely and a bit strange. My favourite combination.",
+        "synthesisText": "Lovely and a bit strange.<break time=\"0.4s\" /> My favourite combination.",
+        "durationSeconds": 3.53
+      },
+      "thoughtOffset": 110
     },
     "LDN 2": {
       "intro": {
@@ -1917,6 +4262,21 @@
         "text": "London. Night two.",
         "synthesisText": "London.<break time=\"0.3s\" /> Night two.",
         "durationSeconds": 1.8
+      },
+      "thought": {
+        "id": "ldn-2-thought",
+        "audio": "/audio/jockey/ldn-2-thought.mp3",
+        "delivery": "reflective",
+        "text": "Simple idea, done with total heart.",
+        "durationSeconds": 2.12
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "ldn-2-outro",
+        "audio": "/audio/jockey/ldn-2-outro.mp3",
+        "delivery": "warm",
+        "text": "That was London, night two.",
+        "durationSeconds": 2.04
       }
     },
     "LDN 3": {
@@ -1927,6 +4287,22 @@
         "text": "London. Night three.",
         "synthesisText": "London.<break time=\"0.3s\" /> Night three.",
         "durationSeconds": 1.93
+      },
+      "thought": {
+        "id": "ldn-3-thought",
+        "audio": "/audio/jockey/ldn-3-thought.mp3",
+        "delivery": "reflective",
+        "text": "Mm. Leave the light on for this one.",
+        "synthesisText": "Mm.<break time=\"0.4s\" /> Leave the light on for this one.",
+        "durationSeconds": 2.4
+      },
+      "thoughtOffset": 110,
+      "outro": {
+        "id": "ldn-3-outro",
+        "audio": "/audio/jockey/ldn-3-outro.mp3",
+        "delivery": "warm",
+        "text": "London, night three, there.",
+        "durationSeconds": 1.85
       }
     },
     "LDN 4": {
@@ -1937,6 +4313,13 @@
         "text": "London. Night four. With Thomas Bangalter.",
         "synthesisText": "London.<break time=\"0.3s\" /> Night four.<break time=\"0.3s\" /> With Thomas Bangalter.",
         "durationSeconds": 3.29
+      },
+      "outro": {
+        "id": "ldn-4-outro",
+        "audio": "/audio/jockey/ldn-4-outro.mp3",
+        "delivery": "warm",
+        "text": "That was London, night four.",
+        "durationSeconds": 1.8
       }
     },
     "BBY vs. Real As It Gets": {
@@ -1947,7 +4330,23 @@
         "text": "Overmono versus Lil Baby. A Fred bootleg. Watch this.",
         "synthesisText": "Overmono versus Lil Baby.<break time=\"0.3s\" /> A Fred bootleg.<break time=\"0.3s\" /> Watch this.",
         "durationSeconds": 4.31
-      }
+      },
+      "outro": {
+        "id": "bby-vs-real-as-it-gets-outro",
+        "audio": "/audio/jockey/bby-vs-real-as-it-gets-outro.mp3",
+        "delivery": "warm",
+        "text": "That was BBY versus Real As It Gets.",
+        "durationSeconds": 2.93
+      },
+      "thought": {
+        "id": "bby-vs-real-as-it-gets-thought",
+        "audio": "/audio/jockey/bby-vs-real-as-it-gets-thought.mp3",
+        "delivery": "reflective",
+        "text": "Little shiver, right there. Did you get it?",
+        "synthesisText": "Little shiver, right there.<break time=\"0.4s\" /> Did you get it?",
+        "durationSeconds": 2.51
+      },
+      "thoughtOffset": 110
     }
   },
   "transitions": {
@@ -1956,28 +4355,32 @@
       "audio": "/audio/jockey/boiler-room-transition.mp3",
       "text": "Stepping into the iconic London Boiler Room. Sweat on the walls, pure electricity.",
       "delivery": "warm",
-      "synthesisText": "Stepping into the iconic London Boiler Room.<break time=\"0.4s\" /> Sweat on the walls, pure electricity."
+      "synthesisText": "Stepping into the iconic London Boiler Room.<break time=\"0.4s\" /> Sweat on the walls, pure electricity.",
+      "durationSeconds": 5.75
     },
     "rooftop-naples": {
       "id": "naples-transition",
       "audio": "/audio/jockey/naples-transition.mp3",
       "text": "Heading over to Naples on that sun-drenched terrace. Golden hour over the sea.",
       "delivery": "warm",
-      "synthesisText": "Heading over to Naples on that sun-drenched terrace.<break time=\"0.4s\" /> Golden hour over the sea."
+      "synthesisText": "Heading over to Naples on that sun-drenched terrace.<break time=\"0.4s\" /> Golden hour over the sea.",
+      "durationSeconds": 5.09
     },
     "times-square": {
       "id": "times-square-transition",
       "audio": "/audio/jockey/times-square-transition.mp3",
       "text": "Times Square, New York City. A yellow school bus and three friends stopping traffic.",
       "delivery": "warm",
-      "synthesisText": "Times Square, New York City.<break time=\"0.4s\" /> A yellow school bus and three friends stopping traffic."
+      "synthesisText": "Times Square, New York City.<break time=\"0.4s\" /> A yellow school bus and three friends stopping traffic.",
+      "durationSeconds": 5.28
     },
     "tiny-desk": {
       "id": "tiny-desk-transition",
       "audio": "/audio/jockey/tiny-desk-transition.mp3",
       "text": "NPR Tiny Desk. No backing tracks, just classical piano, marimba, and live MPC loops.",
       "delivery": "warm",
-      "synthesisText": "NPR Tiny Desk.<break time=\"0.4s\" /> No backing tracks, just classical piano, marimba, and live MPC loops."
+      "synthesisText": "NPR Tiny Desk.<break time=\"0.4s\" /> No backing tracks, just classical piano, marimba, and live MPC loops.",
+      "durationSeconds": 6.58
     }
   },
   "facts": [
@@ -1988,7 +4391,8 @@
       "text": "Fred knocked on Brian Eno's door at sixteen and joined his acapella group. Eno mentored him for over a decade before they made Secret Life together.",
       "delivery": "warm",
       "synthesisText": "Fred knocked on Brian Eno's door at sixteen and joined his acapella group.<break time=\"0.4s\" /> Eno mentored him for over a decade before they made Secret Life together.",
-      "source": "https://www.theguardian.com/music/2023/may/05/fred-again-and-brian-eno-secret-life-review"
+      "source": "https://www.theguardian.com/music/2023/may/05/fred-again-and-brian-eno-secret-life-review",
+      "durationSeconds": 8.49
     },
     {
       "id": "real-names",
@@ -1997,14 +4401,16 @@
       "text": "Every name in Fred's titles is a real person he met. The voice notes on his phone become the emotional soul of the music.",
       "delivery": "warm",
       "synthesisText": "Every name in Fred's titles is a real person he met.<break time=\"0.4s\" /> The voice notes on his phone become the emotional soul of the music.",
-      "source": "https://music.apple.com/us/station/fred-again-the-zane-lowe-interview/ra.1651347047"
+      "source": "https://music.apple.com/us/station/fred-again-the-zane-lowe-interview/ra.1651347047",
+      "durationSeconds": 7.97
     },
     {
       "id": "hit-producer",
       "audio": "/audio/jockey/hit-producer.mp3",
       "topic": "Chart Producer Credits",
       "text": "Before releasing solo records, Fred produced massive chart-toppers for Ed Sheeran, George Ezra, and Stormzy on his laptop.",
-      "source": "https://www.soundonsound.com/people/fred-again-producing-ed-sheeran"
+      "source": "https://www.soundonsound.com/people/fred-again-producing-ed-sheeran",
+      "durationSeconds": 7.42
     },
     {
       "id": "boiler-room-cdj",
@@ -2013,7 +4419,150 @@
       "text": "During the 2022 Boiler Room, a dancer bumped the CDJ stop button. Fred just grinned, hit play, and turned it into the defining moment of the set.",
       "delivery": "warm",
       "synthesisText": "During the 2022 Boiler Room, a dancer bumped the CDJ stop button.<break time=\"0.4s\" /> Fred just grinned, hit play, and turned it into the defining moment of the set.",
-      "source": "https://mixmag.net/feature/fred-again-boiler-room-london-cover-story"
+      "source": "https://mixmag.net/feature/fred-again-boiler-room-london-cover-story",
+      "durationSeconds": 11.65
+    }
+  ],
+  "stationIds": [
+    {
+      "id": "id-again-radio",
+      "audio": "/audio/jockey/id-again-radio.mp3",
+      "delivery": "warm",
+      "text": "You're listening to Again Radio.",
+      "durationSeconds": 2.12
+    },
+    {
+      "id": "id-never-stops",
+      "audio": "/audio/jockey/id-never-stops.mp3",
+      "delivery": "natural",
+      "text": "Again Radio. The set never really stops.",
+      "synthesisText": "Again Radio.<break time=\"0.3s\" /> The set never really stops.",
+      "durationSeconds": 2.95
+    },
+    {
+      "id": "id-fan-made",
+      "audio": "/audio/jockey/id-fan-made.mp3",
+      "delivery": "warm",
+      "text": "Again Radio. Made by fans, for the room.",
+      "synthesisText": "Again Radio.<break time=\"0.3s\" /> Made by fans, for the room.",
+      "durationSeconds": 3.11
+    },
+    {
+      "id": "id-stay",
+      "audio": "/audio/jockey/id-stay.mp3",
+      "delivery": "reflective",
+      "text": "Stay a while. This is Again Radio.",
+      "synthesisText": "Stay a while.<break time=\"0.3s\" /> This is Again Radio.",
+      "durationSeconds": 2.64
+    },
+    {
+      "id": "id-volume",
+      "audio": "/audio/jockey/id-volume.mp3",
+      "delivery": "playful",
+      "text": "Again Radio. Volume's yours to decide.",
+      "synthesisText": "Again Radio.<break time=\"0.3s\" /> Volume's yours to decide.",
+      "durationSeconds": 2.69
+    },
+    {
+      "id": "id-around-world",
+      "audio": "/audio/jockey/id-around-world.mp3",
+      "delivery": "bright",
+      "text": "Again Radio, playing somewhere in the world right now.",
+      "durationSeconds": 3.19
+    },
+    {
+      "id": "id-rory",
+      "audio": "/audio/jockey/id-rory.mp3",
+      "delivery": "warm",
+      "text": "It's Rory, on Again Radio. Glad you're here.",
+      "synthesisText": "It's Rory, on Again Radio.<break time=\"0.3s\" /> Glad you're here.",
+      "durationSeconds": 2.95
+    },
+    {
+      "id": "id-one-more",
+      "audio": "/audio/jockey/id-one-more.mp3",
+      "delivery": "playful",
+      "text": "Again Radio. One more. Always one more.",
+      "synthesisText": "Again Radio.<break time=\"0.3s\" /> One more.<break time=\"0.3s\" /> Always one more.",
+      "durationSeconds": 3.24
+    },
+    {
+      "id": "id-frequency",
+      "audio": "/audio/jockey/id-frequency.mp3",
+      "delivery": "natural",
+      "text": "Same frequency, different rooms. Again Radio.",
+      "synthesisText": "Same frequency, different rooms.<break time=\"0.3s\" /> Again Radio.",
+      "durationSeconds": 3.29
+    },
+    {
+      "id": "id-loop",
+      "audio": "/audio/jockey/id-loop.mp3",
+      "delivery": "reflective",
+      "text": "Again Radio. Round again, and again.",
+      "synthesisText": "Again Radio.<break time=\"0.3s\" /> Round again, and again.",
+      "durationSeconds": 2.87
+    },
+    {
+      "id": "id-tune-in",
+      "audio": "/audio/jockey/id-tune-in.mp3",
+      "delivery": "warm",
+      "text": "Tuned in, turned up. Again Radio.",
+      "synthesisText": "Tuned in, turned up.<break time=\"0.3s\" /> Again Radio.",
+      "durationSeconds": 2.87
+    },
+    {
+      "id": "id-wherever",
+      "audio": "/audio/jockey/id-wherever.mp3",
+      "delivery": "natural",
+      "text": "Again Radio. Wherever you are, we're here.",
+      "synthesisText": "Again Radio.<break time=\"0.3s\" /> Wherever you are, we're here.",
+      "durationSeconds": 2.77
+    },
+    {
+      "id": "id-heads",
+      "audio": "/audio/jockey/id-heads.mp3",
+      "delivery": "playful",
+      "text": "Again Radio, for all the heads.",
+      "durationSeconds": 1.91
+    },
+    {
+      "id": "id-moment",
+      "audio": "/audio/jockey/id-moment.mp3",
+      "delivery": "reflective",
+      "text": "Again Radio. One moment at a time.",
+      "synthesisText": "Again Radio.<break time=\"0.3s\" /> One moment at a time.",
+      "durationSeconds": 2.82
+    },
+    {
+      "id": "id-all-day",
+      "audio": "/audio/jockey/id-all-day.mp3",
+      "delivery": "natural",
+      "text": "Twenty-four hours a day. Again Radio.",
+      "synthesisText": "Twenty-four hours a day.<break time=\"0.3s\" /> Again Radio.",
+      "durationSeconds": 2.77
+    },
+    {
+      "id": "id-room",
+      "audio": "/audio/jockey/id-room.mp3",
+      "delivery": "warm",
+      "text": "Again Radio. Make some room.",
+      "synthesisText": "Again Radio.<break time=\"0.3s\" /> Make some room.",
+      "durationSeconds": 2.22
+    },
+    {
+      "id": "id-here-now",
+      "audio": "/audio/jockey/id-here-now.mp3",
+      "delivery": "bright",
+      "text": "Right here, right now, on Again Radio.",
+      "durationSeconds": 2.51
+    },
+    {
+      "id": "id-hold-tight",
+      "audio": "/audio/jockey/id-hold-tight.mp3",
+      "delivery": "playful",
+      "text": "Hold tight. You're on Again Radio.",
+      "synthesisText": "Hold tight.<break time=\"0.3s\" /> You're on Again Radio.",
+      "durationSeconds": 2.77
     }
   ]
 }

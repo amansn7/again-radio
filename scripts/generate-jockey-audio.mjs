@@ -49,6 +49,7 @@ for (const [title, t] of Object.entries(jockeyData.tracks || {})) {
 }
 for (const [key, t] of Object.entries(jockeyData.transitions || {})) addClip(t, `transition:${key}`);
 for (const f of jockeyData.facts || []) addClip(f, `fact:${f.id}`);
+for (const s of jockeyData.stationIds || []) addClip(s, `station-id:${s.id}`);
 
 // Lower stability = more movement in the read; higher style = more emphasis. One voice, small shades.
 const VOICE = {
