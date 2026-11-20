@@ -115,7 +115,11 @@ export class RadioPlayer extends HTMLElement {
 
     on("#rp-play", () => this.toggle());
     on("#rp-sound", () => this.toggleMute());
-    on("#rp-back", () => goLive(this));
+    const jumpLive = () => {
+      this.jockey.stop();
+      goLive(this);
+    };
+    on("#rp-back", jumpLive);
     on("#rp-shuffle", () => setShuffle(this, !this.shuffle.on));
 
     document.addEventListener(RADIO_TRACK, (e) => {
@@ -125,7 +129,7 @@ export class RadioPlayer extends HTMLElement {
 
     document.addEventListener(RADIO_TIME, (e) => {
       const timeInfo = (e as CustomEvent<TimeInfo>).detail;
-      if (lastTrack) void this.jockey.onTime(timeInfo, lastTrack);
+      if (lastTrack && this.playing) void this.jockey.onTime(timeInfo, lastTrack);
     }, { signal });
 
     const stopListeners = watchListeners((n) => {
@@ -133,10 +137,7 @@ export class RadioPlayer extends HTMLElement {
     });
     signal.addEventListener("abort", () => stopListeners());
 
-    document.addEventListener(RADIO_LIVE, () => goLive(this), { signal });
-    document.addEventListener("radio:jockey:ask", () => {
-      if (lastTrack) void this.jockey.askCurrent(lastTrack);
-    }, { signal });
+    document.addEventListener(RADIO_LIVE, jumpLive, { signal });
     document.addEventListener("radio:jockey:toggle", () => this.jockey.toggle(), { signal });
     // Mobile browsers pause embeds in the background; come back to the live moment, like a radio.
     document.addEventListener("visibilitychange", () => {
@@ -150,7 +151,7 @@ export class RadioPlayer extends HTMLElement {
       mute: () => this.toggleMute(),
       prev: () => step(this, -1),
       next: () => step(this, 1),
-      live: () => goLive(this),
+      live: jumpLive,
     };
     bindKeys(actions, signal);
     bindSession({

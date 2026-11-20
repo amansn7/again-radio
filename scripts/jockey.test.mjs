@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { pickWelcome } from "../src/lib/welcome.ts";
-import { outroLeadSeconds } from "../src/lib/jockey-timing.ts";
+import { introFits, outroLeadSeconds } from "../src/lib/jockey-timing.ts";
 import { speechProfile } from "../src/lib/jockey-voice.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -93,20 +93,16 @@ test("jockey ducking cubic ease-in-out math", () => {
   }
 });
 
-test("hitting the post: intro speeches wrap before vocals", () => {
-  const dataPath = path.join(ROOT, "public/data/jockey.json");
-  const data = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
-
+test("hitting the post: every intro fits before the vocals from the top, and late joins stay quiet", () => {
+  const data = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data/jockey.json"), "utf-8"));
   for (const [title, track] of Object.entries(data.tracks)) {
-    if (track.postSeconds && track.intro) {
-      // Average speaking rate: ~3 words per second (15 characters per second)
-      const estimatedDurationSec = track.intro.text.length / 15;
-      assert.ok(
-        estimatedDurationSec < track.postSeconds,
-        `Track ${title} intro duration (~${estimatedDurationSec.toFixed(1)}s) wraps before post (${track.postSeconds}s)`
-      );
-    }
+    if (!track.intro) continue;
+    assert.ok(introFits(0, track.intro, track.postSeconds), `${title} intro fits before its post`);
+    assert.equal(introFits((track.postSeconds ?? 12) - 1.5, track.intro, track.postSeconds), false, `${title} stays quiet when it would run into the vocals`);
   }
+  assert.equal(introFits(10, { text: "x".repeat(60) }, 16), false, "10s in + ~6s clip runs into a 16s post");
+  assert.equal(introFits(2, { text: "x".repeat(60) }, 16), true);
+  assert.equal(introFits(-1, { text: "hi" }, 16), false, "negative elapsed never fits");
 });
 
 test("configured intros have a speakable cue and measured outros leave a finish buffer", () => {
@@ -220,4 +216,20 @@ test("welcome picks by hour and never repeats the last line", () => {
     assert.ok(seen.size >= 3, `hour ${hour} has ${seen.size} options`);
   }
   assert.equal(pickWelcome([{ id: "a" }], 3, "a").id, "a", "single line still plays");
+});
+
+test("synthesis scripts only add pauses: Rory says exactly the caption's words", () => {
+  const data = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data/jockey.json"), "utf-8"));
+  const words = (t) => t.replace(/<break[^>]*\/>/g, " ").toLowerCase().match(/[a-z0-9']+/g)?.join(" ");
+  const all = [
+    ...(data.welcomes ?? []), ...(data.sweepers ?? []), ...(data.listeners ?? []), ...(data.facts ?? []),
+    ...Object.values(data.transitions ?? {}),
+    ...Object.values(data.tracks).flatMap((t) => [t.intro, t.thought, t.outro]),
+  ].filter((c) => c?.synthesisText);
+  assert.ok(all.length >= 8, "paced scripts exist");
+  for (const c of all) {
+    assert.equal(words(c.synthesisText), words(c.text), `${c.id} synthesis matches its caption`);
+    assert.ok(!/<break/.test(c.text), `${c.id} caption has no markup`);
+    for (const [, t] of c.synthesisText.matchAll(/time="([\d.]+)s"/g)) assert.ok(+t > 0 && +t <= 1, `${c.id} pause ${t}s stays short`);
+  }
 });

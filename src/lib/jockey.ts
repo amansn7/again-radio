@@ -9,7 +9,7 @@ import {
 import { JockeyDucker } from "./jockey-ducker.ts";
 import { JockeyAudio } from "./jockey-audio.ts";
 import { pickWelcome } from "./welcome.ts";
-import { outroLeadSeconds } from "./jockey-timing.ts";
+import { introFits, outroLeadSeconds } from "./jockey-timing.ts";
 import type { JockeyDelivery } from "./jockey-voice.ts";
 
 const LAST_WELCOME_KEY = "again-radio:last-welcome";
@@ -89,6 +89,9 @@ export class RadioJockey {
   private hasWelcomed = false;
   private currentListenerCount: number | null = null;
   private lastListenerAnnounce = 0;
+  private lastFactId = "";
+  private currentTrack: TrackInfo | null = null;
+  private currentTrackAt = 0;
 
   constructor(
     private duckTo: (pct: number) => void,
@@ -106,9 +109,7 @@ export class RadioJockey {
 
   set enabled(val: boolean) {
     this._enabled = val;
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem("again-radio:jockey", String(val));
-    }
+    try { localStorage.setItem("again-radio:jockey", String(val)); } catch {}
     if (!val && this._speaking) {
       this.stop();
     }
@@ -165,15 +166,25 @@ export class RadioJockey {
     const welcome = this.pickWelcome();
     if (welcome) {
       await this.speak(welcome.text, welcome.audio, { isTuneIn: true, delivery: welcome.delivery });
+    } else {
+      const live = this.liveTrack();
+      if (live) await this.onTrack(live);
     }
-    const current = this.currentTrack;
-    if (current && current.elapsed < 8) await this.onTrack(current);
   }
 
-  private currentTrack: TrackInfo | null = null;
+  private setCurrent(info: TrackInfo): void {
+    this.currentTrack = info;
+    this.currentTrackAt = Date.now();
+  }
+
+  /** The current track with elapsed advanced to now: ticks stop while the tab is hidden. */
+  private liveTrack(): TrackInfo | null {
+    const t = this.currentTrack;
+    return t && { ...t, elapsed: t.elapsed + (Date.now() - this.currentTrackAt) / 1000 };
+  }
 
   async onTrack(info: TrackInfo): Promise<void> {
-    this.currentTrack = info;
+    this.setCurrent(info);
     if (!this._enabled || this._speaking || this.isMuted()) return;
     if (!this.data) this.data = await loadJockeyData().catch(() => null);
     if (!this.data) return;
@@ -185,7 +196,7 @@ export class RadioJockey {
     if (this.lastProgram && this.lastProgram !== info.programId) {
       this.lastProgram = info.programId;
       const trans = this.data.transitions[info.programId];
-      if (trans) {
+      if (trans && introFits(info.elapsed, trans, this.data.tracks[info.entry.title ?? ""]?.postSeconds)) {
         this.spokeIntro.add(trackKey);
         await this.speak(trans.text, trans.audio, { delivery: trans.delivery });
         return;
@@ -193,20 +204,18 @@ export class RadioJockey {
     }
     this.lastProgram = info.programId;
 
-    // Cooldown check
-    const now = Date.now();
-    const cooldownMs = 80_000;
-    if (now - this.lastSpokeTime < cooldownMs) return;
-
-    // Check if this track has an intro
-    const trackConfig = this.data.tracks[info.entry.title];
+    // Intros are the core of the show, so they skip the chatter cooldown, but only if they end before the vocals.
+    const trackConfig = this.data.tracks[info.entry.title ?? ""];
     if (trackConfig?.intro) {
       this.spokeIntro.add(trackKey);
-      if (info.elapsed <= 8) {
+      if (introFits(info.elapsed, trackConfig.intro, trackConfig.postSeconds)) {
         await this.speak(trackConfig.intro.text, trackConfig.intro.audio, { delivery: trackConfig.intro.delivery });
       }
       return;
     }
+
+    const now = Date.now();
+    if (now - this.lastSpokeTime < 80_000) return;
 
     // Periodic listener mentions fill a gap only when there is no track intro.
     if (now - this.lastListenerAnnounce > 260_000 && this.data.listeners?.length) {
@@ -218,8 +227,11 @@ export class RadioJockey {
 
     // Occasional trivia/fact (every ~4-5 minutes)
     if (now - this.lastSpokeTime > 240_000 && this.data.facts.length > 0) {
-      const fact = this.data.facts[Math.floor(Math.random() * this.data.facts.length)];
+      const fresh = this.data.facts.filter((f) => f.id !== this.lastFactId);
+      const pool = fresh.length ? fresh : this.data.facts;
+      const fact = pool[Math.floor(Math.random() * pool.length)];
       if (fact) {
+        this.lastFactId = fact.id;
         this.spokeIntro.add(trackKey);
         await this.speak(fact.text, fact.audio, { delivery: fact.delivery });
       }
@@ -229,11 +241,11 @@ export class RadioJockey {
   /** Mid-song thought triggered at the designated reflection point of the track */
   async onTime(timeInfo: TimeInfo, info: TrackInfo): Promise<void> {
     const elapsed = Math.max(0, timeInfo.current - info.entry.offset);
-    this.currentTrack = { ...info, elapsed, progress: info.entry.duration ? elapsed / info.entry.duration : 0 };
+    this.setCurrent({ ...info, elapsed, progress: info.entry.duration ? elapsed / info.entry.duration : 0 });
     if (!this._enabled || this._speaking || this.isMuted()) return;
     if (!this.data) return;
 
-    const trackConfig = this.data.tracks[info.entry.title];
+    const trackConfig = this.data.tracks[info.entry.title ?? ""];
     const trackKey = `${info.programId}:${info.entry.title}`;
     if (trackConfig?.thought && trackConfig.thoughtOffset !== undefined && !this.spokeThought.has(trackKey) &&
         elapsed >= trackConfig.thoughtOffset && elapsed < trackConfig.thoughtOffset + 3.5) {
@@ -273,41 +285,6 @@ export class RadioJockey {
     }
   }
 
-  /** Triggered when user asks Rory to talk about the current track */
-  async askCurrent(info: TrackInfo): Promise<void> {
-    if (this.isMuted()) return;
-    if (!this.data) this.data = await loadJockeyData().catch(() => null);
-    if (!this.data) return;
-
-    const trackConfig = this.data.tracks[info.entry.title];
-    // If mid-song and thought exists, prioritize the intimate thought
-    if (info.elapsed > 30 && trackConfig?.thought) {
-      await this.speak(trackConfig.thought.text, trackConfig.thought.audio, { delivery: trackConfig.thought.delivery });
-      return;
-    }
-    if (trackConfig?.intro) {
-      await this.speak(trackConfig.intro.text, trackConfig.intro.audio, { delivery: trackConfig.intro.delivery });
-      return;
-    }
-
-    // Pick a related fact or a random fact about Fred
-    const fact = this.data.facts[Math.floor(Math.random() * this.data.facts.length)];
-    if (fact) {
-      await this.speak(fact.text, fact.audio, { delivery: fact.delivery });
-      return;
-    }
-
-    // Fallback station shout
-    const shout = this.data.sweepers[Math.floor(Math.random() * this.data.sweepers.length)];
-    if (shout) {
-      await this.speak(shout.text, shout.audio, { delivery: shout.delivery });
-    }
-  }
-
-  unlockAudio(): void {
-    this.audio.unlock();
-  }
-
   async speak(text: string, audioUrl?: string, options: { isTuneIn?: boolean; delivery?: JockeyDelivery } = {}): Promise<void> {
     if (this._speaking) return;
     this._speaking = true;
@@ -341,12 +318,16 @@ export class RadioJockey {
       if (token !== this.speakToken) return;
       // 3. Swell YouTube volume back up
       await this.ducker.unduck(this.duckTo, duckVol, 100, unduckFadeMs);
-      this._speaking = false;
-      this._currentText = "";
-      this.emitState();
-
-      if (typeof document !== "undefined") {
-        document.dispatchEvent(new CustomEvent(RADIO_JOCKEY_END));
+      if (token === this.speakToken) {
+        this._speaking = false;
+        this._currentText = "";
+        this.emitState();
+        if (typeof document !== "undefined") {
+          document.dispatchEvent(new CustomEvent(RADIO_JOCKEY_END));
+        }
+        // A track that started while Rory talked still gets its intro if it fits before the vocals.
+        const live = this.liveTrack();
+        if (live) void this.onTrack(live);
       }
     }
   }

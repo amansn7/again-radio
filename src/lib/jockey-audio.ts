@@ -92,11 +92,20 @@ export class JockeyAudio {
           options.onProgress?.(audio.currentTime, audio.duration);
         }
       }, 100);
+      // A stalled stream must never leave the music ducked: give up a few seconds past the clip's length.
+      let guard = setTimeout(() => finish(true, new Error("clip never started")), 10_000);
       const finish = (fail: boolean, err?: unknown) => {
         if (done) return;
         done = true;
         clearInterval(timer);
-        audio.onended = audio.onerror = null;
+        clearTimeout(guard);
+        audio.onended = audio.onerror = audio.onloadedmetadata = null;
+        // A failed clip must not start late on top of the fallback voice.
+        if (fail) {
+          audio.pause();
+          audio.removeAttribute("src");
+          audio.load();
+        }
         this.settle = null;
         if (fail) reject(err);
         else resolve();
@@ -104,6 +113,14 @@ export class JockeyAudio {
       this.settle = () => finish(false);
       audio.onended = () => finish(false);
       audio.onerror = (e) => finish(true, e);
+      audio.onloadedmetadata = () => {
+        if (!Number.isFinite(audio.duration)) return;
+        clearTimeout(guard);
+        guard = setTimeout(() => {
+          audio.pause();
+          finish(false);
+        }, audio.duration * 1000 + 3000);
+      };
       audio.muted = false;
       audio.volume = options.volume ?? 1.0;
       audio.src = url;
@@ -126,7 +143,13 @@ export class JockeyAudio {
       utterance.pitch = profile.pitch;
       utterance.volume = options.volume ?? 1.0;
 
+      // Some browsers never fire onend; never let that hold the duck.
+      const guard = setTimeout(() => {
+        this.synth?.cancel();
+        finish();
+      }, text.length * 120 + 4000);
       const finish = () => {
+        clearTimeout(guard);
         utterance.onend = utterance.onerror = null;
         if (this.settle === finish) this.settle = null;
         resolve();

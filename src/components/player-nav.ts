@@ -82,7 +82,6 @@ export function goLive(p: RadioPlayer, ms = FADE_USER_MS) {
 }
 
 function load(p: RadioPlayer, offset: number) {
-  p.jockey.stop();
   const same = p.loaded === p.prog.youtubeId;
   p.loaded = p.prog.youtubeId;
   p.setAnchor(offset);
@@ -101,6 +100,7 @@ function load(p: RadioPlayer, offset: number) {
 }
 
 export async function cue(p: RadioPlayer, d: CueInfo) {
+  p.jockey.stop();
   try {
     const path = "video" in d ? `video:${d.video.youtubeId}` : d.program;
     const prog =
@@ -137,6 +137,8 @@ function playEntry(p: RadioPlayer, i: number, ms: number) {
 export function step(p: RadioPlayer, dir: 1 | -1) {
   const info = entryAt(p.prog.entries, p.position());
   if (!info) return;
+  // The listener chose to move; automatic changes let Rory finish over the crossfade.
+  p.jockey.stop();
   if (p.shuffle.on) {
     if (dir > 0) return nextShuffled(p, FADE_USER_MS);
     const back = info.elapsed > 3 ? undefined : p.shuffle.back();

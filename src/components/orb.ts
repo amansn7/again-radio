@@ -47,7 +47,7 @@ class RadioOrb extends HTMLElement {
 
   private onJockeySpeak = (e: Event) => {
     const detail = (e as CustomEvent<{ text: string; isTuneIn?: boolean }>).detail;
-    if (detail?.isTuneIn) return;
+    if (detail?.isTuneIn || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     this.dataset.wave = "true";
     this.wave?.start();
   };
