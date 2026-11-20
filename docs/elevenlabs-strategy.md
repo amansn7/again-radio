@@ -2,13 +2,13 @@
 
 Strategy for getting maximum broadcast value out of ElevenLabs' free monthly 10,000 credit allocation for **AGAIN RADIO**'s AI radio jockey, Rory.
 
-**Current balance snapshot (20 Nov 2026):** after recording intros for every song in the
-catalogue (167 intros, 146 new), the API preflight reports 1,421 credits remaining, kept for dynamic
-dialogue. Billing ran about 0.7 credits per spoken character (break markup appears free), and the
-balance the API reports lags a run by several minutes, so budget from text length, not the live
-number. The allowance resets on 19 Dec 2026. The synthesis script
-checks the quota before any request, refuses a run that would exceed it, waits out `429`
-rate limits, and stops at the first quota error until the reset.
+**Accounts (20 Nov 2026):** two free accounts, both with Rory's premade voice (Lily) and identical
+untouched voice defaults; every request sends the same model and settings, so either account gives
+the same voice. Account 1: 1,421 remaining (resets 19 Dec). Account 2: 10,000 (resets 20 Dec).
+The generator plans every clip across both accounts before sending anything, charges each clip
+to the account with the most spare credit, moves to the other on a quota error, and keeps
+`--reserve` credits (default 1,500) per account for dynamic dialogue. Billing ran about 0.7
+credits per spoken character; the API balance lags a run by minutes, so budget from text length.
 
 **Pacing and emphasis:** a clip's `synthesisText` adds `<break time="0.3s" />` pauses to the
 same words as its caption (a test enforces this), and its `delivery` shade maps to ElevenLabs
