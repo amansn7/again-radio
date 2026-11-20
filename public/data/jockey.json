@@ -333,7 +333,13 @@
     },
     "Flight FM": {
       "postSeconds": 16,
-      "intro": { "id": "flight-fm-intro", "audio": "/audio/jockey/flight-fm-intro.mp3", "delivery": "bright", "text": "Yay, there it is—what a lift. Flight FM." }
+      "intro": {
+        "id": "flight-fm-intro",
+        "audio": "/audio/jockey/flight-fm-intro.mp3",
+        "delivery": "bright",
+        "text": "Yay! There it is—what a lift. Flight FM.",
+        "synthesisText": "Yay!<break time=\"0.35s\" /> There it is—what a lift.<break time=\"0.45s\" /> Flight FM."
+      }
     },
     "Nightvision": {
       "postSeconds": 16,

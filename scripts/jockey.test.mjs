@@ -140,6 +140,16 @@ test("delivery cues keep browser speech changes subtle", () => {
   assert.equal(speechProfile().rate, speechProfile("natural").rate);
 });
 
+test("Flight FM keeps its transcript clean and gives ElevenLabs explicit cadence breaks", () => {
+  const data = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data/jockey.json"), "utf-8"));
+  const intro = data.tracks["Flight FM"].intro;
+  assert.equal(intro.text, "Yay! There it is—what a lift. Flight FM.");
+  assert.doesNotMatch(intro.text, /<break/);
+  assert.equal((intro.synthesisText.match(/<break time=/g) ?? []).length, 2);
+  assert.match(intro.synthesisText, /^Yay!/);
+  assert.match(intro.synthesisText, /Flight FM\.$/);
+});
+
 test("listener shoutouts and mid-song thoughts stay within 2000 credit bucket", () => {
   const dataPath = path.join(ROOT, "public/data/jockey.json");
   const data = JSON.parse(fs.readFileSync(dataPath, "utf-8"));

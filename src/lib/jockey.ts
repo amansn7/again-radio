@@ -18,6 +18,7 @@ export interface JockeyClip {
   id: string;
   audio?: string;
   text: string;
+  synthesisText?: string;
   delivery?: JockeyDelivery;
 }
 

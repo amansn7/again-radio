@@ -27,7 +27,9 @@ if (!fs.existsSync(audioDir)) {
 
 // Collect all clips to synthesize
 const clips = [];
-const addClip = (clip) => { if (clip.audio) clips.push(clip); };
+const addClip = (clip) => {
+  if (clip.audio) clips.push({ ...clip, text: clip.synthesisText ?? clip.text });
+};
 
 for (const w of jockeyData.welcomes || []) {
   addClip({ id: w.id, audio: w.audio, text: w.text, label: `welcome:${w.id}` });
@@ -43,13 +45,25 @@ for (const l of jockeyData.listeners || []) {
 
 for (const [title, trackData] of Object.entries(jockeyData.tracks || {})) {
   if (trackData.intro) {
-    addClip({ id: trackData.intro.id, audio: trackData.intro.audio, text: trackData.intro.text, label: `intro:${title}` });
+    addClip({
+      id: trackData.intro.id, audio: trackData.intro.audio, text: trackData.intro.text,
+      synthesisText: trackData.intro.synthesisText, delivery: trackData.intro.delivery,
+      label: `intro:${title}`
+    });
   }
   if (trackData.thought) {
-    addClip({ id: trackData.thought.id, audio: trackData.thought.audio, text: trackData.thought.text, label: `thought:${title}` });
+    addClip({
+      id: trackData.thought.id, audio: trackData.thought.audio, text: trackData.thought.text,
+      synthesisText: trackData.thought.synthesisText, delivery: trackData.thought.delivery,
+      label: `thought:${title}`
+    });
   }
   if (trackData.outro) {
-    addClip({ id: trackData.outro.id, audio: trackData.outro.audio, text: trackData.outro.text, label: `outro:${title}` });
+    addClip({
+      id: trackData.outro.id, audio: trackData.outro.audio, text: trackData.outro.text,
+      synthesisText: trackData.outro.synthesisText, delivery: trackData.outro.delivery,
+      label: `outro:${title}`
+    });
   }
 }
 
@@ -63,8 +77,14 @@ for (const f of jockeyData.facts || []) {
 
 const onlyArg = process.argv.find((arg) => arg.startsWith("--only="));
 const onlyIds = new Set(onlyArg ? onlyArg.slice("--only=".length).split(",") : []);
+const replaceArg = process.argv.find((arg) => arg.startsWith("--replace="));
+const replaceIds = new Set(replaceArg ? replaceArg.slice("--replace=".length).split(",") : []);
+if (replaceIds.size && !onlyIds.size) {
+  throw new Error("--replace requires --only so replacement cannot synthesize the full library.");
+}
 const clipsToProcess = onlyIds.size ? clips.filter((clip) => onlyIds.has(clip.id)) : clips;
-if (onlyIds.size && clipsToProcess.length !== onlyIds.size) {
+if ((onlyIds.size && clipsToProcess.length !== onlyIds.size) ||
+    [...replaceIds].some((id) => !clipsToProcess.some((clip) => clip.id === id))) {
   throw new Error("One or more --only clip IDs were not found; no synthesis requests sent.");
 }
 
@@ -91,7 +111,7 @@ async function synthesize(clip) {
   const relPath = clip.audio.startsWith("/") ? clip.audio.slice(1) : clip.audio;
   const targetFile = path.join(ROOT, "public", relPath);
 
-  if (fs.existsSync(targetFile)) {
+  if (fs.existsSync(targetFile) && !replaceIds.has(clip.id)) {
     console.log(`✓ Skipping (already exists): ${clip.label} -> ${relPath}`);
     return;
   }
@@ -111,9 +131,9 @@ async function synthesize(clip) {
       text: clip.text,
       model_id: "eleven_turbo_v2_5",
       voice_settings: {
-        stability: 0.46,
+        stability: clip.delivery === "bright" ? 0.38 : 0.46,
         similarity_boost: 0.78,
-        style: 0.38,
+        style: clip.delivery === "bright" ? 0.48 : 0.38,
         use_speaker_boost: true
       }
     })
@@ -140,7 +160,8 @@ async function synthesize(clip) {
 
 async function run() {
   const remaining = await remainingCharacters();
-  const missing = clipsToProcess.filter((clip) => !fs.existsSync(path.join(ROOT, "public", clip.audio.replace(/^\//, ""))));
+  const missing = clipsToProcess.filter((clip) => replaceIds.has(clip.id) ||
+    !fs.existsSync(path.join(ROOT, "public", clip.audio.replace(/^\//, ""))));
   const needed = missing.reduce((sum, clip) => sum + clip.text.length, 0);
   console.log(`ElevenLabs quota remaining: ${remaining}; missing clips need ${needed}.`);
   if (needed > remaining) {
