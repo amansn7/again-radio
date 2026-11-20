@@ -39,3 +39,8 @@ Rules learned from corrections. Append one line per mistake — specific, action
 
 ## 2026-11-18 — questions
 - Correction: user wants every question asked with concrete options and a recommended answer, never a bare open question. Rule: options + trade-offs + "I'd pick X" every time.
+
+## 2026-11-20 — orb tap hijacked by the jockey
+- A new feature attached a second click handler to an existing control (the orb "make it dance" button dispatched `radio:jockey:ask`). Before wiring a feature to a control, grep every existing handler on that element and keep its one job.
+- Unit tests that re-implement logic prove nothing. For timing/audio features, drive the real page (`scripts/jockey.e2e.mjs`) and assert on recorded state over time.
+- A stuck `fader.fading` silently froze all navigation for ages; any ramp that can be replaced must not own the only completion callback.
