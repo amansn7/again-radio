@@ -47,7 +47,7 @@ const watch = (len, date, ch = CH) => `x"lengthSeconds":"${len}"x"uploadDate":"$
 function fakeFetch(pages, shorts = new Set()) {
   return async (url) => {
     const short = url.match(/\/shorts\/([\w-]{11})/);
-    if (short) return { status: shorts.has(short[1]) ? 200 : 303, text: "" };
+    if (short) return shorts.has(short[1]) ? { status: 200, text: `{"videoId":"${short[1]}"}` } : { status: 303, text: "" };
     if (url.includes("feeds/videos.xml")) return { status: 200, text: pages.feed };
     const id = url.match(/v=([\w-]{11})/)?.[1];
     if (id && pages[id] !== undefined) return { status: 200, text: pages[id] };
@@ -165,4 +165,29 @@ test("channel uploads say where they came from, not a live room", () => {
   assert.equal(fresh[0].entries[0].memory, "New on the official channel, posted 20 Nov 2026.");
   const items = Array.from({ length: 21 }, (_, i) => item(`song${String(i).padStart(7, "0")}`, `s${i}`, `2026-10-${String(i + 1).padStart(2, "0")}`));
   assert.equal(newMusicPrograms(items, LIVE_EPOCH).graduated[0].entries[0].memory, "From the official channel, posted 1 Oct 2026.");
+});
+
+test("a bad or empty feed fails the run instead of finding nothing", async () => {
+  const d = dir({ checked: "2026-11-01", items: [] });
+  const before = read(d);
+  const opts = { today: "2026-11-20", dataDir: d, known: new Set() };
+  await assert.rejects(run({ ...opts, fetchText: async () => ({ status: 200, text: "<html>consent</html>" }) }), /feed/);
+  await assert.rejects(run({ ...opts, fetchText: async () => ({ status: 503, text: "" }) }), /feed/);
+  await assert.rejects(run({ ...opts, dataDir: dir(null), fetchText: async () => ({ status: 200, text: "" }), listVideos: async () => [] }), /Videos tab/);
+  assert.equal(read(d), before);
+});
+
+test("a bot-check page at /shorts is not taken for a Short", async () => {
+  const d = dir({ checked: "2026-11-01", items: [] });
+  const feed = feedOf([["hhhhhhhhhhh", "Fred again.. - real song", "2026-11-18"]]);
+  const base = fakeFetch({ feed, hhhhhhhhhhh: watch(200, "2026-11-18") });
+  const fetchText = async (url, init) => (url.includes("/shorts/") ? { status: 200, text: "<html>unusual traffic</html>" } : base(url, init));
+  assert.deepEqual(await run({ fetchText, today: "2026-11-20", dataDir: d, known: new Set() }), ["Fred again.. - real song"]);
+});
+
+test("daily runs ignore old uploads still listed in the feed", async () => {
+  const d = dir({ checked: "2026-11-19", items: [] });
+  const feed = feedOf([["iiiiiiiiiii", "Fred again.. - new", "2026-11-19"], ["jjjjjjjjjjj", "Fred again.. - from july", "2026-07-31"]]);
+  const fetchText = fakeFetch({ feed, iiiiiiiiiii: watch(200, "2026-11-19"), jjjjjjjjjjj: watch(200, "2026-07-31") });
+  assert.deepEqual(await run({ fetchText, today: "2026-11-20", dataDir: d, known: new Set() }), ["Fred again.. - new"]);
 });

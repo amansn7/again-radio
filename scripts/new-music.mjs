@@ -7,7 +7,8 @@ import { pathToFileURL } from "node:url";
 import { CHANNEL, H, crawl, isMusic, splitTitle } from "./lib/youtube-channel.mjs";
 
 const FEED = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL}`;
-const FIRST_RUN_DAYS = 90;
+/** Only uploads this recent count as new, on the first run and on every daily run after it. */
+const WINDOW_DAYS = 90;
 
 const decode = (s) =>
   s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
@@ -41,21 +42,32 @@ export async function run({ fetchText, today, dataDir, known, listVideos = () =>
   const data = firstRun ? { checked: today, items: [] } : JSON.parse(readFileSync(file, "utf8"));
   const have = new Set([...known, ...data.items.map((i) => i.youtubeId)]);
 
-  const candidates = firstRun
-    ? (await listVideos()).map((v) => ({ youtubeId: v.youtubeId, title: v.title }))
-    : parseFeed((await fetchText(FEED)).text);
-  const since = firstRun ? daysBefore(today, FIRST_RUN_DAYS) : "";
+  // An empty list means YouTube served something else (consent, bot check, outage): fail loudly.
+  let candidates;
+  if (firstRun) {
+    candidates = (await listVideos()).map((v) => ({ youtubeId: v.youtubeId, title: v.title }));
+    if (!candidates.length) throw new Error("the channel's Videos tab listed nothing");
+  } else {
+    const feed = await fetchText(FEED);
+    candidates = feed.status === 200 ? parseFeed(feed.text) : [];
+    if (!candidates.length) throw new Error(`the upload feed returned no entries (HTTP ${feed.status})`);
+  }
+  const since = daysBefore(today, WINDOW_DAYS);
 
   const added = [];
   for (const c of candidates) {
     if (have.has(c.youtubeId)) continue;
     have.add(c.youtubeId);
     const short = await fetchText(`https://www.youtube.com/shorts/${c.youtubeId}`, { redirect: "manual" });
-    if (short.status === 200) continue;
+    // Only a page that names this video is a Short; a bot-check page must not hide every upload.
+    if (short.status === 200 && short.text.includes(`"videoId":"${c.youtubeId}"`)) continue;
     const info = watchInfo((await fetchText(`https://www.youtube.com/watch?v=${c.youtubeId}`)).text, c.youtubeId);
-    // The Videos tab runs newest first: past the window, the rest is older still.
     if (info.duration === 0) continue;
-    if (firstRun && info.published < since) break;
+    // The Videos tab runs newest first and can be long: past the window, the rest is older still.
+    if (info.published < since) {
+      if (firstRun) break;
+      continue;
+    }
     if (info.channel !== CHANNEL || !isMusic({ title: c.title, duration: info.duration })) continue;
     added.push({ youtubeId: c.youtubeId, title: c.title, ...splitTitle(c.title), duration: info.duration, published: info.published, addedAt: today });
   }

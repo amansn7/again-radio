@@ -67,6 +67,7 @@ New official music on Fred again..'s YouTube channel joins the station on its ow
 - **You approve**: the workflow checks the data, runs the tests and builds, then opens a pull request listing each song with its YouTube link. It never deploys or pushes to `main`; merge and deploy as usual.
 - **On air**: the 20 newest songs play back to back as "New on the channel", newest first, rest shuffled each cycle. Older songs move into the general rotation as their own short slots ("From the channel"). Several uploads of one song are one slot, with the version picked per week. All of them are in search.
 - **By hand**: `node scripts/new-music.mjs` (the first run, with no data file, takes the last 90 days).
+- **One-time setup**: GitHub repo Settings → Actions → General → enable "Allow GitHub Actions to create and approve pull requests", or the workflow cannot open its pull request.
 
 ### 🌌 The Aesthetic: Rave (The Room)
 
