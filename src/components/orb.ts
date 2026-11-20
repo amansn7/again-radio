@@ -1,7 +1,7 @@
 import { RADIO_TRACK, RADIO_JOCKEY_SPEAK, RADIO_JOCKEY_END } from "../lib/events.ts";
 import type { TrackInfo } from "../lib/events.ts";
 import { onPulse } from "../lib/pulse.ts";
-import { artComplements, videoComplements } from "./orb-colour.ts";
+import { artComplements, videoComplements, artColours } from "./orb-colour.ts";
 import { createWaveRenderer, type WaveRenderer } from "./orb-wave.ts";
 
 const ATTACK = 0.7;
@@ -62,6 +62,8 @@ class RadioOrb extends HTMLElement {
       const num = parseInt(hex.length === 3 ? hex.split("").map((c) => c + c).join("") : hex, 16);
       this.wave?.setAccent(((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255);
     }
+    const pal = artColours().map(([r, g, b]) => [r / 255, g / 255, b / 255] as [number, number, number]);
+    this.wave?.setPalette(pal);
   }
 
   private onJockeySpeak = (e: Event) => {

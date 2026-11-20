@@ -32,7 +32,7 @@ function complement(src: Lch, i: number): string {
 }
 
 /** The page's own artwork palette, for when the video cannot be read. */
-function artColours(): Rgb[] {
+export function artColours(): Rgb[] {
   const cs = getComputedStyle(document.documentElement);
   return ART_VARS.map((v) => (cs.getPropertyValue(v).match(/[\d.]+/g) ?? ["120", "120", "160"]).slice(0, 3).map(Number) as Rgb);
 }

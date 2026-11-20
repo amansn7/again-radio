@@ -45,58 +45,64 @@
     filter: brightness(calc(1 + var(--orb-kick) * 0.3 + var(--orb-hat) * 0.08)) saturate(calc(0.8 + var(--orb-swell) * 0.4));
     animation: orb-breathe 5.5s ease-in-out infinite;
   }
+  /* Celestial vocal luminescence aura */
   radio-orb .o-aura {
     position: absolute; inset: -24%; border-radius: 50%; pointer-events: none;
-    background: radial-gradient(circle at center, color-mix(in oklab, var(--accent) 70%, var(--orb-c1)) 0%, color-mix(in oklab, var(--orb-c2) 45%, transparent) 50%, transparent 76%);
-    filter: blur(14px); opacity: 0; transform: scale(0.8);
+    background: radial-gradient(circle at center, color-mix(in oklab, var(--accent) 72%, var(--orb-c1)) 0%, color-mix(in oklab, var(--orb-c2) 42%, transparent) 52%, transparent 75%);
+    filter: blur(16px); opacity: 0; transform: scale(0.8);
     transition: opacity 400ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   radio-orb[data-state="morph-to-speech"] .o-aura,
   radio-orb[data-state="speech"] .o-aura {
-    opacity: 0.8; transform: scale(1.08);
-    animation: o-aura-breathe 2.8s ease-in-out infinite alternate;
+    opacity: 0.85; transform: scale(1.1);
+    animation: o-aura-breathe 3s ease-in-out infinite alternate;
   }
   radio-orb[data-state="morph-to-orb"] .o-aura {
     opacity: 0; transform: scale(0.75);
     transition: opacity 380ms ease, transform 420ms cubic-bezier(0.2, 0, 0.3, 1);
   }
   @keyframes o-aura-breathe {
-    0% { transform: scale(1.04); opacity: 0.7; }
-    100% { transform: scale(1.14); opacity: 0.92; filter: blur(18px); }
+    0% { transform: scale(1.05); opacity: 0.72; }
+    100% { transform: scale(1.16); opacity: 0.95; filter: blur(20px); }
   }
 
+  /* Optical wavefront expansion and implosion */
   radio-orb .o-morph-ring {
-    position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: 0; box-sizing: border-box;
+    position: absolute; inset: -4%; border-radius: 50%; pointer-events: none; opacity: 0;
+    background: radial-gradient(circle, transparent 56%, color-mix(in oklab, var(--accent) 80%, transparent) 78%, color-mix(in oklab, var(--orb-c1) 45%, transparent) 90%, transparent 100%);
+    filter: blur(2px) drop-shadow(0 0 10px var(--accent));
+    mix-blend-mode: screen;
   }
   radio-orb[data-state="morph-to-speech"] .o-morph-ring { animation: o-shockwave-out 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   radio-orb[data-state="morph-to-orb"] .o-morph-ring { animation: o-shockwave-in 520ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   @keyframes o-shockwave-out {
-    0% { opacity: 0.95; transform: scale(0.85); border: 2px solid var(--accent); box-shadow: 0 0 16px var(--accent), inset 0 0 12px color-mix(in oklab, var(--orb-c1) 80%, transparent); }
-    45% { opacity: 0.7; border-width: 1.5px; }
-    100% { opacity: 0; transform: scale(1.7); border: 0.5px solid color-mix(in oklab, var(--orb-c2) 50%, transparent); box-shadow: 0 0 24px transparent; }
+    0% { opacity: 0.95; transform: scale(0.8); }
+    50% { opacity: 0.75; }
+    100% { opacity: 0; transform: scale(1.85); filter: blur(4px); }
   }
   @keyframes o-shockwave-in {
-    0% { opacity: 0; transform: scale(1.6); border: 1px solid color-mix(in oklab, var(--orb-c1) 70%, transparent); }
-    35% { opacity: 0.85; border-width: 2px; border-color: var(--accent); box-shadow: 0 0 16px var(--accent); }
-    100% { opacity: 0; transform: scale(0.35); border-width: 0.5px; box-shadow: 0 0 4px transparent; }
+    0% { opacity: 0; transform: scale(1.75); }
+    40% { opacity: 0.85; }
+    100% { opacity: 0; transform: scale(0.35); filter: blur(1px); }
   }
 
+  /* Liquid body morphing & ambient underglow */
   radio-orb[data-state="morph-to-speech"] .o-body { animation: o-body-to-wave 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
   radio-orb[data-state="speech"] .o-body {
-    transform: scale(1.02, 0.95); border-radius: 46% 54% 45% 55% / 55% 45% 55% 45%;
-    opacity: 0.28; filter: blur(7px) brightness(1.2) saturate(1.2);
+    transform: scale(1.06, 0.94); border-radius: 46% 54% 48% 52% / 54% 46% 52% 48%;
+    opacity: 0.35; filter: blur(8px) brightness(1.2) saturate(1.25);
   }
   radio-orb[data-state="morph-to-orb"] .o-body { animation: o-body-to-orb 520ms cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
   @keyframes o-body-to-wave {
-    0% { transform: scale(1); border-radius: 50%; opacity: 1; filter: brightness(1) saturate(1); }
-    25% { transform: scale(0.92, 0.94); border-radius: 48% 52% 49% 51%; opacity: 1; filter: brightness(1.6) saturate(1.4) drop-shadow(0 0 16px var(--accent)); }
-    65% { transform: scale(1.18, 0.84); border-radius: 44% 56% 42% 58% / 56% 44% 56% 44%; opacity: 0.5; filter: blur(2px) brightness(1.3); }
-    100% { transform: scale(1.05, 0.92); border-radius: 42% 58% 40% 60% / 58% 42% 58% 42%; opacity: 0.14; filter: blur(6px) brightness(1.1); }
+    0% { transform: scale(1); border-radius: 50%; opacity: 1; filter: brightness(1); }
+    25% { transform: scale(0.92, 0.94); border-radius: 48% 52%; opacity: 1; filter: brightness(1.6) saturate(1.4) drop-shadow(0 0 16px var(--accent)); }
+    65% { transform: scale(1.16, 0.86); border-radius: 44% 56% 42% 58% / 56% 44% 56% 44%; opacity: 0.55; filter: blur(3px) brightness(1.3); }
+    100% { transform: scale(1.06, 0.94); border-radius: 46% 54% 48% 52% / 54% 46% 52% 48%; opacity: 0.35; filter: blur(8px) brightness(1.2); }
   }
   @keyframes o-body-to-orb {
-    0% { transform: scale(1.02, 0.95); border-radius: 46% 54% 45% 55%; opacity: 0.14; filter: blur(6px); }
-    35% { transform: scale(0.86); border-radius: 50%; opacity: 0.9; filter: brightness(1.7) saturate(1.35) drop-shadow(0 0 16px var(--accent)); }
-    75% { transform: scale(1.07); border-radius: 50%; opacity: 1; filter: brightness(1.15); }
+    0% { transform: scale(1.06, 0.94); border-radius: 46% 54% 48% 52%; opacity: 0.35; filter: blur(8px); }
+    35% { transform: scale(0.86); border-radius: 50%; opacity: 0.92; filter: brightness(1.7) saturate(1.4) drop-shadow(0 0 18px var(--accent)); }
+    75% { transform: scale(1.06); border-radius: 50%; opacity: 1; filter: brightness(1.15); }
     100% { transform: scale(1); border-radius: 50%; opacity: 1; filter: brightness(1); }
   }
 
@@ -105,17 +111,17 @@
     opacity: 0; pointer-events: none; transform: scale(0.65); filter: blur(4px);
   }
   radio-orb[data-state="morph-to-speech"] .o-wave { animation: o-wave-emerge 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-  radio-orb[data-state="speech"] .o-wave { opacity: 1; transform: scale(1); filter: blur(0px); }
+  radio-orb[data-state="speech"] .o-wave { opacity: 1; transform: scale(1.02, 0.98); filter: blur(0px); }
   radio-orb[data-state="morph-to-orb"] .o-wave { animation: o-wave-collapse 520ms cubic-bezier(0.2, 0, 0.3, 1) forwards; }
   @keyframes o-wave-emerge {
-    0% { opacity: 0; transform: scale(0.4); filter: blur(6px); }
-    35% { opacity: 0.85; transform: scale(0.85, 0.88); filter: blur(2px); }
-    100% { opacity: 1; transform: scale(1); filter: blur(0px); }
+    0% { opacity: 0; transform: scale(0.35, 0.2); filter: blur(6px); }
+    40% { opacity: 0.88; transform: scale(0.88, 0.92); filter: blur(1.5px); }
+    100% { opacity: 1; transform: scale(1.02, 0.98); filter: blur(0px); }
   }
   @keyframes o-wave-collapse {
-    0% { opacity: 1; transform: scale(1); filter: blur(0px); }
-    50% { opacity: 0.75; transform: scale(0.65, 0.3); filter: blur(1.5px); }
-    100% { opacity: 0; transform: scale(0.25, 0.1); filter: blur(5px); }
+    0% { opacity: 1; transform: scale(1.02, 0.98); filter: blur(0px); }
+    50% { opacity: 0.75; transform: scale(0.65, 0.25); filter: blur(1.5px); }
+    100% { opacity: 0; transform: scale(0.2, 0.05); filter: blur(5px); }
   }
 
   radio-orb .o-mesh {
