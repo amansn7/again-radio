@@ -126,11 +126,14 @@ await waitFor(() => document.querySelector("radio-player").jockey.speaking);
 let from = await mark();
 let tracksBefore = (await rj()).events.filter((e) => e[0] === "track").length;
 if (REAL) {
-  await page.evaluate(() => { const y = document.querySelector("radio-player").player; y.seekTo(y.getDuration() - 1, true); }); // play out the video
+  // Play out the stretch: the station hands over at its own end, which on a long video comes well before the video's.
+  await page.evaluate(() => { const p = document.querySelector("radio-player"); p.player.seekTo(Math.min(p.end, p.player.getDuration()) - 1, true); });
 } else {
   await page.evaluate(() => (window.__yt = 0)); // the player tick sees ENDED and advances, as at the end of a set
 }
-check(await waitFor(() => document.querySelector("radio-player").awaitingPlay, 12_000), "station advanced on its own");
+const autoAdvanced = await waitFor(() => document.querySelector("radio-player").awaitingPlay, 12_000);
+check(autoAdvanced, "station advanced on its own");
+if (!autoAdvanced) console.log("  player:", await page.evaluate(() => { const p = document.querySelector("radio-player"); const y = p.player; return JSON.stringify({ yt: y?.getPlayerState?.(), t: y?.getCurrentTime?.(), d: y?.getDuration?.(), end: p.end, live: p.live, playing: p.playing, fading: p.fader.busy }); }));
 if (!REAL) await page.evaluate(() => (window.__yt = 1)); // the next video starts playing
 const advanced = await waitFor(`window.__rj.events.filter((e) => e[0] === "track").length > ${tracksBefore}`, 15_000);
 check(advanced, "next track announced once it plays");
