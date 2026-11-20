@@ -38,10 +38,29 @@ function watchInfo(page, id) {
   return { duration: Number(length), published, channel };
 }
 
+/** "PT3M2S" → 182. Upcoming premieres and live streams report "P0D". */
+const isoSeconds = (d) => {
+  const m = d.match(/^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/);
+  return m ? ((+(m[1] ?? 0) * 24 + +(m[2] ?? 0)) * 60 + +(m[3] ?? 0)) * 60 + +(m[4] ?? 0) : 0;
+};
+
+/**
+ * The same details from the YouTube Data API. GitHub's runners get a bot check on watch pages,
+ * so the workflow uses this. Null when the video is private or gone.
+ */
+async function apiInfo(fetchText, id, key) {
+  const r = await fetchText(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${id}&key=${key}`);
+  if (r.status !== 200) throw new Error(`${id}: YouTube Data API answered HTTP ${r.status}`);
+  const v = JSON.parse(r.text).items?.[0];
+  if (!v) return null;
+  const live = v.snippet.liveBroadcastContent !== "none";
+  return { duration: live ? 0 : isoSeconds(v.contentDetails.duration), published: v.snippet.publishedAt.slice(0, 10), channel: v.snippet.channelId };
+}
+
 const daysBefore = (date, days) => new Date(Date.parse(`${date}T00:00:00Z`) - days * 86400_000).toISOString().slice(0, 10);
 
 /** Adds new music to `<dataDir>/new-music.json`; returns the raw titles added. Writes nothing on failure. */
-export async function run({ fetchText, today, dataDir, known, listVideos = () => crawl("videos") }) {
+export async function run({ fetchText, today, dataDir, known, apiKey, listVideos = () => crawl("videos") }) {
   const file = join(dataDir, "new-music.json");
   const firstRun = !existsSync(file);
   const data = firstRun ? { checked: today, items: [] } : JSON.parse(readFileSync(file, "utf8"));
@@ -66,7 +85,10 @@ export async function run({ fetchText, today, dataDir, known, listVideos = () =>
     const short = await fetchText(`https://www.youtube.com/shorts/${c.youtubeId}`, { redirect: "manual" });
     // Only a page that names this video is a Short; a bot-check page must not hide every upload.
     if (short.status === 200 && short.text.includes(`"videoId":"${c.youtubeId}"`)) continue;
-    const info = watchInfo((await fetchText(`https://www.youtube.com/watch?v=${c.youtubeId}`)).text, c.youtubeId);
+    const info = apiKey
+      ? await apiInfo(fetchText, c.youtubeId, apiKey)
+      : watchInfo((await fetchText(`https://www.youtube.com/watch?v=${c.youtubeId}`)).text, c.youtubeId);
+    if (!info) continue;
     if (info.duration === 0) continue;
     // The Videos tab runs newest first and can be long: past the window, the rest is older still.
     if (info.published < since) {
@@ -100,7 +122,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     const r = await fetch(url, { headers: H, ...init });
     return { status: r.status, text: await r.text() };
   };
-  const added = await run({ fetchText, today: new Date().toISOString().slice(0, 10), dataDir, known: knownIds(dataDir) });
+  const added = await run({ fetchText, today: new Date().toISOString().slice(0, 10), dataDir, known: knownIds(dataDir), apiKey: process.env.YOUTUBE_API_KEY });
   for (const t of added) console.log(t);
   if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `added=${added.length}\n`);
 }
