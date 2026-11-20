@@ -97,7 +97,7 @@
       "audio": "/audio/jockey/listener-intimate.mp3",
       "min": 1,
       "max": 15,
-      "text": "Late night shift... just a handful of us locked in right now. Pure focus."
+      "text": "Late night shift... just a handful of us locked in right now. Pure focus.", "delivery": "bright", "synthesisText": "Late night shift... just a handful of us locked in right now.<break time=\"0.35s\" /> Pure focus."
     },
     {
       "id": "listener-gathering",
@@ -111,7 +111,7 @@
       "audio": "/audio/jockey/listener-busy.mp3",
       "min": 41,
       "max": 9999,
-      "text": "Dozens of heads in the room right now sharing this frequency. Big love to every single one of you."
+      "text": "Dozens of heads in the room right now sharing this frequency. Big love to every single one of you.", "delivery": "bright", "synthesisText": "Dozens of heads in the room right now sharing this frequency.<break time=\"0.35s\" /> Big love to every single one of you."
     },
     {
       "id": "listener-moment",
@@ -136,8 +136,8 @@
       "outro": {
         "id": "delilah-outro",
         "audio": "/audio/jockey/delilah-outro.mp3",
-        "durationSeconds": 3.77,
-        "text": "Delilah, pulling us all out of this. Unbelievable energy."
+        "durationSeconds": 3.84,
+        "text": "Delilah, pulling us all out of this. Unbelievable energy.", "delivery": "warm", "synthesisText": "Delilah, pulling us all out of this.<break time=\"0.35s\" /> Unbelievable energy."
       }
     },
     "Danielle (smile on my face)": {
@@ -156,8 +156,8 @@
       "outro": {
         "id": "danielle-outro",
         "audio": "/audio/jockey/danielle-outro.mp3",
-        "durationSeconds": 3.71,
-        "text": "Danielle, smile on my face. That smile is now permanent."
+        "durationSeconds": 4.55,
+        "text": "Danielle, smile on my face. That smile is now permanent.", "delivery": "warm", "synthesisText": "Danielle, smile on my face.<break time=\"0.35s\" /> That smile is now permanent."
       }
     },
     "Nathan (still breathing)": {
@@ -176,8 +176,8 @@
       "outro": {
         "id": "nathan-outro",
         "audio": "/audio/jockey/nathan-outro.mp3",
-        "durationSeconds": 3.42,
-        "text": "Nathan, still breathing. The heartbeat of the archive."
+        "durationSeconds": 3.71,
+        "text": "Nathan, still breathing. The heartbeat of the archive.", "delivery": "warm", "synthesisText": "Nathan, still breathing.<break time=\"0.35s\" /> The heartbeat of the archive."
       }
     },
     "Kammy (like i do)": {
@@ -225,7 +225,7 @@
         "id": "rumble-outro",
         "audio": "/audio/jockey/rumble-outro.mp3",
         "durationSeconds": 3.47,
-        "text": "Flowdan and Skrillex with Fred. Heavyweight pressure."
+        "text": "Flowdan and Skrillex with Fred. Heavyweight pressure.", "delivery": "warm", "synthesisText": "Flowdan and Skrillex with Fred.<break time=\"0.35s\" /> Heavyweight pressure."
       }
     },
     "Baby again..": {
@@ -387,14 +387,14 @@
       "id": "eno-mentorship",
       "audio": "/audio/jockey/eno-mentorship.mp3",
       "topic": "Brian Eno Mentorship",
-      "text": "Fred knocked on Brian Eno's door at sixteen and joined his acapella group. Eno mentored him for over a decade before they made Secret Life together.",
+      "text": "Fred knocked on Brian Eno's door at sixteen and joined his acapella group. Eno mentored him for over a decade before they made Secret Life together.", "delivery": "warm", "synthesisText": "Fred knocked on Brian Eno's door at sixteen and joined his acapella group.<break time=\"0.4s\" /> Eno mentored him for over a decade before they made Secret Life together.",
       "source": "https://www.theguardian.com/music/2023/may/05/fred-again-and-brian-eno-secret-life-review"
     },
     {
       "id": "real-names",
       "audio": "/audio/jockey/real-names.mp3",
       "topic": "Real Names in Titles",
-      "text": "Every name in Fred's titles is a real person he met. The voice notes on his phone become the emotional soul of the music.",
+      "text": "Every name in Fred's titles is a real person he met. The voice notes on his phone become the emotional soul of the music.", "delivery": "warm", "synthesisText": "Every name in Fred's titles is a real person he met.<break time=\"0.4s\" /> The voice notes on his phone become the emotional soul of the music.",
       "source": "https://music.apple.com/us/station/fred-again-the-zane-lowe-interview/ra.1651347047"
     },
     {
@@ -408,7 +408,7 @@
       "id": "boiler-room-cdj",
       "audio": "/audio/jockey/yellow-shirt-cdj.mp3",
       "topic": "Boiler Room Yellow Shirt",
-      "text": "During the 2022 Boiler Room, a dancer bumped the CDJ stop button. Fred just grinned, hit play, and turned it into the defining moment of the set.",
+      "text": "During the 2022 Boiler Room, a dancer bumped the CDJ stop button. Fred just grinned, hit play, and turned it into the defining moment of the set.", "delivery": "warm", "synthesisText": "During the 2022 Boiler Room, a dancer bumped the CDJ stop button.<break time=\"0.4s\" /> Fred just grinned, hit play, and turned it into the defining moment of the set.",
       "source": "https://mixmag.net/feature/fred-again-boiler-room-london-cover-story"
     }
   ]
