@@ -233,3 +233,10 @@ test("synthesis scripts only add pauses: Rory says exactly the caption's words",
     for (const [, t] of c.synthesisText.matchAll(/time="([\d.]+)s"/g)) assert.ok(+t > 0 && +t <= 1, `${c.id} pause ${t}s stays short`);
   }
 });
+
+test("written pauses count toward whether an intro fits", () => {
+  const plain = { text: "x".repeat(80) };
+  const paced = { ...plain, synthesisText: `${"x".repeat(40)}<break time="1s" />${"x".repeat(40)}` };
+  assert.equal(introFits(4, plain, 13), true);
+  assert.equal(introFits(4, paced, 13), false, "the 1s pause pushes it into the vocals");
+});

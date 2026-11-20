@@ -126,12 +126,12 @@
       "intro": {
         "id": "delilah-intro",
         "audio": "/audio/jockey/delilah-intro.mp3",
-        "text": "Delilah Montagu singing straight out of her kitchen into an iPhone memo. Fred caught the feeling while waiting on his laundry. Hold tight... here it comes."
+        "text": "Delilah Montagu singing straight out of her kitchen into an iPhone memo. Fred caught the feeling while waiting on his laundry. Hold tight... here it comes.", "synthesisText": "Delilah Montagu singing straight out of her kitchen into an iPhone memo.<break time=\"0.35s\" /> Fred caught the feeling while waiting on his laundry.<break time=\"0.35s\" /> Hold tight... here it comes."
       },
       "thought": {
         "id": "delilah-thought",
         "audio": "/audio/jockey/delilah-thought.mp3",
-        "text": "Fred kept the actual phone hiss on Delilah's vocal. Most producers would scrub it clean. That imperfection is the magic."
+        "text": "Fred kept the actual phone hiss on Delilah's vocal. Most producers would scrub it clean. That imperfection is the magic.", "delivery": "reflective", "synthesisText": "Fred kept the actual phone hiss on Delilah's vocal.<break time=\"0.45s\" /> Most producers would scrub it clean.<break time=\"0.45s\" /> That imperfection is the magic."
       },
       "outro": {
         "id": "delilah-outro",
@@ -146,7 +146,7 @@
       "intro": {
         "id": "danielle-intro",
         "audio": "/audio/jockey/danielle-intro.mp3",
-        "text": "Danielle Balbuena, 070 Shake on the vocal. That raw acoustic emotion wrapped in pure club euphoria."
+        "text": "Danielle Balbuena, 070 Shake on the vocal. That raw acoustic emotion wrapped in pure club euphoria.", "synthesisText": "Danielle Balbuena, 070 Shake on the vocal.<break time=\"0.35s\" /> That raw acoustic emotion wrapped in pure club euphoria."
       },
       "thought": {
         "id": "danielle-thought",
@@ -166,12 +166,12 @@
       "intro": {
         "id": "nathan-intro",
         "audio": "/audio/jockey/nathan-intro.mp3",
-        "text": "The very first breath of the Actual Life journey. Nathan's words, caught in transit, reminding us all to just keep going."
+        "text": "The very first breath of the Actual Life journey. Nathan's words, caught in transit, reminding us all to just keep going.", "synthesisText": "The very first breath of the Actual Life journey.<break time=\"0.35s\" /> Nathan's words, caught in transit, reminding us all to just keep going."
       },
       "thought": {
         "id": "nathan-thought",
         "audio": "/audio/jockey/nathan-thought.mp3",
-        "text": "Nathan's voice note was recorded on a curb in Atlanta. That simple reminder to keep breathing carries the whole album."
+        "text": "Nathan's voice note was recorded on a curb in Atlanta. That simple reminder to keep breathing carries the whole album.", "delivery": "reflective", "synthesisText": "Nathan's voice note was recorded on a curb in Atlanta.<break time=\"0.45s\" /> That simple reminder to keep breathing carries the whole album."
       },
       "outro": {
         "id": "nathan-outro",
@@ -186,12 +186,12 @@
       "intro": {
         "id": "kammy-intro",
         "audio": "/audio/jockey/kammy-intro.mp3",
-        "text": "Kammy Purcell on the vocal. Fred pitched down her acapella from an Instagram video while riding the Eurostar. Pure warmth."
+        "text": "Kammy Purcell on the vocal. Fred pitched down her acapella from an Instagram video while riding the Eurostar. Pure warmth.", "synthesisText": "Kammy Purcell on the vocal.<break time=\"0.35s\" /> Fred pitched down her acapella from an Instagram video while riding the Eurostar.<break time=\"0.35s\" /> Pure warmth."
       },
       "thought": {
         "id": "kammy-thought",
         "audio": "/audio/jockey/kammy-thought.mp3",
-        "text": "Kammy's vocal was an offhand Instagram freestyle. Fred slowed it down on a train and built a sanctuary around it."
+        "text": "Kammy's vocal was an offhand Instagram freestyle. Fred slowed it down on a train and built a sanctuary around it.", "delivery": "reflective", "synthesisText": "Kammy's vocal was an offhand Instagram freestyle.<break time=\"0.45s\" /> Fred slowed it down on a train and built a sanctuary around it."
       }
     },
     "Tanya (maybe life)": {
@@ -200,7 +200,7 @@
       "intro": {
         "id": "tanya-intro",
         "audio": "/audio/jockey/tanya-intro.mp3",
-        "text": "Tanya. Only on the record does the name get a second half. Turn this one up."
+        "text": "Tanya. Only on the record does the name get a second half. Turn this one up.", "synthesisText": "Tanya.<break time=\"0.35s\" /> Only on the record does the name get a second half.<break time=\"0.35s\" /> Turn this one up."
       },
       "thought": {
         "id": "tanya-thought",
@@ -214,12 +214,12 @@
       "intro": {
         "id": "rumble-intro",
         "audio": "/audio/jockey/rumble-intro.mp3",
-        "text": "Pangbourne crew in full effect. Skrillex, Flowdan, and Fred. Four years in the making. Watch the low end on this drop."
+        "text": "Pangbourne crew in full effect. Skrillex, Flowdan, and Fred. Four years in the making. Watch the low end on this drop.", "synthesisText": "Pangbourne crew in full effect.<break time=\"0.35s\" /> Skrillex, Flowdan, and Fred.<break time=\"0.35s\" /> Four years in the making.<break time=\"0.35s\" /> Watch the low end on this drop."
       },
       "thought": {
         "id": "rumble-thought",
         "audio": "/audio/jockey/rumble-thought.mp3",
-        "text": "Three days in the countryside tweaking that one modular sub-bass. You don't just hear this track, you feel it in your ribs."
+        "text": "Three days in the countryside tweaking that one modular sub-bass. You don't just hear this track, you feel it in your ribs.", "delivery": "reflective", "synthesisText": "Three days in the countryside tweaking that one modular sub-bass.<break time=\"0.45s\" /> You don't just hear this track, you feel it in your ribs."
       },
       "outro": {
         "id": "rumble-outro",
@@ -234,12 +234,12 @@
       "intro": {
         "id": "baby-again-intro",
         "audio": "/audio/jockey/baby-again-intro.mp3",
-        "text": "Written during those legendary countryside sessions with Skrillex and Four Tet. Turn the lights out for this one."
+        "text": "Written during those legendary countryside sessions with Skrillex and Four Tet. Turn the lights out for this one.", "synthesisText": "Written during those legendary countryside sessions with Skrillex and Four Tet.<break time=\"0.35s\" /> Turn the lights out for this one."
       },
       "thought": {
         "id": "baby-again-thought",
         "audio": "/audio/jockey/baby-again-thought.mp3",
-        "text": "Four Tet, Skrillex, and Fred jamming in a living room at 4 AM. That playful friendship is baked into every kick drum."
+        "text": "Four Tet, Skrillex, and Fred jamming in a living room at 4 AM. That playful friendship is baked into every kick drum.", "delivery": "reflective", "synthesisText": "Four Tet, Skrillex, and Fred jamming in a living room at 4 AM.<break time=\"0.45s\" /> That playful friendship is baked into every kick drum."
       }
     },
     "Turn On The Lights again..": {
@@ -248,12 +248,12 @@
       "intro": {
         "id": "turn-on-the-lights-intro",
         "audio": "/audio/jockey/turn-on-the-lights-intro.mp3",
-        "text": "Future, Swedish House Mafia, and Fred. Studio sound welded to the rave."
+        "text": "Future, Swedish House Mafia, and Fred. Studio sound welded to the rave.", "synthesisText": "Future, Swedish House Mafia, and Fred.<break time=\"0.35s\" /> Studio sound welded to the rave."
       },
       "thought": {
         "id": "turn-on-the-lights-thought",
         "audio": "/audio/jockey/turn-on-the-lights-thought.mp3",
-        "text": "Future's vocals echoing like they're coming from the back room of a warehouse rave. Unstoppable momentum."
+        "text": "Future's vocals echoing like they're coming from the back room of a warehouse rave. Unstoppable momentum.", "delivery": "reflective", "synthesisText": "Future's vocals echoing like they're coming from the back room of a warehouse rave.<break time=\"0.45s\" /> Unstoppable momentum."
       }
     },
     "Jungle": {
@@ -262,12 +262,12 @@
       "intro": {
         "id": "jungle-intro",
         "audio": "/audio/jockey/jungle-intro.mp3",
-        "text": "Dense, relentless energy. Fred wrote this to break the sound system. Here we go."
+        "text": "Dense, relentless energy. Fred wrote this to break the sound system. Here we go.", "synthesisText": "Dense, relentless energy.<break time=\"0.35s\" /> Fred wrote this to break the sound system.<break time=\"0.35s\" /> Here we go."
       },
       "thought": {
         "id": "jungle-thought",
         "audio": "/audio/jockey/jungle-thought.mp3",
-        "text": "Listen to the way the percussion rolls over itself. Pure London sound-system pressure."
+        "text": "Listen to the way the percussion rolls over itself. Pure London sound-system pressure.", "delivery": "reflective", "synthesisText": "Listen to the way the percussion rolls over itself.<break time=\"0.45s\" /> Pure London sound-system pressure."
       }
     },
     "adore u": {
@@ -276,12 +276,12 @@
       "intro": {
         "id": "adore-u-intro",
         "audio": "/audio/jockey/adore-u-intro.mp3",
-        "text": "Obongjayar's voice arrives and the whole track opens up. Dedicated to his sister. Beautiful feeling right here."
+        "text": "Obongjayar's voice arrives and the whole track opens up. Dedicated to his sister. Beautiful feeling right here.", "synthesisText": "Obongjayar's voice arrives and the whole track opens up.<break time=\"0.35s\" /> Dedicated to his sister.<break time=\"0.35s\" /> Beautiful feeling right here."
       },
       "thought": {
         "id": "adore-u-thought",
         "audio": "/audio/jockey/adore-u-thought.mp3",
-        "text": "Obongjayar singing to his little sister. In the middle of a massive festival, it turns into an intimate prayer."
+        "text": "Obongjayar singing to his little sister. In the middle of a massive festival, it turns into an intimate prayer.", "delivery": "reflective", "synthesisText": "Obongjayar singing to his little sister.<break time=\"0.45s\" /> In the middle of a massive festival, it turns into an intimate prayer."
       }
     },
     "Clara (the night is dark)": {
@@ -290,12 +290,12 @@
       "intro": {
         "id": "clara-intro",
         "audio": "/audio/jockey/clara-intro.mp3",
-        "text": "The final chapter of the Boiler Room. The night is dark and the name is Clara."
+        "text": "The final chapter of the Boiler Room. The night is dark and the name is Clara.", "synthesisText": "The final chapter of the Boiler Room.<break time=\"0.35s\" /> The night is dark and the name is Clara."
       },
       "thought": {
         "id": "clara-thought",
         "audio": "/audio/jockey/clara-thought.mp3",
-        "text": "The final track from the Boiler Room. Clara's voice guiding everyone through the dark and out the other side."
+        "text": "The final track from the Boiler Room. Clara's voice guiding everyone through the dark and out the other side.", "delivery": "reflective", "synthesisText": "The final track from the Boiler Room.<break time=\"0.45s\" /> Clara's voice guiding everyone through the dark and out the other side."
       }
     },
     "Strong": {
@@ -304,12 +304,12 @@
       "intro": {
         "id": "strong-intro",
         "audio": "/audio/jockey/strong-intro.mp3",
-        "text": "Built from something fragile. Romy and Fred letting the chords hold the entire room."
+        "text": "Built from something fragile. Romy and Fred letting the chords hold the entire room.", "synthesisText": "Built from something fragile.<break time=\"0.35s\" /> Romy and Fred letting the chords hold the entire room."
       },
       "thought": {
         "id": "strong-thought",
         "audio": "/audio/jockey/strong-thought.mp3",
-        "text": "Romy's voice is so gentle here. It takes real courage to make dance music that feels this tender."
+        "text": "Romy's voice is so gentle here. It takes real courage to make dance music that feels this tender.", "delivery": "reflective", "synthesisText": "Romy's voice is so gentle here.<break time=\"0.45s\" /> It takes real courage to make dance music that feels this tender."
       }
     },
     "Kyle (i found you)": {
@@ -318,7 +318,7 @@
       "thought": {
         "id": "kyle-thought",
         "audio": "/audio/jockey/kyle-thought.mp3",
-        "text": "That voice note at the end of Kyle... \"I found you\". It's the moment you realize you're going to be alright."
+        "text": "That voice note at the end of Kyle... \"I found you\". It's the moment you realize you're going to be alright.", "delivery": "reflective", "synthesisText": "That voice note at the end of Kyle... \"I found you\".<break time=\"0.45s\" /> It's the moment you realize you're going to be alright."
       }
     },
     "places to be": {
@@ -364,22 +364,22 @@
     "boiler-room-london": {
       "id": "boiler-room-transition",
       "audio": "/audio/jockey/boiler-room-transition.mp3",
-      "text": "Stepping into the iconic London Boiler Room. Sweat on the walls, pure electricity."
+      "text": "Stepping into the iconic London Boiler Room. Sweat on the walls, pure electricity.", "delivery": "warm", "synthesisText": "Stepping into the iconic London Boiler Room.<break time=\"0.4s\" /> Sweat on the walls, pure electricity."
     },
     "rooftop-naples": {
       "id": "naples-transition",
       "audio": "/audio/jockey/naples-transition.mp3",
-      "text": "Heading over to Naples on that sun-drenched terrace. Golden hour over the sea."
+      "text": "Heading over to Naples on that sun-drenched terrace. Golden hour over the sea.", "delivery": "warm", "synthesisText": "Heading over to Naples on that sun-drenched terrace.<break time=\"0.4s\" /> Golden hour over the sea."
     },
     "times-square": {
       "id": "times-square-transition",
       "audio": "/audio/jockey/times-square-transition.mp3",
-      "text": "Times Square, New York City. A yellow school bus and three friends stopping traffic."
+      "text": "Times Square, New York City. A yellow school bus and three friends stopping traffic.", "delivery": "warm", "synthesisText": "Times Square, New York City.<break time=\"0.4s\" /> A yellow school bus and three friends stopping traffic."
     },
     "tiny-desk": {
       "id": "tiny-desk-transition",
       "audio": "/audio/jockey/tiny-desk-transition.mp3",
-      "text": "NPR Tiny Desk. No backing tracks, just classical piano, marimba, and live MPC loops."
+      "text": "NPR Tiny Desk. No backing tracks, just classical piano, marimba, and live MPC loops.", "delivery": "warm", "synthesisText": "NPR Tiny Desk.<break time=\"0.4s\" /> No backing tracks, just classical piano, marimba, and live MPC loops."
     }
   },
   "facts": [
