@@ -44,6 +44,7 @@ for (const s of jockeyData.sweepers || []) addClip(s, `sweeper:${s.id}`);
 for (const l of jockeyData.listeners || []) addClip(l, `listener:${l.id}`);
 for (const [title, t] of Object.entries(jockeyData.tracks || {})) {
   addClip(t.intro, `intro:${title}`);
+  addClip(t.introAlt, `intro-alt:${title}`);
   addClip(t.thought, `thought:${title}`);
   addClip(t.outro, `outro:${title}`);
 }

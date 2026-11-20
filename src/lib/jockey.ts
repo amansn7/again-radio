@@ -38,6 +38,8 @@ export interface TrackJockeyConfig {
   postSeconds?: number;
   thoughtOffset?: number;
   intro?: JockeyClip;
+  /** A second way to introduce the song, so a 36-hour rotation doesn't hear the same line each time. */
+  introAlt?: JockeyClip;
   thought?: JockeyClip;
   outro?: JockeyClip & { durationSeconds?: number };
 }
@@ -91,6 +93,7 @@ export class RadioJockey {
   private lastProgram = "";
   private hasWelcomed = false;
   private currentListenerCount: number | null = null;
+  private lastIntroIds = new Set<string>();
   private lastFillerAt = Date.now();
   private lastFillerId = "";
   private fillerTurn = 0;
@@ -267,8 +270,15 @@ export class RadioJockey {
     // Intros skip the chatter cooldown, but only play if they end before the vocals.
     if (trackConfig?.intro) {
       this.spokeIntro.add(trackKey);
-      if (introFits(info.elapsed, trackConfig.intro, trackConfig.postSeconds)) {
-        await this.speak(trackConfig.intro.text, trackConfig.intro.audio, { delivery: trackConfig.intro.delivery });
+      const options = [trackConfig.intro, trackConfig.introAlt].filter(
+        (c): c is JockeyClip => !!c && introFits(info.elapsed, c, trackConfig.postSeconds),
+      );
+      const fresh = options.filter((c) => !this.lastIntroIds.has(c.id));
+      const intro = (fresh.length ? fresh : options)[Math.floor(Math.random() * (fresh.length || options.length))];
+      if (intro) {
+        this.lastIntroIds.add(intro.id);
+        for (const other of options) if (other !== intro) this.lastIntroIds.delete(other.id);
+        await this.speak(intro.text, intro.audio, { delivery: intro.delivery });
       }
     }
   }

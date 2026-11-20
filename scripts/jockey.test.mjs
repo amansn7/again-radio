@@ -99,6 +99,7 @@ test("hitting the post: every intro fits before the vocals from the top, and lat
   for (const [title, track] of Object.entries(data.tracks)) {
     if (!track.intro) continue;
     assert.ok(introFits(0, track.intro, track.postSeconds), `${title} intro fits before its post`);
+    if (track.introAlt) assert.ok(introFits(0, track.introAlt, track.postSeconds), `${title} alternate intro fits before its post`);
     assert.equal(introFits((track.postSeconds ?? 12) - 1.5, track.intro, track.postSeconds), false, `${title} stays quiet when it would run into the vocals`);
   }
   assert.equal(introFits(10, { text: "x".repeat(60) }, 16), false, "10s in + ~6s clip runs into a 16s post");
@@ -228,7 +229,7 @@ test("synthesis scripts only add pauses: Rory says exactly the caption's words",
   const all = [
     ...(data.welcomes ?? []), ...(data.sweepers ?? []), ...(data.listeners ?? []), ...(data.facts ?? []),
     ...Object.values(data.transitions ?? {}),
-    ...Object.values(data.tracks).flatMap((t) => [t.intro, t.thought, t.outro]),
+    ...Object.values(data.tracks).flatMap((t) => [t.intro, t.introAlt, t.thought, t.outro]),
   ].filter((c) => c?.synthesisText);
   assert.ok(all.length >= 8, "paced scripts exist");
   for (const c of all) {
