@@ -11,3 +11,6 @@ dist/
 worker/presence/runtime.d.ts
 .superpowers/
 .cache/
+
+# knowledge graph output (local tool)
+graphify-out/
