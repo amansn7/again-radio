@@ -32,6 +32,9 @@ export function parseYouTubeLiveHtml(
 
   let isLiveNow = false;
   let scheduledStart: string | undefined;
+  let scheduledEnd: string | undefined;
+  let isPostLiveDvr = false;
+  let isArchived = false;
 
   const playerMatch = html.match(/var ytInitialPlayerResponse = ({.*?});(?:<\/script>|\n)/s);
   if (playerMatch) {
@@ -44,16 +47,23 @@ export function parseYouTubeLiveHtml(
 
       if (typeof lbd.isLiveNow === "boolean") isLiveNow = lbd.isLiveNow;
       if (typeof lbd.startTimestamp === "string") scheduledStart = lbd.startTimestamp;
+      if (typeof lbd.endTimestamp === "string") scheduledEnd = lbd.endTimestamp;
       if (typeof vd.title === "string" && vd.title.trim()) title = vd.title;
       if (typeof vd.isLive === "boolean") isLiveNow = vd.isLive;
+      if (typeof vd.isPostLiveDvr === "boolean" && vd.isPostLiveDvr) isPostLiveDvr = true;
+      if (typeof lbd.status === "string" && lbd.status === "ARCHIVED") isArchived = true;
     } catch {
       /* ignore JSON parse failure */
     }
   }
 
   if (!scheduledStart) {
-    const startMatch = html.match(/"startTimestamp":"([^"]+)"/);
+    const startMatch = html.match(/"startTimestamp":\s*"([^"]+)"/);
     if (startMatch) scheduledStart = startMatch[1];
+  }
+  if (!scheduledEnd) {
+    const endMatch = html.match(/"endTimestamp":\s*"([^"]+)"/);
+    if (endMatch) scheduledEnd = endMatch[1];
   }
   if (!isLiveNow) {
     const liveNowMatch = html.match(/"isLiveNow":(true|false)/);
@@ -63,19 +73,43 @@ export function parseYouTubeLiveHtml(
     const isLive = html.match(/"isLive":(true|false)/);
     if (isLive && isLive[1] === "true") isLiveNow = true;
   }
+  if (!isPostLiveDvr && /"isPostLiveDvr":\s*true/.test(html)) {
+    isPostLiveDvr = true;
+  }
+  if (!isArchived && /"status":\s*"ARCHIVED"/.test(html)) {
+    isArchived = true;
+  }
 
   let startTime = scheduledStart ? Math.floor(Date.parse(scheduledStart) / 1000) : undefined;
   if (startTime !== undefined && Number.isNaN(startTime)) startTime = undefined;
 
+  let endTime = scheduledEnd ? Math.floor(Date.parse(scheduledEnd) / 1000) : undefined;
+  if (endTime !== undefined && Number.isNaN(endTime)) endTime = undefined;
+
+  const MAX_START_LAG_SEC = 300;
   let status: "offline" | "scheduled" | "live" = "offline";
-  if (isLiveNow) {
+  if (scheduledEnd || isPostLiveDvr || isArchived || (endTime !== undefined && nowSec >= endTime)) {
+    status = "offline";
+  } else if (isLiveNow) {
     status = "live";
   } else if (startTime !== undefined && nowSec < startTime) {
     status = "scheduled";
-  } else if (startTime !== undefined && nowSec >= startTime) {
-    status = "live";
+  } else if (startTime !== undefined && nowSec >= startTime && !scheduledEnd) {
+    if (nowSec - startTime < MAX_START_LAG_SEC) {
+      status = "live";
+    } else {
+      status = "offline";
+    }
   } else {
-    status = "scheduled";
+    status = "offline";
+  }
+
+  if (status === "offline") {
+    return {
+      status: "offline",
+      channelId,
+      checkedAt: new Date(nowSec * 1000).toISOString(),
+    };
   }
 
   return {

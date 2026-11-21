@@ -37,6 +37,9 @@ export function parseYouTubeLiveHtml(
 
   let isLiveNow = false;
   let scheduledStart: string | undefined;
+  let scheduledEnd: string | undefined;
+  let isPostLiveDvr = false;
+  let isArchived = false;
 
   const playerMatch = html.match(/var ytInitialPlayerResponse = ({.*?});(?:<\/script>|\n)/s);
   if (playerMatch) {
@@ -49,38 +52,69 @@ export function parseYouTubeLiveHtml(
 
       if (typeof lbd.isLiveNow === "boolean") isLiveNow = lbd.isLiveNow;
       if (typeof lbd.startTimestamp === "string") scheduledStart = lbd.startTimestamp;
+      if (typeof lbd.endTimestamp === "string") scheduledEnd = lbd.endTimestamp;
       if (typeof vd.title === "string" && vd.title.trim()) title = vd.title;
       if (typeof vd.isLive === "boolean") isLiveNow = vd.isLive;
+      if (typeof vd.isPostLiveDvr === "boolean" && vd.isPostLiveDvr) isPostLiveDvr = true;
+      if (typeof lbd.status === "string" && lbd.status === "ARCHIVED") isArchived = true;
     } catch {
       /* ignore malformed embedded JSON */
     }
   }
 
   if (!scheduledStart) {
-    const startMatch = html.match(/"startTimestamp":"([^"]+)"/);
+    const startMatch = html.match(/"startTimestamp":\s*"([^"]+)"/);
     if (startMatch) scheduledStart = startMatch[1];
   }
+  if (!scheduledEnd) {
+    const endMatch = html.match(/"endTimestamp":\s*"([^"]+)"/);
+    if (endMatch) scheduledEnd = endMatch[1];
+  }
   if (!isLiveNow) {
-    const liveNowMatch = html.match(/"isLiveNow":(true|false)/);
+    const liveNowMatch = html.match(/"isLiveNow":\s*(true|false)/);
     if (liveNowMatch) isLiveNow = liveNowMatch[1] === "true";
   }
   if (!isLiveNow && !scheduledStart) {
-    const isLive = html.match(/"isLive":(true|false)/);
+    const isLive = html.match(/"isLive":\s*(true|false)/);
     if (isLive && isLive[1] === "true") isLiveNow = true;
+  }
+  if (!isPostLiveDvr && /"isPostLiveDvr":\s*true/.test(html)) {
+    isPostLiveDvr = true;
+  }
+  if (!isArchived && /"status":\s*"ARCHIVED"/.test(html)) {
+    isArchived = true;
   }
 
   let startTime = scheduledStart ? Math.floor(Date.parse(scheduledStart) / 1000) : undefined;
   if (startTime !== undefined && Number.isNaN(startTime)) startTime = undefined;
 
+  let endTime = scheduledEnd ? Math.floor(Date.parse(scheduledEnd) / 1000) : undefined;
+  if (endTime !== undefined && Number.isNaN(endTime)) endTime = undefined;
+
+  const MAX_START_LAG_SEC = 300;
   let status: LiveStatusType = "offline";
-  if (isLiveNow) {
+  if (scheduledEnd || isPostLiveDvr || isArchived || (endTime !== undefined && nowSec >= endTime)) {
+    status = "offline";
+  } else if (isLiveNow) {
     status = "live";
   } else if (startTime !== undefined && nowSec < startTime) {
     status = "scheduled";
-  } else if (startTime !== undefined && nowSec >= startTime) {
-    status = "live";
+  } else if (startTime !== undefined && nowSec >= startTime && !scheduledEnd) {
+    if (nowSec - startTime < MAX_START_LAG_SEC) {
+      status = "live";
+    } else {
+      status = "offline";
+    }
   } else {
-    status = "scheduled";
+    status = "offline";
+  }
+
+  if (status === "offline") {
+    return {
+      status: "offline",
+      channelId,
+      checkedAt: new Date(nowSec * 1000).toISOString(),
+    };
   }
 
   return {
@@ -99,9 +133,12 @@ export function isLiveNow(
   event: LiveStreamEvent | null | undefined,
   nowSec: number = Math.floor(Date.now() / 1000),
 ): boolean {
-  if (!event || !event.youtubeId) return false;
+  if (!event || !event.youtubeId || event.status === "offline") return false;
   if (event.status === "live") return true;
-  if (event.status === "scheduled" && event.startTime !== undefined && nowSec >= event.startTime) return true;
+  if (event.status === "scheduled" && event.startTime !== undefined) {
+    const diff = nowSec - event.startTime;
+    return diff >= 0 && diff < 300;
+  }
   return false;
 }
 
@@ -109,9 +146,8 @@ export function isScheduled(
   event: LiveStreamEvent | null | undefined,
   nowSec: number = Math.floor(Date.now() / 1000),
 ): boolean {
-  if (!event || !event.youtubeId) return false;
-  if (event.status !== "scheduled") return false;
-  return event.startTime === undefined || nowSec < event.startTime;
+  if (!event || !event.youtubeId || event.status !== "scheduled") return false;
+  return event.startTime !== undefined && nowSec < event.startTime;
 }
 
 export function countdownText(targetSec: number, nowSec: number = Math.floor(Date.now() / 1000)): string {
