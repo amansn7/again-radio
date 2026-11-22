@@ -81,19 +81,18 @@ import OgMeta from "../components/OgMeta.astro";
             </nav></div>
           </details>
         </div>
-        <div class="footer-support">
-          <p class="footer-heading">Keep the signal going</p>
-          <div class="footer-panel footer-support-actions glass" data-glass="regular">
-            <a href="upi://pay?pa=amansn7@oksbi&pn=Aman%20Saini&cu=INR" class="upi-link">
-              <span>Buy me a coffee</span><small>UPI app</small>
-            </a>
-            <a class="paypal-qr" href="/images/paypal-qr.png" target="_blank" rel="noreferrer" aria-label="Open full-size PayPal QR code">
-              <img src="/images/paypal-qr.png" alt="" loading="lazy" />
-              <span>PayPal QR <small>Open to scan</small></span>
-            </a>
-          </div>
+        <div class="footer-station">
+          <p class="footer-heading">About the signal</p>
+          <details class="socials-disclosure">
+            <summary class="footer-panel socials-toggle glass" data-glass="regular"><span>Station and rights</span><span class="socials-mark" aria-hidden="true">+</span></summary>
+            <div class="socials-reveal"><div class="station-info glass" data-glass="regular">
+              <p>Independent, non-commercial fan radio celebrating the music and live sets of Fred again..</p>
+              <p>Audio and video are streamed directly from official YouTube broadcasts. No media files are downloaded or re-hosted.</p>
+              <p class="station-meta">Music &copy; its respective owners. Inquiries or takedown requests: <a href="mailto:iamamansaini1@gmail.com">iamamansaini1@gmail.com</a></p>
+            </div></div>
+          </details>
         </div>
-        <p class="meta footer-disclaimer">Fan project. Not affiliated with Fred again.. All music &copy; its owners.</p>
+        <p class="meta footer-disclaimer">Fan project. Not affiliated with Fred again.. All music &copy; its respective owners. Broadcast via official YouTube embeds.</p>
       </div>
     </footer>
 
@@ -167,7 +166,7 @@ import OgMeta from "../components/OgMeta.astro";
         .hero-name { width: 62%; }
       }
       .footer-line { padding-block: 2.5rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 3rem; }
-      .footer-community, .footer-support { min-width: 0; }
+      .footer-community, .footer-station { min-width: 0; }
       .footer-heading { min-height: 1em; margin: 0 0 0.8rem; color: var(--fg-faint); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; }
       .footer-panel { box-sizing: border-box; width: 100%; height: 3.75rem; min-height: 3.75rem; border: 1px solid var(--line); border-radius: 1rem; background: color-mix(in oklab, var(--card) 55%, transparent); }
       .socials-toggle { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 0.5rem 0.85rem; color: var(--fg-dim); font-size: 0.8125rem; cursor: pointer; list-style: none; transition: color var(--dur-1), border-color var(--dur-1), background var(--dur-1); }
@@ -177,10 +176,14 @@ import OgMeta from "../components/OgMeta.astro";
       .socials-disclosure[open] .socials-mark { transform: rotate(45deg); }
       .socials-reveal { display: grid; grid-template-rows: 0fr; opacity: 0; transform: translateY(-0.4rem); visibility: hidden; transition: grid-template-rows 420ms var(--ease-out), opacity 260ms ease, transform 420ms var(--ease-out), visibility 0s linear 420ms; }
       .socials-disclosure[open] .socials-reveal { grid-template-rows: 1fr; opacity: 1; transform: translateY(0); visibility: visible; transition-delay: 0s; }
-      .socials-reveal > nav { min-height: 0; overflow: hidden; }
+      .socials-reveal > nav, .socials-reveal > div { min-height: 0; overflow: hidden; }
+      .station-info { display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.65rem; padding: 0.85rem 1rem; border: 1px solid var(--line); border-radius: 0.75rem; background: color-mix(in oklab, var(--card) 55%, transparent); color: var(--fg-dim); font-size: 0.8125rem; line-height: 1.45; }
+      .station-info p { margin: 0; }
+      .station-info .station-meta { font-size: 0.75rem; color: var(--fg-faint); margin-top: 0.15rem; }
+      .station-info a { color: var(--fg); text-decoration: underline; text-underline-offset: 2px; }
+      .station-info a:hover { color: var(--accent); }
       .footer-links { display: grid; grid-template-columns: minmax(12rem, 1fr) repeat(4, minmax(2.75rem, 0.42fr)); align-items: stretch; gap: 0.5rem; margin-top: 0.65rem; padding: 0.65rem; }
-      .footer-links a, .upi-link, .paypal-qr { min-height: 2.75rem; padding: 0.45rem 0.75rem; border: 1px solid var(--line); border-radius: 0.75rem; background: color-mix(in oklab, var(--card) 55%, transparent); color: var(--fg-dim); text-decoration: none; transition: transform var(--dur-1) var(--ease-out), border-color var(--dur-1), color var(--dur-1), background var(--dur-1); }
-      .footer-links a { display: flex; align-items: center; justify-content: center; width: 100%; padding-inline: 0.45rem; }
+      .footer-links a { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 2.75rem; padding: 0.45rem 0.75rem; border: 1px solid var(--line); border-radius: 0.75rem; background: color-mix(in oklab, var(--card) 55%, transparent); color: var(--fg-dim); text-decoration: none; transition: transform var(--dur-1) var(--ease-out), border-color var(--dur-1), color var(--dur-1), background var(--dur-1); }
       .footer-links svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
       .footer-links svg .fill { fill: currentColor; stroke: none; }
       .instagram-group { display: grid; gap: 0.2rem; min-width: 13rem; padding: 0.4rem 0.55rem; border: 1px solid color-mix(in oklab, var(--fg) 22%, transparent); border-radius: 0.9rem; background: color-mix(in oklab, var(--bg-2) 88%, transparent); -webkit-backdrop-filter: blur(18px) saturate(1.25) brightness(0.72); backdrop-filter: blur(18px) saturate(1.25) brightness(0.72); color: var(--fg); }
@@ -193,17 +196,8 @@ import OgMeta from "../components/OgMeta.astro";
       .instagram-group a small svg { width: 0.75rem; height: 0.75rem; fill: none; stroke: currentColor; stroke-width: 1.5; }
       .instagram-group a b { color: var(--fg-faint); font-size: 0.75rem; font-weight: 400; }
       .footer-links .instagram-group a:hover { transform: none; color: var(--fg); background: color-mix(in oklab, var(--fg) 6%, transparent); }
-      .footer-links small, .upi-link small, .paypal-qr small { color: var(--fg-faint); font-size: 0.75rem; }
-      .footer-links a:hover, .upi-link:hover, .paypal-qr:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); color: var(--fg); background: var(--card); }
-      .footer-support-actions { display: flex; align-items: center; gap: 0.35rem; padding: 0.25rem; }
-      .footer-support-actions .upi-link, .footer-support-actions .paypal-qr { border-color: transparent; background: transparent; }
-      .footer-support-actions .upi-link, .footer-support-actions .paypal-qr { height: 100%; min-height: 0; padding-block: 0.25rem; line-height: 1.15; }
-      .upi-link { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 0.1rem; }
-      .paypal-qr { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8125rem; }
-      .paypal-qr img { width: 2rem; height: 2rem; border-radius: 4px; opacity: 0.78; transition: opacity var(--dur-1); }
-      .paypal-qr:hover img, .paypal-qr:focus-visible img { opacity: 1; }
-      .paypal-qr span { display: flex; flex-direction: column; }
-      .footer-support-actions small { line-height: 1.1; }
+      .footer-links small { color: var(--fg-faint); font-size: 0.75rem; }
+      .footer-links a:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); color: var(--fg); background: var(--card); }
       .footer-disclaimer { grid-column: 1 / -1; margin: 0; padding-top: 1rem; border-top: 1px solid var(--line); }
       @media (max-width: 639px) {
         .footer-line { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -212,12 +206,8 @@ import OgMeta from "../components/OgMeta.astro";
         .footer-links .instagram-group { grid-column: 1 / -1; min-width: 0; }
         .footer-links > a { width: 100%; }
       }
-      @media (max-width: 380px) {
-        .footer-support-actions { gap: 0.1rem; }
-        .footer-support-actions .upi-link, .footer-support-actions .paypal-qr { padding-inline: 0.5rem; }
-      }
       @media (prefers-reduced-motion: reduce) {
-        .socials-toggle, .socials-mark, .footer-links a, .upi-link, .paypal-qr, .paypal-qr img { transition: none; }
+        .socials-toggle, .socials-mark, .footer-links a { transition: none; }
       }
     </style>
 

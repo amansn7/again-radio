@@ -58,8 +58,15 @@ export function emitState(p: RadioPlayer) {
 }
 
 export function setLabels(p: RadioPlayer) {
+  const creditLink = p.querySelector<HTMLAnchorElement>(".rp-credit-link");
   const credit = p.querySelector(".rp-credit");
-  if (credit) credit.textContent = creditText(p.prog);
+  const text = creditText(p.prog);
+  if (creditLink) {
+    creditLink.textContent = text ? `${text} ↗` : "";
+    creditLink.href = p.prog.youtubeId ? `https://www.youtube.com/watch?v=${p.prog.youtubeId}` : "#";
+  } else if (credit) {
+    credit.textContent = text;
+  }
   const stamp = p.querySelector<HTMLElement>(".rp-stamp");
   if (stamp) stamp.textContent = stampText(p.prog.date);
   const iframe = p.querySelector("iframe");
