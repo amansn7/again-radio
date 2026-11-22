@@ -51,8 +51,11 @@
   --bg: color-mix(in oklab, var(--art-1) 13%, #0e0d0c);
   --bg-2: color-mix(in oklab, var(--art-1) 20%, #171513);
   --fg: #f1ece4;
-  --fg-dim: color-mix(in oklab, var(--fg) 62%, var(--bg));
-  --fg-faint: color-mix(in oklab, var(--fg) 30%, var(--bg));
+  --fg-dim: color-mix(in oklab, var(--fg) 75%, var(--bg));
+  --fg-faint: color-mix(in oklab, var(--fg) 56%, var(--bg));
+  --scrim-bottom: 78%;
+  --scrim-mid: 65%;
+  --scrim-top: 52%;
   --line: color-mix(in oklab, var(--fg) 12%, transparent);
   --accent: color-mix(in oklab, var(--art-accent) 76%, #ffffff);
   --accent-2: color-mix(in oklab, var(--art-2) 70%, #ffffff);

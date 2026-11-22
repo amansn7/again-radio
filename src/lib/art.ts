@@ -22,12 +22,12 @@ export function ytThumb(id: string, frame = 0): string {
   return `https://i.ytimg.com/vi/${id}/${frame ? `mq${frame}` : "mqdefault"}.jpg`;
 }
 
-/** Card-sized variants: 300px iTunes, 250px Cover Art Archive, 320px YouTube. */
+/** Card-sized variants: 600px iTunes, 500px Cover Art Archive, hq YouTube. */
 export function cardSize(url: string): string {
   return url
-    .replace(/\/\d+x\d+bb\./, "/300x300bb.")
-    .replace(/\/front-\d+$/, "/front-250")
-    .replace(/\/(hq|sd|maxres)default\.jpg$/, "/mqdefault.jpg");
+    .replace(/\/\d+x\d+bb\./, "/600x600bb.")
+    .replace(/\/front-\d+$/, "/front-500")
+    .replace(/\/(hq|sd|maxres)default\.jpg$/, "/hqdefault.jpg");
 }
 
 /** "Actual Life 3 (January 1 - …)" and "Actual Life 3 - EP" both become "actual life 3". */

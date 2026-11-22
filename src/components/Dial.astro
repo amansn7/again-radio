@@ -89,8 +89,22 @@
   .dl-stage {
     position: relative; overflow-x: clip; overflow-y: visible; touch-action: pan-y; user-select: none;
     --card-h: calc(var(--card-w) + 5.75rem);
-    height: calc(var(--card-h) * 2.05 + 8rem);
-    perspective: 900px; perspective-origin: 50% calc(5rem + var(--card-h) / 2);
+    height: calc(var(--card-h) + 6.5rem);
+    perspective: 1200px;
+    perspective-origin: 50% calc(5rem + var(--card-h) * 0.45);
+  }
+  .dl-stage::after {
+    content: "";
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    bottom: 1.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 50%, color-mix(in oklab, var(--accent) 18%, transparent), transparent 75%);
+    filter: blur(28px);
+    pointer-events: none;
+    opacity: 0.7;
   }
   .dl-track { position: absolute; inset: 0; transform-style: preserve-3d; transition: opacity 450ms var(--ease-in-out); }
   .dl-auto[hidden] { display: none; }
@@ -116,22 +130,46 @@
       inset 0 0 0 1px color-mix(in oklab, var(--glass-light) 16%, transparent),
       var(--card-shadow), 0 22px 60px -22px color-mix(in oklab, var(--rim) 75%, transparent);
     backface-visibility: hidden;
-    transition: transform 700ms var(--ease-out), opacity 700ms var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+    transform-style: preserve-3d;
+    transition: transform 700ms var(--ease-out), opacity 700ms var(--ease-out);
   }
   .dl-face {
+    position: relative;
     display: flex; flex-direction: column; gap: 0.15rem; padding: 0.5rem; overflow: hidden; isolation: isolate;
     border-radius: inherit; border: 1px solid color-mix(in oklab, var(--rim) 60%, transparent);
     background:
       radial-gradient(120% 80% at 20% 10%, color-mix(in oklab, var(--rim) 45%, transparent), transparent 65%),
       color-mix(in oklab, var(--bg) 80%, transparent);
     box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--rim) 20%, transparent);
+    transform-style: preserve-3d;
+    transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition: transform 120ms ease-out;
+  }
+  .dl-card:not(.is-tilting) .dl-face {
+    transition: transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .dl-face::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      circle 220px at var(--glare-x, 50%) var(--glare-y, 50%),
+      color-mix(in oklab, var(--glass-light, #fff) 22%, transparent),
+      transparent 75%
+    );
+    opacity: 0;
+    transition: opacity 250ms ease-out;
+    mix-blend-mode: overlay;
+  }
+  .dl-card.is-tilting .dl-face::after {
+    opacity: 1;
   }
   .dl-card[data-shape="wide"] { width: calc(var(--card-w) * 1.35); }
-  .dl-stage:not(.is-flat) .dl-face {
-    -webkit-box-reflect: below 10px linear-gradient(transparent 68%, color-mix(in srgb, var(--fg) 32%, transparent));
+  .dl-card:hover:not([data-front]) {
+    --card-shadow: 0 24px 50px -20px color-mix(in oklab, #000 95%, transparent);
   }
-  @media (max-width: 639px) { .dl-stage:not(.is-flat) .dl-face { -webkit-box-reflect: none; } }
-  .dl-track.is-still .dl-card { transition: box-shadow var(--dur-2) var(--ease-out); }
   .dl-card[data-front] {
     --card-shadow: 0 0 42px -16px color-mix(in oklab, var(--rim) 28%, transparent), 0 24px 58px -25px color-mix(in oklab, #000 92%, transparent);
     box-shadow:
@@ -140,25 +178,20 @@
       inset 0 0 0 1px color-mix(in oklab, var(--glass-light) 26%, transparent);
   }
   .dl-card[data-front] .dl-face { box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--rim) 45%, transparent); }
-  .dl-reflection {
-    pointer-events: none; cursor: default; border-color: transparent; box-shadow: none !important;
-    opacity: calc(var(--mirror-opacity, 1) * 0.1);
-    -webkit-mask-image: linear-gradient(to top, #000 0%, #000 8%, transparent 32%);
-    mask-image: linear-gradient(to top, #000 0%, #000 8%, transparent 32%);
-  }
-  .dl-reflection .dl-live { display: none !important; }
+  .dl-reflection { display: none !important; }
   .dl-art {
     position: relative; display: block; aspect-ratio: 1; overflow: hidden; border-radius: 12px; isolation: isolate; -webkit-mask-image: -webkit-radial-gradient(white, black);
     background:
       radial-gradient(90% 90% at 30% 20%, color-mix(in oklab, var(--rim) 55%, transparent), transparent 70%),
       color-mix(in oklab, var(--rim) 14%, var(--bg));
+    transform: translateZ(8px);
   }
   .dl-card[data-shape="wide"] .dl-art { aspect-ratio: 16 / 9; }
   .dl-art img {
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; border-radius: inherit;
     animation: dl-in var(--dur-2) var(--ease-out);
   }
-  .dl-body { display: grid; gap: 0.3rem; padding: 0.6rem 0.45rem 0.35rem; }
+  .dl-body { display: grid; gap: 0.3rem; padding: 0.6rem 0.45rem 0.35rem; transform: translateZ(12px); }
   .dl-tags { display: flex; align-items: center; gap: 0.5rem; }
   .dl-badge {
     font: 600 0.6875rem/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
@@ -198,7 +231,7 @@
     .dl-pick-btn { width: 100%; justify-content: space-between; }
     .dl-pick-label { max-width: calc(100% - 2rem); }
     .dl-menu { width: 100%; max-width: 100%; }
-    .dl-stage { perspective: 640px; }
+    .dl-stage { perspective: 850px; }
   }
 </style>
 

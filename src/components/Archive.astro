@@ -86,8 +86,12 @@
   .st:focus-visible { outline-offset: 4px; border-radius: 6px; }
 
   .sb-needle {
-    position: absolute; left: var(--needle); top: 10px; bottom: 26px; width: 2px; margin-left: -1px;
-    background: linear-gradient(var(--accent) 60%, transparent); pointer-events: none;
+    position: absolute; left: var(--needle); top: 10px; bottom: 26px; width: 44px; margin-left: -1px;
+    pointer-events: none;
+  }
+  .sb-needle::after {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(var(--accent) 60%, transparent);
   }
   .sb-needle::before {
     content: ""; position: absolute; top: -4px; left: -4px; width: 10px; height: 10px; border-radius: 50%;
@@ -95,7 +99,7 @@
     animation: sb-now 2.4s var(--ease-in-out) infinite;
   }
   @keyframes sb-now { 50% { transform: scale(1.18); box-shadow: 0 0 22px var(--accent); } }
-  .sb-needle span { position: absolute; top: -7px; left: 10px; font-size: 0.6875rem; line-height: 1.4; color: var(--accent); }
+  .sb-needle span { position: absolute; top: -7px; left: 10px; font-size: 0.6875rem; line-height: 1.4; color: var(--accent); white-space: nowrap; }
 
   .sb-band.quiet { height: 70px; }
   .quiet .sb-rail { top: 16px; }

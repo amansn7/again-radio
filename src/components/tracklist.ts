@@ -39,9 +39,18 @@ class TracklistBar extends HTMLElement {
     document.addEventListener(RADIO_TIME, (e) => this.onTime((e as CustomEvent<TimeInfo>).detail));
 
     this.bar.addEventListener("click", (e) => {
-      const i = this.indexOf(e.target);
-      const entry = this.info?.entries[i];
-      if (!this.info || !entry || this.segs[i]?.disabled) return;
+      if (!this.info || !this.info.entries.length) return;
+      let i = this.indexOf(e.target);
+      if (i < 0) {
+        const rect = this.bar.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, ((e as MouseEvent).clientX - rect.left) / rect.width));
+        const totalDuration = this.info.entries.reduce((acc, curr) => Math.max(acc, curr.offset + curr.duration), 0);
+        const targetSec = ratio * totalDuration;
+        i = this.info.entries.findIndex((en) => targetSec >= en.offset && targetSec < en.offset + en.duration);
+        if (i < 0) i = this.info.entries.length - 1;
+      }
+      const entry = this.info.entries[i];
+      if (!entry || this.segs[i]?.disabled) return;
       document.dispatchEvent(
         new CustomEvent(RADIO_CUE, { detail: { program: this.info.programPath, offset: entry.offset } }),
       );

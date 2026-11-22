@@ -47,7 +47,7 @@ function rollText(el: HTMLElement, value: string): void {
   el.classList.remove("sb-rolling");
   el.setAttribute("aria-label", value);
   el.dataset.value = value;
-  el.innerHTML = `<span class="sb-roll-layout" style="--roll-width:${boxWidth}px;--roll-height:${lineHeight}">` + Array.from({ length: count }, (_, i) => {
+  el.innerHTML = `<span class="sr-only">${esc(value)}</span><span class="sb-roll-layout" aria-hidden="true" style="--roll-width:${boxWidth}px;--roll-height:${lineHeight}">` + Array.from({ length: count }, (_, i) => {
     const from = old[i] ?? " ", to = value[i] ?? " ";
     const toX = xOffset + width(value.slice(0, i));
     const wheelWidth = Math.max(glyphWidth(from), glyphWidth(to));

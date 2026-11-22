@@ -90,6 +90,11 @@ const { ...attrs } = Astro.props;
   .tl-next { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .tl-next-l { color: var(--fg-faint); }
   .tl-next-t { color: var(--fg); }
+
+  @media (max-width: 600px) {
+    .tl-bar { cursor: pointer; height: 16px; }
+    .tl-seg { pointer-events: none; }
+  }
 </style>
 
 <script>

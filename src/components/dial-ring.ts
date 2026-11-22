@@ -35,7 +35,10 @@ export class Ring {
   get flat(): boolean { return reduce.matches; }
   get front(): number { return Math.round(this.pos); }
   /** Pixels of drag that turn the ring by one card. */
-  get pitch(): number { return this.w * 1.05; }
+  get pitch(): number {
+    const narrow = this.stage.clientWidth < 640;
+    return this.w * (narrow ? 0.88 : 0.92);
+  }
   /** The user turned the ring recently, so the station should not turn it for them. */
   get recent(): boolean { return performance.now() - this.touched < 8000; }
 
@@ -117,46 +120,30 @@ export class Ring {
   }
 
   private place(el: HTMLElement, i: number): void {
-    const reflection = this.reflections.get(i);
     if (this.flat) {
-      el.style.transform = el.style.opacity = "";
-      reflection?.remove();
-      this.reflections.delete(i);
+      el.style.transform = el.style.opacity = el.style.zIndex = "";
       return;
     }
     const narrow = this.stage.clientWidth < 640;
-    const step = narrow ? 30 : 22;
-    const r = ((this.w / 2) / Math.tan((step * Math.PI) / 360)) * 1.12;
+    const stepAngle = narrow ? 16 : 14;
+    const spacing = this.w * (narrow ? 0.88 : 0.92);
     const d = i - this.pos;
-    const a = -d * step;
-    // Concave: the viewer stands inside the ring, so side cards swing towards the lens and flare.
-    el.style.transform = `translate3d(-50%, 0, ${r}px) rotateY(${a}deg) translateZ(${-r}px) rotateY(${-a * FLARE}deg)`;
-    el.style.opacity = String(Math.max(0, 1 - Math.max(0, Math.abs(d) - 1) * 0.28));
+    const absD = Math.abs(d);
+    const sign = Math.sign(d);
+
+    const x = d * spacing;
+    const z = -Math.min(220, Math.pow(absD, 1.25) * (narrow ? 38 : 46));
+    const rotY = -sign * Math.min(32, Math.pow(absD, 0.9) * stepAngle);
+    const scale = Math.max(0.78, 1 - absD * 0.05);
+    const zIndex = Math.round(50 - absD * 5);
+
+    el.style.zIndex = String(zIndex);
+    el.style.setProperty("--tx", `calc(-50% + ${x.toFixed(1)}px)`);
+    el.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), 0, ${z.toFixed(1)}px) rotateY(${rotY.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+    el.style.opacity = String(Math.max(0, 1 - Math.max(0, absD - 1.2) * 0.32));
   }
 
-  private reflect(el: HTMLElement, i: number): void {
-    if (this.flat) return;
-    let mirror = this.reflections.get(i);
-    if (!mirror) {
-      mirror = el.cloneNode(true) as HTMLElement;
-      mirror.classList.add("dl-reflection");
-      mirror.removeAttribute("data-i");
-      mirror.removeAttribute("data-front");
-      mirror.dataset.reflection = String(i);
-      mirror.setAttribute("aria-hidden", "true");
-      mirror.inert = true;
-      this.track.append(mirror);
-      this.reflections.set(i, mirror);
-    }
-    if (mirror.innerHTML !== el.innerHTML) mirror.innerHTML = el.innerHTML;
-    mirror.classList.toggle("has-art", el.classList.contains("has-art"));
-    mirror.toggleAttribute("aria-current", el.getAttribute("aria-current") === "true");
-    mirror.dataset.shape = el.dataset.shape ?? "square";
-    mirror.style.left = el.style.left;
-    mirror.style.top = `${el.offsetTop + el.offsetHeight + 10}px`;
-    mirror.style.setProperty("--mirror-opacity", el.style.opacity);
-    mirror.style.transform = `${el.style.transform} scaleY(-1)`;
-  }
+  private reflect(_el: HTMLElement, _i: number): void {}
 
   private click = (e: MouseEvent): void => {
     const el = (e.target as HTMLElement).closest<HTMLElement>("[data-i]");

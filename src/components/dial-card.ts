@@ -6,6 +6,43 @@ import type { Card } from "./dial-data.ts";
 
 const tints = new Map<string, string>();
 const warmed = new Map<string, Promise<void>>();
+const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+
+function bindCardTilt(el: HTMLElement): void {
+  if (reduce.matches) return;
+  let rect: DOMRect | null = null;
+
+  const onEnter = (): void => {
+    rect = el.getBoundingClientRect();
+    el.classList.add("is-tilting");
+  };
+
+  const onMove = (e: MouseEvent): void => {
+    if (!rect) rect = el.getBoundingClientRect();
+    const px = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const py = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+    const tiltY = (px - 0.5) * 14;
+    const tiltX = (0.5 - py) * 14;
+
+    el.style.setProperty("--tilt-x", `${tiltX.toFixed(2)}deg`);
+    el.style.setProperty("--tilt-y", `${tiltY.toFixed(2)}deg`);
+    el.style.setProperty("--glare-x", `${(px * 100).toFixed(1)}%`);
+    el.style.setProperty("--glare-y", `${(py * 100).toFixed(1)}%`);
+  };
+
+  const onLeave = (): void => {
+    rect = null;
+    el.classList.remove("is-tilting");
+    el.style.removeProperty("--tilt-x");
+    el.style.removeProperty("--tilt-y");
+    el.style.removeProperty("--glare-x");
+    el.style.removeProperty("--glare-y");
+  };
+
+  el.addEventListener("mouseenter", onEnter);
+  el.addEventListener("mousemove", onMove);
+  el.addEventListener("mouseleave", onLeave);
+}
 
 /** The rim and glow take the art's most saturated colour; a tainted canvas keeps --accent. */
 function tint(img: HTMLImageElement): string {
@@ -53,15 +90,8 @@ function loadArt(el: HTMLElement, url: string, high: boolean): void {
   const known = tints.get(url);
   if (known) el.style.setProperty("--rim", known);
   const img = image(url, high);
-  const mirrorArt = (source: HTMLImageElement) => {
-    const i = el.dataset.i;
-    if (i === undefined) return;
-    const mirror = el.closest(".dl-track")?.querySelector<HTMLElement>(`[data-reflection="${i}"]`);
-    mirror?.querySelector(".dl-art")?.replaceChildren(source.cloneNode(true));
-  };
   const show = () => {
-    el.querySelector(".dl-art")?.append(img);
-    mirrorArt(img);
+    el.querySelector(".dl-art")?.replaceChildren(img);
     el.classList.add("has-art");
     const c = tint(img);
     if (c) el.style.setProperty("--rim", c);
@@ -72,8 +102,7 @@ function loadArt(el: HTMLElement, url: string, high: boolean): void {
     const plain = new Image();
     plain.alt = "";
     plain.onload = () => {
-      el.querySelector(".dl-art")?.append(plain);
-      mirrorArt(plain);
+      el.querySelector(".dl-art")?.replaceChildren(plain);
       el.classList.add("has-art");
     };
     plain.src = url;
@@ -85,6 +114,7 @@ export function cardEl(c: Card, air: TrackInfo | null, front: boolean): HTMLElem
   b.type = "button";
   b.className = "dl-card";
   b.dataset.shape = c.shape;
+  bindCardTilt(b);
   if (!c.cue) b.setAttribute("aria-disabled", "true");
   if (air && c.onAir(air)) b.setAttribute("aria-current", "true");
   b.innerHTML =
@@ -92,6 +122,8 @@ export function cardEl(c: Card, air: TrackInfo | null, front: boolean): HTMLElem
     `<span class="dl-tags"><span class="dl-badge">${esc(c.badge)}</span>` +
     `<span class="dl-live"><span class="live-dot"></span>On air</span></span>` +
     `<span class="dl-title">${esc(c.title)}</span><span class="dl-sub num">${esc(c.sub)}</span></span></span>`;
-  void c.art().then((url) => { if (url && b.isConnected) loadArt(b, cardSize(url), front); });
+  void c.art().then((url) => {
+    if (url) loadArt(b, cardSize(url), front);
+  });
   return b;
 }

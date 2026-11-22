@@ -63,6 +63,16 @@ export function startPalette(): void {
       const style = document.documentElement.style;
       const p = raw ? derivePalette(raw) : null;
       ART_VARS.forEach((v, i) => (p ? style.setProperty(v, `rgb(${p[i].join(",")})`) : style.removeProperty(v)));
+      if (p) {
+        const bright = luma(p[0]) > 115 || luma(p[1]) > 140;
+        style.setProperty("--scrim-bottom", bright ? "88%" : "78%");
+        style.setProperty("--scrim-mid", bright ? "76%" : "65%");
+        style.setProperty("--scrim-top", bright ? "64%" : "52%");
+      } else {
+        style.removeProperty("--scrim-bottom");
+        style.removeProperty("--scrim-mid");
+        style.removeProperty("--scrim-top");
+      }
     });
   });
 }
